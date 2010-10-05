@@ -1,0 +1,194 @@
+\documentclass[
+%a5paper,							% alle weiteren Papierformat einstellbar
+%landscape,						% Querformat
+12pt,								% Schriftgröße (12pt, 11pt (Standard))
+%BCOR1cm,							% Bindekorrektur, bspw. 1 cm
+%DIVcalc,							% führt die Satzspiegelberechnung neu aus s. scrguide 2.4
+%twoside,							% Doppelseiten
+%twocolumn,						% zweispaltiger Satz
+%halfparskip*,				% Absatzformatierung s. scrguide 3.1
+%headsepline,					% Trennline zum Seitenkopf	
+%footsepline,					% Trennline zum Seitenfuß
+%titlepage,						% Titelei auf eigener Seite
+%normalheadings,			% Überschriften etwas kleiner (smallheadings)
+%idxtotoc,						% Index im Inhaltsverzeichnis
+%liststotoc,				  	% Abb.- und Tab.verzeichnis im Inhalt
+listof=totoc,
+%bibtotoc,			  			% Literaturverzeichnis im Inhalt
+bibliography=totoc,
+%abstracton,					% Überschrift über der Zusammenfassung an	
+%leqno,   						% Nummerierung von Gleichungen links
+%fleqn,								% Ausgabe von Gleichungen linksbündig
+%draft								% überlangen Zeilen in Ausgabe gekennzeichnet
+]
+{scrreprt}
+
+\usepackage[T1]{fontenc}
+\usepackage[ansinew]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%% ifthen für Vektordefinitionen
+\usepackage{ifthen}
+
+\usepackage{color}
+\definecolor{blue}{rgb}{0,0,.8}
+\definecolor{red}{rgb}{.8,0,0}
+\definecolor{green}{rgb}{0,.8,0}
+\definecolor{lightgray}{rgb}{0.9,0.9,0.9}
+
+%% Formatierung für Listings
+\usepackage{listings}
+\lstset{
+	keywordstyle=\color{blue}{\bfseries},
+	stringstyle=\color{red},
+	commentstyle=\color{green},
+language=Java,                  % choose the language of the code
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=2,                   % the step between two line-numbers. If it's 1 each line will be numbered
+numbersep=10pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{lightgray},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=trbl,	                % adds a frame around the code
+frameround=tttt,
+tabsize=2,	                % sets default tabsize to 2 spaces
+captionpos=t,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+%escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
+
+\usepackage{lmodern}
+
+\usepackage{float}
+\renewcommand{\bottomfraction}{1}
+\renewcommand{\topfraction}{1}
+
+%Kopf- und Fußzeile---------------------------
+\usepackage[automark, headsepline, plainheadsepline, footsepline, plainfootsepline]{scrpage2}
+\pagestyle{scrheadings}
+%\clearscrheadings
+%\clearscrplain
+%\lohead{\headmark}
+%\rohead{}
+%\lofoot{}
+%\cofoot{\pagemark}
+%\rofoot{}
+%\setheadsepline{.4pt}
+%\setfootsepline{.4pt}
+%---------------------------------------------
+
+%\usepackage{geometry}
+%\typearea[current]{calc}
+%\addtolength{\skip\footins}{8mm}
+%\addtolength{\footnotesep}{2mm}
+%\geometry{left=4cm,right=3cm,top=3cm,bottom=3cm}
+
+\usepackage{graphicx} %%Zum Laden von Grafiken
+
+\usepackage{natbib}
+
+\parskip1.4ex
+\parindent0pt
+
+\def\pueb#1#2{\hspace*{-#1mm}{\buildrel{\hspace*{#1mm}
+  \hspace*{#1mm} _\rightharpoonup}\over{#2}}\hspace*{-#1mm}
+  \hspace*{-#1mm}\hspace*{-.2mm}}
+\def\gpueb#1#2{\hspace*{-#1mm}\hspace*{.4mm}{\buildrel{
+  \hspace*{#1mm}\hspace*{#1mm}{\displaystyle _\rightharpoonup}}
+  \over{#2}}\hspace*{-#1mm}\hspace*{-#1mm}\hspace*{.4mm}}
+\def\vc#1{
+  \ifthenelse{\equal{#1}{f} \or \equal{#1}{d}}{\pueb{.4}{#1}}{
+  \ifthenelse{\equal{#1}{e} \or \equal{#1}{k} \or \equal{#1}{l} 
+    \or \equal{#1}{r} \or \equal{#1}{s} \or \equal{#1}{t} 
+    \or \equal{#1}{\b} \or \equal{#1}{\beta} \or \equal{#1}{\ell} 
+    \or \equal{#1}{\phi} \or \equal{#1}{\rho} 
+    \or \equal{#1}{\varrho}}{\pueb{.2}{#1}}{   
+  \ifthenelse{\equal{#1}{j}}{\pueb{.4}{\jmath}}{
+  \ifthenelse{\equal{#1}{i}}{\pueb{.4}{\imath}}{
+  \ifthenelse{\equal{#1}{m} \or \equal{#1}{w} \or \equal{#1}{\o}
+       \or \equal{#1}{\omega}}{\gpueb{0}{#1}}{
+  \ifthenelse{\equal{#1}{A} \or \equal{#1}{R}}{\gpueb{.2}{#1}}{
+  \ifthenelse{\equal{#1}{B} \or \equal{#1}{C} \or \equal{#1}{D} 
+ \or \equal{#1}{E} \or \equal{#1}{F} \or \equal{#1}{G} \or \equal{#1}{H} 
+ \or \equal{#1}{I} \or \equal{#1}{J} \or \equal{#1}{K} \or \equal{#1}{L} 
+ \or \equal{#1}{M} \or \equal{#1}{N} \or \equal{#1}{O} \or \equal{#1}{P} 
+ \or \equal{#1}{Q} \or \equal{#1}{S} \or \equal{#1}{T} \or \equal{#1}{U} 
+ \or \equal{#1}{V} \or \equal{#1}{W} \or \equal{#1}{X} \or \equal{#1}{Y} 
+ \or \equal{#1}{Z}}{\gpueb{.4}{#1}}{\pueb{0}{#1}}} }}} }} }
+
+%\usepackage{hyperref}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\titlehead{{\Large Fachhochschule Hannover
+\hfill WS 2010/11\\}
+Fakultät IV - Wirtschaft und Informatik\\
+Ricklinger Stadtweg 118\\
+30459 Hannover}
+\subject{software requirements specification}
+\title{\begin{center}\includegraphics[width=0.55\textwidth]{images/genometa_logo.pdf}\end{center}}
+%\subtitle{}
+\author{FH Hannover}
+%\date{\today}
+\maketitle
+
+\begin{table}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{8cm}|}
+\hline
+\textbf{date}&\textbf{version}&\textbf{comments}\\
+\hline
+\today&0.1&initial release\\
+\hline
+\end{tabular}
+\end{table}
+\vfill
+
+\tableofcontents
+
+\chapter{Introduction}
+\section{Purpose}
+\section{Scope}
+\section{Definitions, Acronyms, and Abbreviations.}
+\section{References}
+\section{Overview}
+\chapter{The Overall Description}
+\section{Product Perspective}
+\subsection{System Interfaces}
+\subsection{Interfaces}
+\subsection{Hardware Interfaces}
+\subsection{Software Interfaces}
+\subsection{Communications Interfaces}
+\subsection{Memory Constraints}
+\subsection{Operations}
+\subsection{Site Adaptation Requirements}
+\section{Product Functions}
+\section{User Characteristics}
+\section{Constraints}
+\section{Assumptions and Dependencies}
+\section{Apportioning of Requirements.}
+\chapter{Specific Requirements}
+\section{External Interfaces}
+\section{Functions}
+\section{Performance Requirements}
+\section{Logical Database Requirements}
+\section{Design Constraints}
+\subsection{Standards Compliance}
+\section{Software System Attributes}
+\subsection{Reliability}
+\subsection{Availability}
+\subsection{Security}
+\subsection{Maintainability}
+\subsection{Portability}
+\section{Additional Comments}
+
+
+
+\end{document}
