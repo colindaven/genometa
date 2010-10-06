@@ -217,6 +217,182 @@ A total of 2GB to 4GB of RAM usage should not be exceeded.
 \section{Product Functions}
 This section will list the functional and non-functional requirements as specified in the product catalogue
 \subsection{Functional requirements}
+\subsubsection{Priority 1}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Graphs}}\\
+\hline
+\textbf{Graphs must be optically pleasing and some settings have to be editable.}
+&
+\begin{itemize}
+	\item text options like color and size
+	\item background color changeable
+	\item no overlapping reads
+	\item visible read direction
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Summary of all species}}\\
+\hline
+\textbf{The number of reads to each bacterial taxon are displayed as a summary graph.}
+&
+\begin{itemize}
+	\item show bacteria taxon names
+	\item show summered read hits
+	\item summed reads in left hand text field
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Reads aligned to one species}}\\
+\hline
+\textbf{When a bacterial name is clicked upon the reads aligned to that genome are displayed as a bar graph.}
+&
+\begin{itemize}
+	\item show read positions
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Zoomable Graphs}}\\
+\hline
+\textbf{The size of the histograms should be adjustable.}
+&
+\begin{itemize}
+	\item show complete histogram
+	\item zoom X-times
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Priority 2}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{RefSeq code to species name}}\\
+\hline
+\textbf{A name will be mapped to RefSeq code.}
+&
+\begin{itemize}
+	\item show RefSeq and name
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Map genera name to lineage name}}\\
+\hline
+\textbf{Genera name should be mapped to lineage.}
+&
+\begin{itemize}
+	\item show lineage
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Text export}}\\
+\hline
+\textbf{Export text analysis and summary statistics.}
+&
+\begin{itemize}
+	\item export information to CSV-File
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Analysis number of reads}}\\
+\hline
+\textbf{Count the number of reads.}
+&
+\begin{itemize}
+	\item show numbers of reads attributed to each species / gene
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Priority 4}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Sequence export}}\\
+\hline
+\textbf{Export the sequence of a particular region.}
+&
+\begin{itemize}
+	\item export sequence of DNA ACTG
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Graph export}}\\
+\hline
+\textbf{Export graph to vector format.}
+&
+\begin{itemize}
+	\item SVG or PDF
+	\item PNG
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Potential sRNAs or ORFs}}\\
+\hline
+\textbf{Find reads that group together into continuous segments and list them.}
+&
+\begin{itemize}
+	\item export them to a list with coordinates and sequence
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Priority 5}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{SNP visualisation}}\\
+\hline
+\textbf{SNPs, i.e. mismatches between the letter in the reads and the letter in the genome string, should be flagged in the visualization.}
+&
+\begin{itemize}
+	\item should be optional
+	\item only for one genome or transcriptome
+	\item maybe easier to find with external program, eg. Samtools, Varscan
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+
+
+
 \subsection{Non-functional requirements}
 \subsubsection{Priority 1}
 
@@ -347,8 +523,14 @@ The project will start in October 2010, and end on January 2011. On that date a 
 
 A preliminary time management plan is shown here:
 
-\includegraphics[width=\textwidth]{images/time_management.png}
+\includegraphics[width=\textwidth]{images/time_management_Genometa_2010-10-04_2.png}
 
 The plan will be updated according to project revisions and definition of the work breakdown structure.
+
+
+\chapter{GUI prototype}
+The following image will show a GUI prototype.
+
+\includegraphics[width=\textwidth]{images/gui-prototype.png}
 
 \end{document}
