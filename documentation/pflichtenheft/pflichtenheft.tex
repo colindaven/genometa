@@ -145,7 +145,9 @@ Ricklinger Stadtweg 118\\
 \hline
 \textbf{date}&\textbf{version}&\textbf{comments}\\
 \hline
-\today&0.1&initial release\\
+2010-10-05&0.1&initial release\\
+2010-10-06&0.2&add missing functional requirements\\
+2010-10-07&0.3&fisrt complete draft\\
 \hline
 \end{tabular}
 \end{table}
@@ -158,7 +160,7 @@ This section gives a short introduction to the general scope of the project and 
 \section{Purpose}
 The SRS document is intended to represent a technical analysis of the product concept catalogue. It will try put the clients product specification into a technical perspective and to clarify main points for the programming staff.
 \section{Scope}
-In this project a software for visualizing DNA sequence reads is to be developed. The current project name "`genometa"' is subject for discussion and will be used as a preliminary name until a final name is decided upon.
+In this project a software for visualizing DNA sequence reads is to be developed. The current project name "genometa" is subject for discussion and will be used as a preliminary name until a final name is decided upon.
 
 The visualization will be useful in 2 distinct medical subcategories, namely in metagenomics - where bacteria are identified based upon their DNA - and transcriptomics - in which genes used by a specific bacterium are identified.
 
@@ -207,7 +209,7 @@ The DNA sequence reads, which vary in sizes of around 10MB to 10GB will be provi
 
 The primary design goals will be an easy to use and visually appealing user interface as well as performance.
 \subsection{Interfaces}
-The system will be accesible to the user by means of a graphical user interface. A GUI design prototype will be presented in section.
+The system will be accesible to the user by means of a graphical user interface. A GUI design prototype will be presented in section \ref{seq:gui_prototype}.
 \subsection{Hardware Interfaces}
 The software is to be used on Windows, Linux and OS X platforms. Hardware is supposed to be on standard levels for office workspaces.
 \subsection{Software Interfaces}
@@ -271,7 +273,7 @@ This section will list the functional and non-functional requirements as specifi
 &
 \begin{itemize}
 	\item show complete histogram
-	\item zoom X-times
+	\item multiple zoom levels
 \end{itemize}
 \\
 \hline
@@ -281,12 +283,12 @@ This section will list the functional and non-functional requirements as specifi
 
 \begin{tabular}{|p{7cm}|p{7cm}|}
 \hline
-\multicolumn{2}{|c|}{\textbf{RefSeq code to species name}}\\
+\multicolumn{2}{|c|}{\textbf{Map RefSeq code to species name}}\\
 \hline
 \textbf{A name will be mapped to RefSeq code.}
 &
 \begin{itemize}
-	\item show RefSeq and name
+	\item software should display RefSeq and name
 \end{itemize}
 \\
 \hline
@@ -299,7 +301,7 @@ This section will list the functional and non-functional requirements as specifi
 \textbf{Genera name should be mapped to lineage.}
 &
 \begin{itemize}
-	\item show lineage
+	\item software should display lineage
 \end{itemize}
 \\
 \hline
@@ -312,7 +314,7 @@ This section will list the functional and non-functional requirements as specifi
 \textbf{Export text analysis and summary statistics.}
 &
 \begin{itemize}
-	\item export information to CSV-File
+	\item software should be able to export information to CSV files
 \end{itemize}
 \\
 \hline
@@ -325,7 +327,7 @@ This section will list the functional and non-functional requirements as specifi
 \textbf{Count the number of reads.}
 &
 \begin{itemize}
-	\item show numbers of reads attributed to each species / gene
+	\item show numbers of reads attributed to each species/gene
 \end{itemize}
 \\
 \hline
@@ -350,10 +352,10 @@ This section will list the functional and non-functional requirements as specifi
 \hline
 \multicolumn{2}{|c|}{\textbf{Graph export}}\\
 \hline
-\textbf{Export graph to vector format.}
+\textbf{Export graph to vector and raster formats.}
 &
 \begin{itemize}
-	\item SVG or PDF
+	\item SVG/PDF
 	\item PNG
 \end{itemize}
 \\
@@ -367,7 +369,7 @@ This section will list the functional and non-functional requirements as specifi
 \textbf{Find reads that group together into continuous segments and list them.}
 &
 \begin{itemize}
-	\item export them to a list with coordinates and sequence
+	\item export to a list with coordinates and sequence
 \end{itemize}
 \\
 \hline
@@ -529,6 +531,7 @@ The plan will be updated according to project revisions and definition of the wo
 
 
 \chapter{GUI prototype}
+\label{seq:gui_prototype}
 The following image will show a GUI prototype.
 
 \includegraphics[width=\textwidth]{images/gui-prototype.png}
