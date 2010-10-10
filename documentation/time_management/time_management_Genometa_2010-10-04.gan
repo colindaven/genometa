@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Genom" company="" webLink="" view-date="2010-09-20" view-index="0" gantt-divider-location="316" resource-divider-location="301" version="2.0">
+    <description/>
+    <view zooming-state="default:6" id="gantt-chart"/>
+    <view id="resource-table">
+        <field id="0" name="Ressource" width="55" order="0"/>
+        <field id="1" name="Rolle" width="44" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <calendar id="1" name="default">
+                <default-week sun="0" mon="0" tue="0" wed="0" thu="0" fri="0" sat="0"/>
+                <overriden-day-types/>
+                <days/>
+            </calendar>
+        </day-types>
+    </calendars>
+    <tasks color="#8cb6ce">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="Preparation" meeting="false" start="2010-09-27" duration="14" complete="0" priority="1" expand="true">
+            <task id="2" name="Software requirements specification" meeting="false" start="2010-09-27" duration="14" complete="0" priority="1" expand="true"/>
+            <task id="8" name="Define goals" meeting="false" start="2010-09-27" duration="14" complete="0" priority="1" expand="true"/>
+            <task id="12" name="Define requirements" meeting="false" start="2010-09-27" duration="14" complete="0" priority="1" expand="true"/>
+        </task>
+        <task id="5" name="Analysis" meeting="false" start="2010-10-04" duration="14" complete="0" priority="1" expand="true">
+            <task id="7" name="Analyze file formats" meeting="false" start="2010-10-04" duration="14" complete="0" priority="1" expand="false"/>
+            <task id="3" name="Analyze programs" meeting="false" start="2010-10-04" duration="14" complete="0" priority="1" expand="true"/>
+        </task>
+        <task id="10" name="Design" meeting="false" start="2010-10-18" duration="21" complete="0" priority="1" expand="true"/>
+        <task id="11" name="Implementation" meeting="false" start="2010-11-08" duration="63" complete="0" priority="1" expand="true"/>
+        <task id="15" name="Documentation" meeting="false" start="2010-12-06" duration="49" complete="0" priority="1" expand="true"/>
+        <task id="13" name="Test" meeting="false" start="2011-01-10" duration="21" complete="0" priority="1" expand="true"/>
+        <task id="14" name="Delivery" meeting="false" start="2011-01-30" duration="1" complete="0" priority="1" expand="true"/>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <taskdisplaycolumns>
+        <displaycolumn property-id="tpd3" order="0" width="111"/>
+        <displaycolumn property-id="tpd4" order="1" width="58"/>
+        <displaycolumn property-id="tpd5" order="2" width="56"/>
+    </taskdisplaycolumns>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
