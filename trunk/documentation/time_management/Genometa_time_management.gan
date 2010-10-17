@@ -31,14 +31,14 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="0" name="Preparation" meeting="false" start="2010-09-27" duration="14" complete="0" priority="1" expand="true">
-            <task id="2" name="Software requirements specification" meeting="false" start="2010-09-27" duration="14" complete="0" priority="1" expand="true"/>
-            <task id="8" name="Define goals" meeting="false" start="2010-09-27" duration="14" complete="0" priority="1" expand="true"/>
-            <task id="12" name="Define requirements" meeting="false" start="2010-09-27" duration="14" complete="0" priority="1" expand="true"/>
+        <task id="0" name="Preparation" meeting="false" start="2010-09-27" duration="21" complete="0" priority="1" expand="true">
+            <task id="2" name="Software requirements specification" meeting="false" start="2010-09-27" duration="21" complete="0" priority="1" expand="true"/>
+            <task id="8" name="Define goals" meeting="false" start="2010-09-27" duration="21" complete="0" priority="1" expand="true"/>
+            <task id="12" name="Define requirements" meeting="false" start="2010-09-27" duration="21" complete="0" priority="1" expand="true"/>
         </task>
-        <task id="5" name="Analysis" meeting="false" start="2010-10-04" duration="14" complete="0" priority="1" expand="true">
+        <task id="5" name="Analysis" meeting="false" start="2010-10-04" duration="21" complete="0" priority="1" expand="true">
             <task id="7" name="Analyze file formats" meeting="false" start="2010-10-04" duration="14" complete="0" priority="1" expand="false"/>
-            <task id="3" name="Analyze programs" meeting="false" start="2010-10-04" duration="14" complete="0" priority="1" expand="true"/>
+            <task id="3" name="Analyze programs" meeting="false" start="2010-10-04" duration="21" complete="0" priority="1" expand="true"/>
         </task>
         <task id="10" name="Design" meeting="false" start="2010-10-18" duration="21" complete="0" priority="1" expand="true"/>
         <task id="11" name="Implementation" meeting="false" start="2010-11-08" duration="63" complete="0" priority="1" expand="true"/>
