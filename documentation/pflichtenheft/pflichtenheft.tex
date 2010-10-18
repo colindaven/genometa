@@ -147,7 +147,8 @@ Ricklinger Stadtweg 118\\
 \hline
 2010-10-05&0.1&initial release\\
 2010-10-06&0.2&add missing functional requirements\\
-2010-10-07&0.3&fisrt complete draft\\
+2010-10-07&0.3&first complete draft\\
+2010-10-17&0.4&clarify some of the funtional reqs.\\
 \hline
 \end{tabular}
 \end{table}
@@ -283,6 +284,21 @@ This section will list the functional and non-functional requirements as specifi
 
 \begin{tabular}{|p{7cm}|p{7cm}|}
 \hline
+\multicolumn{2}{|c|}{\textbf{Feature annotation track}}\\
+\hline
+\textbf{Features read in from a GFF file should be displayed as horizontal bars together with their orientation,
+positive or negative.}
+&
+\begin{itemize}
+	\item the software should display genes at their corresponding start and end positions
+	\item the software should stack overlapping genes to allow distinction
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
 \multicolumn{2}{|c|}{\textbf{Map RefSeq code to species name}}\\
 \hline
 \textbf{A name will be mapped to RefSeq code.}
@@ -327,7 +343,34 @@ This section will list the functional and non-functional requirements as specifi
 \textbf{Count the number of reads.}
 &
 \begin{itemize}
-	\item show numbers of reads attributed to each species/gene
+	\item show numbers of reads attributed to each species/gene in text widget
+	\begin{itemize}
+	\item Metagenomics: Normalise number of reads which hit each genome by genome length
+  \item Transcriptomics: Normalise number of reads which hit each gene by gene length to 1000bp
+and normalise total number of reads to one million (Reads per Kilobase per Million RPKM).
+\end{itemize}
+\end{itemize}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Priority 4}
+
+\begin{tabular}{|p{7cm}|p{7cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Run external alignment tools and reimport results}}\\
+\hline
+\textbf{Run alignment of specified reads file (in fastA, fastQ format) against a built reference database of
+bacterial species.}
+&
+\begin{itemize}
+	\item the software should include funtionality to run an external aligment tool
+	\begin{itemize}
+	\item the user should be able to choose program used
+	\item options for the external aligner should be settable via ui interaction
+	\item progress of external alignment should be visible to the user
+	\item as most external aligners are linux based this functionality should be linux only
+\end{itemize}
 \end{itemize}
 \\
 \hline
@@ -342,7 +385,7 @@ This section will list the functional and non-functional requirements as specifi
 \textbf{Export the sequence of a particular region.}
 &
 \begin{itemize}
-	\item export sequence of DNA ACTG
+	\item export sequence of DNA ACTG to a text widget
 \end{itemize}
 \\
 \hline
@@ -355,8 +398,11 @@ This section will list the functional and non-functional requirements as specifi
 \textbf{Export graph to vector and raster formats.}
 &
 \begin{itemize}
+	\item possible formats:
+\begin{itemize}
 	\item SVG/PDF
 	\item PNG
+\end{itemize}
 \end{itemize}
 \\
 \hline
@@ -364,9 +410,10 @@ This section will list the functional and non-functional requirements as specifi
 
 \begin{tabular}{|p{7cm}|p{7cm}|}
 \hline
-\multicolumn{2}{|c|}{\textbf{Potential sRNAs or ORFs}}\\
+\multicolumn{2}{|c|}{\textbf{Analysis for transcriptomes}}\\
 \hline
-\textbf{Find reads that group together into continuous segments and list them.}
+\textbf{Find reads that group together into continuous segments and list them as
+new potential sRNAs or ORFs.}
 &
 \begin{itemize}
 	\item export to a list with coordinates and sequence
