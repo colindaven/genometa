@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+
+  IGB Stylesheet definition.  Version 0.1.
+
+  PUBLIC ID: -//genoviz//IGB Stylesheet 0.1//EN
+  SYSTEM ID: http://genoviz.sourceforge.net/formats/stylesheets/igb_stylesheet_0_1.dtd
+
+Example:
+<!DOCTYPE IGB_STYLESHEET PUBLIC "-//genoviz//IGB Stylesheet 0.1//EN"
+    "http://genoviz.sourceforge.net/formats/stylesheets/igb_stylesheet_0_1.dtd"
+-->
+
+
+<!--
+   A stylesheet can contain one or more IMPORTs, a series of STYLEs and
+   an ASSOCIATIONS section.
+
+   The dtd and version attributes are optional.  They are intended for use
+   in the possible future situtation where you are imbedding a stylesheet 
+   inside some other document, such as a DAS/2 XML file.
+-->
+<!ELEMENT IGB_STYLESHEET (IMPORT*, STYLES?, ASSOCIATIONS?)>
+<!ATTLIST IGB_STYLESHEET
+   dtd     CDATA #IMPLIED
+   version CDATA #IMPLIED
+  >
+
+<!ENTITY % MATCH_BLOCK "(MATCH*, ELSE?)" >
+<!ENTITY % MATCH_OR_STYLE "(%MATCH_BLOCK; | (STYLE?, USE_STYLE?))" >
+
+<!--- Import definitions and associations from an external document, if desired. 
+  Any definitions in the current document will override definitions with the
+  same name in the imported document(s).
+-->
+<!ELEMENT IMPORT EMPTY>
+<!ATTLIST IMPORT
+    url CDATA #REQUIRED
+  >
+
+<!--- STYLES section contains one or more style definitions. -->
+<!ELEMENT STYLES (STYLE*)>
+
+<!--- STYLE element defines a new style. A style defined at the top level
+      should be given a name.  If another style with the same name was 
+      previously defined, the new one will replace it.
+
+      If MATCH (and ELSE) elements are present, follow the instructions
+      for the MATCH (or ELSE) element.
+
+      Otherwise, use the given GLYPH element.
+
+  container: specifies the container into which the glyphs should be drawn.
+    Default value of "." indicates draw inside the current glyph.
+    Value of "..", "../..", etc., indicates draw inside the parent,
+    or parent's parent, etc., of the current glyph.
+    Value "/" means draw inside the "root" glyph, i.e. the Tier itself.
+-->
+<!ELEMENT STYLE (PROPERTY*, (%MATCH_BLOCK; | GLYPH))>
+<!ATTLIST STYLE
+    name CDATA #IMPLIED
+    container CDATA #IMPLIED
+  >
+
+<!-- Can be used to refer to a style that was previously defined. 
+  container:  same meaning as in <STYLE>
+-->
+<!ELEMENT USE_STYLE EMPTY>
+<!ATTLIST USE_STYLE
+    name CDATA #IMPLIED
+    container CDATA #IMPLIED
+  >
+
+<!--- An arbitrary property, specified as a key and a value.  
+      Clients may ignore any properties they do not use. 
+      Properties defined in any xml element, are available to the
+      child elements as well, but can be over-ridden by new definitions
+      inside the child.
+-->
+<!ELEMENT PROPERTY EMPTY>
+<!ATTLIST PROPERTY
+    key CDATA #REQUIRED
+    value CDATA #REQUIRED
+  >
+
+<!-- 
+   Specifies how to draw the current item.
+
+   When <GLYPH> items are nested, each one is drawing the SAME object,
+   not the children.  Thus you can create multiple glyphs for a single object.
+   Each sub-glyph has access to the same, complete list of children items
+   and can draw them as well by using the <CHILDREN> element.
+-->
+<!ELEMENT GLYPH (PROPERTY*, GLYPH*, CHILDREN?)>
+<!ATTLIST GLYPH
+    type (box | filled_box | arrow | hidden | line | pointed | span | none) #REQUIRED
+    position CDATA #IMPLIED
+  >
+
+<!--- Loop through the children of the current item.
+      If MATCH is present, apply the test it specifies and if it matches then
+      process that child using the instructions inside the MATCH element.
+      If first MATCH fails, try the second.
+      If all MATCH items fail, try the ELSE item, if there is one.
+
+      If no MATCH or ELSE is given, apply the given STYLE to every child.
+-->
+<!ELEMENT CHILDREN (PROPERTY*, (%MATCH_OR_STYLE;))>
+<!ATTLIST CHILDREN
+    container CDATA #IMPLIED
+    child_positions CDATA #IMPLIED
+  >
+
+<!--- MATCH and ELSE perform tests and choose a style based on the results.
+
+      When elements of type MATCH are present, apply the tests they specify
+      one by one; if one matches then process that item using the STYLE 
+      instructions inside it.
+      If no style is specified, do not draw the child that matched the condition.
+      If first MATCH fails, try the second, etc.
+      If all MATCH items fail, try the ELSE item, if there is one.
+      ELSE always evaluates to true and thus always applies the included instructions.
+
+      MATCH tests can be nested.
+      
+      Types of conditions:
+        test="type" param="foo"  : match only items where type equals "foo"
+        test="method" param="foo"  : match only items where method equals "foo"
+        test="method_regex" param="foo.*"  : match only items where method matches regex "foo.*"
+      Other sorts of match conditions may be specified in a future version of this document.
+-->
+<!ELEMENT MATCH (PROPERTY*, (%MATCH_OR_STYLE;))>
+<!ATTLIST MATCH
+    test (type | method | method_regex) #REQUIRED
+    param CDATA #REQUIRED
+>
+
+<!--- Similar to the MATCH element, except the match always succeeds.
+      ELSE elements are only used following one or more MATCH elements.
+      Apply the given style (if any) to any children that failed the preceding 
+      match condition.  If style is not specified, do not draw the child.
+-->
+<!ELEMENT ELSE (PROPERTY*, (%MATCH_OR_STYLE;))>
+
+<!--- ASSOCIATIONS associates styles to data types. 
+      All METHOD_ASSOCIATION elements must appear before all TYPE_ASSOCIATION
+      elements, which is a reminder of the order in which the checks are
+      performed.  
+-->
+<!ELEMENT ASSOCIATIONS (METHOD_ASSOCIATION*, METHOD_REGEX_ASSOCIATION*, TYPE_ASSOCIATION*)>
+
+<!--- Associate a method with a style. 
+   method = a method type, idendified by an exact string
+   style = the name of a style defined earlier.
+-->
+<!ELEMENT METHOD_ASSOCIATION (PROPERTY*)>
+<!ATTLIST METHOD_ASSOCIATION
+    method CDATA #REQUIRED
+    style CDATA #REQUIRED
+  >
+
+<!--- Associate a method with a style using a regular expression. 
+   regex = a method type, idendified by a regular expression
+   style = the name of a style defined earlier.
+-->
+<!ELEMENT METHOD_REGEX_ASSOCIATION (PROPERTY*)>
+<!ATTLIST METHOD_REGEX_ASSOCIATION
+    regex CDATA #REQUIRED
+    style CDATA #REQUIRED
+  >
+
+<!--- Associates a type (ontology) with a style.
+   type = A type name, possibily a URI for an ontology entry.
+   style = the name of a style defined earlier.
+ -->
+<!ELEMENT TYPE_ASSOCIATION (PROPERTY*)>
+<!ATTLIST TYPE_ASSOCIATION
+    type CDATA #REQUIRED
+    style CDATA #REQUIRED
+  >

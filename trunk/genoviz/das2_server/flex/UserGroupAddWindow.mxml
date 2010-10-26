@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+	title="Add group"
+	showCloseButton="true" 
+	width="408" 
+	height="112"
+	verticalGap="0"
+	close="closeWindow()"
+	defaultButton="{saveButton}"	
+	titleIcon="{parentApplication.iconGroup}"
+	layout="vertical" backgroundAlpha="100">
+ 	
+    <mx:HTTPService             
+      id="addUserGroup" 
+      url="genopub/groupAdd"
+      resultFormat="e4x"
+      result="onAddUserGroup(event)"
+      fault="parentApplication.onFailHttpRequest('Failed to add group', event)"
+      method="POST"
+      useProxy="false">
+      <mx:request>
+         <name>{groupName.text}</name>
+      </mx:request>
+    </mx:HTTPService> 
+    
+       
+    <mx:Script>
+	<![CDATA[
+	
+	import mx.managers.PopUpManager;
+	import mx.rpc.events.ResultEvent;
+	import mx.controls.Alert;
+
+   	private function onAddUserGroup(event:ResultEvent):void {
+		if (addUserGroup.lastResult.name() == "SUCCESS") {			
+			closeWindow();
+			var itemToSelect:XML = new XML(
+			   "<UserGroup " +
+			     "idUserGroup='" + addUserGroup.lastResult.@idUserGroup + "'" +
+			    "/>");
+			parentApplication.userGroupView.refreshUsersAndGroupsAndSelect(itemToSelect);
+		} else if (addUserGroup.lastResult.name() == "Error") {
+			Alert.show(addUserGroup.lastResult.@message);
+		} else {
+			Alert.show("An error occurred while adding group");				
+		}		
+	}
+
+   
+    private function closeWindow():void {
+		PopUpManager.removePopUp(this);		
+	}
+	
+	]]>
+    </mx:Script>
+    
+    <mx:VBox width="100%" height="100%" styleName="panelBody" verticalGap="0">
+		<mx:HBox width="100%" paddingTop="4">
+			<mx:Label text="Name:"  width="100"/>
+			<mx:TextInput id="groupName" width="100%" maxChars="200"/>
+		</mx:HBox>
+		
+    	
+    </mx:VBox>
+
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button id="saveButton"  
+			enabled="{groupName.text != &quot;&quot; ? true : false}" 
+			icon="{parentApplication.iconSave}" 
+			disabledIcon="{parentApplication.iconSaveDisabled}" 
+			label="Save"
+			click="{addUserGroup.send()}"/>
+		<mx:Button id="cancelButton" label="Cancel" click="closeWindow()"/>
+	</mx:ControlBar>
+</mx:TitleWindow>

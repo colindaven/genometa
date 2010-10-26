@@ -1,0 +1,2128 @@
+<?xml version="1.0" standalone="no"?>
+<DASGFF>
+
+<!-- This is an example of the DAS data returned from the DAS server at UCSC -->
+
+<GFF version="1.0" href="http://genome.cse.ucsc.edu/cgi-bin/das/hg18/features">
+<SEGMENT id="3" start="72615841" stop="75821131" version="1.00" label="3">
+<FEATURE id="229831_at.chr3.74394408.0" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74394409</START>
+ <END>74396342</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="2664" stop="4597">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.1" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74398322</START>
+ <END>74398490</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="2495" stop="2663">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.2" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74399107</START>
+ <END>74399219</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="2382" stop="2494">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.3" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74417146</START>
+ <END>74417332</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="2195" stop="2381">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.4" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74426962</START>
+ <END>74427077</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="2079" stop="2194">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.5" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74429798</START>
+ <END>74430032</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="1844" stop="2078">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.6" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74431709</START>
+ <END>74431779</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="1773" stop="1843">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.7" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74433239</START>
+ <END>74433388</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="1623" stop="1772">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.8" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74433488</START>
+ <END>74433646</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="1464" stop="1622">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.9" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74434531</START>
+ <END>74434648</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="1346" stop="1463">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.10" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74466576</START>
+ <END>74466751</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="1170" stop="1345">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.11" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74468372</START>
+ <END>74468499</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="1042" stop="1169">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.12" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74493731</START>
+ <END>74493881</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="891" stop="1041">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.13" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74496308</START>
+ <END>74496437</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="761" stop="890">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.14" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74497407</START>
+ <END>74497543</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="624" stop="760">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.15" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74501030</START>
+ <END>74501214</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="439" stop="623">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.16" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74501730</START>
+ <END>74501832</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="336" stop="438">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.17" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74503037</START>
+ <END>74503240</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="132" stop="335">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.18" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74556686</START>
+ <END>74556781</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="36" stop="131">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="229831_at.chr3.74394408.19" label="229831_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74618297</START>
+ <END>74618331</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="229831_at.chr3.74394408">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74394408-74618331&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="229831_at" start="1" stop="35">229831_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.0" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73128641</START>
+ <END>73128912</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="414" stop="685">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.1" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73129918</START>
+ <END>73129999</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="686" stop="767">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.2" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73179027</START>
+ <END>73179197</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="768" stop="938">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.3" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73190878</START>
+ <END>73190971</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="939" stop="1032">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.4" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73192864</START>
+ <END>73192901</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1033" stop="1070">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.5" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73195514</START>
+ <END>73195588</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1071" stop="1145">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.6" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73195844</START>
+ <END>73195987</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1146" stop="1289">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.7" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73196693</START>
+ <END>73196982</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1290" stop="1579">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.8" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73197238</START>
+ <END>73197422</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1580" stop="1764">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.9" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73197423</START>
+ <END>73197471</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1766" stop="1814">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.10" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73197472</START>
+ <END>73197496</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1816" stop="1840">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.11" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73197497</START>
+ <END>73197504</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1842" stop="1849">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.12" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73197505</START>
+ <END>73197559</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1851" stop="1905">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="220764_at.chr3.73128640.13" label="220764_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73197564</START>
+ <END>73197707</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="220764_at.chr3.73128640">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73128640-73197707&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="220764_at" start="1906" stop="2049">220764_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1555587_at.chr3.73539898.0" label="1555587_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73539899</START>
+ <END>73540101</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1555587_at.chr3.73539898">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73539898-73756681&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1555587_at" start="934" stop="1136">1555587_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1555587_at.chr3.73539898.1" label="1555587_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73734195</START>
+ <END>73734302</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1555587_at.chr3.73539898">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73539898-73756681&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1555587_at" start="826" stop="933">1555587_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1555587_at.chr3.73539898.2" label="1555587_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73740439</START>
+ <END>73740525</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1555587_at.chr3.73539898">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73539898-73756681&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1555587_at" start="739" stop="825">1555587_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1555587_at.chr3.73539898.3" label="1555587_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73755944</START>
+ <END>73756681</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1555587_at.chr3.73539898">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73539898-73756681&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1555587_at" start="1" stop="738">1555587_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.0" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73514274</START>
+ <END>73516771</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="1744" stop="4241">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.1" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73517510</START>
+ <END>73517626</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="1627" stop="1743">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.2" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73519809</START>
+ <END>73519910</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="1525" stop="1626">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.3" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73521657</START>
+ <END>73521719</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="1462" stop="1524">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.4" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73522859</START>
+ <END>73522957</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="1363" stop="1461">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.5" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73532763</START>
+ <END>73532850</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="1275" stop="1362">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.6" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73535989</START>
+ <END>73536236</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="1027" stop="1274">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.7" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73734195</START>
+ <END>73734302</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="919" stop="1026">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.8" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73740439</START>
+ <END>73740525</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="832" stop="918">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.9" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73755944</START>
+ <END>73756013</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="762" stop="831">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.10" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756014</START>
+ <END>73756024</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="750" stop="760">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.11" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756025</START>
+ <END>73756029</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="743" stop="747">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.12" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756030</START>
+ <END>73756042</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="729" stop="741">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.13" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756043</START>
+ <END>73756073</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="697" stop="727">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.14" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756074</START>
+ <END>73756084</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="685" stop="695">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.15" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756085</START>
+ <END>73756086</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="682" stop="683">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.16" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756087</START>
+ <END>73756163</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="604" stop="680">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.17" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756164</START>
+ <END>73756198</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="568" stop="602">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.18" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756199</START>
+ <END>73756201</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="564" stop="566">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.19" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756202</START>
+ <END>73756217</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="547" stop="562">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="212915_at.chr3.73514273.20" label="212915_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73756218</START>
+ <END>73756762</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="212915_at.chr3.73514273">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73514273-73756762&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="212915_at" start="1" stop="545">212915_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.0" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72881120</START>
+ <END>72882677</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="1287" stop="2844">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.1" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72924757</START>
+ <END>72924877</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="1166" stop="1286">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.2" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72944512</START>
+ <END>72944635</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="1042" stop="1165">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.3" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72947191</START>
+ <END>72947244</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="988" stop="1041">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.4" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72949071</START>
+ <END>72949225</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="833" stop="987">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.5" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72956265</START>
+ <END>72956392</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="705" stop="832">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.6" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72964210</START>
+ <END>72964322</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="592" stop="704">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.7" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72972886</START>
+ <END>72973040</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="437" stop="591">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.8" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72974121</START>
+ <END>72974215</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="342" stop="436">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.9" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72974218</START>
+ <END>72974243</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="316" stop="341">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.10" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72976200</START>
+ <END>72976264</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="251" stop="315">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219083_at.chr3.72881119.11" label="219083_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>72980039</START>
+ <END>72980288</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219083_at.chr3.72881119">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:72881119-72980288&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219083_at" start="1" stop="250">219083_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="222288_at.chr3.73111607.0" label="222288_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73111608</START>
+ <END>73112040</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="222288_at.chr3.73111607">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73111607-73112040&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="222288_at" start="1" stop="433">222288_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.0" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059110</START>
+ <END>73059731</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="1" stop="622">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.1" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059732</START>
+ <END>73059767</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="624" stop="659">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.2" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059768</START>
+ <END>73059771</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="661" stop="664">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.3" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059772</START>
+ <END>73059786</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="666" stop="680">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.4" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059787</START>
+ <END>73059814</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="682" stop="709">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.5" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059815</START>
+ <END>73059821</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="711" stop="717">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.6" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059822</START>
+ <END>73059902</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="719" stop="799">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.7" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059903</START>
+ <END>73059912</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="801" stop="810">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.8" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059913</START>
+ <END>73059916</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="812" stop="815">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.9" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059917</START>
+ <END>73059927</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="817" stop="827">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.10" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059928</START>
+ <END>73059932</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="829" stop="833">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234076_at.chr3.73059109.11" label="234076_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73059933</START>
+ <END>73060641</END>
+ <SCORE>988</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234076_at.chr3.73059109">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73059109-73060641&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234076_at" start="835" stop="1543">234076_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="235371_at.chr3.73089142.0" label="235371_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73089143</START>
+ <END>73089161</END>
+ <SCORE>998</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="235371_at.chr3.73089142">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73089142-73107313&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="235371_at" start="1" stop="19">235371_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="235371_at.chr3.73089142.1" label="235371_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73089163</START>
+ <END>73089193</END>
+ <SCORE>998</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="235371_at.chr3.73089142">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73089142-73107313&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="235371_at" start="20" stop="50">235371_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="235371_at.chr3.73089142.2" label="235371_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73099388</START>
+ <END>73099560</END>
+ <SCORE>998</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="235371_at.chr3.73089142">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73089142-73107313&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="235371_at" start="51" stop="223">235371_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="235371_at.chr3.73089142.3" label="235371_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73106818</START>
+ <END>73107313</END>
+ <SCORE>998</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="235371_at.chr3.73089142">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73089142-73107313&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="235371_at" start="224" stop="719">235371_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="235733_at.chr3.73108241.0" label="235733_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73108242</START>
+ <END>73108890</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="235733_at.chr3.73108241">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73108241-73108890&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="235733_at" start="1" stop="649">235733_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="241864_x_at.chr3.73112532.0" label="241864_x_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73112533</START>
+ <END>73112557</END>
+ <SCORE>999</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="241864_x_at.chr3.73112532">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73112532-73113172&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="241864_x_at" start="1" stop="25">241864_x_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="241864_x_at.chr3.73112532.1" label="241864_x_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73112559</START>
+ <END>73113159</END>
+ <SCORE>999</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="241864_x_at.chr3.73112532">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73112532-73113172&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="241864_x_at" start="26" stop="626">241864_x_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="241864_x_at.chr3.73112532.2" label="241864_x_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73113160</START>
+ <END>73113172</END>
+ <SCORE>999</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="241864_x_at.chr3.73112532">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73112532-73113172&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="241864_x_at" start="628" stop="640">241864_x_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.0" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180314</START>
+ <END>73180521</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="13" stop="220">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.1" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180522</START>
+ <END>73180609</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="222" stop="309">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.2" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180610</START>
+ <END>73180615</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="311" stop="316">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.3" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180616</START>
+ <END>73180626</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="318" stop="328">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.4" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180627</START>
+ <END>73180656</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="330" stop="359">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.5" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180657</START>
+ <END>73180670</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="361" stop="374">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.6" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180671</START>
+ <END>73180678</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="376" stop="383">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.7" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180679</START>
+ <END>73180685</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="385" stop="391">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.8" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180686</START>
+ <END>73180711</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="393" stop="418">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1560926_at.chr3.73180313.9" label="1560926_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73180712</START>
+ <END>73180935</END>
+ <SCORE>973</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1560926_at.chr3.73180313">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73180313-73180935&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1560926_at" start="420" stop="643">1560926_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="219906_at.chr3.73194112.0" label="219906_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73194113</START>
+ <END>73195159</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="219906_at.chr3.73194112">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73194112-73195159&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="219906_at" start="1" stop="1047">219906_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="225519_at.chr3.73196948.0" label="225519_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73196949</START>
+ <END>73198103</END>
+ <SCORE>995</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="225519_at.chr3.73196948">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73196948-73199034&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="225519_at" start="1" stop="1155">225519_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="225519_at.chr3.73196948.1" label="225519_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73198104</START>
+ <END>73199034</END>
+ <SCORE>995</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="225519_at.chr3.73196948">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73196948-73199034&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="225519_at" start="1162" stop="2092">225519_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="226317_at.chr3.73199168.0" label="226317_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73199169</START>
+ <END>73199178</END>
+ <SCORE>999</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="226317_at.chr3.73199168">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73199168-73201039&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="226317_at" start="12" stop="21">226317_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="226317_at.chr3.73199168.1" label="226317_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73199180</START>
+ <END>73199184</END>
+ <SCORE>999</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="226317_at.chr3.73199168">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73199168-73201039&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="226317_at" start="22" stop="26">226317_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="226317_at.chr3.73199168.2" label="226317_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73199186</START>
+ <END>73199411</END>
+ <SCORE>999</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="226317_at.chr3.73199168">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73199168-73201039&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="226317_at" start="27" stop="252">226317_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="226317_at.chr3.73199168.3" label="226317_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73199413</START>
+ <END>73201039</END>
+ <SCORE>999</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="226317_at.chr3.73199168">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73199168-73201039&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="226317_at" start="256" stop="1882">226317_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="231641_at.chr3.73193889.0" label="231641_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73193890</START>
+ <END>73194233</END>
+ <SCORE>995</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="231641_at.chr3.73193889">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73193889-73194657&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="231641_at" start="369" stop="712">231641_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="231641_at.chr3.73193889.1" label="231641_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73194288</START>
+ <END>73194589</END>
+ <SCORE>995</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="231641_at.chr3.73193889">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73193889-73194657&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="231641_at" start="67" stop="368">231641_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="231641_at.chr3.73193889.2" label="231641_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73194590</START>
+ <END>73194619</END>
+ <SCORE>995</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="231641_at.chr3.73193889">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73193889-73194657&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="231641_at" start="36" stop="65">231641_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="231641_at.chr3.73193889.3" label="231641_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73194621</START>
+ <END>73194629</END>
+ <SCORE>995</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="231641_at.chr3.73193889">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73193889-73194657&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="231641_at" start="27" stop="35">231641_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="231641_at.chr3.73193889.4" label="231641_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73194631</START>
+ <END>73194645</END>
+ <SCORE>995</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="231641_at.chr3.73193889">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73193889-73194657&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="231641_at" start="12" stop="26">231641_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="231641_at.chr3.73193889.5" label="231641_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73194647</START>
+ <END>73194657</END>
+ <SCORE>995</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="231641_at.chr3.73193889">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73193889-73194657&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="231641_at" start="1" stop="11">231641_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="216130_at.chr3.73529212.0" label="216130_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73529213</START>
+ <END>73529844</END>
+ <SCORE>991</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="216130_at.chr3.73529212">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73529212-73530655&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="216130_at" start="815" stop="1446">216130_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="216130_at.chr3.73529212.1" label="216130_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73529845</START>
+ <END>73529860</END>
+ <SCORE>991</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="216130_at.chr3.73529212">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73529212-73530655&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="216130_at" start="798" stop="813">216130_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="216130_at.chr3.73529212.2" label="216130_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73529861</START>
+ <END>73529909</END>
+ <SCORE>991</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="216130_at.chr3.73529212">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73529212-73530655&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="216130_at" start="748" stop="796">216130_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="216130_at.chr3.73529212.3" label="216130_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73529910</START>
+ <END>73530655</END>
+ <SCORE>991</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="216130_at.chr3.73529212">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73529212-73530655&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="216130_at" start="1" stop="746">216130_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="216152_at.chr3.73529212.0" label="216152_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73529213</START>
+ <END>73529844</END>
+ <SCORE>991</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="216152_at.chr3.73529212">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73529212-73530655&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="216152_at" start="260" stop="891">216152_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="216152_at.chr3.73529212.1" label="216152_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73529845</START>
+ <END>73529860</END>
+ <SCORE>991</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="216152_at.chr3.73529212">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73529212-73530655&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="216152_at" start="893" stop="908">216152_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="216152_at.chr3.73529212.2" label="216152_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73529861</START>
+ <END>73529909</END>
+ <SCORE>991</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="216152_at.chr3.73529212">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73529212-73530655&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="216152_at" start="910" stop="958">216152_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="216152_at.chr3.73529212.3" label="216152_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73529910</START>
+ <END>73530655</END>
+ <SCORE>991</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="216152_at.chr3.73529212">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73529212-73530655&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="216152_at" start="960" stop="1705">216152_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232776_at.chr3.73624825.0" label="232776_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73624826</START>
+ <END>73625743</END>
+ <SCORE>989</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232776_at.chr3.73624825">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73624825-73626604&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232776_at" start="871" stop="1788">232776_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232776_at.chr3.73624825.1" label="232776_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73625744</START>
+ <END>73625753</END>
+ <SCORE>989</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232776_at.chr3.73624825">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73624825-73626604&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232776_at" start="859" stop="868">232776_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232776_at.chr3.73624825.2" label="232776_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73625754</START>
+ <END>73625801</END>
+ <SCORE>989</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232776_at.chr3.73624825">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73624825-73626604&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232776_at" start="810" stop="857">232776_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232776_at.chr3.73624825.3" label="232776_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73625802</START>
+ <END>73625821</END>
+ <SCORE>989</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232776_at.chr3.73624825">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73624825-73626604&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232776_at" start="789" stop="808">232776_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232776_at.chr3.73624825.4" label="232776_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73625822</START>
+ <END>73625878</END>
+ <SCORE>989</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232776_at.chr3.73624825">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73624825-73626604&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232776_at" start="731" stop="787">232776_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232776_at.chr3.73624825.5" label="232776_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73625879</START>
+ <END>73626604</END>
+ <SCORE>989</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232776_at.chr3.73624825">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73624825-73626604&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232776_at" start="4" stop="729">232776_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="244496_at.chr3.73622087.0" label="244496_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73622088</START>
+ <END>73622108</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="244496_at.chr3.73622087">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73622087-73622819&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="244496_at" start="657" stop="677">244496_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="244496_at.chr3.73622087.1" label="244496_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73622110</START>
+ <END>73622348</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="244496_at.chr3.73622087">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73622087-73622819&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="244496_at" start="418" stop="656">244496_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="244496_at.chr3.73622087.2" label="244496_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73622407</START>
+ <END>73622819</END>
+ <SCORE>978</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="244496_at.chr3.73622087">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73622087-73622819&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="244496_at" start="1" stop="413">244496_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1566550_at.chr3.73694860.0" label="1566550_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73694861</START>
+ <END>73695287</END>
+ <SCORE>996</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1566550_at.chr3.73694860">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73694860-73697643&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1566550_at" start="1" stop="427">1566550_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1566550_at.chr3.73694860.1" label="1566550_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73695289</START>
+ <END>73696958</END>
+ <SCORE>996</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1566550_at.chr3.73694860">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73694860-73697643&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1566550_at" start="428" stop="2097">1566550_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1566550_at.chr3.73694860.2" label="1566550_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73696976</START>
+ <END>73697643</END>
+ <SCORE>996</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1566550_at.chr3.73694860">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73694860-73697643&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1566550_at" start="2098" stop="2765">1566550_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1566551_at.chr3.73694860.0" label="1566551_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73694861</START>
+ <END>73695287</END>
+ <SCORE>996</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1566551_at.chr3.73694860">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73694860-73697643&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1566551_at" start="2346" stop="2772">1566551_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1566551_at.chr3.73694860.1" label="1566551_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73695289</START>
+ <END>73696958</END>
+ <SCORE>996</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1566551_at.chr3.73694860">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73694860-73697643&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1566551_at" start="676" stop="2345">1566551_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1566551_at.chr3.73694860.2" label="1566551_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73696976</START>
+ <END>73697643</END>
+ <SCORE>996</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1566551_at.chr3.73694860">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73694860-73697643&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1566551_at" start="8" stop="675">1566551_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="233286_at.chr3.73669645.0" label="233286_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73669646</START>
+ <END>73671682</END>
+ <SCORE>999</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="233286_at.chr3.73669645">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73669645-73671682&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="233286_at" start="1" stop="2037">233286_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="233442_at.chr3.73669645.0" label="233442_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73669646</START>
+ <END>73671682</END>
+ <SCORE>999</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="233442_at.chr3.73669645">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73669645-73671682&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="233442_at" start="1" stop="2037">233442_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="238165_at.chr3.73759272.0" label="238165_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>73759273</START>
+ <END>73759736</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="238165_at.chr3.73759272">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:73759272-73759736&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="238165_at" start="1" stop="464">238165_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1561519_at.chr3.74131645.0" label="1561519_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74131646</START>
+ <END>74131731</END>
+ <SCORE>998</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1561519_at.chr3.74131645">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74131645-74137450&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1561519_at" start="6" stop="91">1561519_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1561519_at.chr3.74131645.1" label="1561519_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74136168</START>
+ <END>74136731</END>
+ <SCORE>998</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1561519_at.chr3.74131645">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74131645-74137450&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1561519_at" start="94" stop="657">1561519_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1561519_at.chr3.74131645.2" label="1561519_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74136732</START>
+ <END>74137450</END>
+ <SCORE>998</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1561519_at.chr3.74131645">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74131645-74137450&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1561519_at" start="659" stop="1377">1561519_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="233502_at.chr3.74642797.0" label="233502_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>74642798</START>
+ <END>74644551</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="233502_at.chr3.74642797">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:74642797-74644551&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="233502_at" start="1" stop="1754">233502_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232970_at.chr3.75552411.0" label="232970_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75552412</START>
+ <END>75553370</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232970_at.chr3.75552411">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75552411-75554635&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232970_at" start="954" stop="1912">232970_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232970_at.chr3.75552411.1" label="232970_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75553371</START>
+ <END>75553757</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232970_at.chr3.75552411">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75552411-75554635&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232970_at" start="566" stop="952">232970_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232970_at.chr3.75552411.2" label="232970_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75553758</START>
+ <END>75553766</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232970_at.chr3.75552411">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75552411-75554635&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232970_at" start="556" stop="564">232970_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232970_at.chr3.75552411.3" label="232970_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75553767</START>
+ <END>75553862</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232970_at.chr3.75552411">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75552411-75554635&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232970_at" start="459" stop="554">232970_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="232970_at.chr3.75552411.4" label="232970_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75554178</START>
+ <END>75554635</END>
+ <SCORE>997</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="232970_at.chr3.75552411">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75552411-75554635&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="232970_at" start="1" stop="458">232970_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="237630_s_at.chr3.75547154.0" label="237630_s_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75547155</START>
+ <END>75547810</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="237630_s_at.chr3.75547154">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75547154-75547810&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="237630_s_at" start="17" stop="672">237630_s_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1559826_a_at.chr3.75804122.0" label="1559826_a_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75804123</START>
+ <END>75804611</END>
+ <SCORE>998</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1559826_a_at.chr3.75804122">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75804122-75804611&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1559826_a_at" start="1" stop="489">1559826_a_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1559827_at.chr3.75804122.0" label="1559827_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75804123</START>
+ <END>75804611</END>
+ <SCORE>998</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1559827_at.chr3.75804122">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75804122-75804611&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1559827_at" start="1" stop="489">1559827_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1563691_at.chr3.75799389.0" label="1563691_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75799390</START>
+ <END>75800432</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1563691_at.chr3.75799389">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75799389-75803931&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1563691_at" start="1988" stop="3030">1563691_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1563691_at.chr3.75799389.1" label="1563691_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75801861</START>
+ <END>75803720</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1563691_at.chr3.75799389">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75799389-75803931&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1563691_at" start="128" stop="1987">1563691_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="1563691_at.chr3.75799389.2" label="1563691_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75803811</START>
+ <END>75803931</END>
+ <SCORE>1000</SCORE>
+ <ORIENTATION>-</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="1563691_at.chr3.75799389">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75799389-75803931&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="1563691_at" start="7" stop="127">1563691_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234830_at.chr3.75796170.0" label="234830_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75796171</START>
+ <END>75796398</END>
+ <SCORE>967</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234830_at.chr3.75796170">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75796170-75799058&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234830_at" start="1" stop="228">234830_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234830_at.chr3.75796170.1" label="234830_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75796660</START>
+ <END>75796737</END>
+ <SCORE>967</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234830_at.chr3.75796170">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75796170-75799058&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234830_at" start="229" stop="306">234830_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234830_at.chr3.75796170.2" label="234830_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75796967</START>
+ <END>75797044</END>
+ <SCORE>967</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234830_at.chr3.75796170">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75796170-75799058&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234830_at" start="307" stop="384">234830_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234830_at.chr3.75796170.3" label="234830_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75797368</START>
+ <END>75797495</END>
+ <SCORE>967</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234830_at.chr3.75796170">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75796170-75799058&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234830_at" start="385" stop="512">234830_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234830_at.chr3.75796170.4" label="234830_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75797498</START>
+ <END>75798547</END>
+ <SCORE>967</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234830_at.chr3.75796170">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75796170-75799058&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234830_at" start="514" stop="1563">234830_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234830_at.chr3.75796170.5" label="234830_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75798548</START>
+ <END>75798725</END>
+ <SCORE>967</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234830_at.chr3.75796170">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75796170-75799058&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234830_at" start="1570" stop="1747">234830_at</TARGET>
+ </GROUP>
+</FEATURE>
+<FEATURE id="234830_at.chr3.75796170.6" label="234830_at">
+ <TYPE id="affyU133Plus2" category="other" reference="no">affyU133Plus2</TYPE>
+ <METHOD></METHOD>
+ <START>75798730</START>
+ <END>75799058</END>
+ <SCORE>967</SCORE>
+ <ORIENTATION>+</ORIENTATION>
+ <PHASE>-</PHASE>
+ <GROUP id="234830_at.chr3.75796170">
+  <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr3:75796170-75799058&amp;db=hg18">Link to UCSC Browser</LINK>
+  <TARGET id="234830_at" start="1748" stop="2076">234830_at</TARGET>
+ </GROUP>
+</FEATURE>
+</SEGMENT>
+</GFF></DASGFF>

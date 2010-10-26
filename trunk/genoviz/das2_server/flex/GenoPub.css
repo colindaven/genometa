@@ -1,0 +1,195 @@
+/* CSS file */
+
+ApplicationControlBar {
+	fillColors:   #D2D2C1, #B8B8A8;
+	dropShadowEnabled: false;
+	disabledColor: #D8DFDF;
+	cornerRadius: 6;
+	fillAlphas: 1.0, 1.0;
+}
+
+HDividedBox {
+	horizontalGap: 6;
+	horizontalAlign: center;
+	dividerAffordance: 4;
+}
+
+Panel {
+	headerHeight: 24;
+	paddingLeft: 0;
+	paddingTop: 0;
+	paddingBottom: 0;
+	paddingRight: 0;		
+	borderThicknessLeft: 8;
+    borderThicknessTop: 0;
+    borderThicknessBottom: 2;
+    borderThicknessRight: 8;
+	borderAlpha: 1;
+	borderColor: #eeeedd;
+	dropShadowEnabled: false;
+	roundedBottomCorners: true;
+	titleStyleName: headerLabel;
+}
+
+
+.headerBar {
+	borderColor: #CACFD2; 
+	backgroundColor: #eeeedd;
+	borderStyle: solid;
+	cornerRadius: 6;
+	paddingLeft: 4;
+	paddingRight: 4;
+	paddingTop: 2;
+	paddingBottom: 4;
+	verticalGap: 2;
+}
+
+.menuBar {
+	borderStyle: solid;
+	borderThickness: 1;
+	backgroundColor: #e1e1d3;
+	cornerRadius: 6;
+	horizontalGap: 0;
+	paddingBottom: 2;
+	paddingLeft: 0;
+	paddingRight: 0;
+	paddingTop: 2;
+	verticalAlign: middle;
+	dropShadowEnabled: true;
+	dropShadowColor: #9B9784;
+}
+	
+LinkBar {
+	 color: #463B40;
+	 disabledColor: #FFFFFF; 
+	 rollOverColor: #FFFFFF; 
+	 selectionColor: #FFFFFF;
+	 useHandCursor: true;
+	 selectedButtonTextStyleName: linkBarButtonText;
+	 fontSize: 11;
+	fontWeight: bold;
+	separatorColor: #FFFFFF;
+	separatorWidth: 1;
+}
+
+.linkBarButtonText
+{
+	fontWeight: bold;
+}
+
+DataGrid  {
+	headerStyleName: dataGridHeader;		 
+}
+
+.dataGridHeader {
+	    fontWeight: normal;
+}
+
+Tree{
+dropIndicatorSkin: ClassReference("util.ListDropIndicator");
+}
+
+Button {
+        fontWeight: normal;
+}
+
+ComboBox {
+        fontWeight: normal;
+}
+
+.formLinkButtonSmall {
+    fontWeight: normal;
+	fontSize: 9;
+	color: #1E31E4;
+	textDecoration: underline;
+}
+
+.formLinkButton {	
+    fontWeight: normal;
+	color: #1E31E4;
+	textDecoration: underline;
+}
+
+
+ControlBar {
+	paddingLeft: 8;
+	paddingTop: 0;
+	paddingBottom: 3;
+	paddingRight: 8;
+}
+
+
+TitleWindow {
+	headerHeight: 24;
+	alpha: 1;
+	borderAlpha: 1;
+	paddingLeft: 0;
+	paddingTop: 0;
+	paddingBottom: 0;
+	paddingRight: 0;	
+	
+}
+.titleWindowTitle
+{
+	fontWeight: normal;
+	color: #FFFFFF;
+}
+
+
+
+.menuButton
+{
+	borderColor: #FFFFFF;
+	cornerRadius: 0;
+		
+}
+	
+
+.panelBody
+{
+	borderStyle: solid;
+	borderThickness: 1;
+	dropShadowColor: #4A4949;
+	dropShadowEnabled: true;
+	paddingBottom: 4;
+	paddingLeft: 4;
+	paddingRight: 4;
+	paddingTop: 4;
+	verticalGap: 2; 
+
+}
+.headerLabel
+{
+	fontWeight: normal;
+}
+
+.titleLabel
+{
+	color: #463B40;
+	fontFamily: Arial;
+	fontSize: 14;
+	fontWeight: bold;
+	paddingBottom: 0;
+	paddingTop: 0;
+}
+
+.menuLabel
+{
+	color: #463B40;
+}
+.menuLabelSmall
+{
+	fontSize: 9;
+	color: #463B40;
+}
+.linkMenuButton
+{
+	color: #463B40;
+	fontSize: 9;
+	textDecoration: normal;
+	horizontalGap: 0;
+	fontWeight: normal;
+	textRollOverColor: #463B40;
+	textSelectedColor: #463B40;
+}
+

@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="vertical" 
+	xmlns:views="*" 
+	paddingBottom="1" 
+	paddingLeft="3" 
+	paddingRight="3" 
+	paddingTop="1"
+	creationComplete="init()" backgroundGradientAlphas="[1.0, 1.0]" backgroundGradientColors="[#96979D, #96979D]">
+  
+
+  <mx:Style source="GenoPub.css" />  
+  
+  <mx:HTTPService             
+    id="getSecurity" 
+    url="genopub/security"
+    resultFormat="e4x"
+    result="onGetSecurity(event)"
+    fault="onFailHttpRequest('Failed to get security', event)"
+    method="POST"
+    useProxy="false">
+    <mx:request>
+    </mx:request>
+  </mx:HTTPService>
+  
+  <mx:HTTPService             
+    id="getDictionaries" 
+    url="genopub/dictionaries"
+    resultFormat="e4x"
+    result="onGetDictionaries(event)"
+    fault="onFailHttpRequest('Failed to get dictionaries', event)"
+    method="POST"
+    useProxy="false">
+    <mx:request>
+    </mx:request>
+  </mx:HTTPService>
+   
+  <mx:Script>
+	<![CDATA[
+	import mx.controls.ComboBox;
+	import mx.collections.XMLListCollection;
+	
+	import mx.rpc.events.FaultEvent;
+	import mx.rpc.events.ResultEvent;
+	import mx.controls.Alert;
+	import mx.managers.PopUpManager;
+	
+	
+	private var launchAnnotation:Object = null;
+	
+	
+	[Bindable]
+	public var dictionaries:XMLListCollection;
+
+	[Bindable]
+	public var dictionaryOrganism:XMLListCollection;
+
+	[Bindable]
+	public var dictionaryGenomeVersion:XMLListCollection;
+
+	[Bindable]
+	public var dictionaryUserGroup:XMLListCollection;
+
+	[Bindable]
+	public var dictionaryMyUserGroup:XMLListCollection;
+
+	[Bindable]
+	public var dictionaryAnalysisType:XMLListCollection;
+
+	[Bindable]
+	public var dictionaryExperimentMethod:XMLListCollection;
+
+	[Bindable]
+	public var dictionaryExperimentPlatform:XMLListCollection;
+
+	[Bindable]
+	public var dictionaryVisibility:XMLListCollection;
+	
+	[Bindable]
+	public var dictionaryUser:XMLListCollection;
+	
+	public var textStyleSheet:StyleSheet = null;
+
+	[Bindable]
+	[Embed(source="assets/book.png")]
+    public var iconDictionary:Class;
+
+    [Bindable]
+    [Embed(source="assets/page.png")]
+    public var iconDictionaryEntry:Class;
+    
+	[Bindable]
+    [Embed(source="assets/genome_version.png")]
+    public var iconGenomeVersion:Class;
+    
+    	[Bindable]
+    [Embed(source="assets/genome_version.png")]
+    public var iconGenomeVersionFaded:Class;
+	
+	[Bindable]
+    [Embed(source="assets/folder.gif")]
+    public var iconFolder:Class;
+    
+	[Bindable]
+    [Embed(source="assets/folder.gif")]
+    public var iconAnnotationGrouping:Class;
+
+	[Bindable]
+    [Embed(source="assets/folder_group.png")]
+    public var iconAnnotationGroupingForGroup:Class;
+
+	[Bindable]
+    [Embed(source="assets/organism.png")]
+    public var iconOrganism:Class;
+
+	[Bindable]
+    [Embed(source="assets/organism_faded.png")]
+    public var iconOrganismFaded:Class;
+    
+    [Bindable]
+    [Embed(source="assets/comment.png")]
+    public var iconAnnotation:Class;
+
+	[Bindable]
+    [Embed(source="assets/comment_key.png")]
+    public var iconAnnotationMember:Class;
+
+	[Bindable]
+    [Embed(source="assets/comment_key_twice.png")]
+    public var iconAnnotationMemberCollab:Class;
+    
+    [Bindable]
+    [Embed(source="assets/save.png")]
+    public var iconSave:Class;
+    
+    [Bindable]
+    [Embed(source="assets/save_disable.png")]
+    public var iconSaveDisabled:Class;
+      	
+	[Bindable]
+    [Embed(source="assets/folder_page.png")]
+    public var iconChooseFiles:Class;	
+	
+	[Bindable]
+    [Embed(source="assets/folder_page_disable.png")]
+    public var iconChooseFilesDisabled:Class;
+
+    [Bindable]
+    [Embed(source="assets/page_go.png")]
+    public var iconUpload:Class;
+    
+    [Bindable]
+    [Embed(source="assets/page_go_disable.png")]
+    public var iconUploadDisabled:Class;
+
+    [Bindable]
+    [Embed(source="assets/flag_yellow.png")]
+    public var iconYellowFlag:Class;
+        
+    [Bindable]
+    [Embed(source="assets/vcard.png")]
+    public var iconUser:Class;
+        
+    [Bindable]
+    [Embed(source="assets/group.png")]
+    public var iconGroup:Class;
+    
+            
+    [Bindable]
+    [Embed(source="assets/paste_plain.png")]
+    public var iconPaste:Class;
+    
+    
+    private function init():void {
+    	initTextStyleSheet();
+    	if (Application.application.parameters.idAnnotation != null &&
+    	    Application.application.parameters.idAnnotation != '') {
+    		launchAnnotation = new XML("<LaunchAnnotation " +
+    		    	"idAnnotation='" + Application.application.parameters.idAnnotation + "'" +
+    		    	"/>");
+    	}
+    	getSecurity.send();
+    }
+    
+    private function initTextStyleSheet():void {
+        var h1:Object = new Object();
+        h1.fontFamily = "Verdana, Arial, Geneva, sans";
+        h1.fontWeight = "bold";
+        h1.color = "#6600CC";
+        h1.fontSize = 20;
+        h1.leading = 10;
+        
+        var h2:Object = new Object();
+        h2.fontFamily = "Verdana, Arial, Geneva, sans";
+        h2.fontWeight = "bold";
+        h2.color = "#666666";
+        h2.fontSize = 16;
+        h2.leading = 4;
+
+        var a:Object = new Object();
+        a.fontStyle = "normal";
+        a.color = "#0066FF";
+        a.textDecoration = "underline";
+        
+        textStyleSheet = new StyleSheet();
+        textStyleSheet.setStyle("h1", h1);
+        textStyleSheet.setStyle("h2", h2);
+        textStyleSheet.setStyle("a", a);
+    }
+    
+    private function onGetSecurity(event:ResultEvent):void {
+    	if (getSecurity.lastResult.name() == "GenoPubSecurity") {
+    		getDictionaries.send();
+    	}
+    }
+    
+    public function isAdmin():Boolean {
+    	if (getSecurity.lastResult.@isAdmin == "Y") {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+	
+	public function isGuest():Boolean {
+    	if (getSecurity.lastResult.@isGuest == "Y") {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+	public function canManageUsers():Boolean {
+    	if (getSecurity.lastResult.@canManageUsers == "Y") {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+
+	private function onGetDictionaries(event:ResultEvent):void {
+		if (getDictionaries.lastResult.name() == "Dictionaries") {
+			if (isAdmin()) {
+    			this.currentState = "AdminAllState";
+    		} else if (canManageUsers()) {
+    			this.currentState = "AdminUserState";
+    		} else if (isGuest()) {
+    			this.currentState = "GuestState";
+    		} else {
+    			this.currentState = "UserState";
+    		} 
+    		
+    		if (launchAnnotation != null) {
+    			this.annotationsView.treeItemToSelect = launchAnnotation;
+    		}
+
+			dictionaries = new XMLListCollection(getDictionaries.lastResult.Dictionary);
+
+			dictionaryOrganism      = new XMLListCollection(getDictionaries.lastResult.Organisms.Organism); 
+			dictionaryGenomeVersion = new XMLListCollection(getDictionaries.lastResult.GenomeVersions.GenomeVersion); 
+			dictionaryAnalysisType = new XMLListCollection(getDictionaries.lastResult.AnalysisTypes.AnalysisType);
+			dictionaryExperimentPlatform = new XMLListCollection(getDictionaries.lastResult.ExperimentPlatforms.ExperimentPlatform);
+			dictionaryExperimentMethod = new XMLListCollection(getDictionaries.lastResult.ExperimentMethods.ExperimentMethod);
+			dictionaryVisibility = new XMLListCollection(getDictionaries.lastResult.Visibilities.Visibility); 
+			dictionaryUserGroup = new XMLListCollection(getDictionaries.lastResult.UserGroups.UserGroup); 
+			if (this.isAdmin()) {
+				dictionaryMyUserGroup = new XMLListCollection(getDictionaries.lastResult.UserGroups.UserGroup.(@id == '' || @isPartOf == "Y"));				
+			} else {
+				dictionaryMyUserGroup = new XMLListCollection(getDictionaries.lastResult.UserGroups.UserGroup.(@isPartOf == "Y"));								
+			}
+			dictionaryUser = new XMLListCollection(getDictionaries.lastResult.Users.User.(@name != 'guest'));
+			
+			callLater(this.dictionaryView.expandAllTreeNodes);	
+			callLater(this.annotationsView.selectAnnotationFilter);
+			 
+		} else {
+			Alert.show("An error occurred while getting dictionaries.");
+		}			
+	}
+    
+    public function onFailHttpRequest(title:String, event:FaultEvent):void {
+		if (event.message.body is String) {
+    		var startPos:int = event.message.body.indexOf("TEXT=");
+    		var endPos:int   = event.message.body.indexOf("TYPE=");
+    		if (startPos != -1 && endPos != -1) {
+        		Alert.show(event.message.body.toString().substring(startPos + 5, endPos), title);    		
+    		} else {
+    			Alert.show(event.message.body.toString(), title);
+    		}                		
+		} else {
+			Alert.show(event.fault.faultCode + "\n\n" + event.fault.faultString + "\n\n" + event.fault.faultDetail, title);        		
+    	}
+    }
+    
+    public function selectDictionaryComboBox(combo:ComboBox, value:Object, dictionary:XMLListCollection):void {
+    	for each(var item:Object in dictionary) {
+    		if (item.@id == value) {
+    			combo.selectedItem = item;
+    			break;
+    		}
+    	}
+    }
+    
+    private function showChangePasswordWindow():void {
+    	var passwordWindow:UserPasswordWindow = UserPasswordWindow(PopUpManager.createPopUp(mainArea, UserPasswordWindow, true));
+        PopUpManager.centerPopUp(passwordWindow);
+        passwordWindow.password.setFocus();
+    }
+    
+    private function showAboutWindow():void {
+    	var aboutWindow:AboutWindow = AboutWindow(PopUpManager.createPopUp(mainArea, AboutWindow, true));
+        PopUpManager.centerPopUp(aboutWindow);
+    }
+
+
+	]]>
+  </mx:Script>
+
+
+
+
+  <mx:VBox id="body" width="100%" height="100%" verticalGap="4" 
+	paddingTop="0" paddingLeft="0" paddingRight="0" paddingBottom="0" >
+
+    <mx:ApplicationControlBar  width="100%"  id="navBar"
+   	  fillAlphas="[1, 1]" dock="true"    
+   	  paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" >
+   	  <mx:VBox width="100%" paddingLeft="1" paddingBottom="0" paddingRight="1" paddingTop="2" verticalGap="0" id="navBox">
+		<mx:HBox width="100%" id="hbox1" paddingBottom="0">
+			<mx:Label text="GenoPub" id="label1" styleName="titleLabel" paddingBottom="0" paddingTop="0"/>			
+			<mx:HBox verticalAlign="middle" height="100%" paddingLeft="30" paddingTop="0" paddingBottom="0">
+				<mx:Label text="{getSecurity.lastResult.@userDisplayName}" styleName="menuLabel" id="loggedInUserName"/>
+			</mx:HBox>
+			<mx:HBox horizontalAlign="right" verticalAlign="top" horizontalGap="3" width="100%" id="hbox2">
+				<mx:LinkButton label="Help"  id="linkbutton1" styleName="menuLabel" paddingBottom="0" paddingTop="0"/>
+				<mx:LinkButton label="About"  id="linkbutton2" styleName="menuLabel" paddingTop="0" paddingBottom="0" click="showAboutWindow()"/>
+			</mx:HBox>
+		</mx:HBox >
+		<mx:HBox width="100%">
+	    	<mx:LinkBar id="linkButtonBar"
+ 				 dataProvider="{mainViewStack}" 
+ 				 width="100%"
+ 			     enabled="true"  
+ 			     visible="true"   
+ 			     horizontalAlign="left" 
+ 			     horizontalGap="30"  
+ 			     height="24"
+ 			     paddingTop="0" 
+ 			     paddingBottom="0">
+ 			</mx:LinkBar>
+
+		</mx:HBox>
+      </mx:VBox>
+    </mx:ApplicationControlBar>
+    
+    <mx:VBox id="mainArea" width="100%" 
+	    	height="100%" paddingTop="0" paddingBottom="0" paddingLeft="0" 
+	    	paddingRight="0" >	
+      <mx:ViewStack id="mainViewStack" width="100%" height="100%" creationPolicy="auto">
+
+
+      </mx:ViewStack>
+    </mx:VBox>	
+      
+  </mx:VBox>
+  
+  <mx:states>
+  
+   <mx:State name="UserState">
+    	<mx:AddChild relativeTo="{mainViewStack}" position="firstChild">
+	  	    <views:AnnotationView id="annotationsView" label="Annotations"      icon="@Embed(source='assets/comment.png')" width="100%" height="100%">
+  		    </views:AnnotationView>
+    	</mx:AddChild>
+    	<mx:AddChild relativeTo="{mainViewStack}" position="lastChild">
+    		<views:DictionaryView id="dictionaryView" label="Dictionaries"      icon="@Embed(source='assets/book.png')" width="100%" height="100%">
+  		    </views:DictionaryView>
+    	</mx:AddChild>    
+    	<mx:AddChild relativeTo="{hbox2}" position="lastChild">
+    	 	<mx:Spacer width="10"/>
+    	</mx:AddChild>
+    	<mx:AddChild relativeTo="{linkbutton1}" position="before">
+    	 	<mx:LinkButton label="Change password"  id="changePasswordButton" styleName="menuLabel" click="showChangePasswordWindow()" paddingTop="0" paddingBottom="0"/>
+    	</mx:AddChild>
+	</mx:State>
+    <mx:State name="AdminUserState" basedOn="UserState">
+    	<mx:AddChild relativeTo="{annotationsView}" position="after">
+    		<views:UserGroupView id="userGroupView" label="Users and Groups"      icon="@Embed(source='assets/group.png')" width="100%" height="100%">
+  		    </views:UserGroupView>
+    	</mx:AddChild>
+	</mx:State>
+    <mx:State name="AdminAllState" basedOn="AdminUserState">
+    </mx:State>
+    <mx:State name="GuestState" basedOn="UserState">
+      <mx:RemoveChild target="{dictionaryView}"/>
+      <mx:RemoveChild target="{changePasswordButton}"/>
+    </mx:State>
+  </mx:states>
+</mx:Application>

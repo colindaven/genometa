@@ -1,0 +1,27 @@
+
+body {
+	margin-top: 3%;
+	margin-left: 5%;
+	margin-right: 5%;
+	background: #ffe
+}
+h1, h2, h3, h4 {
+	font-family: verdana, helvetica, sans-serif;
+}
+pre, code {
+	color: #810;
+}
+div.copyright {
+        font-style: italic;
+        font-size: tiny;
+}
+form {
+	background: #aaa;
+	padding: 1%;
+	border: solid thin #ffe;
+}
+div.applet {
+	background: #bbb;
+	padding: 1%;
+	border: solid thin #ffe;
+}

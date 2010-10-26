@@ -1,0 +1,122 @@
+<html>
+<head>
+<title>        Responding to Events
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>        Responding to Events
+</h1>
+<p>        Try selecting glyphs
+        in the map below
+        using the mouse.
+        Notice how
+        the status line of your browser reports events.
+</p>
+
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.SimpleSelectableMap"
+        height="200"
+        width="100%"
+>
+<param name="config" value='
+Range     1  100
+Offsets -20  100
+Glyph    10   30 "-glyphtype com.affymetrix.genoviz.glyph.FillRectGlyph -color blue -offset 10"
+Glyph    40   60 ""
+Glyph    40   60 "-glyphtype com.affymetrix.genoviz.glyph.TriangleGlyph -color black -offset 25"
+Glyph    56   70 "-glyphtype com.affymetrix.genoviz.glyph.FillOvalGlyph -color red"
+Glyph    20   50 "-glyphtype com.affymetrix.genoviz.glyph.ArrowGlyph"
+'>
+</applet>
+</div>
+
+<p>        We have extended SimpleMap
+        in a few ways
+        to allow for selection.
+<ul>
+<li>        We turn on the NeoMap's internal selection behavior.
+<li>        We set the NeoMap's selection style
+        to outline the selected glyphs.
+<li>        We register as a listener
+        to the NeoMap.
+</ul>
+
+<p>        These things are done in our constructor.
+        But to register as a listener
+        to the NeoMap
+        we must implement a Listener interface.
+        The event we are interested in is a NeoRubberBandEvent.
+        So we register the SimpleSelectableMap as a NeoRubberBandListener.
+        The NeoRubberBandListener interface consists
+        of just the rubberBandChanged method.
+</p>
+
+<pre>
+package tutorial;
+
+import com.affymetrix.genoviz.event.EventListenerI;
+import com.affymetrix.genoviz.event.NeoRubberBandListener;
+import com.affymetrix.genoviz.event.NeoRubberBandEvent;
+import java.awt.Event;
+import java.awt.Rectangle;
+import java.util.Vector;
+
+public class SimpleSelectableMap extends SimpleMap0 implements NeoRubberBandListener {
+
+  public SimpleSelectableMap() {
+    super();
+    this.map.setSelectionEvent(this.map.ON_MOUSE_DOWN);
+    this.map.setSelectionAppearance(this.map.SELECT_OUTLINE);
+    this.map.addRubberBandListener(this);
+  }
+
+  public String getAppletInfo() {
+    return "Simple Selectable Map";
+  }
+
+  public void rubberBandChanged(NeoRubberBandEvent theEvent) {
+    // Here we add some selection by rubberband.
+    if (theEvent.getID() == NeoRubberBandEvent.BAND_END
+      && theEvent.getSource() == map
+      && map.NO_SELECTION != map.getSelectionEvent())
+    {
+      Rectangle pixelBox = theEvent.getPixelBox();
+      pixelBox.setSize(pixelBox.width+1, pixelBox.height+1);
+      int fuzziness = map.getPixelFuzziness();
+      if (fuzziness <= pixelBox.height || fuzziness <= pixelBox.width) {
+        // Rubberband is non-trivial.
+        // Select items within it.
+        Vector items = map.getItems(pixelBox);
+        map.select(items);
+        map.updateWidget();
+      }
+    }
+  }
+
+}
+</pre>
+
+<h2>        Exercise
+</h2>
+<ol>
+<li>        Notice that a shifted rubber band motion will not deselect
+        previously selected items
+        like a simple click will.
+        Fix this.
+</ol>
+
+<h2>        Next: <a href="Drawing.html">Drawing</a>
+</h2>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>IGB 4.34 Release Notes.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Language" content="en-US" />
+<link rel="stylesheet" type="text/css" media="screen" href="/stylesheet.css" />
+<link rel="icon" href="/favicon.ico" />
+</head>
+
+
+<body>
+<br>
+<h1>IGB 4.34 release notes.</h1>
+
+Highlights:
+<ul>
+
+</li><li><b>Version 4.34</b>
+<ul>
+<li>The "Graph Adjuster" has been redesigned to be easier to use
+and it has several new features:
+<br><br><img src="images/graph_tab.gif">
+<br>Figure: The "Graph Adjuster" tab.<br><br>
+<ul>
+<li>Options that are not relevant for the current selection will be disabled
+</li><li>Graph heights can now be adjusted
+</li><li>Additional heat-maps are available, including transparent ones
+<br><br><img src="images/transparent_graph.gif">
+<br>Figure: A graph with a transparent heat-map<br><br>
+
+</li><li>Graphs may now be re-named (right-click on the tier label)
+</li><li>It is possible to combine multiple graphs in one tier (press "Combine" after selecting 2 or more graphs)
+</li><li>Graph thresholding is performed in a separate window (press "Thresholding")
+<br><br><img src="images/graph_thresholds.gif">
+<br>Figure: The graph thresholding dialog.<br><br>
+</li></ul>
+
+
+</li><li>All IGB file types can now be opened in the current genome, or in a new one, with File-&gt;Open
+<ul>
+<li>By default, "merge" is selected and data will be added to the current genome
+</li><li>If "merge" is <em>not</em> selected, a new temporary genome will be created
+<br><br><img src="images/file_open.gif"><br>
+Figure: The "File-&gt;Open" dialog, with the "merge" checkbox.<br><br>
+</li></ul>
+
+
+</li><li>It is now possible to open Affymetrix files of the "CHP" file type for <em>tiling</em> arrays.  (IGB <em>cannot</em> open "CHP" files from
+<em>expression</em> arrays.)
+</li><li>You may now access any previously-loaded genome and sequence with the controls on the left-hand side of the "Data Access" tab.<br>
+<br><img src="images/current_genome.gif">
+<br>Figure: The "Data Access" tab now gives access to all loaded genomes.<br><br>
+
+</li><li>IDs of data from all file types is now indexed so that the IDs
+appear in the "Annotation Browser" tab and the search-by-ID function
+works for data loaded from all file types </li><li>Multiple items can now be indexed with the same ID
+<ul>
+<li>Searching for an ID will result in all matching items being selected
+</li><li>Searching is no longer case-sensitive
+<br><img src="images/multiple_matches_2.gif">
+<br>Figure: Searching by ID is not case-sensitive and can find multiple items.<br><br>
+</li></ul> 
+   
+</li><li>The DAS/2 data transfer specification continues to evolve (see
+biodas.org). This version of IGB is up-to-date with the current known
+DAS/2 servers
+</li><li>The interface for data loading from DAS/2 servers has been
+improved. Zoom-in to a small region, place a check mark by the items
+you'd like to load, then press "Load Features"
+<br><img src="images/das2_tab.gif">
+<br>Figure: The DAS/2 interface.<br><br>  
+
+</li><li>The "Bookmark Manager" is now opened with "Bookmarks-&gt;Manage Bookmarks"<br>
+<br><img src="images/manage_bookmarks.gif">
+<br>Figure: To access the "Bookmark Manager", choose "Bookmarks-&gt;Manage Bookmarks".<br><br>
+
+</li></ul>
+
+
+    <div id="footer">
+      <p class="center">
+      IGB is part of the <a href="http://genoviz.sourceforge.net">GenoViz project.</a>
+      Source code for IGB is released under the 
+      <a href="http://www.opensource.org/licenses/cpl1.0.php">Common Public License, v1.0</a> an 
+      <a href="http://www.opensource.org/docs/definition.php">OSI approved</a>
+      open source license. IGB uses other open source software packages
+      which are covered by their own open source licenses. </p>
+      <p class="center">
+      IGB is Copyright (c) 2000-2006 Affymetrix, Inc. Research
+      and development of IGB is supported in part by NIH grant
+      R01HG003040</p> 
+      <p class="center">
+      <a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=129420&amp;type=1" alt="SourceForge.net" /></a>
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      <a href="http://www.opensource.org/docs/definition.php"><img src="http://opensource.org/trademarks/osi-certified/web/osi-certified-60x50.jpg" alt="OSI Certified" width="60" height="50" border="0"></a>
+      </p>
+    </div>
+
+</body>
+</html>

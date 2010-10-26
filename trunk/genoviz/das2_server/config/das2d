@@ -1,0 +1,100 @@
+#!/bin/sh 
+
+# $Id: das2d 3186 2007-12-13 01:14:25Z chervitz $
+#
+# das2d        Linux startup script for the Netaffx DAS/2 Server
+#
+# Author: Steve Chervitz <steve_chervitz@affymetrix.com>
+#
+# chkconfig: 2345 86 14
+# description: This DAS/2 server provides genomic annotations \
+#              (e.g., genes) for visualization via DAS/2 clients like IGB. \
+#              Relies on the das2launch script.
+# processname: das2launch
+# config: /home/netaffx/code/das2/das2launch
+# pidfile: /var/run/das2d.pid
+#
+# CUSTOMIZATION NOTICE:
+#    This script must be customized prior to installation. 
+#    Edit the variables as needed in the section marked as customizable.
+#    You may also want to adjust the chkconfig parameters above prior to 
+#    installing this with chkconfig.
+#
+# INSTALLATION
+#    This script should be installed in /etc/init.d and can managed by chkconfig.
+#    Run this command as root: chkconfig --add das2d
+#
+# NOTES:
+#   * This script is loosely based on he httpd startup script.
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Customizable stuff: Pointer to the location of the das2launch script
+prog=/home/netaffx/code/das2/das2launch
+
+pidfile=${PIDFILE-/var/run/das2d.pid}
+lockfile=${LOCKFILE-/var/lock/subsys/das2d}
+RETVAL=0                                                                              
+
+# Using standard init script semantics:
+# -- attempting to start while running is a failure, and
+# -- shutdown when not running is also a failure.
+start() {
+        echo -n $"Starting $prog: "
+        daemon $prog
+        RETVAL=$?
+        echo
+        [ $RETVAL = 0 ] && touch ${lockfile}
+        return $RETVAL
+}
+
+
+# When stopping das2d a delay of >10 second is required before SIGKILLing the
+# das2d parent; this gives enough time for the das2d parent to SIGKILL any
+# errant children.
+stop() {
+        echo -n $"Stopping $prog: "
+        killproc -d 10 $prog
+        RETVAL=$?
+        echo
+        [ $RETVAL = 0 ] && rm -f ${lockfile} ${pidfile}
+}
+
+reload() {
+    echo -n $"Reloading $prog: "
+    killproc $prog -HUP
+    RETVAL=$?
+    echo
+}
+
+
+
+# See how we were called.
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  status)
+        status $prog
+        RETVAL=$?
+        ;;
+  restart)
+        stop
+        start
+        ;;
+  reload)
+        reload
+        ;;
+  *)
+        echo $"Usage: $prog {start|stop|restart|reload|status}"
+        exit 1
+esac
+
+exit $RETVAL
+
+
+

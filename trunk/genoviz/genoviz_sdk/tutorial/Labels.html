@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>        Labeling Glyphs
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>        Labeling Glyphs
+</h1>
+<p>        Wouldn't it be nice
+        to be able to put labels on the glyphs?
+        Let's extend the syntax of a Glyph line.
+        We need a keyword "labeled"
+        and a text string for the label.
+        Labels can be positioned
+        to the left of, to the right of,
+        above, or below the glyph.
+        So another keyword specifying the position is needed.
+</p>
+<p>        Here is an example of a new configuration file.
+</p>
+
+<form>
+<textarea name="config" cols="60" rows="10">
+Range     1  100
+Offsets -20  100
+Glyph    10   30 "-glyphtype FillRectGlyph -color blue -offset 10"
+Glyph    40   60 ""
+Glyph    40   60 "-glyphtype TriangleGlyph -color black -offset 25"
+Glyph    56   70 "-glyphtype FillOvalGlyph -color red"
+Glyph    20   50 "-glyphtype ArrowGlyph" labeled left "An Arrow"
+</textarea><br>
+<input        type="button" value="configure map"
+        onClick="document.applets[0].parseInputString(config.value)"
+>
+</form>
+
+<p>        Take a peek at the <a href="../demo/src/genoviz/tutorial/SimpleMap1.java">source code</a>.
+        Notice that labels are glyphs in their own right.
+        The thing that is different about label glyphs
+        is that they can be assigned another glyph
+        to label.
+</p>
+
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.SimpleMap1"
+        height=150
+        width=570
+>
+<param name="config" value='
+Range     1  100
+Offsets -20  100
+Glyph    10   30 "-glyphtype com.affymetrix.genoviz.glyph.FillRectGlyph -color blue -offset 10"
+Glyph    40   60 ""
+Glyph    40   60 "-glyphtype com.affymetrix.genoviz.glyph.TriangleGlyph -color black -offset 25"
+Glyph    56   70 "-glyphtype com.affymetrix.genoviz.glyph.FillOvalGlyph -color red"
+Glyph    20   50 "-glyphtype com.affymetrix.genoviz.glyph.ArrowGlyph" labeled left "An Arrow"
+'></param>
+</applet>
+</div class="applet">
+
+<h2>         Exercises
+</h2>
+<ol>
+<li>        A Glyph can be assigned to more than one label.
+        Extend the Glyph line's "labeled" phrase
+        to allow multiple labels.
+</li>
+<li>        A label can be positioned
+        in the center
+        of its labeled glyph.
+        Add this option.
+        Watch out for writing blue text on a blue glyph.
+</li>
+</ol>
+
+<h2>        Next: <a href="Factories.html">Manufacturing Glyphs</a>
+</h2>
+
+</body>
+</html>

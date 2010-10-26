@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE preferences SYSTEM "http://java.sun.com/dtd/preferences.dtd">
+<preferences EXTERNAL_XML_VERSION="1.0">
+    <root type="user">
+        <map/>
+        <node name="com">
+            <map/>
+            <node name="affymetrix">
+                <map/>
+                <node name="igb">
+                    <map/>
+                    <node name="keystrokes">
+                        <map>
+                            <entry key="About Integrated Genome Browser..." value=""/>
+                            <entry key="SCROLL_DOWN" value=""/>
+                            <entry key="Clear All" value=""/>
+                            <entry key="Manage Bookmarks" value=""/>
+                            <entry key="Toggle Shrink Wrapping" value="ctrl E"/>
+                            <entry key="Preferences ..." value="alt P"/>
+                            <entry key="Toggle Hairline Label" value="ctrl H"/>
+                            <entry key="Print" value="ctrl P"/>
+                            <entry key="AutoScroll" value=""/>
+                            <entry key="Documentation..." value=""/>
+                            <entry key="Preferences Window / Help for current tab" value=""/>
+                            <entry key="Configure Web Links" value=""/>
+                            <entry key="Find Annotations For Loaded Data..." value="ctrl F"/>
+                            <entry key="Open file" value="ctrl O"/>
+                            <entry key="Web Links Manager / Export ..." value=""/>
+                            <entry key="SCROLL_LEFT" value=""/>
+                            <entry key="Open Current Tab in New Window" value="ctrl N"/>
+                            <entry key="SCROLL_RIGHT" value=""/>
+                            <entry key="ZOOM_IN_Y" value=""/>
+														<entry key="Center at selected" value=""/>
+                            <entry key="Select parent" value="ctrl A"/>
+                            <entry key="ZOOM_OUT_X" value=""/>
+                            <entry key="Web Links Manager / Edit..." value=""/>
+                            <entry key="Add Position Bookmark" value="ctrl B"/>
+                            <entry key="SCROLL_UP" value=""/>
+                            <entry key="Main View (With Labels)" value=""/>
+                            <entry key="Clamp To View" value=""/>
+                            <entry key="Sliced View (With Labels)" value=""/>
+                            <entry key="Exit" value="ctrl Q"/>
+                            <entry key="Web Links Manager / Configure Web Links" value=""/>
+                            <entry key="Zoom to selected" value="ctrl Z"/>
+                            <entry key="Adjust edge match fuzziness" value=""/>
+                            <entry key="Unclamp" value=""/>
+                            <entry key="Open Tabbed Panes in New Window" value="ctrl T"/>
+                            <entry key="Show Console..." value=""/>
+                            <entry key="ZOOM_OUT_FULLY" value="ctrl 0"/>
+                            <entry key="Web Links Manager / Add..." value=""/>
+                            <entry key="Preferences Window / Export" value=""/>
+                            <entry key="ZOOM_OUT_Y" value=""/>
+                            <entry key="Web Links Manager / Import ..." value=""/>
+                            <entry key="Copy Selected Residues to Clipboard" value="ctrl C"/>
+                            <entry key="Toggle Edge Matching" value="ctrl M"/>
+                            <entry key="Preferences Window / Help" value=""/>
+                            <entry key="Main View" value=""/>
+                            <entry key="View Region in UCSC Browser" value="alt R"/>
+                            <entry key="ZOOM_IN_X" value=""/>
+                            <entry key="Web Links Manager / Delete ..." value=""/>
+                            <entry key="Add Position &amp; Graphs Bookmark" value=""/>
+                            <entry key="Clear Graphs" value=""/>
+                            <entry key="Preferences Window / Import" value=""/>
+                        </map>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </root>
+</preferences>

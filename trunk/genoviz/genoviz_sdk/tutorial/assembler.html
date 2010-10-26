@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>        Displaying an Assembly
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+/>
+</head>
+
+  <body>
+    <h1>Displaying an Assembly</h1>
+
+    Use a NeoAssembler to display an alignment of sequences
+    to a consensus sequence.
+    The <a href="../demo/src/genoviz/demo/NeoAssemblerDemo.java">source</a>
+    to the assembler demo below is a bit longer
+    than the programs we've looked at to this point.
+    We're making progress.
+
+<p>
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.demo.NeoAssemblerDemo"
+        height="150"
+        width="570"
+>
+<param name="seq_file" value="../demo/data/test-sequence.data">
+<param name="map_file" value="../demo/data/test-assembly.data">
+<param name="alignwidth" value="14">
+</applet>
+</div class="applet">
+
+<p>   We can make the code much shorter
+      by <a href="../demo/src/genoviz/demo/NeoAssemblerDemo2.java">using data adapters</a>.
+
+<h2>        Next: <a href="tracer.html">Displaying Traces</a>
+</h2>
+
+</body>
+</html>

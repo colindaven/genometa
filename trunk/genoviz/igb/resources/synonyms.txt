@@ -1,0 +1,171 @@
+A_californica_Sep_2008	aplCal1
+A_carolinensis_Feb_2007	anoCar1	Anolis_carolinensis.AnoCar1.0.reference
+A_gambiae_Jul_2003	anoGam1	Anopheles_Jul_2003	Ag	ag	ag:Jul_2003	Ag:Jul_2003
+A_melanoleuca_Apr_2010	ailMel1
+A_mellifera_Jan_2005	apiMel2
+A_mellifera_Jul_2004	apiMel1
+A_thaliana_Apr_2008	TAIR8	tair8	Tair8	A_thaliana_TAIR8
+A_thaliana_Jan_2004	At:NCBIv5	At:NCBI5	at.NCBIv5	at5	NCBIv5	TIGRv5	at:TIGRv5	At:TIGRv5	at:Jan_2004	At:Jan_2004	TAIR7	tair7	Tair7	A_thaliana_TAIR7
+A_thaliana_Jun_2009	TAIR9	tair9	Tair9	A_thaliana_TAIR9
+B_floridae_Mar_2006	braFlo1
+B_taurus_Aug_2006	bosTau3	Cow_Aug_2006
+B_taurus_Mar_2005	bosTau2	Cow_Mar_2005
+B_taurus_Oct_2007	bosTau4	Cow_Oct_2007	Bos_taurus.Btau_4.0.reference
+C_brenneri_Feb_2008	caePb2
+C_brenneri_Jan_2007	caePb1
+C_briggsae_Aug_2005	cb2
+C_briggsae_Jan_2007	cb3
+C_briggsae_Jul_2002	cb1
+C_elegans_Aug_2004	http://www.wormbase.org/genome/C_elegans/WS130	http://www.wormbase.org/genome/C_elegans/WS130/
+C_elegans_Aug_2007	ce5
+C_elegans_Jan_2007	C_Elegans_January_2007	ceJan2007	ce4	ce:Jan_2007	Ce:Jan_2007	WS170
+C_elegans_Feb_2009	ce7	Caenorhabditis_elegans.WS200.reference
+C_elegans_Jun_2009	ce8	Caenorhabditis_elegans.WS204.reference
+C_elegans_Mar_2004	C_Elegans_March_2004	ceMar2004	ce2	ce:Mar_2004	Ce:Mar_2004	WS120
+C_elegans_Mar_2004	http://www.wormbase.org/genome/C_elegans/WS120	http://www.wormbase.org/genome/C_elegans/WS120/
+C_elegans_Mar_2005	ce3	http://www.wormbase.org/genome/C_elegans/WS140	http://www.wormbase.org/genome/C_elegans/WS140/
+C_elegans_May_2003	C_Elegans_May_2003	ceMay2003	ce1	ce:May_2003	Ce:May_2003
+C_elegans_May_2003	http://www.wormbase.org/genome/C_elegans/WS100	http://www.wormbase.org/genome/C_elegans/WS100/
+C_elegans_May_2008	C_Elegans_May_2008	ceMay2008	ce6	ce:May_2008	Ce:May_2008	WS190
+C_elegans_Nov_2005	http://www.wormbase.org/genome/C_elegans/WS150	http://www.wormbase.org/genome/C_elegans/WS150/
+C_elegans_Oct_2003	http://www.wormbase.org/genome/C_elegans/WS110	http://www.wormbase.org/genome/C_elegans/WS110/
+C_familiaris_Jul_2003	canFam1
+C_familiaris_May_2005	canFam2	Dog_May_2005	Canis_familiaris.BROADD2.reference
+C_hoffmanni_Sep_2008	Choloepus_hoffmanni.choHof1.reference
+C_intestinalis_Dec_2002	ci1	Ciona_intestinalis.JGI1.reference
+C_intestinalis_Mar_2005	ci2	Ciona_intestinalis.JGI2.reference
+C_jacchus_Jun_2007	calJac1
+C_jacchus_Mar_2009	calJac3	Callithrix_jacchus.calJac3.reference
+C_japonica_Jan_2009	caeJap2
+C_japonica_Mar_2008	caeJap1
+C_japonica_Mar_2008	caeJap1
+C_porcellus_Mar_2008	cavPor3	Cavia_porcellus.cavPor3.reference
+C_remanei_Mar_2005	caeRem1
+C_remanei_Mar_2006	caeRem2
+C_remanei_May_2007	caeRem3
+C_savignyi_Jul_2005	cioSav2	Ciona_savignyi.CSAV2.reference	Ciona_savignyi.CSAV2.0.reference
+C_savignyi_Apr_2003	cioSav1
+D_ananassae_Aug_2005	droAna2
+D_ananassae_Jul_2004	droAna1
+D_erecta_Aug_2005	droEre1
+D_grimshawi_Aug_2005	droGri1
+D_melanogaster_Apr_2004	Drosophila_Apr_2004	BDGP Release 4	dm2	dm:Apr_2004	Dm:Apr_2004	Dm:R4	Dm:BDGPv4	Dm;BDGPv4	Dm:BDGPv4h	Dm;BDGPv4h
+D_melanogaster_Apr_2006	Drosophila_Apr_2006	BDGP Release 5	dm3	dm:Apr_2006	Dm:Apr_2006	Dm:R5	Dm:BDGPv5	Dm;BDGPv5	Dm:BDGPv5h	Dm;BDGPv5h
+D_melanogaster_Jan_2003	Drosophila_Jan_2003	Drosophila jan2003	dm1		dm:Jan_2003	Dm:Jan_2003	Dm:R3	Dm:BDGPv3	Dm;BDGPv3
+D_mojavensis_Aug_2004	droMoj1
+D_mojavensis_Aug_2005	droMoj2
+D_novemcinctus_Jul_2008	dasNov2	Dasypus_novemcinctus.dasNov2.reference
+D_ordii_Jul_2008	dipOrd1	Dipodomys_ordii.dipOrd1.reference
+D_persimilis_Oct_2005	droPer1
+D_pseudoobscura_Nov_2004	dp3
+D_pseudoobscura_Aug_2003	dp2
+D_rerio_Dec_2008	danRer6	Zv8	Zebrafish_Dec_2008	Danio_rerio.Zv8.reference
+D_rerio_Jul_2007	danRer5	Zv7	Zebrafish_Jul_2007
+D_rerio_Mar_2006	danRer4	Zv6	Zebrafish_Mar_2006
+D_rerio_May_2005	danRer3	Zv5	Zebrafish_May_2005
+D_sechellia_Oct_2005	droSec1
+D_simulans_Apr_2005	droSim1
+D_virilis_Aug_2005	droVir2
+D_virilis_Jul_2004	droVir1
+D_yakuba_Apr_2004	droYak1
+D_yakuba_Nov_2005	droYak2
+E_caballus_Jan_2007	equCab1
+E_caballus_Sep_2007	equCab2	Equus_caballus.EquCab2.reference
+F_catus_Mar_2006	felCat3
+F_catus_Dec_2008	felCat4
+G_aculeatus_Feb_2006	gasAcu1	Gasterosteus_aculeatus.BROADS1.reference
+G_gallus_Feb_2004	galGal2
+G_gallus_May_2006	galGal3	Chicken_May_2006	Gallus_gallus.WASHUC2.reference
+gorGor3	Gorilla_gorilla.gorGor3.reference
+G_gorilla_Aug_2009	gorGor2
+G_gorilla_Oct_2008	gorGor1
+G_max_Dec_2008	Glyma1	Soybean_Dec_2008	JGI_Soybean_v101
+H_sapiens_Apr_2001	Human_Apr_2001	Human 1apr2002	Human_1apr2001	Chr_21_22 ABC Human	hg7	hs:Apr_2001	Hs:Apr_2001
+H_sapiens_Apr_2003	H_sapiens_Apr_2003_Encode	Human_Apr_2003	Human 10apr2003	Human_10apr2003	hs.NCBIv33	hg15	human_ncbi33	ncbi.v33	Human_Apr_2003_Encode	hs:Apr_2003	Hs:Apr_2003	hs:NCBIv33	Hs:NCBIv33	Hs;NCBIv33	Hs:NCBI33
+H_sapiens_Apr_2003	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B33	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B33/
+H_sapiens_Dec_2001	Human_Dec_2001	Human 22dec2001	Human_22dec2001	hs.NCBIv28	hg10	human_ncbi28	ncbi.v28	hs:Dec_2001	Hs:Dec_2001	hs:NCBIv28	Hs:NCBIv28	Hs;NCBIv28	Hs:NCBI28
+H_sapiens_Feb_2009	Human_Feb_2009	hs.NCBIv37	hg19	human_ncbi37	ncbi.v37	hs:Feb_2009	Hs:Feb_2009	hs:NCBIv37	Hs:NCBIv37	chado/chado-Hsa-19	human/19	Hs;NCBIv37	Hs:NCBI37	GRCh37	Hs:GRCh37	Homo_sapiens.GRCh37.reference
+H_sapiens_Jul_2003	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B34.1	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B34.1/
+H_sapiens_Jul_2003	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B34.2	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B34.2/
+H_sapiens_Jul_2003	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B34.3	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B34.3/
+H_sapiens_Jul_2003	Human_Jul_2003	hs.NCBIv34	hg16	human_ncbi34	ncbi.v34	hs:Jul_2003	Hs:Jul_2003	hs:NCBIv34	Hs:NCBIv34	human/16	Hs;NCBIv34	Hs:NCBI34
+H_sapiens_Jun_2002	H_sapiens_Jun_2002_Chr21+22	Human_Jun_2002	Human 28jun2002	Human_28jun2002	hs.NCBIv30	hg12	human_ncbi30	ncbi.v30	Human_Jun_2002_Chr21+22	hs:Jun_2002	Hs:Jun_2002	hs:NCBI30	Hs:NCBIv30	Hs;NCBIv30	Hs:NCBI30
+H_sapiens_Mar_2006	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B36.1	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B36.1/
+H_sapiens_Mar_2006	Human_Mar_2006	hs.NCBIv36	hg18	human_ncbi36	ncbi.v36	hs:Mar_2006	Hs:Mar_2006	hs:NCBIv36	Hs:NCBIv36	chado/chado-Hsa-18	human/18	Hs;NCBIv36	Hs:NCBI36	Hsa	ensembl2034
+H_sapiens_May_2004	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B35.1	http://www.ncbi.nlm.nih.gov/genome/H_sapiens/B35.1/
+H_sapiens_May_2004	Human_May_2004	hs.NCBIv35	hg17	human_ncbi35	ncbi.v35	hs:May_2004	Hs:May_2004	hs:NCBIv35	Hs:NCBIv35	ensembl1834	chado/chado-Hsa-17	human/17	Hs;NCBIv35	Hs:NCBI35
+H_sapiens_Nov_2002	Human_Nov_2002	Human 14nov2002	Human_14nov2002	hs.NCBIv31	hg13	human_ncbi31	ncbi.v31	hs.exon.2	hs:Nov_2002	Hs:Nov_2002	hs:NCBIv31	Hs:NCBIv31	Hs;NCBIv31	Hs:NCBI31
+HuEx-1_0-st-Probes	HuEx-1_0-st-v2	HuEx-1_0-st	HuEx-1_0-st-v2-Probes	huex-1_0-st-probes	huex-1_0-st-v2-probes	affy/HuEx-1_0-st-Probes	affy/HuEx-1_0-st-v2	affy/HuEx-1_0-st	affy/HuEx-1_0-st-v2-Probes	affy/huex-1_0-st-v2-probes	affy/huex-1_0-st-probes
+HuEx-1_0-st-Transcripts	HuEx-1_0-st-v2-Transcripts	huex-1_0-st-transcripts	huex-1_0-st-v2-transcripts	affy/HuEx-1_0-st-Transcripts	affy/HuEx-1_0-st-v2-Transcripts	affy/huex-1_0-st-transcripts	affy/huex-1_0-st-v2-transcripts
+HuGene-1_0-st-Probes	HuGene-1_0-st-v1	HuGene-1_0-st	HuGene-1_0-st-v1-Probes	hugene-1_0-st-probes	hugene-1_0-st-v1-probes	affy/hugene-1_0-st-v1-probes	affy/hugene-1_0-st-probes
+HuGene-1_0-st-Transcripts	HuGene-1_0-st-v1-Transcripts	hugene-1_0-st-transcripts	hugene-1_0-st-v1-transcripts	affy/hugene-1_0-st-transcripts	affy/hugene-1_0-st-v1-transcripts
+L_africana_Jul_2009	loxAfr3	Loxodonta_africana.loxAfr3.reference
+L_africana_Jul_2008	loxAfr2
+L_africana_May_2005	loxAfr1
+M_domestica_Oct_2006	monDom5	Monodelphus_domestica.BROAD05.reference	Monodelphis_domestica.BROADO5.reference
+M_domestica_Jan_2006	monDom4
+M_domestica_Oct_2004	monDom1
+M_murinus_Jun_2003	micMur1	Microcebus_murinus.micMur1.reference
+M_mulatta_Jan_2006	Rhesus_Jan_2006	Macaque_Jan_2006	Rhesus_macaque_Jan_2006	rheMac2	Baylor Mmul_051212 v.1.0	Macaca_mulatta.MMUL_1.reference
+M_musculus_Jul_2007	Mm:NCBIv37	Mm:NCBI37	mm9
+M_musculus_Feb_2006	Mm:NCBIv36	Mm:NCBI36	mm8
+M_musculus_Aug_2005	http://www.ncbi.nlm.nih.gov/genome/M_musculus/35.1	http://www.ncbi.nlm.nih.gov/genome/M_musculus/35.1/
+M_musculus_Aug_2005	Mouse_Aug_2005	mm7	Mm:NCBIv35	Mm:NCBI35
+M_musculus_Feb_2002	Mouse_Feb_2002	Mouse feb2002	mm2	mm:Feb_2002	Mm:Feb_2002
+M_musculus_Feb_2003	Mouse_Feb_2003	Mouse feb2003	mm3	mm:Feb_2003	Mm:Feb_2003	Mm:NCBIv30	Mm:NCBI30
+M_musculus_Jul_2007	Mouse_Jul_2007	M_musculus_Aug_2007	Mouse_Aug_2007	mm9	Mm:NCBIv37	Mm:NCBI37	Mus_musculus.NCBIM37.reference
+M_musculus_Mar_2005	http://www.ncbi.nlm.nih.gov/genome/M_musculus/34.1	http://www.ncbi.nlm.nih.gov/genome/M_musculus/34.1/
+M_musculus_Mar_2005	Mouse_Mar_2005	mm6	Mm:NCBIv34	Mm:NCBI34
+M_musculus_Mar_2006	http://www.ncbi.nlm.nih.gov/genome/M_musculus/36.1	http://www.ncbi.nlm.nih.gov/genome/M_musculus/36.1/
+M_musculus_Mar_2006	Mouse_Mar_2006	mm8	Mm:NCBIv36	Mm:NCBI36
+M_musculus_May_2004	http://www.ncbi.nlm.nih.gov/genome/M_musculus/33.1	http://www.ncbi.nlm.nih.gov/genome/M_musculus/33.1/
+M_musculus_May_2004	Mouse_May_2004	Mouse may2004	mm5	mm:May_2004	Mm:May_2004	Mm:NCBIv33	Mm:NCBI33
+M_musculus_Oct_2003	http://www.ncbi.nlm.nih.gov/genome/M_musculus/32.1	http://www.ncbi.nlm.nih.gov/genome/M_musculus/32.1/
+M_musculus_Oct_2003	Mouse_Oct_2003	Mouse oct2003	mm4	mm:Oct_2003	Mm:Oct_2003	Mm:NCBIv32	Mm:NCBI32
+MoEx-1_0-st-Probes	MoEx-1_0-st-v1	MoEx-1_0-st	MoEx-1_0-st-v1-Probes	moex-1_0-st-probes	moex-1_0-st-v1-probes	affy/moex-1_0-st-probes	affy/moex-1_0-st-v1-probes
+MoEx-1_0-st-Transcripts	MoEx-1_0-st-v1-Transcripts	moex-1_0-st-transcripts	moex-1_0-st-v1-transcripts	affy/moex-1_0-st-transcripts	affy/moex-1_0-st-v1-transcripts
+MoGene-1_0-st-Probes	MoGene-1_0-st-v1	MoGene-1_0-st	MoGene-1_0-st-v1-Probes	mogene-1_0-st-probes	mogene-1_0-st-v1-probes	affy/mogene-1_0-st-v1-probes	affy/mogene-1_0-st-probes
+MoGene-1_0-st-Transcripts	MoGene-1_0-st-v1-Transcripts	mogene-1_0-st-transcripts	mogene-1_0-st-v1-transcripts	affy/mogene-1_0-st-transcripts	affy/mogene-1_0-st-v1-transcripts
+M_lucifugus_Mar_2006	myoLuc1	Myotis_lucifugus.MICROBAT1.reference
+O_anatinus_Mar_2007	ornAna1
+O_cuniculus_Apr_2009	oryCun2	Oryctolagus_cuniculus.oryCun2.reference
+O_cuniculus_May_2005	oryCun1
+O_garnetti_Dec_2006	Otolemur_garnetti.BUSHBABY1.reference	Otolemur_garnettii.BUSHBABY1.reference
+O_latipes_Oct_2005	oryLat2	Oryzias_latipes.MEDAKA1.reference
+O_princeps_Jul_2008	ochPri2	Ochotona_princeps.pika.reference
+O_sativa_Jan_2007	Rice_Tigr_Pseudomolecules_5	TIGR_pseudomol5
+O_sativa_Jun_2009	RGAP_Pseudomolecules_6	RGAP_pseudomolecules_6	RGAP_pseudomol6	Rice_Tigr_Pseudomolecules_6	TIGR_pseudomol6
+P_abelii_Jul_2007	ponAbe2
+P_capensis_Jul_2008	proCap1	Procavia_capensis.proCap1.reference
+P_marinus_Mar_2007	petMar1
+P_pacificus_Feb_2007	priPac1
+P_troglodytes_Mar_2006	panTro2	Pan_troglodytes.CHIMP2.1.reference
+P_troglodytes_Nov_2003	panTro1	Chimp_Nov_2003	CGSC Build 1 Version 1
+P_vampyrus_Jul_2008	pteVam1	Pteropus_vampyrus.pteVam1.reference
+RaEx-1_0-st-Probes	RaEx-1_0-st-v1	RaEx-1_0-st	RaEx-1_0-st-v1-Probes	raex-1_0-st-probes	raex-1_0-st-v1-probes	affy/raex-1_0-st-probes	affy/raex-1_0-st-v1-probes
+RaEx-1_0-st-Transcripts	RaEx-1_0-st-v1-Transcripts	raex-1_0-st-transcripts	raex-1_0-st-v1-transcripts	affy/raex-1_0-st-transcripts	affy/raex-1_0-st-v1-transcripts
+RaGene-1_0-st-Probes	RaGene-1_0-st-v1	RaGene-1_0-st	RaGene-1_0-st-v1-Probes	ragene-1_0-st-probes	ragene-1_0-st-v1-probes	affy/ragene-1_0-st-v1-probes	affy/ragene-1_0-st-probes
+RaGene-1_0-st-Transcripts	RaGene-1_0-st-v1-Transcripts	ragene-1_0-st-transcripts	ragene-1_0-st-v1-transcripts	affy/ragene-1_0-st-transcripts	affy/ragene-1_0-st-v1-transcripts
+R_norvegicus_Jan_2003	Rat_Jan_2003	Rat jan2003	rn2	rn:Jan_2003	Rn:Jan_2003
+R_norvegicus_Jun_2003	Rat_Jun_2003	Rat jun2003	rn3	rn:Jun_2003	Rn:Jun_2003
+R_norvegicus_Nov_2002	Rat_Nov_2002	Rat nov2002	rn1	rn:Nov_2002	Rn:Nov_2002
+R_norvegicus_Nov_2004	Rat_Nov_2004	Rat nov2004	rn4	rn:Nov_2004	Rn:Nov_2004
+S_cerevisiae_Jun_2008	sacCer2
+S_cerevisiae_Oct_2003	sacCer1	sc:Oct_2003	Sc:Oct_2003	S_cerevisiae_Oct_2003_and_S_pombe_Jul_2005
+S_araneus_Jun_2006	sorAra1	Sorex_araneus.COMMON_SHREW1.reference
+S_pombe_Sep_2004	Sp:Sep_2004	sp:Sep_2004
+S_purpuratus_Apr_2005	strPur1
+S_purpuratus_Sep_2006	strPur2
+S_scrofa_Nov_2009	susScr2
+S_tridecemlineatus_Feb_2008	speTri1	Spermophilus_tridecemlineatus.SQUIRREL.reference
+T_guttata_Jul_2008	taeGut1
+T_nigroviridis_Feb_2004	tetNig1
+T_nigroviridis_Mar_2007	tetNig2
+T_rubripes_Aug_2002	fr1
+T_rubripes_Oct_2004	fr2
+T_belangeri_Dec_2006	tupBel1	Tupaia_belangeri.TREESHREW.reference
+T_truncatus_Feb_2008	turTru1	Tursiops_truncatus.turTru1.reference
+T_syrichta_Aug_2008	tarSyr1	Tarsius_syrichta.tarSyr1.reference
+V_pacos_Jul_2008	vicPac1	Vicugna_pacos.vicPac1.reference
+X_tropicalis_Aug_2005	xenTro2	Xenopus_tropicalis.JGI4.1.reference
+X_tropicalis_Oct_2004	xenTro1	Xenopus_tropicalis.JGI3.0.reference

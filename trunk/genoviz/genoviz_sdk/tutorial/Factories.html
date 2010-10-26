@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>        Manufacturing Glyphs
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+/>
+</head>
+
+<body>
+
+<h1>        Manufacturing Glyphs
+</h1>
+
+<p>        Since labels are glyphs
+        we had to configure the map for the glyph
+        then reconfigure it back to the way it was.
+        Suppose we didn't.
+        If the next glyph line did not have a configuration string
+        it would be another label glyph.
+</p>
+
+<p>        This is clumsy.
+        However, we can set aside a configuration just for labels.
+        The way this is done is to add a "factory" to the map.
+        Then when a label glyph is added
+        the factory can be referred to
+        and the label will be made according to that factory's configuration.
+</p>
+
+<p>        The changes are very small.
+        Add a factory object as a new instance variable.
+<pre>
+MapGlyphFactory labelFactory;
+</pre>
+        The factory is created, configured, and added to the map
+        in one step.
+        So add the following line to the constructor.
+<pre>
+labelFactory = map.addFactory("-glyphtype LabelGlyph");
+</pre>
+        The following portion of <code>parseLine</code> can now be simplified
+        from
+<pre>
+if (parseLabel(theTokens, item)) {
+  this.map.configure(configuration); // Reconfigure because of label.
+}
+</pre>
+        to
+<pre>
+parseLabel(theTokens, item);
+</pre>
+        Finally, the label is added without configuring the map.
+        Instead addItem is called with a reference to our factory.
+        Hence, change the lines
+<pre>
+this.map.configure("-glyphtype LabelGlyph");
+LabelGlyph label = (LabelGlyph)this.map.addItem(0, 0);
+</pre>
+        to
+<pre>
+LabelGlyph label = (LabelGlyph)map.addItem(labelFactory, 0, 0);
+</pre>
+
+
+Here is the way the applet looks now, using the same inputs
+as on the <a href="Labels.html">previous page</a>.
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.SimpleMap2"
+        height=150
+        width=570
+>
+<param name="config" value='
+Range     1  100
+Offsets -20  100
+Glyph    10   30 "-glyphtype com.affymetrix.genoviz.glyph.FillRectGlyph -color blue -offset 10"
+Glyph    40   60 ""
+Glyph    40   60 "-glyphtype com.affymetrix.genoviz.glyph.TriangleGlyph -color black -offset 25"
+Glyph    56   70 "-glyphtype com.affymetrix.genoviz.glyph.FillOvalGlyph -color red"
+Glyph    20   50 "-glyphtype com.affymetrix.genoviz.glyph.ArrowGlyph" labeled left "An Arrow"
+'>
+</applet>
+</div>
+
+
+<p>Here is the full 
+<a href="../demo/src/genoviz/tutorial/SimpleMap2.java">source</a>.
+
+<h2>        Next: <a href="Scaling.html">Scaling</a>
+</h2>
+
+</body>
+</html>

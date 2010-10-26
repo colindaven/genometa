@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>        Scaling with Focus
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>        Scaling with Focus
+</h1>
+<p>        You can set a particular spot on the map to zoom into.
+In this example,
+the center or focus of zooming is set to wherever you click with the mouse.
+It is helpful to have a graphic representation of where the focus is.
+To that end we add a hairline glyph.
+</p>
+<p> Try clicking and zooming on the map below.
+</p>
+
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.HairMap"
+        height="150"
+        width="570"
+>
+<param name="config" value='
+Range     1  200
+Offsets -20  100
+Glyph    20   60 "-glyphtype com.affymetrix.genoviz.glyph.FillRectGlyph -color blue -offset 10"
+Glyph    80  120 ""
+Glyph    80  120 "-glyphtype com.affymetrix.genoviz.glyph.TriangleGlyph -color black -offset 25"
+Glyph   112  140 "-glyphtype com.affymetrix.genoviz.glyph.FillOvalGlyph -color red"
+Glyph    40  100 "-glyphtype com.affymetrix.genoviz.glyph.ArrowGlyph" labeled left "An Arrow"
+'>
+</applet>
+</div class="applet">
+
+<p>        The <a href="../demo/src/genoviz/tutorial/HairMap.java">source</a> reveals
+small changes to our previous program.
+We add a VisibleRange named zoomPoint.
+We create a Shadow on our map and add our zoomPoint as a listener.
+Next we adjust the zoomPoint from a mouse listener when we get mouse clicks.
+The zoomPoint then turns around and notifies its listeners.
+One of them is the shadow glyph which gets repositioned.
+The other is an internal class that sets our map's zoom behavior.
+</p>
+
+<h2>         Exercises
+</h2>
+<ol>
+<li>        Set it up so that the zoomPoint starts in the middle.
+<li>        Add a sequence glyph to see how the hairline (Shadow)
+                is the width of one residue.
+        <br><I>Hint: since the parseInputString method inherited from
+        SimpleMap0.java is executing a map.clearWidget() method,
+        you'll need to override the parseInputString method.
+        Call the super.parseInputString() method, then use
+        map.configure() and map.addItem() to add your SequenceGlyph.</I>
+</li>
+</ol>
+
+<h2>        Next: <a href="Styling.html">Styling</a>
+</h2>
+
+</body>
+</html>

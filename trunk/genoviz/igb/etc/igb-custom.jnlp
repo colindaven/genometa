@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="6.0+" codebase="CODE_BASE_HERE" href="igb-custom.jnlp">
+	<information>
+		<!-- These can be customized for a particular site -->
+		<title>IGB (Vendor)</title>
+		<vendor>Genoviz Project</vendor>
+		<homepage href="http://genoviz.sourceforge.net/" />
+		<description>Integrated Genome Browser (Vendor)</description>
+		<icon href="http://bioviz.org/igb/releases/current/igb.gif"/>
+		<icon href="http://bioviz.org/igb/releases/current/igb_splash.gif" kind="splash" />
+		<offline-allowed/>
+		<!-- Should IGB install  shortcut?  NOTE: Windows/Linux appear not to ask the user -->
+		<shortcut online="true">
+			<desktop/>
+			<menu submenu="IGB" />
+		</shortcut>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<!-- The maximum heap size IGB can use.  Use multiple copies of this file for each heap size you want -->
+		<java version="1.6+" initial-heap-size="32m" max-heap-size="1024m"/>
+		<!-- The most current release.  Comment this out if you want to serve a specific release -->
+		<extension name="IGB" href="http://bioviz.org/igb/releases/current/igb-base.jnlp" />
+		<!-- How to serve a specific release (6.2).   Version 6.2 and above can be used in this manner -->
+		<!-- <extension name="IGB" href="http://bioviz.org/igb/releases/igb-6.2/igb-base.jnlp" /> -->
+
+		<!-- Please create a custom user agent noting IGB and vendor name -->
+		<property name="http.agent" value="IGB/Vendor (Webstart)" />
+	</resources>
+	<application-desc main-class="com.affymetrix.igb.IGB">
+		<!-- Point this at your own preferences file for customization -->
+		<argument>-prefs</argument>
+		<argument>http://bioviz.org/igb/releases/current/igb_prefs.xml</argument>
+	</application-desc>
+</jnlp>

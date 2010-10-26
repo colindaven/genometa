@@ -1,0 +1,497 @@
+<?xml version="1.0"?>
+<!DOCTYPE IGB_STYLESHEET SYSTEM "http://genoviz.sourceforge.net/formats/stylesheets/igb_stylesheet_0_1.dtd"
+>
+<!--
+
+Most stylesheets should use a descriptor like this:
+
+<!DOCTYPE IGB_STYLESHEET PUBLIC "-//genoviz//IGB Stylesheet 0.1//EN"
+    "http://genoviz.sourceforge.net/formats/stylesheets/igb_stylesheet_0_1.dtd"
+>
+
+But in this case, we have a local copy of the DTD named "igb_stylesheet.dtd"
+
+-->
+
+<IGB_STYLESHEET
+  version="0.1"
+  dtd="http://genoviz.sourceforge.net/formats/stylesheets/igb_stylesheet_0_1.dtd">
+
+<STYLES>
+
+  <STYLE name="stacked boxes" container="/" >
+    <GLYPH type="filled_box">
+      <CHILDREN>
+        <USE_STYLE name="stacked boxes" container="/" />
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+  <STYLE name="recursive boxes">
+    <GLYPH type="box">
+      <CHILDREN>
+        <USE_STYLE name="recursive boxes"/>
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+  <STYLE name="recursive two-color">
+    <!-- Outer glyph uses default color -->
+    <GLYPH type="filled_box">
+      <CHILDREN>
+        <STYLE>
+          <!-- Inner glyph is WHITE -->
+          <PROPERTY key="color" value="FFFFFF" />
+          <GLYPH type="filled_box">
+            <CHILDREN>
+              <PROPERTY key="color" value="" /> <!-- Cancels out the color set above. -->
+              <USE_STYLE name="recursive two-color"/>
+            </CHILDREN>
+          </GLYPH>
+        </STYLE>
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+  <STYLE name="boxes in boxes">
+    <GLYPH type="filled_box">
+      <CHILDREN>
+        <STYLE>
+          <PROPERTY key="color" value="00FF00"/>
+          <GLYPH type="filled_box">
+            <CHILDREN>
+              <STYLE>
+                <PROPERTY key="color" value="F00F00"/>
+                <GLYPH type="filled_box">
+                  <CHILDREN>
+                    <STYLE>
+                      <PROPERTY key="color" value="FF00FF"/>
+                      <GLYPH type="filled_box">
+                        <CHILDREN>
+                          <STYLE>
+                            <PROPERTY key="color" value="0FF0F0"/>
+                            <GLYPH type="filled_box">
+                              <CHILDREN>
+                                <PROPERTY key="color" value=""/> <!-- Go back to default color -->
+                                <USE_STYLE name="boxes in boxes"/>
+                              </CHILDREN>
+                            </GLYPH>
+                          </STYLE>
+                        </CHILDREN>
+                      </GLYPH>
+                    </STYLE>
+                  </CHILDREN>
+                </GLYPH>
+              </STYLE>
+            </CHILDREN>
+          </GLYPH>
+        </STYLE>
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+  <STYLE name="labeled mrna"> <!-- an mRNA with exons and a label -->
+    <GLYPH type="line">
+      <PROPERTY key="indexed" value="true"/>
+      <PROPERTY key="labeled" value="true"/>
+      <CHILDREN>
+        <STYLE>
+          <GLYPH type="filled_box"/>
+        </STYLE>
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+  <STYLE name="plain mrna"> <!-- an mRNA with exons and a label -->
+    <GLYPH type="line">
+      <PROPERTY key="indexed" value="true"/>
+      <CHILDREN>
+        <STYLE>
+          <GLYPH type="filled_box"/>
+        </STYLE>
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+<!-- Begin WTA section -->
+  <STYLE name="WTA">
+    <MATCH test="type" param="transcript-cluster">
+      <USE_STYLE name="WTA-tr-cluster"/>
+    </MATCH>
+    <MATCH test="type" param="exon-cluster">
+      <USE_STYLE name="WTA-exon-cluster"/>
+    </MATCH>
+    <MATCH test="type" param="intron-cluster">
+      <USE_STYLE name="WTA-exon-cluster"/>
+    </MATCH>
+    <MATCH test="type" param="psr">
+      <USE_STYLE name="WTA-psr"/>
+    </MATCH>
+    <MATCH test="type" param="probe-set">
+      <USE_STYLE name="WTA-probeset"/>
+    </MATCH>
+    <MATCH test="type" param="probeset"> <!-- Check for both spellings, just in case -->
+      <USE_STYLE name="WTA-probeset"/>
+    </MATCH>
+    <ELSE>
+      <!-- Even if there is no style called "default", this will
+           result in *some* default style being used.
+        -->
+      <USE_STYLE name="default"/>
+    </ELSE>
+  </STYLE>
+
+  <STYLE name="WTA-tr-cluster">
+    <GLYPH type="line">
+      <PROPERTY key="indexed" value="false"/>
+      <PROPERTY key="labeled" value="false"/>
+      <PROPERTY key="label_field" value="transcript_cluster_id"/>
+      <CHILDREN>
+        <PROPERTY key="labeled" value="false"/> <!-- prevent from cascading as "true" -->
+        <!-- Children should be of type "exon-cluster" or "intron-cluster" -->
+        <USE_STYLE name="WTA" container="."/>
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+  <STYLE name="WTA-exon-cluster">
+    <GLYPH type="box">
+      <CHILDREN>
+        <!-- Most children should be of type "psr",
+        draw those either inside the exon-cluster "."
+        or the transcript-cluster ".."
+        Both work, but the packing is a bit different.
+        -->
+        <MATCH test="type" param="psr">
+          <USE_STYLE name="WTA-psr" container=".."/>
+        </MATCH>
+        <!-- Draw any other children outside the exon-cluster -->
+        <ELSE>
+          <USE_STYLE name="WTA" container="/"/>
+        </ELSE>
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+  <STYLE name="WTA-psr">
+    <!-- Would maybe like to SKIP the PSR's that have no children -->
+    <GLYPH type="filled_box">
+      <CHILDREN>
+        <USE_STYLE name="WTA" container="/" />
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+  <STYLE name="WTA-probeset"> <!-- NOTE: Also need to deal with probe pieces (6 level) -->
+    <GLYPH type="line">
+      <PROPERTY key="indexed" value="true"/>
+      <PROPERTY key="labeled" value="false"/>
+      <PROPERTY key="label_field" value="probeset_id"/>
+      <CHILDREN>
+        <STYLE>
+          <GLYPH type="filled_box"/>
+        </STYLE>
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+<!-- End WTA section -->
+
+<!-- Begin Canonical GFF3 section -->
+<!--
+
+Defines styles for display of basic CANONICAL GFF3 files.
+See http://song.sourceforge.net/gff3.shtml
+
+Most GFF3 files currently in existence are NOT canonical and
+will not work well with these styles.
+
+-->
+  <STYLE name="cannonical-gff3">
+    <MATCH test="type" param="gene">
+      <USE_STYLE name="cannonical-gff3-gene" />
+    </MATCH>
+    <MATCH test="type" param="mrna">
+      <USE_STYLE name="cannonical-gff3-mrna" />
+    </MATCH>
+    <MATCH test="type" param="exon">
+      <USE_STYLE name="cannonical-gff3-exon"/>
+    </MATCH>
+    <MATCH test="type" param="cds">
+      <USE_STYLE name="labeled mrna"/>
+    </MATCH>
+    <ELSE>
+      <!-- This rule catches anything that is not canonical. -->
+      <USE_STYLE name="boxes in boxes" />
+    </ELSE>
+  </STYLE>
+
+  <STYLE name="cannonical-gff3-exon"> <!-- GFF3 exons are unfilled. GFF3 CDS are filled. -->
+    <GLYPH type="pointed">
+      <PROPERTY key="indexed" value="true"/>
+    </GLYPH>
+  </STYLE>
+
+  <STYLE name="cannonical-gff3-gene">
+    <GLYPH type="box">
+      <PROPERTY key="indexed" value="true"/>
+      <GLYPH type="arrow">
+        <PROPERTY key="indexed" value="true"/>
+        <PROPERTY key="direction" value="5to3"/>
+        <PROPERTY key="color" value="00F0F0"/>
+        <PROPERTY key="labeled" value="true"/> <!-- currently ignored for arrows -->
+      </GLYPH>
+      <CHILDREN>
+        <USE_STYLE name="cannonical-gff3"/>
+      </CHILDREN>
+    </GLYPH>
+  </STYLE>
+
+
+  <STYLE name="cannonical-gff3-mrna">
+    <GLYPH type="hidden">  <!-- changing this to "none" has a weird effect -->
+      <GLYPH type="line">
+        <PROPERTY key="indexed" value="true"/>
+        <PROPERTY key="labeled" value="true"/>
+        <CHILDREN>
+          <MATCH test="type" param="exon">
+            <USE_STYLE name="cannonical-gff3-exon"/>
+          </MATCH>
+          <ELSE>
+            <USE_STYLE name="cannonical-gff3" container=".."/>
+          </ELSE>
+        </CHILDREN>
+      </GLYPH>
+
+      <GLYPH type="filled_box">
+      <CHILDREN>
+        <MATCH test="type" param="exon">
+          <!-- I cannot specify to not redraw the exons -->
+          <STYLE>
+            <PROPERTY key="color" value="FF00FF"/>
+            <GLYPH type="none"/> <!-- "none" does not work! -->
+          </STYLE>
+        </MATCH>
+        <ELSE>
+          <PROPERTY key="color" value="FF0000"/>
+          <USE_STYLE name="recursive boxes" />
+        </ELSE>
+      </CHILDREN>
+      </GLYPH>
+    </GLYPH>
+  </STYLE>
+<!-- End Canonical GFF3 section -->
+
+
+</STYLES>
+
+<ASSOCIATIONS>
+
+  <METHOD_ASSOCIATION  method='huex-1_0-st' style="WTA"/>
+
+  <METHOD_ASSOCIATION method="Probesets"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+    <PROPERTY key="child_glyph" value="com.affymetrix.igb.glyph.EfficientOutlinedRectGlyph"/>
+  </METHOD_ASSOCIATION>
+
+  <METHOD_ASSOCIATION method="PSRs"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+    <PROPERTY key="child_glyph" value="com.affymetrix.igb.glyph.EfficientOutlinedRectGlyph"/>
+  </METHOD_ASSOCIATION>
+
+
+<!-- putting this ".*" regex assocation element before any other regex association elements 
+     ensure that if none of the other association elements matches an annotation method/type, 
+     then annotations of that type will be rendered with GenericAnnotGlyphFactory and default settings 
+-->
+  <METHOD_REGEX_ASSOCIATION regex='.*'
+    style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory"
+   />
+
+<!--  commented out example exercising most of the PROPERTY keys that 
+      control configuration of GenericAnnotGlyphFactory
+      
+      'regex' attribute only needs to match a substring of an annotation type name to be considered a match
+      Prefix with "(?i)" for case insensitive matching
+      Prefix with "^" to anchor to beginning of type name
+      Prefix with "$" to anchor to end of type name
+  <METHOD_REGEX_ASSOCIATION regex="(?i)regex_matches_substring_of_annotation_type"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="00FFFF" />
+       <PROPERTY key="background" value="BBA000" /> 
+       <PROPERTY key="label_field" value="gene name" />
+       <PROPERTY key="max_depth" value="3" />  max stacking level of annots when expanded
+       <PROPERTY key="glyph_depth" value="1" />  if = 2, render connecting lines, if = 1, no connections
+       <PROPERTY key="separate" value="false" />  if true, then render as two tiers (+ and -), if false then one tier
+       NOT SURE IF THIS WORKS: <PROPERTY key="annot_type" value="refseq" /> 
+  </METHOD_REGEX_ASSOCIATION>
+-->
+
+  <!-- Configure the probe set display -->
+  <!-- Case-insensitive match of the ending ".link.psl" -->
+  <METHOD_REGEX_ASSOCIATION regex="(?i).*\.link\.psl$" style="com.affymetrix.igb.glyph.ProbeSetDisplayGlyphFactory" />
+  <METHOD_REGEX_ASSOCIATION regex="(?i)netaffx consensus$" style="com.affymetrix.igb.glyph.ProbeSetDisplayGlyphFactory" />
+  <METHOD_REGEX_ASSOCIATION regex="(?i)netaffx\+consensus$" style="com.affymetrix.igb.glyph.ProbeSetDisplayGlyphFactory" />
+  <!-- End of probe set display section -->
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)refseq$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="00FF00" > green </PROPERTY>
+       <PROPERTY key="label_field" value="gene name" />
+       <!--<PROPERTY key="max_depth" value="3" /> -->
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)knowngene$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="6495ED" > cornflowerblue </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)ensgene$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="7FFFD4" > aquamarine </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)mgcgene(s?)$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+    <PROPERTY key="color" value="FFB6C1" > lightpink </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)mrna$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="FFFF00" > yellow </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)est$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="DAA520" > goldenrod </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)genscan$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="DDA0DD"> plum </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)flybasegene$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="00FF00" > green </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)bdgpgene$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="00FF00" > green </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)tair$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+       <PROPERTY key="color" value="00FF00" > green </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)sanger_pombe$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory" >
+    <PROPERTY key="color" value="00FF00" > green </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+<!-- "Flat" annotation types (no child annotations), so glyph depth = 1  -->
+  <METHOD_REGEX_ASSOCIATION regex="(?i)contig(s?)$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory" >
+    <PROPERTY key="glyph_depth" value="1" />
+    <PROPERTY key="child_glyph" value="com.affymetrix.igb.glyph.EfficientOutlinedRectGlyph"/>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)repeat(s?)$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory" >
+    <PROPERTY key="glyph_depth" value="1" />
+    <PROPERTY key="color" value="A0A000" />
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)firstef$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory" >
+    <PROPERTY key="glyph_depth" value="1" />
+    <PROPERTY key="color" value="FFA07A" > lightsalmon </PROPERTY>
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)sno_m(i?)rna$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory" >
+    <PROPERTY key="glyph_depth" value="1" />
+    <PROPERTY key="color" value="A000A0" />
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)mirna$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory" >
+    <PROPERTY key="glyph_depth" value="1" />
+    <PROPERTY key="color" value="A000A0" />
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)(encode|encode regions|encoderegions)$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory" >
+     <PROPERTY key="glyph_depth" value="1" />
+     <PROPERTY key="color" value="FF8000" />
+  </METHOD_REGEX_ASSOCIATION>
+
+  <METHOD_REGEX_ASSOCIATION regex="(?i)flybasenoncoding$"
+     style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory" >
+    <PROPERTY key="glyph_depth" value="1" />
+    <PROPERTY key="color" value="A000A0" />
+  </METHOD_REGEX_ASSOCIATION>
+
+<!-- end of "Flat" annotation types section -->
+
+  <METHOD_REGEX_ASSOCIATION regex="^coverage: ."
+      style="com.affymetrix.igb.glyph.CoverageSummarizerFactory">
+    <PROPERTY key="style" value="coverage"/>
+    <PROPERTY key="height" value="100"/>
+  </METHOD_REGEX_ASSOCIATION>
+
+<METHOD_REGEX_ASSOCIATION regex="_tf$"
+     style="com.affymetrix.igb.glyph.CoverageSummarizerFactory">
+    <PROPERTY key="style" value="coverage"/>
+    <PROPERTY key="height" value="100"/>
+</METHOD_REGEX_ASSOCIATION>
+
+<!-- Files named "snpMap_Mapping10K", etc., have been renamed as "Mapping10K", etc. -->
+<METHOD_REGEX_ASSOCIATION regex="^snpMap_"
+     style="com.affymetrix.igb.glyph.CoverageSummarizerFactory">
+    <PROPERTY key="style" value="coverage"/>
+    <PROPERTY key="height" value="200"/>
+</METHOD_REGEX_ASSOCIATION>
+
+<!-- Match names like Mapping10K Mapping100K Mapping500K -->
+<METHOD_REGEX_ASSOCIATION regex="Mapping[0-9]+K$"
+     style="com.affymetrix.igb.glyph.CoverageSummarizerFactory">
+    <PROPERTY key="style" value="coverage"/>
+    <PROPERTY key="height" value="200"/>
+</METHOD_REGEX_ASSOCIATION>
+
+<METHOD_REGEX_ASSOCIATION regex="^RepeatMasker_"
+     style="com.affymetrix.igb.glyph.CoverageSummarizerFactory">
+    <PROPERTY key="style" value="coverage"/>
+    <PROPERTY key="height" value="200"/>
+</METHOD_REGEX_ASSOCIATION>
+
+
+<!-- Configure the All-Exon arrays "HuEx-1_0-st", "MuEx-1_0-st", "RaEx-1_0-st" -->
+<!--
+  Must match all these names:  (and similar ones for non-human chips)
+    "HuEx-1_0-st", "HuEx-1_0-st-Probes", "HuEx-1_0-st-Transcripts"
+    "HuEx-1_0-st-chr1-Probes" (and chr2, etc.), "HuEx-1_0-st-chr1-Transcripts" (and chr2, etc.)
+-->
+<METHOD_REGEX_ASSOCIATION regex="^.*Ex-1_0-st.*Probes$"
+  style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+    <PROPERTY key="child_glyph" value="com.affymetrix.igb.glyph.EfficientOutlinedRectGlyph"/>
+    <PROPERTY key="label_field" value="id"/>
+</METHOD_REGEX_ASSOCIATION>
+<METHOD_REGEX_ASSOCIATION regex="^.*Ex-1_0-st.*Transcripts$"
+  style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+    <PROPERTY key="child_glyph" value="com.affymetrix.igb.glyph.EfficientOutlinedRectGlyph"/>
+    <PROPERTY key="label_field" value="id"/>
+</METHOD_REGEX_ASSOCIATION>
+
+<!-- This is for the 5-level GFF files -->
+<METHOD_REGEX_ASSOCIATION regex="^.*Ex-1_0-st$"
+  style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
+    <PROPERTY key="child_glyph" value="com.affymetrix.igb.glyph.EfficientOutlinedRectGlyph"/>
+    <PROPERTY key="label_field" value="probeset_id"/>
+</METHOD_REGEX_ASSOCIATION>
+
+</ASSOCIATIONS>
+
+</IGB_STYLESHEET>

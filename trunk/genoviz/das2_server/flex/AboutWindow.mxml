@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+	title="About GenoPub"
+	showCloseButton="true" 
+	width="598" 
+	height="448"
+	verticalGap="0"
+	close="closeWindow()"
+	layout="vertical" backgroundAlpha="100" defaultButton="{cancelButton}">
+
+    
+       
+    <mx:Script>
+	<![CDATA[
+	
+	import mx.managers.PopUpManager;
+	import mx.rpc.events.ResultEvent;
+	import mx.controls.Alert;
+	
+	
+    private function closeWindow():void {
+		PopUpManager.removePopUp(this);		
+	}
+	
+	]]>
+    </mx:Script>
+    
+    <mx:VBox width="100%" height="100%" verticalGap="8" styleName="panelBody">
+	    <mx:Label text="GenoPub, version 1.0.0 " fontWeight="bold" width="100%" textAlign="center" textDecoration="normal"/>
+	    <mx:VBox height="100%" width="100%"  verticalGap="14">
+	        <mx:Text text="GenoPub (Genomic Annotation Publisher) was developed by the Hunstman Cancer Institute at the University of Utah.  This web-based tool provides a user-friendly mechanism for annotating and organizing genomic datasets.  Through this tool, users and groups are managed and genomic dataset security is specified.  This security information, along with the dataset's annotations and folder structure are stored in a relational database.  GenoPub interfaces with DAS/2 to pass meta data in the DAS/2 types response as property key values and uses the security information to broker access so that only authorized users can gain access to the DAS/2 resources.  &#xa;&#xa;GenoPub is part of  the open source Genoviz project, which develops interactive visualization software for genomics.  Affymetrix, Inc., donated Genoviz and IGB to the open source community in 2004.&#xa;&#xa;Genoviz receives support from National Science Foundation's Arabidopsis 2010 program and from a growing community of developers and scientists." width="100%"/>
+	        <mx:VBox width="100%" verticalGap="0">
+	            <mx:Text width="100%" text="Source code for GenoPub is released under the Common Public License, v1.0.  For details see: "/>
+	            <mx:LinkButton label="Genoviz project in Sourceforge " click="navigateToURL(new URLRequest('http://genoviz.sourceforge.net'), '_blank');" textDecoration="underline" color="#0000ff" paddingLeft="0" paddingTop="0" fontWeight="normal"/>
+	            <mx:LinkButton label="Apache license" click="navigateToURL(new URLRequest('http://www.apache.org/licenses/LICENSE-2.0'), '_blank');" textDecoration="underline" color="#0000ff" paddingLeft="0" paddingTop="0" fontWeight="normal"/>
+	        </mx:VBox>
+	        <mx:VBox verticalGap="0" width="100%">
+		        <mx:Text text="GenoPub uses the Flex SDK open source package from Adobe.  For details see:" width="100%"/>
+		        <mx:LinkButton label="Adobe Open Source" click="navigateToURL(new URLRequest('http://opensource.adobe.com/wiki/display/flexsdk/Flex+SDK;'), '_blank');" textDecoration="underline" color="#0000ff" paddingLeft="0" paddingTop="0" fontWeight="normal"/>
+	        </mx:VBox>
+	        <mx:HBox horizontalGap="0"  verticalAlign="middle" width="100%">
+	        	<mx:Text text="Application icons by"/>
+	        	<mx:LinkButton label="FamFamFam Silk Icons" click="navigateToURL(new URLRequest('http://www.famfamfam.com/lab/icons/silk/'), '_blank');" textDecoration="underline" color="#0000ff" fontWeight="normal"/>
+	        </mx:HBox>
+		
+	    </mx:VBox>
+    </mx:VBox>
+
+	<mx:ControlBar horizontalAlign="right" height="40">
+		<mx:Button id="cancelButton" label="Close" click="closeWindow()"/>
+	</mx:ControlBar>
+</mx:TitleWindow>

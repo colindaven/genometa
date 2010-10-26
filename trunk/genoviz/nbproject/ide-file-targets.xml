@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir=".." name="IGB-IDE">
+	<import file="../build.xml"/>
+	<target name="run-selected-file-in-src" depends="demos">
+		<fail unless="run.class">Must set property 'run.class'</fail>
+		<java classname="${run.class}" failonerror="true" fork="true">
+			<classpath>
+				<pathelement path="genoviz_sdk/demo" />
+				<fileset dir="${lib.dir}" includes="*.jar" />
+				<dirset dir="${basedir}">
+					<include name="*/build" />
+				</dirset>
+			</classpath>
+		</java>
+	</target>
+</project>

@@ -1,0 +1,53 @@
+This software may be distributed along with software developed 
+by third-parties, covered by separate licenses.
+
+A)   This product may include portions of the Jetty package 
+     from Mort Bay Consulting.
+     (Starting with IGB 5.12, only the das2_server code relies on Jetty.)
+     http://jetty.mortbay.org/jetty/
+
+     Jetty also uses the Apache license found at
+     http://www.apache.org/licenses/LICENSE-2.0    
+
+     The files from the Jetty project included with this product include: 
+     org.mortbay.jetty.jar, javax.servlet.jar
+
+B)   This product includes a copy of the Fusion SDK from 
+     Affymetrix, Inc. (pure Java version).
+     http://www.affymetrix.com/support/developer/fusion/index.affx
+
+     The Fusion SDK is covered by the GNU Lesser General Public License,
+     Version 2.1, February 1999.
+
+     http://www.gnu.org/copyleft/lesser.html
+
+     The GenoViz project disclaims all copyright interest in the "Fusion SDK".
+     This copy of the fusion sdk is stored in the file affx_fusion.jar
+
+C)   This product may include the Java look and feel Graphics Repository
+     Copyright 1994-2006 Sun Microsystems, Inc.
+     http://java.sun.com/developer/techDocs/hi/repository/
+
+     The file, if present, will be named jlfgr-1_0.jar, in the "ext" directory.
+     The license file is included in the "ext" directory.
+
+     IGB can be used with or without this jar file.
+
+
+D)   This product includes portions of the Vector Graphics software library 
+     developed by the FreeHEP project, which is covered by the 
+     GNU Lesser General Public License, version 2.1.
+
+     http://java.freehep.org/vectorgraphics/index.html
+
+     The files from this project are bundled together in freehep.jar
+     A copy of the license is included in the file FREEHEP_LICENSE_LGPL.txt.
+
+E)   This product includes portions of the Picard software library
+     developed by the Picard SourceForge project, which is covered by the
+     Apache License, version 2.0.
+
+     http://sourceforge.net/projects/picard/
+
+     The files from this project are bundled together in sam*.jar.
+ 

@@ -1,0 +1,68 @@
+##gff-version 1
+#
+# This is an example of gff1, so the final field is the "group" field
+# and is NOT a list of attributes
+#
+# We expect IGB to ignore the browser line, but the UCSC browser uses it
+browser position chr22:1-1300
+#
+track name="Track A" url="http://www.google.com/search?q=$$" useScore=1 color=200,0,0 visibility=2 
+#
+# These first three are single exons without an mRNA
+chr22	Testing	exon	100	200	200	+	.	foo1 
+chr22	Testing	exon	400	500	400	+	.	foo2
+chr22	Testing	exon	600	700	600	+	.	foo3
+#
+# The following two exons should be joined into a single mRNA called "foo4"
+chr22	Testing	exon	1085	1110	800	+	.	foo4
+chr22	Testing	exon	1120	1135	200	+	.	foo4
+#
+# This is a 3-exon mRNA on the reverse strand.  Note that the exons are listed out-of-order
+chr22	Testing	exon	450	708	1000	-	.	foo5
+chr22	Testing	exon	420	430	500	-	.	foo5
+chr22	Testing	exon	720	800	900	-	.	foo5
+#
+# Test using the scores to determine color shading
+# (Note that the UCSC browser restritcs this to certain colors, including 0,60,120 and 100,50,0)
+# (The UCSC browser restricts scores to the range 1-1000, although it claims to handle 0-1000)
+track name="Scored Track" useScore=1 color=0,60,120 visibility="pack"
+chr22	Testing	exon	110	200	1	+	.	xxx1
+chr22	Testing	exon	210	300	100	+	.	xxx2
+chr22	Testing	exon	310	400	200	+	.	xxx3
+chr22	Testing	exon	410	500	300	+	.	xxx4
+chr22	Testing	exon	510	600	400	+	.	xxx5
+chr22	Testing	exon	610	700	500	+	.	xxx6
+chr22	Testing	exon	710	800	600	+	.	xxx7
+chr22	Testing	exon	810	900	700	+	.	xxx8
+chr22	Testing	exon	910	1000	800	+	.	xxx9
+chr22	Testing	exon	1010	1100	900	+	.	xxx10
+chr22	Testing	exon	1110	1200	1000	+	.	xxx11
+# one mrna with several exons with different scores
+# The UCSC browser uses a single color, from the average score
+chr22	Testing	exon	100	300	100	+	.	yyy
+chr22	Testing	exon	400	600	300	+	.	yyy
+chr22	Testing	exon	700	900	600	+	.	yyy
+chr22	Testing	exon	1000	1200	900	+	.	yyy
+# Several exons, but all with the same score
+chr22	Testing	exon	100	200	200	+	.	zzz
+chr22	Testing	exon	310	400	200	+	.	zzz
+chr22	Testing	exon	510	600	200	+	.	zzz
+chr22	Testing	exon	710	800	200	+	.	zzz
+chr22	Testing	exon	910	1000	200	+	.	zzz
+chr22	Testing	exon	1110	1200	200	+	.	zzz
+#
+# Test conflicts between specifying the track name on the track line versus the "source" column
+# (The track line name should become the "method" and the "source" remains distinct.)
+track name="Track B" color=200,0,200
+chr22	sourceB	exon	110	200	.	+	.	abc1
+track name="Track C" color=10,150,10 visibility="pack"
+chr22	sourceC	exon	210	300	.	+	.	abc2 
+chr22	sourceB	exon	310	400	.	+	.	abc3 
+chr22	sourceD	exon	410	500	.	+	.	abc4 
+#
+#
+#  If we try to re-use the track name "track A" but with a different color,
+#  The UCSC browser will throw away all the "track A" data from above.
+#  IGB will keep all the data, but the color, and other properties, are undefined.
+#track name="Track A" color=0,0,200 visibility=2 
+#chr22	Testing	exon	850	950	600	+	.	foo_bar

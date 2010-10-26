@@ -1,0 +1,393 @@
+#!/bin/sh
+
+# $Id: das2launch 3864 2009-06-18 18:21:33Z sgblanch $
+#
+# das2launch    Launcher script for the Genometry DAS/2 server
+#
+# Author: Steve Chervitz <steve_chervitz@affymetrix.com>
+#
+# This script assembles parameters and executes the java command for the
+# Genometry DAS/2 server included in the SourceForge GenoViz project: 
+# http://genoviz.sourceforge.net 
+#
+# The lifetime of the script is coupled to the lifetime of 
+# the java process so that when the script's process is killed, the DAS/2 
+# java process is killed as well. It does this by keeping track of the PID 
+# of the invoked java process and setting a signal trap to clean it up
+# when the script terminates.
+#
+# This arrangement enables the DAS/2 server process to be managed as a
+# standard Redhat-style linux daemon via the das2d script (c.f.).
+# Or, you could just invoke it directly to start the server as needed.
+#
+# USAGE:
+#    Invoking this script will launch the server.
+#    Run this script with a -h argument for a list of optional arguments
+#
+# CUSTOMIZATION NOTICE:
+#    This script must be customized prior to installation. 
+#    Edit the variables as needed in the section marked as customizable.
+#
+# INSTALLATION:
+#  * Ensure this script is executable (chmod 755).
+#
+#  * Build the genoviz jars, which can be done using the ant command
+#    `ant clean all` in the top level genoviz directory. Install these
+#    jars in $JAR_DIR/genoviz. These include:
+#            das2_server.jar
+#            genometryImpl.jar
+#            genometry.jar
+#            genoviz.jar
+#            igb.jar
+#
+#  * Install the external jars in $JAR_DIR/external. These include:
+#            javax.servlet.jar
+#            org.mortbay.jetty.jar
+#          
+#  * If you want to use this script to manage the DAS/2 server as a
+#    standard linux daemon, you'll need to have root access on the
+#    target machine. Then install das2d into /etc/init.d/ and edit it
+#    to point at this das2launch script. See the das2d script for
+#    more information.
+#
+# NOTES
+#   * Don't stop this script via `kill -9` since doing so will 
+#     prevent it from killing its child DAS/2 server process.
+#
+#   * To keep track of the running DAS/2 process, this script creates
+#     a pid file named 'das2-NNNN-YYYY-MM-DD.pid' (where NNNN is the
+#     port number) located in the directory pointed at by the TMP_DIR
+#     variable.  It also creates a log file to capture all output from
+#     the DAS/2 server, also in the TMP_DIR.
+#
+#   * The DAS/2 Genometry servlet will, by default, launch and attach
+#     itself to a Jetty servlet server ( http://jetty.mortbay.com )
+#     running a port specified by the PORT variable in this script.
+#     It is also possible to run the DAS/2 server from another servlet
+#     engine, such as Tomcat. This script assumes the use of Jetty.
+#
+#   * If the port specified by the PORT variable is already in use,
+#     this script will abort. If port usage cannot be ascertained and
+#     there is a pre-existing pid file, this script will issue a
+#     warning and will overwrite the pid file. 
+#
+#     A pre-existing pid file could be harmless, caused by a system
+#     crash due to power outage, for example. Or, it could mean there
+#     is a currently running DAS/2 server on that port, which will
+#     lead to a port conflict. In this case, you'll need to kill any
+#     currently running server before launching a new one.
+#
+#     Any port conflict will arise only after the new server instance
+#     finishes loading data, which could take hours depending on size
+#     of DATA_DIR. So it's wise to always keep an eye on the server
+#     log file after any launch attempt.
+#  
+#   * DAS/2 server uptime can be tracked using a network monitor, such
+#     as Mon: http://mon.wiki.kernel.org
+#
+#   * Some ideas for this script were obtained from 
+#     http://blog.spikesource.com/javaprocessid.htm
+#
+#   * About the genometry DAS/2 server:
+#     Gregg notes on 6 Feb 2007: the das server is very permissive in what
+#     it accepts for the start of a DAS/2 query URL (this could be
+#     considered either a feature or a bug). So it doesn't care if the
+#     start of the query URL is
+#     http://netaffxdas.affymetrix.com/das2/this/doesnt/matter/H_sapiens_Mar_2006
+
+##======================================================================
+## Begin: customizable stuff
+
+# Installation-specific directories
+JAVA_HOME=/home/netaffx/bin/jdk1.6
+DATA_DIR=/home/netaffx/data/das2
+JAR_DIR=/home/netaffx/code/das2/jars
+
+JAVA=$JAVA_HOME/bin/java
+PORT=9021
+
+CONTACT_EMAIL=foo@example.com
+
+# xml:base
+# Regarding final slash on xml:base: Anything after the last slash is ignored.
+XMLBASE="http://netaffxdas.affymetrix.com/das2/genome/"
+
+# Depends on the amount of RAM on your machine (`cat /proc/meminfo`)
+# and the amount of data you want to load into the DAS/2 server.
+MAX_MEM=17000M
+INIT_MEM=5000M
+
+# It's handy to keep the genoviz jars separate from the external jars
+# to facilitate management. The external jars are not updated often.
+JARS_DIR_GENOVIZ=$JAR_DIR/genoviz
+JARS_DIR_EXTERNAL=$JAR_DIR/external
+CLASSPATH=`for j in $JARS_DIR_GENOVIZ/*.jar $JARS_DIR_EXTERNAL/*.jar; do jars="$jars:\
+$j"; done; echo $jars | sed s/^://`
+
+# If verbose is zero this script generates no output except for warnings and errors.
+verbose=${verbose:-0}
+# If testing is non-zero a dummy server will be used.
+testing=${testing:-0}
+
+## End: customizable stuff
+##----------------------------------------------------------------------
+
+
+## Other variable declarations you normally shouldn't need to modify:
+
+# Temp directory where log and das2pid file are written.
+# Must be world writable if you want run this script via a linux daemon. 
+TMP_DIR=/var/tmp/das
+
+logfile=$TMP_DIR/das2-$PORT-$(date +%F).log
+das2pidfile=$TMP_DIR/das2-$PORT.pid
+
+SERVER_CLASS=com.affymetrix.genometry.servlets.GenometryDas2Server
+RETVAL=0
+
+DUMMY_SERVER=./dummy-server.pl
+
+LSOF=/usr/sbin/lsof
+PORT_STATUS=0        
+
+##======================================================================
+## Begin: function definitions
+##
+
+function usage() {
+    local _msg=$1
+    [ -n "$_msg" ] && echo "Error: $_msg"
+     echo "Usage: $0 [Options]"
+     echo "Options:" 
+     echo "   -p NNNN : use port NNNN for DAS/2 server. Default port=$PORT." 
+     echo "   -v      : verbose mode, outputs messages to stderr." 
+     echo "   -t      : testing mode, uses $DUMMY_SERVER. Also turns on verbose mode." 
+     echo "   -h      : prints this help/usage info and exits." 
+     exit 1
+}
+   
+
+# Install signal traps.
+# Note: this won't catch SIGKILL (kill -9), which isn't catchable.
+# So the use of kill -9 will result in the DAS/2 server still running
+# after this script is killed. Therefore, only resort to kill -9 if 
+# kinder, gentler attempts fail (which is good *nix advice in general).
+# Here are some commonly used signal numbers and their names:
+#       -1  SIGHUP   hangup (ctrl-c)
+#       -2  SIGINT   interrupt
+#       -3  SIGQUIT  quit
+#       -6  SIGABRT  abort
+#       -9  SIGKILL  kill (non-catchable, non-ignorable)
+#      -15  SIGTERM  terminate
+# Note that you cannot pass any variables into the function specified
+# in the trap call. This would essentially create a closure, which bash
+# can't do (well, maybe it can, but it would probably look hairy).
+# So all variables used within the function passed into trap should be
+# defined at the time the trap command is invoked.
+function settrap {
+    trap clean_up SIGHUP SIGINT SIGQUIT SIGABRT SIGTERM
+}
+
+# Uninstall the signal traps installed by settrap
+# Shouldn't ever be needed, but never say never...
+function unsettrap {
+    trap - SIGHUP SIGINT SIGQUIT SIGABRT SIGTERM
+}
+
+# Performs program exit housekeeping and terminate the script.
+# This is the function passed into trap by settrap().
+function clean_up {
+    [ $verbose -gt 0 ] && echo "clean_up: stopping DAS/2 server." 1>&2
+    stop_server
+    RETVAL=$?
+
+    # Clean up the PID file if the server stopped successfully
+    if [ $RETVAL = 0 ]; then
+        delete_pidfile
+    else
+        echo "Warning: stop_server failed. Not removing $das2pidfile" 1>&2
+    fi
+
+    exit $RETVAL
+}
+
+# Axes the pidfile, if it exists.
+function delete_pidfile {
+    if [ -f "$das2pidfile" ]; then
+        [ $verbose -gt 0 ] && echo "Removing pid file: $das2pidfile" 1>&2
+        /bin/rm -f $das2pidfile
+    fi
+}
+
+# Checks to see if the desired port is available.
+# Sets PORT_STATUS to 2 if port is already in use, echos usage info in verbose mode.
+# Sets PORT_STATUS to 1 if port usage cannot be ascertained, echos a warning.
+# Leaves PORT_STATUS unchanged if port is available.
+function verify_port {
+    local _port=$1
+    local _portdat=
+
+    if [ -x "$LSOF" ]; then
+        _portdat=`$LSOF -i :$_port 2>&1`
+
+        # If the port is not already in use, lsof reports nothing.
+        # But the port may be listed as having no active listeners on it,
+        # in which case we can go ahead and use it.
+        # There could be many httpd processes that are in the 
+        # "CLOSE_WAIT" state on the port, which can be ignored.
+        #
+        # Sample lsof output when the DAS/2 server is running:
+        #   COMMAND  PID   USER   FD   TYPE  DEVICE SIZE NODE NAME
+        #   java    2892   root   19u  IPv6   11232       TCP *:panagolin-ident (LISTEN)
+        #   httpd   7717 apache   17u  IPv4 1568165       TCP localhost.localdomain:43031->localhost.localdomain:panagolin-ident (CLOSE_WAIT)
+        #   (lots of httpd lines like the latter)
+
+        if [ -n "$_portdat" ]; then
+            if LANG=C grep -Eq "\(LISTEN\)" $_portdat; then
+                echo -e "Warning: Port $_port is in use: \n$_portdat" 1>&2
+                PORT_STATUS=2
+            fi
+        fi
+    else
+        # There are other ways to check for port availablity
+        # Punting for now.
+        echo -e "Warning: Cannot check usage of port $_port: $LSOF not found" 1>&2
+        PORT_STATUS=1        
+    fi
+}
+
+# First try to stop it via hangup signal (HUP)
+# If that failes, it tries progressively harder ways to stop 
+# the process (INT, QUIT, TERM, KILL) and if all attempts fail,
+# returns non-zero status.
+# Non-zero status is also returned if the pidfile could not be found.
+function stop_server {
+    local _msg=
+    local _retval=0
+
+    if [ -f "$das2pidfile" ] ; then   
+        [ $verbose -gt 0 ] && echo "Killing DAS/2 server process from PID file: $das2pidfile" 1>&2
+        PID=`cat $das2pidfile`   
+        if kill -1 $PID; then
+            _msg="DAS/2 process stopped (HUP)"
+        elif kill -2 $PID; then
+            _msg="DAS/2 process stopped (INT)"
+        elif kill -3 $PID; then
+            _msg="DAS/2 process stopped (QUIT)"
+        elif kill -15 $PID ; then
+            _msg="DAS/2 process stopped (TERM)"
+        elif kill -9 $PID ; then
+            _msg="DAS/2 process stopped (KILL)"
+        else
+            _msg="Warning: DAS/2 process could not be stopped"
+            _retval=1
+        fi    
+    else
+        _msg="Warning: Unable to kill DAS/2 server process: No PID file: $das2pidfile"
+        _retval=1
+    fi 
+    [[ $verbose -gt 0 || $_retval != 0 ]] && echo $_msg 1>&2
+
+    return $_retval
+}
+
+## End: Function declarations
+##------------------------------------------------------------------------------
+
+# Process cmd line args
+while getopts ":vthp:" opt; do
+    case $opt in
+	p  ) PORT=$OPTARG;;
+	v  ) verbose=1;;
+	t  ) testing=1;verbose=1;;
+	h  ) usage;;
+	\? ) usage "unrecognized option: $OPTARG";;
+    esac
+done
+shift $(($OPTIND - 1))
+
+
+# This script uses signal trapping so that if it gets killed,
+# it cleans up the java process and PID file.
+# This enables this script to act as a proxy for the actual server
+# and thus operate as a standard executable controlled by a daemon script.
+
+# When the start command of das2d is called, it should invoke this
+# script which then calls the java command to start the DAS/2 server. 
+# This script then waits on its process ID indefinitely.
+
+# When this script is stopped by the daemon, it will leads to the DAS/2 java
+# process getting killed during the clean_up function, 
+# compliments of the signal trap.
+settrap
+
+[ $testing -eq 0 ] || echo "TESTING MODE" 1>&2
+
+# Check if the port is available
+verify_port $PORT
+
+# If there's something already using this oddball port number,
+# it's usually a sign of trouble. You might accidentally be trying to
+# re-launch the DAS/2 server, or failed to kill it before re-launching.
+# We could try to search for an available port here, but this could
+# lead to unwanted behavior (multiple DAS/2 servers instances when 
+# you only want one).
+if [ $PORT_STATUS -eq 2 ]; then
+    echo "FATAL: Cannot use port $PORT: Already in use" 1>&2
+    exit 4
+fi
+
+[ -d "$TMP_DIR" ] || mkdir -p $TMP_DIR
+
+# Record the max memory allocation for the server at top of log file.
+# This also tests the ability to write to the log file.
+echo "Server MAX RAM=$MAX_MEM" > $logfile
+RETVAL=$?
+if [ $RETVAL != 0 ]; then
+    echo "FATAL: Unable to write to DAS/2 server logfile: $logfile"  1>&2
+    exit 3
+fi
+
+[ $verbose -gt 0 ] && echo "DAS/2 server logfile: $logfile"
+
+# Warn about a pre-existing pid file.
+# This is only a concern if port usage could not be ascertained by verify_port().
+if [[ -f "$das2pidfile" && $PORT_STATUS -eq 1 ]]; then
+    echo "Warning: Pre-existing DAS/2 pid file: $das2pidfile"  1>&2
+    echo "Warning: Potentially re-launching DAS/2 server on same port." 1>&2
+fi
+
+if [ $testing -eq 0 ]; then
+    # Main command to invoke the java process for the DAS/2 server:
+    [ $verbose -gt 0 ] && echo "Launching DAS/2 server on port $PORT"
+    $JAVA -Xmx$MAX_MEM -Xms$INIT_MEM -classpath $CLASSPATH \
+        $SERVER_CLASS $PORT $DATA_DIR $CONTACT_EMAIL \
+        $XMLBASE >> $logfile 2>&1 &
+else
+    # For testing: 
+    [ $verbose -gt 0 ] && echo "Launching dummy server on port $PORT"
+    $DUMMY_SERVER >> $logfile 2>&1 & 
+fi
+
+PID=$!
+echo $PID > $das2pidfile
+
+# No need to test the return value after launching server since it's in the bg.
+# Return value will always be 0.
+
+if [ ! -s "$das2pidfile" ]; then
+    echo "FATAL: Unable to create DAS/2 server PID file" 1>&2
+    exit 2
+fi
+
+# Wait on and return the termination status of the DAS/2 server process
+[ $verbose -gt 0 ] && echo "Waiting on DAS/2 server process ID $PID" 1>&2
+wait $PID
+RETVAL=$?
+
+delete_pidfile
+
+[ $RETVAL = 0 ] || echo -e "FATAL: DAS/2 server process terminated abnormally ($RETVAL).\nSee DAS/2 log for clues: $logfile" 1>&2
+exit $RETVAL
+
+

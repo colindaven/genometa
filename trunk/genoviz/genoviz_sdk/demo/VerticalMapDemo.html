@@ -1,0 +1,49 @@
+<html>
+<head>
+<title>GenoViz Vertical NeoMap Demo</title>
+</head>
+<body BGCOLOR="#ddddee">
+<center><h2>GenoViz Vertical NeoMap Demo</h2></center>
+
+
+<p> Here we demonstrate a vertically oriented map.
+Both maps below were built with the exact same API calls,
+except for different constructors:
+</p>
+<pre>
+  map = new NeoMap(map.HORIZONTAL);
+  map = new NeoMap(map.VERTICAL);
+</pre>
+
+This demo also illustrates the usage of a hairline glyph,
+also called a Shadow glyph.
+Zooming along the primary axis will be centered along the point indicated
+by the hairline.
+
+<p> <strong>CAVEAT</strong>:
+Some of the glyphs included in the GenoViz works best with horizontal map.
+Those descended from DirectedGlyph works best for both horizontal and vertical map.
+</p>
+<center>
+<table border="1">
+	<tr>
+		<td>
+          <applet
+            code="genoviz.demo.VerticalMapDemo"
+            archive="genoviz.jar"
+            width=600
+            height=300>
+            <strong>If you see this text, your browser apparently
+              doesn't support Java!</strong>
+          </applet>
+		</td>
+	</tr>
+</table>
+</center>
+<center>
+<h3><a href="src/genoviz/demo/VerticalMapDemo.java">Java Source Code</a></h3>
+<h3><a href="../index.html">GenoViz Overview</a></h3>
+</center>
+
+</body>
+</html>

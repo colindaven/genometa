@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="6.0+" version="@jnlp.version@" codebase="@jnlp.codebase@" href="igb.jnlp">
+	<information>
+		<title>IGB @jnlp.version@</title>
+		<vendor>Genoviz Project</vendor>
+		<homepage href="http://genoviz.sourceforge.net/" />
+		<description>Integrated Genome Browser (@jnlp.version@)</description>
+		<icon href="@jnlp.icon.name@"/>
+<!--		<icon href="@jnlp.splashicon.name@" kind="splash" />-->
+		<offline-allowed/>
+		<shortcut online="true">
+			<desktop/>
+			<menu submenu="IGB" />
+		</shortcut>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<java version="1.6+" initial-heap-size="32m" max-heap-size="1024m"/>
+		<extension name="IGB" href="igb-base.jnlp" />
+
+		<property name="http.agent" value="IGB/@jnlp.version@ (Webstart)" />
+	</resources>
+	<application-desc main-class="com.affymetrix.igb.IGB">
+		<argument>-prefs</argument>
+		<argument>@jnlp.codebase@/igb_prefs.xml</argument>
+	</application-desc>
+</jnlp>

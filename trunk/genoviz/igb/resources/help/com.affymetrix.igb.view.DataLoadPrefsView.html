@@ -1,0 +1,13 @@
+<html>
+	<head />
+	<body>
+		<h1>Data Sources</h1>
+		<p>This panel allows you to change settings for data sources.  It is not necessary to restart the program for these changes to take effect.</p>
+		<h2>Add Server</h2>
+		<p>Add an additional server for loading of genomes, sequences, etc.  The user needs to specify if this is a Quickload, DAS, or DAS/2 server</p>
+		<h2>Add Personal Synonyms File</h2>
+		<p>The location of a synonyms file to use to help resolve cases where different data files refer to the same genome or chromosome by different names.  For instance 'hg16' = 'ncbi.v34' and 'chrM' = 'chrMT' and 'chr1' = 'CHR1'.  This is simply a tab-delimited file where entries on the same row are all synonymous.  Synonyms will be <b>merged</b> from the servers, preference files, and the file listed here.</p>
+		<h2>Cache</h2>
+		<p>IGB stores files downloaded over the network in a local cache.  Files loaded from a local filesystem or network filesystem are not cached.  We recommend that you leave the 'Cache Usage' setting on 'Normal' and that you choose true for both 'Cache Annotations' and 'Cache DNA Residues'.  If disk storage space is a problem, you can press the 'Clear Cache' button.  You may also choose to turn the cache off, though performance will degrade.  Some, but not all, users find it necessary to turn off the cache when they are not connected to the internet.  For most users, this is not necessary as long as the cache already contains a few essential files.</p>
+	</body>
+</html>

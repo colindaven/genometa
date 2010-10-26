@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>Writing Your Own Parser
+</title>
+<link rel="stylesheet"
+      type="text/css" 
+      href="simple.css"
+      title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>Writing an XML Parser</h1>
+<p> Let's take a second look at more extending parsers 
+for the SimpleMap demo program.  This time we will use an
+xml parser.
+The new parser,
+<a href="../demo/src/genoviz/tutorial/MapHandler.java"
+>MapHandler</a>, now extends the HandlerBase object
+from the org.xml.sax package.  To better integrate it into 
+the demo, it also implements the ContentParser interface.
+Note that MapHandler depends on the SAX parser in Java 1.4.
+It can be easily changed to use other SAX parsers.
+
+<p> Once more... the rest of
+<a href="../demo/src/genoviz/tutorial/SimpleMap6.java"
+>SimpleMap</a> is trivial.  In fact, because we have 
+implemented the ContentParser interface for our parser,
+the only line that has changed is for the creation of the 
+ContentParser object from NarcissusParser to MapHandler.
+<p>
+<form>
+<textarea name="config" cols="60" rows="10">
+<map>
+<axis offset="15" />
+<featureType name="exon" config="-color blue -offset 25" />
+<featureType name="gene" config="-glyphtype LineContainerGlyph -offset 20" />
+<featureType name="residues" config="-glyphtype SequenceGlyph -offset 30 -color nicePaleBlue" />
+<residues start="1" end="29">ATGCATGCATGACTGATGCTGACGTACTG</residues>
+<glyph config="-color red" href="todo.html" />
+<glyph start="20" end="39" config="-offset 20"/>
+<glyph start="39" end="20" config="-offset 20 -color blue"/>
+<exon start="27" end="44" labeled="xxx" />
+<exon start="54" end="59" />
+<gene start="20" end="59" />
+</map>
+</textarea><br>
+<input type="button" value="configure map"
+       onClick="document.applets[0].parseInputString(config.value)"
+>
+</form>
+
+<div class="applet">
+<applet
+  codebase="../demo"
+  archive="genoviz.jar"
+  code="genoviz.tutorial.SimpleMap6"
+  height="150"
+  width="570"
+>
+<param name="config" value='
+<map>
+<axis offset="15" />
+<featureType name="exon" config="-color blue -offset 25" />
+<featureType name="gene" config="-glyphtype LineContainerGlyph -offset 20" />
+<featureType name="residues" config="-glyphtype SequenceGlyph -offset 30 -color nicePaleBlue" />
+<residues start="1" end="29">ATGCATGCATGACTGATGCTGACGTACTG</residues>
+<glyph config="-color red" href="todo.html" />
+<glyph start="20" end="39" config="-offset 20"/>
+<glyph start="39" end="20" config="-offset 20 -color blue"/>
+<exon start="27" end="44" labeled="xxx" />
+<exon start="54" end="59" />
+<gene start="20" end="59" />
+</map>
+'>
+</applet>
+</div class="applet">
+<h2>Exercises</h2>
+<ol>
+<li> Implement the exportContent method of MapHandler.
+<li> Add functionality to the parser to recognize a 'glyph' tag.
+</ol>
+
+</body>
+</html>
+
+

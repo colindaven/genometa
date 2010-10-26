@@ -1,0 +1,115 @@
+<html>
+<head>
+<title>        GenoViz Widget Overview
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+<body>
+
+
+<h2>        Widget Overview
+</h2>
+
+<p>        The GenoViz Software Development Kit
+        includes six visualization widgets: 
+</p>
+
+
+<ul>
+<li>    <a href="#NeoMap">NeoMap</a>
+<li>    <a href="#TieredNeoMap">TieredNeoMap</a>
+<li>    <a href="#NeoAssembler">NeoAssembler</a>
+<li>    <a href="#NeoSeq">NeoSeq</a> 
+<li>    <a href="#NeoQualler">NeoQualler</a>
+<li>    <a href="#NeoTracer">NeoTracer</a>
+</ul>
+
+<p>        Each widget implements
+        the <code>com.affymetrix.genoviz.widget.NeoWidgetI</code> interface.
+</p>
+
+<a name="NeoMap"></a>
+<h3>NeoMap: Linear maps (physical, genetic, sequence, etc.)</h3>
+
+The basic functionality of the NeoMap widget is to display
+and manipulate arbitrary annotations along a linear map.
+The application programming interface (API) supports adding annotations
+in a variety of ways.
+It also supports scrolling and zooming the view of the map,
+selection of annotations, intelligent layout of annotations, and
+rubberbanding.
+In addition to the NeoMap, a number of different visual representations (glyphs) 
+of annotations are provided such as rectangles, arrows, and circles.  Developers 
+can also easily create their own glyphs 
+without modifying the NeoMap implementation.
+
+<a name="TieredNeoMap"></a>
+<h3>TieredNeoMap: Linear maps of category data </h3>
+
+An extension of NeoMap, TieredNeoMaps have an integrated mechanism for displaying 
+data as belonging to one of several categories.  Each category is assigned a tier,
+which expands as necessary to display the data within it.  Tiers can also be collapsed
+or hidden to reduce cluttering of the display.  A TieredLabelMap can be assigned to
+the TieredNeoMap, which automatically keeps track of tiers' states and displays
+a label of the same size off to one side of the map.
+
+<a name="NeoAssembler"></a>
+<h3>NeoAssembler: Sequence assemblies</h3>
+
+The NeoAssembler widget displays DNA sequence assemblies 
+at a variety of resolutions.
+The critical feature of the assembly viewer is the
+ability to view individual sequence runs and consensus sequence
+alongside each other. At resolutions &gt; 1 pixel/base, aligned sequences
+are represented as shaded rectangles with shading based on agreement
+or disagreement with consensus. The font size for sequences can be
+set, and at high enough resolution the base letters will be displayed
+in addition to the background shading.  For deep assemblies, the
+sequences can be scrolled through while the consensus is held fixed.
+Labels for the sequences are kept to the side, and events generated on
+the NeoAssembler can be distinguished as occurring over the consensus,
+labels, or aligned sequences.  Although primarily designed to view DNA 
+assemblies from sequencing projects, the NeoAssembler can be used to 
+display any nucleotide or protein multiple sequence alignment.
+
+<a name="NeoSeq"></a>
+<h3>NeoSeq: Biological sequences at residue resolution</h3>
+
+The NeoSeq widget displays DNA sequences at base-pair resolution, or 
+proteins at amino-acid resolution, wrapping the residues so that 
+contiguous sequence is displayed as multiple lines, and a scrollbar is 
+provided to scroll through lines of sequence. Annotations along the 
+sequence can be represented as background color fills, outlines, or 
+font color.  The size of the sequence font and the spacing of sequence lines are
+configurable.  Ranges of sequence can be selected, and the selected
+sequence can be returned.  Changes to the range of sequence displayed
+generate NeoEvents that applets/applications can listen for.
+
+<a name="NeoQualler"></a>
+<h3>NeoQualler: DNA base calling quality scores</h3>
+
+The NeoQualler displays a histogram of quality scores
+from a base calling program.
+The bases and the bars graphing quality are color coded.
+
+<a name="NeoTracer"></a>
+<h3>NeoTracer: DNA sequence trace data</h3>
+
+The NeoTrace widget displays DNA trace data.  The API supports input
+of SCF and ABI trace files, as well as methods to add individual trace 
+data points and base calls.  The trace widget displays four colored dye traces
+alongside base calls. The API also supports calls mapping from trace
+data points to called bases, such as retrieving the nearest called
+base to a give trace data point and positioning the trace at a given
+base position.
+
+<h2>        Next: <a href="Hello.html">Hello</a>
+        - A First Use of a NeoMap
+</h2>
+
+</body>
+</html>

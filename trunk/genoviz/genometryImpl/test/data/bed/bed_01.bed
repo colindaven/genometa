@@ -1,0 +1,11 @@
+track name="Bed Test File" description="Test bed file" color=255,255,0 itemRgb="on" useScore=0 url="http://www.google.com/search?q=$$"
+#
+# Note that the itemRgb is set to "On", but only some of the lines are assigned a color.
+# The default track color applies to all others.
+#
+591  chr2L 901490  901662  CR31656-RA  0 - 901490  901662  0 1 172,  0,
+595  chr2L 1432710 1432921 CR31927-RA  0 + 1432710 1432920 0 1 211,  0,
+598  chr2L 1789140 1790361 CR31930-RA  0 - 1789140 1789140 0,255,255 2 153,1010, 0,211,
+598  chr2L 1792056 1793268 CR31931-RA  0 - 1792056 1792056 0 2 153,1014, 0,198,
+599  chr2L 1938088 1938159 CR31667-RA  0 - 1938088 1938088 0 1 71, 0,
+599  chr2L 1965425 1965498 CR31942-RA  0 + 1965425 1965460 0 1 73, 0,
