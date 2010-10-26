@@ -1,0 +1,230 @@
+<project>
+	
+	<!-- das2 genopub mode, set to true to configure DAS2 with GenoPub -->
+	<property name="das2_genopub_mode"    value="false"/>
+	
+
+	<target name="common-init" depends="init,svn-init">
+    <tstamp/>
+
+		<!-- directory paths -->
+		<property name="dist.dir"     value="${basedir}/dist" />
+		<property name="webstart.dir" value="${dist.dir}/webstart" />
+		<property name="flex.dir"     value="${basedir}/flex" />
+		<property name="webapp.dir"   value="${dist.dir}/webapp" />
+		<property name="release.dir"   value="${dist.dir}/release" />
+
+		<property name="server.deploy.dir"   value="USE_PATH_TO_TOMCAT_WEBAPPS_HERE" />
+
+		<condition property="build.version" value="${svn.info.rev}" else="${DSTAMP}">
+			<isset property="svn.info.rev" />
+		</condition>
+		
+		<!-- file paths -->
+		<property name="genopub.web.xml" value="${das2server}/web.xml" />
+		<property name="genopub.context.xml" value="${das2server}/context.xml" />
+		<property name="classic.web.xml" value="${das2server}/web_classic.xml" />
+		<property name="classic.context.xml" value="${das2server}/context_classic.xml" />
+		<property name="das2.resources" value="${das2server}/resources" />
+
+		<!-- JNLP Webstart -->
+		<property name="jnlp.file.path" value="${igb}/etc/igb.jnlp" />
+		<property name="jnlp.largefile.path" value="${igb}/etc/igb-large.jnlp" />
+		<property name="jnlp.basefile.path" value="${igb}/etc/igb-base.jnlp" />
+		<property name="jnlp.version"   value="${build.version}" />
+		<property name="jnlp.codebase"  value="http://USE_YOUR_URL_HERE" />
+		<property name="jnlp.icon.name" value="igb.gif" />
+		<property name="jnlp.icon.path" value="${igb}/resources/com/affymetrix/igb/${jnlp.icon.name}" />
+		<property name="jnlp.splashicon.name" value="igb_splash.gif" />
+		<property name="jnlp.splashicon.path" value="${igb}/resources/com/affymetrix/igb/${jnlp.splashicon.name}" />
+
+		
+		<!-- FLEX -->
+		<property name="FLEX_HOME"              value="${lib.dir}/flex_sdk/"/>
+
+		<!-- global compiler defaults -->
+		<property name="build.compiler"         value="modern" />
+		<property name="ant.build.javac.target" value="6" />
+		<property name="ant.build.javac.source" value="6" />
+
+		<!-- compiler defaults passed to javac -->
+		<property name="debug"         value="on" />
+		<property name="deprecation"   value="off"/>
+		<property name="compiler.args" value="-Xlint:all,-serial,-path -Werror"/>
+
+		<!-- signjar defaults -->
+		<property name="jar.sign.keystore"      value="${user.home}/.keystore" />
+		<property name="jar.sign.keystore.pass" value="changeit" />
+		<property name="jar.sign.alias"         value="igb" />
+		<property name="jar.sign.alias.pass"    value="${jar.sign.keystore.pass}" />
+
+		<!-- javadoc defaults -->
+		<property name="javadoc.j2se.url"    value="http://java.sun.com/javase/6/docs/api/" />
+		<property name="javadoc.j2ee.url"    value="http://java.sun.com/javaee/6/docs/api/" />
+		<property name="javadoc.src.version" value="6" />
+
+		<!-- Location of JUnit -->
+		<!-- OS X and Debian do not appear to have junit in ant's path -->
+		<property name="junit.jar"       value="${basedir}/ext/junit.jar" />
+
+		<!-- Java VM configuration -->
+		<property name="igb.jvmargs" value="" />
+		<property name="igb.maxmem" value="1024m" />
+
+
+		<filter token="build.version"  value="${build.version}" />
+		<filter token="jnlp.version"  value="${jnlp.version}" />
+		<filter token="jnlp.codebase" value="${jnlp.codebase}" />
+		<filter token="jnlp.icon.name" value="${jnlp.icon.name}" />
+		<filter token="jnlp.splashicon.name" value="${jnlp.splashicon.name}" />
+     
+    <!-- Set genopub vs. classic mode settings --> 
+		<condition property="das2genopub">
+			<istrue value="${das2_genopub_mode}" />
+		</condition>
+		<condition property="web.xml" value="${genopub.web.xml}" else="${classic.web.xml}">
+			<istrue value="${das2_genopub_mode}" />
+		</condition>
+		<condition property="context.xml" value="${genopub.context.xml}" else="${classic.context.xml}">
+			<istrue value="${das2_genopub_mode}" />
+		</condition>
+		<condition property="das2_release" value="das2server-genopub" else="das2server">
+			<istrue value="${das2_genopub_mode}" />
+		</condition>
+		<condition property="das2_webapp" value="das2genopub" else="das2">
+			<istrue value="${das2_genopub_mode}" />
+		</condition>
+		<condition property="das2_install_notes" value="INSTALL.txt" else="INSTALL_classic.txt">
+			<istrue value="${das2_genopub_mode}" />
+		</condition>
+	</target>
+
+	<target name="extras-init">
+		<exec executable="svn" outputproperty="svn.version">
+			<arg line="--version --quiet" />
+		</exec>
+		<!-- Not currently shipping with multiple svnant versions -->
+		<!--
+		<condition property="svnant.version" value="1.1.0-RC2">
+			<contains string="${svn.version}" substring="1.4." />
+		</condition>
+		<condition property="svnant.version" value="1.2.1">
+			<contains string="${svn.version}" substring="1.5." />
+		</condition>
+		-->
+		<condition property="svnant.version" value="1.3.0">
+			<contains string="${svn.version}" substring="1.6." />
+		</condition>
+
+		<path id="svn.path">
+			<fileset dir="${lib.dir}">
+				<include name="svnant-${svnant.version}/*.jar" />
+			</fileset>
+		</path>
+
+		<available classname="org.tigris.subversion.svnant.SvnTask" classpathref="svn.path" property="have.svnant" />
+
+		<path id="pmd.path">
+			<fileset dir="${lib.dir}/pmd-4.2.5">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+
+		<available classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.path" property="have.pmd" />
+		<available classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.path" property="have.cpd" />
+
+		<property name="findbugs.dir" value="${lib.dir}/findbugs-1.3.9" />
+		<path id="findbugs.path">
+			<fileset file="${findbugs.dir}/lib/findbugs-ant.jar" />
+		</path>
+
+		<available classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.path" property="have.findbugs" />
+	</target>
+
+	<target name="svn-init" depends="extras-init" if="have.svnant" unless="run.svn-init">
+		<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="svn.path" />
+		<svn>
+			<info target="${basedir}" />
+		</svn>
+		<property name="run.svn-init" value="true" />
+	</target>
+	
+
+	<!-- Only compile file flex das2 server will run in genopub mode and the flex app is not up-to-date -->
+	<condition property="should_compile_flex">
+		<and>
+			<!-- Is the das2 mode genopub? -->
+  	  <istrue value="${das2_genopub_mode}"/>
+			
+	    <!-- Is the flex app not already up-to-date? -->
+			<not>
+	  	  <uptodate property="flex_up_to_date" targetfile="${dist.dir}/GenoPub.swf">
+	    	  <srcfiles dir="${das2server}/flex">
+		    	  <include name="**/*.as"/>
+	  	  	  <include name="**/*.mxml"/>
+	  		  </srcfiles>
+			  </uptodate>
+			</not>
+		</and>
+	</condition>
+  
+	<presetdef name="my.javac">
+		<javac srcdir="${src.dir}" classpath="${classpath}" debug="${debug}" deprecation="${deprecation}">
+			<compilerarg compiler="modern" line="${compiler.args}" />
+    		</javac>
+	</presetdef>
+
+	<presetdef name="my.javac_checker">
+		<!-- Be sure to name your new javac executable "javac_checker" -->
+		<javac fork="yes" executable="javac_checker" srcdir="${src.dir}" classpath="${classpath}">
+			<compilerarg value="-version"/>
+                	<compilerarg line="-processor checkers.nullness.NullnessChecker"/>
+                	<compilerarg value="-implicit:class"/>
+    		</javac>
+	</presetdef>
+
+
+	<presetdef name="my.javadoc">
+		<javadoc packagenames="*" destdir="${docs.dir}" author="true" version="true" use="true" windowtitle="${name}" maxmemory="128m" access="private" verbose="false" splitindex="false" source="${javadoc.src.version}">
+			<link href="${javadoc.j2se.url}"/>
+			<link href="${javadoc.j2ee.url}"/>
+			<doctitle><![CDATA[<h1>${name}</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; Affymetrix, Inc.</i>]]></bottom>
+		</javadoc>
+	</presetdef>
+
+	<presetdef name="my.signjar">
+		<signjar alias="${jar.sign.alias}" storepass="${jar.sign.keystore.pass}" keystore="${jar.sign.keystore}" keypass="${jar.sign.alias.pass}" />
+	</presetdef>
+
+	<target name="pmd-init" depends="common-init,extras-init" if="have.pmd">
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.path" />
+
+		<presetdef name="my.pmd">
+			<pmd shortFilenames="true" classpath="${etc.dir}/pmd-cfg.xml" rulesetfiles="${etc.dir}/pmd-cfg.xml">
+				<formatter type="xml" toFile="${report.dir}/xml/${report.prefix}pmd.xml" />
+				<!-- for some reason, ${src.dir} will not work here -->
+				<fileset dir="src" includes="**/*.java" />
+			</pmd>
+		</presetdef>
+	</target>
+
+	<target name="cpd-init" depends="common-init,extras-init" if="have.cpd">
+		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.path" />
+
+		<presetdef name="my.cpd">
+			<cpd encoding="UTF-8" minimumTokenCount="50" format="xml" outputFile="${report.dir}/xml/${report.prefix}cpd.xml" />
+		</presetdef>
+	</target>
+
+	<target name="findbugs-init" depends="common-init,extras-init" if="have.findbugs">
+		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.path" />
+
+		<presetdef name="my.findbugs">
+			<findbugs home="${findbugs.dir}" output="xml:withMessages" outputFile="${report.dir}/xml/${report.prefix}findbugs.xml" jvmargs="-Xmx512m">
+				<auxClasspath path="${report.classpath}" />
+				<sourcePath path="${src.dir}" />
+			</findbugs>
+		</presetdef>
+	</target>
+</project>

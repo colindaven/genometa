@@ -1,0 +1,11 @@
+track type=wiggle_0 name="ArrayExpt1" description="20 degrees, 2 hr"
+variableStep chrom=chrblah span=150
+4701 10.0
+4901 12.5
+5401 15.0
+5601 17.5
+5901 20.0
+6081 17.5
+6691 12.5
+6301 15.0
+7871 10.0

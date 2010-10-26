@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:annotation>
+        <xs:documentation>version should be the genome version, e.g., hg18</xs:documentation>
+    </xs:annotation>
+    <xs:element name="dnaseq">
+        <xs:annotation>
+            <xs:documentation>Represents an annotatable DNA sequence, such as a chromosome or contig</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+				<xs:sequence maxOccurs="unbounded">
+					<xs:element maxOccurs="unbounded" minOccurs="1" name="mRNA">
+						<xs:annotation>
+							<xs:documentation>Represents an aligned mRNA encoding a protein. Note that start and end attributes for mRNA, exon, and CDS
+							elements are in positive-strand-interbase and reference the genome version and chromosome specified in the "version" attribute of
+							the dnaseq element. ProtAnnot will transform the coordinates so that they show just the region of the dnaseq sequence specified
+							by the &lt;residues&gt; tag. If the mRNA tag's strand attribute is - (for negative strand), then ProtAnnot will also convert the
+							coordinates to negative-strand interbase, where index 0 refers to the 5-prime most base of the negative strand.
+							That is, if mRNA "strand" attribute equals "-", then its start becomes M - end and its end becomes M - start,
+							where M is the value of the end attribute of the residues element. Likewise, the start and end coordinates of the child &lt;exon&gt;
+							and &lt;cds&gt; elements undergo the same transformation.  Strand must be one of - (minus) or + (plus) which indicate the reverse
+							and forward strands of the DNA sequence, respectively. Note also that ProtAnnot will assume that
+							every exon has the same strand as its parental mRNA.
+							 </xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:annotation>
+								<xs:documentation>In ProtAnnot, the content of the descriptor tags will appear in the Property Sheet table when users click
+									Glyphs representing mRNAs, simhits, etc. Also, each mRNA needs a single descriptor element with type equal to
+									"protein_product_id". In addition, there should be one &lt;aaseq&gt; element in the file with "id" attribute equal to
+									that protein_product_id descriptor's value. This is how ProtAnnot links protein annotations (conserved motifs)
+									to the mRNA transcripts that encode them.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:sequence>
+								<xs:element maxOccurs="unbounded" name="descriptor">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:string">
+												<xs:attribute name="type" type="xs:string"
+													use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element maxOccurs="unbounded" name="exon">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element maxOccurs="unbounded" name="descriptor">
+												<xs:complexType>
+													<xs:simpleContent>
+													  <xs:extension base="xs:string">
+													  <xs:attribute name="type" type="xs:string"
+													  use="required"/>
+													  </xs:extension>
+													</xs:simpleContent>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+										<xs:attribute name="start" type="xs:nonNegativeInteger"
+											use="required"/>
+										<xs:attribute name="end" type="xs:nonNegativeInteger"
+											use="required"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element minOccurs="1" name="cds">
+									<xs:complexType>
+										<xs:annotation>
+											<xs:documentation>Represents the region bounded by the start codon (typically an ATG) and the termination
+												codon (typically TAA, TAG, or TGA) inclusive. Thus, for a plus strand feature, the CDS stop
+												indicates the end of the termination codon and the CDS start indicates the position of the first translated
+												base, e.g., the A in the ATG initial methionine. The reason we include the stop codon in the bounds of the CDS
+												is mainly for convenience. Bed files obtained from UCSC include the stop codon in the region bounded by
+												the bed "thickStart" and "thickEnd" fields.
+											</xs:documentation>
+										</xs:annotation>
+										<xs:attribute name="start" type="xs:nonNegativeInteger"
+											use="required"/>
+										<xs:attribute name="end" type="xs:nonNegativeInteger"
+											use="required"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="start" type="xs:nonNegativeInteger" use="required"/>
+							<xs:attribute name="end" type="xs:nonNegativeInteger" use="required"/>
+							<xs:attribute form="unqualified" name="strand" type="xs:string"
+								use="required"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="aaseq">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="simsearch" maxOccurs="unbounded" minOccurs="0">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element maxOccurs="unbounded" minOccurs="0"
+												name="simhit">
+												<xs:complexType>
+													<xs:sequence>
+													  <xs:element maxOccurs="unbounded"
+													  name="descriptor" minOccurs="0">
+													  <xs:complexType>
+													  <xs:simpleContent>
+													  <xs:extension base="xs:string">
+													  <xs:attribute name="type" type="xs:string"
+													  use="required"/>
+													  </xs:extension>
+													  </xs:simpleContent>
+													  </xs:complexType>
+													  </xs:element>
+													  <xs:sequence>
+													  <xs:element name="simspan" maxOccurs="unbounded">
+													  <xs:complexType>
+													  <xs:sequence>
+													  <xs:element maxOccurs="unbounded"
+													  name="descriptor" minOccurs="0">
+													  <xs:complexType>
+													  <xs:simpleContent>
+													  <xs:extension base="xs:string">
+													  <xs:attribute name="type" type="xs:string"
+													  use="required"/>
+													  </xs:extension>
+													  </xs:simpleContent>
+													  </xs:complexType>
+													  </xs:element>
+													  </xs:sequence>
+													  <xs:attribute name="query_start"
+													  type="xs:nonNegativeInteger" use="required"/>
+													  <xs:attribute name="query_end"
+													  type="xs:nonNegativeInteger" use="required"/>
+													  </xs:complexType>
+													  </xs:element>
+													  </xs:sequence>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+										<xs:attribute name="method" type="xs:string" use="required"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="id" type="xs:string" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+                <xs:element name="residues" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute default="0" name="start" type="xs:nonNegativeInteger"/>
+                                <xs:attribute name="end" type="xs:nonNegativeInteger" use="required"
+                                />
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="version" type="xs:string" use="required"/>
+            <xs:attribute name="seq" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

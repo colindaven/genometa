@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.ant.freeform</type>
+    <configuration>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <name>IGB</name>
+        </general-data>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
+            <!-- Do not use Project Properties customizer when editing this file manually. -->
+            <name>IGB</name>
+            <properties/>
+            <folders>
+                <source-folder>
+                    <label>IGB</label>
+                    <location>.</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>das2_server/src</label>
+                    <type>java</type>
+                    <location>das2_server/src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>genometryImpl/src</label>
+                    <type>java</type>
+                    <location>genometryImpl/src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>genoviz_sdk/src</label>
+                    <type>java</type>
+                    <location>genoviz_sdk/src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>igb/src</label>
+                    <type>java</type>
+                    <location>igb/src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>genoviz_sdk/demo/src</label>
+                    <type>java</type>
+                    <location>genoviz_sdk/demo/src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>das2_server/test</label>
+                    <type>java</type>
+                    <location>das2_server/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>genometryImpl/test</label>
+                    <type>java</type>
+                    <location>genometryImpl/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>genoviz_sdk/test</label>
+                    <type>java</type>
+                    <location>genoviz_sdk/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>igb/test</label>
+                    <type>java</type>
+                    <location>igb/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>protannot/src</label>
+                    <type>java</type>
+                    <location>protannot/src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+            </folders>
+            <ide-actions>
+                <action name="build">
+                    <target>compile</target>
+                </action>
+                <action name="clean">
+                    <target>clean</target>
+                </action>
+                <action name="javadoc">
+                    <target>docs</target>
+                </action>
+                <action name="run">
+                    <target>run</target>
+                </action>
+                <action name="test">
+                    <target>test</target>
+                </action>
+                <action name="rebuild">
+                    <target>clean</target>
+                    <target>compile</target>
+                </action>
+                <action name="debug">
+                    <script>nbproject/ide-targets.xml</script>
+                    <target>debug-nb</target>
+                </action>
+                <action name="run.single">
+                    <script>nbproject/ide-file-targets.xml</script>
+                    <target>run-selected-file-in-src</target>
+                    <context>
+                        <property>run.class</property>
+                        <folder>genoviz_sdk/demo/src</folder>
+                        <pattern>\.java$</pattern>
+                        <format>java-name</format>
+                        <arity>
+                            <one-file-only/>
+                        </arity>
+                    </context>
+                </action>
+                <action name="run.single">
+                    <script>nbproject/ide-file-targets.xml</script>
+                    <target>run-selected-file-in-src</target>
+                    <context>
+                        <property>run.class</property>
+                        <folder>igb/src</folder>
+                        <pattern>\.java$</pattern>
+                        <format>java-name</format>
+                        <arity>
+                            <one-file-only/>
+                        </arity>
+                    </context>
+                </action>
+            </ide-actions>
+            <export>
+                <type>folder</type>
+                <location>das2_server/build</location>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>genometryImpl/build</location>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>genoviz_sdk/build</location>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>igb/build</location>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>genoviz_sdk/demo</location>
+                <build-target>compile</build-target>
+            </export>
+            <view>
+                <items>
+                    <source-folder style="packages">
+                        <label>das2_server/src</label>
+                        <location>das2_server/src</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>genometryImpl/src</label>
+                        <location>genometryImpl/src</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>genoviz_sdk/src</label>
+                        <location>genoviz_sdk/src</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>igb/src</label>
+                        <location>igb/src</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>genoviz_sdk/demo/src</label>
+                        <location>genoviz_sdk/demo/src</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>das2_server/test</label>
+                        <location>das2_server/test</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>genometryImpl/test</label>
+                        <location>genometryImpl/test</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>genoviz_sdk/test</label>
+                        <location>genoviz_sdk/test</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>igb/test</label>
+                        <location>igb/test</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>protannot/src</label>
+                        <location>protannot/src</location>
+                    </source-folder>
+                    <source-file>
+                        <location>build.xml</location>
+                    </source-file>
+                </items>
+                <context-menu>
+                    <ide-action name="build"/>
+                    <ide-action name="rebuild"/>
+                    <ide-action name="clean"/>
+                    <ide-action name="javadoc"/>
+                    <ide-action name="run"/>
+                    <ide-action name="test"/>
+                    <ide-action name="debug"/>
+                    <action>
+                        <label>Demos</label>
+                        <target>demos</target>
+                    </action>
+                    <action>
+                        <label>Protannot</label>
+                        <target>run_Protannot</target>
+                    </action>
+                    <action>
+                        <label>Debug Protannot</label>
+                        <target>debug-nb-protannot</target>
+                    </action>
+                </context-menu>
+            </view>
+            <subprojects/>
+        </general-data>
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
+            <compilation-unit>
+                <package-root>das2_server/src</package-root>
+                <package-root>genometryImpl/src</package-root>
+                <package-root>genoviz_sdk/src</package-root>
+                <package-root>igb/src</package-root>
+                <package-root>genoviz_sdk/demo/src</package-root>
+                <package-root>das2_server/test</package-root>
+                <package-root>genometryImpl/test</package-root>
+                <package-root>genoviz_sdk/test</package-root>
+                <package-root>igb/test</package-root>
+                <package-root>protannot/src</package-root>
+                <classpath mode="compile">ext/javax.servlet.jar:ext/org.mortbay.jetty.jar:genometryImpl/src:ext/image4j.jar:ext/affx_fusion.jar:ext/freehep-2.1.1.jar:ext/commons-codec-1.4.jar:ext/catalina.jar:ext/cos.jar:ext/dom4j-1.6.1.jar:ext/hibernate3.jar:genoviz_sdk/src:ext/commons-compress-1.0.jar:ext/sam.jar:ext/picard.jar:ext/colt.jar:ext/junit.jar</classpath>
+                <built-to>das2_server/build</built-to>
+                <built-to>genometryImpl/build</built-to>
+                <built-to>genoviz_sdk/build</built-to>
+                <built-to>igb/build</built-to>
+                <built-to>genoviz_sdk/demo</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+        </java-data>
+        <preferences xmlns="http://www.netbeans.org/ns/auxiliary-configuration-preferences/1">
+            <module name="org-netbeans-modules-editor-indent">
+                <node name="text">
+                    <node name="x-java">
+                        <node name="CodeStyle">
+                            <node name="project">
+                                <property name="spaces-per-tab" value="4"/>
+                                <property name="expand-tabs" value="false"/>
+                                <property name="text-limit-width" value="80"/>
+                                <property name="indent-shift-width" value="4"/>
+                                <property name="tab-size" value="4"/>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+                <node name="CodeStyle">
+                    <node name="project">
+                        <property name="spaces-per-tab" value="4"/>
+                        <property name="expand-tabs" value="false"/>
+                        <property name="text-limit-width" value="80"/>
+                        <property name="indent-shift-width" value="4"/>
+                        <property name="tab-size" value="4"/>
+                    </node>
+                    <property name="usedProfile" value="project"/>
+                </node>
+            </module>
+        </preferences>
+    </configuration>
+</project>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+	title="New Genome version"
+	showCloseButton="true" 
+	width="436" 
+	height="192"
+	verticalGap="0"
+	close="closeWindow()"
+	titleIcon="{parentApplication.iconGenomeVersion}"
+	layout="vertical" backgroundAlpha="100" defaultButton="{saveButton}">
+ 	
+    <mx:HTTPService             
+      id="addGenomeVersion" 
+      url="genopub/genomeVersionAdd"
+      resultFormat="e4x"
+      result="onAddGenomeVersion(event)"
+      fault="parentApplication.onFailHttpRequest('Failed to add organism', event)"
+      method="POST"
+      useProxy="false">
+      <mx:request>
+         <name>{genomeVersionName.text}</name>
+         <buildDate>{buildDate.text}</buildDate>
+         <idOrganism>{organismCombo.selectedItem.@id}</idOrganism>
+      </mx:request>
+    </mx:HTTPService> 
+    
+       
+    <mx:Script>
+	<![CDATA[
+	
+	import mx.managers.PopUpManager;
+	import mx.rpc.events.ResultEvent;
+	import mx.controls.Alert;
+
+
+	
+	public function setOrganism(organism:Object):void {
+		if (organism != null) {
+			for each(var o:Object in this.parentApplication.dictionaryOrganism) {
+				if (o.@id == organism.@idOrganism) {
+					this.organismCombo.selectedItem = o;
+					break;			
+				}
+			}
+		}
+	}
+
+   	private function onAddGenomeVersion(event:ResultEvent):void {
+		if (addGenomeVersion.lastResult.name() == "SUCCESS") {			
+			closeWindow();
+			var itemToSelect:XML = new XML(
+			   "<GenomeVersion " +
+			     "idGenomeVersion='" + addGenomeVersion.lastResult.@idGenomeVersion + "'" +
+			    "/>");
+			    
+			// Refresh the annotations tree
+			parentApplication.annotationsView.refreshAnnotationFilters(organismCombo.selectedItem.@id);
+			parentApplication.annotationsView.refreshAnnotationsAndSelect(itemToSelect);
+			
+				
+		} else if (addGenomeVersion.lastResult.name() == "Error") {
+			Alert.show(addGenomeVersion.lastResult.@message);
+		} else {
+			Alert.show("An error occurred while adding genome version");				
+		}		
+	}
+
+   
+    private function closeWindow():void {
+		PopUpManager.removePopUp(this);		
+	}
+	
+	]]>
+    </mx:Script>
+    
+    <mx:VBox height="100%" styleName="panelBody" verticalGap="0">
+		<mx:HBox>
+			<mx:Label text="Species:" width="100"/>
+			<mx:ComboBox labelField="@binomialName" id="organismCombo" width="300">
+				<mx:dataProvider>{parentApplication.dictionaryOrganism}</mx:dataProvider>
+			</mx:ComboBox>
+		</mx:HBox>
+		<mx:Spacer height="20"/>
+		<mx:HBox paddingTop="4">
+			<mx:Label text="Name:"  width="100"/>
+			<mx:TextInput id="genomeVersionName" width="300" maxChars="200"/>
+		</mx:HBox>
+		<mx:Label text="Example: H_sapiens_Mar_2006" width="100%" textAlign="right" fontSize="9" fontStyle="italic"/>
+		<mx:HBox paddingTop="10">
+			<mx:Label text="Build date:" width="100"/>
+			<mx:DateField id="buildDate"  width="300"/>
+	</mx:HBox>
+    	
+    </mx:VBox>
+
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button id="saveButton"  
+			enabled="{organismCombo.selectedItem != null &amp;&amp; organismCombo.selectedItem.@id != '' &amp;&amp; genomeVersionName.text != &quot;&quot; ? true : false}" 
+			icon="{parentApplication.iconSave}" 
+			disabledIcon="{parentApplication.iconSaveDisabled}" 
+			label="Save"
+			click="{addGenomeVersion.send()}"/>
+		<mx:Button id="cancelButton" label="Cancel" click="closeWindow()"/>
+	</mx:ControlBar>
+</mx:TitleWindow>

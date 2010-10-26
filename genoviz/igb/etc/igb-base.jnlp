@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="6.0+" version="@jnlp.version@" codebase="@jnlp.codebase@" href="igb.jnlp">
+	<information>
+		<title>IGB @jnlp.version@</title>
+		<vendor>Genoviz Project</vendor>
+		<offline-allowed/>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<jar href="igb.jar" main="true" />
+		<jar href="igb-i18n.jar" />
+		<jar href="affx_fusion.jar" />
+		<jar href="genometry.jar" />
+		<jar href="genoviz.jar" />
+		<jar href="jlfgr-1_0.jar" />
+		<jar href="image4j.jar" />
+		<jar href="commons-codec-1.4.jar" />
+		<jar href="colt.jar"          download="lazy" part="colt" />
+		<jar href="freehep-2.1.1.jar" download="lazy" part="freehep" />
+		<jar href="sam.jar"      download="lazy" part="sam"/>
+		<jar href="picard.jar"      download="lazy" part="picard"/>
+
+		<property name="apple.laf.useScreenMenuBar" value="true" />
+
+		<package part="colt"    name="cern.colt.*"       recursive="true" />
+		<package part="freehep" name="org.jdom.*"        recursive="true" />
+		<package part="freehep" name="org.freehep.*"     recursive="true" />
+		<package part="freehep" name="org.openide.*"     recursive="true" />
+		<package part="sam"     name="net.sf.samtools.*" recursive="true" />
+	</resources>
+	<component-desc />
+</jnlp>

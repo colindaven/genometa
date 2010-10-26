@@ -1,0 +1,39 @@
+<h1>How to create binary sequence files in BNIB format</h1>
+
+
+<p>
+To load sequence data into IGB, it is best to first convert the data to the binary format "bnib".  This reduces the file size and reduces the amount of time required for loading.
+</p>
+
+<p>
+The IGB package contains a java class called
+<i>com.affymetrix.igb.parsers.NibbleResiduesParser</i> that contains methods for reading and writing files in the BNIB format.  It contains a <i>main()</i> method that can read a FASTA format file and output a bnib file.
+</p>
+
+<p>
+To convert a FASTA file to BNIB, run the following command:<br>
+<pre>
+java -cp <i>[classpath]</i> com.affymetrix.genometryImpl.parsers.NibbleResiduesParser <i>[seq_name] [in_file] [out_file] [seq_version]</i>
+</pre>
+where <br>
+<i>[classpath]</i> is a list of the jar files, such as "genometryImpl.jar:genometry.jar" (Linux) or "genometryImpl.jar;genometry.jar" (Windows)<br>
+<i>[seq_name]</i> is the name of the sequence, like "chr1"<br>
+<i>[in_file]</i> is the FASTA input file<br>
+<i>[out_file]</i> is the BNIB output file<br>
+<i>[seq_version]</i> is the version of the sequence, like "R_norvegicus_Jun_2003".  The sequence version should match the version name you use in your QuickLoad directory structure, or one of the synonyms given in your QuickLoad "synonyms.txt" file.
+</p>
+
+<p>
+For QuickLoad, you will need to create one BNIB file for each chromosome, and they should be named like "chr1.bnib".
+</p>
+
+<p>
+As an example, assume you are working with rat genome "rn3" and you have FASTA files for each chromosome.  You should have one FASTA file for each chromosome, with only one sequence per file.
+You can run a command like this to convert the chr1.fa file for chromosome 1 into chr1.bnib:<br>
+<pre>
+java -cp genometry.jar com.affymetrix.genometryImpl.parsers.NibbleResiduesParser chr1 chr1.fa chr1.bnib rn3</pre>
+or
+<pre>
+java -cp igb_exe.jar com.affymetrix.genometryImpl.parsers.NibbleResiduesParser chr1 chr1.fa chr1.bnib rn3</pre>
+</p>
+

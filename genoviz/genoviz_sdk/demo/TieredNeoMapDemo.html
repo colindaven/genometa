@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>GenoViz TieredNeoMap Demo</title>
+  </head>
+  <body BGCOLOR="#ddddee">
+
+    <center>
+      
+      <h2>GenoViz SDK TieredNeoMap Demo </h2>
+      
+      <applet
+        code="genoviz.demo.TieredMapDemo"
+        archive="genoviz.jar"
+        width=395
+        height=86>
+        <!--<param name="background" value="./images/neologo.gif">-->
+        <strong>
+          If you see this text, your browser apparently doesn't
+          support Java!</strong>
+      </applet>
+
+    </center>
+    
+    <p>
+    This demo shows some of the capabilities of a TieredNeoMap, which 
+    extends NeoMap. &nbsp; TieredNeoMaps are useful in a case where there
+    are several classes of data that need to be displayed, but it is not
+    predetermined how much area is going to be consumed by each type of
+    data.  &nbsp; Each type of data is allocated to a tier (implemented by a
+    <a href="../docs/com/affymetrix/genoviz/widget/tieredmap/MapTierGlyph.html"> MapTierGlyph</a>). &nbsp; The state of each tier, implemented by different packers, can
+    be EXPANDED, COLLAPSED, or HIDDEN, or FIXED_SIZE. &nbsp; Only the first three
+    are shown in this demo, and the tiers start out EXPANDED.  
+
+    <p>
+    Click on a
+    tier to add more glyphs to it, and notice how the tier expands as
+    necessary, making enough room for all the data added to the map, and yet
+    keeping glyphs representing different categories of data separate. &nbsp; To view
+    the other states, right click (or ctrl-click) on the label to the right of each tier, and 
+    choose a state. &nbsp; Shift-clicking on a glyph removes it, and the tier collapses to a smaller size.
+    &nbsp; In order to restore tiers that have been hidden, choose
+    File-&gt;Show All Tiers.
+    </p>
+    
+    <p>
+    Those labels to the right of the TieredNeoMap are implemented as  a 
+    TieredLabelMap. &nbsp; The TieredLabelMap automatically generates labelling tiers
+    as new Tiers are added to the main map. &nbsp; TieredLabelMap is a subclass of
+    TieredNeoMap and stays in sync with the TieredNeoMap by registering as a listener
+    for changes to the map it is labelling.
+    </p>
+    <p>
+    For more information, you can refer to
+    the <a href="src/genoviz/demo/TieredMapDemo.java">source code</a>
+    for the demo. Pay particular attention to comments, which explain how to set up a TieredNeoMap, and you can refer to
+    the <a href="../docs/com/affymetrix/genoviz/widget/TieredNeoMap.html">TieredNeoMap</a>
+    JavaDocs.
+    </p>
+
+    <center>
+      <h3><a href="../index.html">GenoViz Overview</a></h3>
+    </center>
+
+</body>
+
+</html>
+
+
+
+
+

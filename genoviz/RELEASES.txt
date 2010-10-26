@@ -1,0 +1,329 @@
+Integrated Genome Browser - Versions
+-------------------------------------------------------------------
+
+See also
+http://genoviz.sourceforge.net/release_notes/igb_release.html
+
+IGB-6.2.2
+client features:
++ DAS/1 support.  (Ensembl, UCSC, others?)
++ External (UCSC) browser tab
++ Localization
++ GUI bugfixes and enhancements (threading, zooming)
++ Preferences bugfixes and enhancements (data sources, linkouts)
++ USeq support
+
+DAS/2 server:
++ Serving of partial residue sequences
++ Loading of compressed (.gz, .zip) files
++ Security bugfix
++ USeq support
+
+
+IGB-6.1
+client features:
+
++ major memory improvements for graphs (SGR, Wiggle, etc.)
++ better handling for large files over network
++ customizable coloring for residues
++ "whole chromosome" mode for DAS/2; only activated when data is refreshed
++ enhanced DAS/1 support (Ensembl is now accessible)
++ assorted GUI enhancements and bugfixes
+
+server features:
+
++ introduced beta version of GenoPub
+++ a MySQL database stores the meta data and annotations on each dataset.  
+++ a web-based tool (developed using the open source Adobe Flex SDK) allows end-users to easily upload, annotate, organize, and secure their genomic datasets.
+++ datasets are organized into a folder structure that supports multiple views (e.g. patient, disease, factor).  
+++ datasets can be restricted to particular user groups, enabling the controlled distribution of private along side public datasets.
+++ See install instructions under das2_server/INSTALL.txt
+
+
+IGB-6.0
+client features:
+
++ compiled with Java 6
++ enhanced data source preferences page
++ unification of "Pattern Search", "Name Search", and "Annotation Browser" tabs
++ added "Restriction sites" tab by default
++ auto-loading of features (if specified by DAS/2 server)
++ data provider hyperlinks and icons
++ feature hyperlinks and description tooltips
++ QuickLoad annots.xml file (similar to DAS/2)
++ GFF and BED parsing bugfixes
++ warnings for chromosome conflicts
++ assorted GUI enhancements and bugfixes 
+
+server features:
++ file indexing: reduces memory requirements by up to 90%, often reducing startup time as well.
++ improved ID searches: reduces network traffic, thus speeding up client-side search.
++ warnings for chromosome conflicts
++ additional annots.xml properties
+
+IGB-5.5
+  + Incremental change: UI improvements, memory management, code cleanup.  This is the last Java 5-compatible release; Java 5 will NOT be supported after this. 
+  + Image export (print to file) for many formats, such as: 
+PostScript, PDF, EMF, SVF, Flash SWF, as well as GIF, PNG, JPG and PPM. 
+  + Image export (print to file) for Sliced View.
+  + Clearer and more robust "Add Server" page, including a fix for an Apple bug when saving server preferences.  
+  + New IGB icon and splash screen.
+  + Major performance improvement in Heatmaps for mid- to large- size graphs.
+  + More efficient Wiggle format representation, using an estimated ~30% less memory.
+  + Several parser bug fixes.
+  + Finite timeouts for remote resources (DAS servers, etc.)
+  + Closing resource leaks.
+  + Case sensitivity improvements for data sets.
+  + Default shortcuts.
+  + Additional unification for DAS/1.
+  + New Genoviz FASTQ parser.
+
+IGB-5.4
+  + Major change:  unification of QuickLoad, DAS/1, and DAS/2 interfaces.
+  + QuickLoad, DAS/1, and DAS/2 servers are all accessed through the "Data Sources" preferences tab. These servers can be added through the "File->Preferences->Data Sources" tab.
+  + Genome selection is now done via the combo boxes at the top of the Data Sources tab. Sequence selection is now done via the Sequence list on the right-hand side.
+  + Full support of a genome view. By choosing the "genome" selection in the Sequence list, the user can see the entire genome of the target organism in a signle view.
+  + Annotation Browser tab is turned on by default.
+  + The DAS/2 "Name Search", "Annotation Browser", and "Pattern Search", will all be combined in a later release.
+  + Many bugfixes. See the SourceForge bugs page for a partial list.
+
+IGB-5.01
+  + The major change from previous versions is DAS/2 has replaced QuickLoad as 
+    the primary way to access remote data.
+  + DAS/2 allows access to wider selection of annotations than QuickLoad, 
+    more loading options, and better performance.
+  + Genome selection is now done via "Pick Genome" button in top ribbon
+  + Sequence selection is now done via Sequence drop-down in top ribbon
+  + IGB now keeps much better track of settings from previous sessions
+  + Annotation Browser tab is turned off by default 
+    (instead use DAS/2 search via "Name Search" subtab in "Data Access")
+  + Pivot View tab is turned off by default (use is deprecated)
+  + Can revert back to using QuickLoad instead of DAS/2 via a toggle in the 
+    "Data Sources" preferences tab
+  + IGB 5.01 now requires Java version 1.5 or higher.
+
+
+IGB-4.56
+  + Now displays cytobands when the information is available
+  + Entire set of tabbed panels can use a new window to maximize space
+  + Multiple bug fixes
+  + Refer to http://genoviz.sourceforge.net/release_notes/igb_release.html
+
+IGB-4.52
+  + Bugfix for loading exon array CHP files with scores for transcript clusters.
+  + Enhancements for simultaneous viewing of data from different DAS/2 servers.
+  + Added support to accept GFF-format data from a DAS/2 server, when available.
+  + Fixed bug in Pivot View window that caused data to sometimes be invisible
+    when the view was first opened
+  + Added more items to the "Change" pop-up menu.  You can now make most
+    customizations in this menu, rather than opening the "Customize" window.
+  + Now allowing graph thresholding to be used with ALL graph types.
+  + The map range box now additionally accepts input format "chrX:start+width"
+    in addition to the existing "chrX:start-end".
+  + Added support for two more "track line" settings: 
+    itemRgb="on" in BED annotation files, and 
+    graphType="points" in WIG graph files.
+  + It is now possible to load residues for a multiple sequences 
+    from a single FASTA file.  (Recommended only for small sequences.)
+
+IGB-4.50
+  + Adds support for parsing more types of CHP files.
+  + Adds more support for UCSC Genome Browser formats.
+  + Implements the final version of the DAS/2 feature retrieval protocol
+  + Allows hiding or showing the "+" or "-" strand at will.
+
+IGB-4.48.02
+  + A bug-fix release that fixes a bug in version 4.48
+
+IGB-4.48
+  + A minor release that fixes some minor issues with version 4.46
+  + A few new features were added, such as GFF3 parsing.
+  + Refer to http://genoviz.sourceforge.net/release_notes/igb_release.html
+
+IGB-4.46
+  + Many improvements to the graphing functions.
+  + You can output the display to ".eps" Encapsulated PostScript
+  + The spliced view has better performance and shows positions
+    of deleted exons.
+  + It is now possible to parse CHP files generated by Command Console /
+    Expression Console for the exon arrays and for the 3-prime IVT expression
+    arrays.  (As in earlier versions of IGB, parsing CHP files for tiling
+    arrays is also supported.  However parsing of CHP files for genotyping
+    arrays or generated from GCOS/MASS is not yet supported.)
+  + Details at http://genoviz.sourceforge.net/release_notes/igb_release.html
+
+IGB-4.39
+  + Special release for a trade show.  Not released to public.
+
+IGB-4.38.01
+  + Fixes several minor bugs in version 4.38
+  ++ When using the feature "Load Residues in View", the
+     partial residues were not visible because they were drawn in
+     the same color as their background.
+  ++ The "Shrink to fit" menu item was not functioning correctly
+  ++ When using "Change FG Color" on a graph, an incorrect warning
+     message was printed.
+
+IGB-4.38
+
+  + The "Annotation Browser" tab is easier to use and has additional functions
+  ++ You can filter the results to show a subset of the annotations,
+     making it easier to scroll through the results.
+  ++ All annotations with the same ID are shown separately
+  ++ You can sort the results along multiple columns
+  
+  + The "Get more info" menu can be opened without first doing "Select Parent"
+
+  + The "Pivot View" tab has been improved.
+  ++ You can change the foreground and background colors
+  ++ Chosen colors, scaling, and style will be remembered between sessions
+  
+  + Hidden tiers can be shown individually, not just with the "Show All" menu
+  
+  + Colors and labels of tiers can be changed by right-clicking the label
+    and choosing the "Change..." menu.
+  
+  + The horizontal and vertical zoomers can be moved to whichever sides
+    of the map you prefer.  Use File->Preferences->Other Options.
+  
+  + A bug with the "Clamp To View" function has been fixed
+  + Various bugs have been fixed.
+  
+IGB-4.34
+
+  + The "Graph Adjuster" tab is easier to use and has additional functions
+  ++ Graph heights may now be adjusted
+  ++ Several new heat-maps are available, including transparent ones
+  ++ Graphs may now be re-named (right-click on the tier label)
+  ++ Graph Thresholding is performed in a separate window (press "Thresholding")
+  ++ It is possible to combine multiple graphs in one tier (press "Combine")
+
+  + All IGB file types can be opened with File->Open
+  ++ If "merge" is selected, data will be added to the current genome
+  ++ If "merge" is *not* selected, a new temporary genome will be created
+
+  + It is now possible to open Affymetrix "CHP" files for "tiling" arrays
+  ++ It is *not* possible to open "CHP" files for "expression" arrays
+
+  + You may now access any previously-loaded genome and sequence with the
+  ++ controls on the left-hand side of the "Data Access" tab
+
+  + IDs of data from all file types is now indexed so that
+  ++ the IDs appear in the "Annotation Browser" tab
+  ++ the search-by-ID function works for all data file types
+  
+  + Multiple items can now be indexed with the same ID
+  ++ Searching for an ID will result in all matching items being selected
+  ++ Search is no longer case-sensitive
+    
+  + The DAS/2 data transfer specification continues to evolve (see biodas.org)
+  ++ This version of IGB is up-to-date with the current public servers
+  ++ Older DAS/2 versions are out-of-date and may no longer be used with IGB
+
+  + The interface for data loading from DAS/2 servers has been improved
+
+  + It is now possible to load graph data via DAS/2 from compatible servers
+  
+  + The "Bookmark Manager" is now opened with "Bookmarks->Manage Bookmarks"
+
+
+IGB-4.12
+  + Fixed bug that QuickLoad das_servers.txt files were not being read
+  + Fixed bug where keyboard shortcut list wasn't kept up-to-date 
+
+IGB-4.10
+  + Added the possibility to have multiple QuickLoad servers
+  + Now restores your most recent genome and sequence when restarting
+  + Updated user's manual
+  + Various bugfixes
+
+IGB-4.02
+  + Added preliminary support for version 2 of the DAS protocol
+  + Implemented a customizer for setting properties of annotation tiers
+  + Deprecated most features of the igb_prefs.xml file
+
+IGB-3.62
+  + Overhaul of the selection mechanism: 
+  ++ dragging selects multiple items; 
+  ++ dragging started in Axis selects sequence residues
+  + Changed the order that preferences from igb_prefs.xml are applied:
+  ++ Exact matches ('annot_type') are tested first, and are case sensitive.
+  ++ Regular expressions ('annot_type_regex') are tested next, 
+     and are case-sensitive unless the flag '(?i)' is used. 
+  ++ In both cases, items later in the xml files override ones listed earlier.
+  + More support for reading .bar and .bed files produced by the
+    Affymetrix "GTAS" program.
+	+ Fixed bug #1219403 where opening the "combine graphs" pop-up was 
+    hard to do on Macintosh.
+  + Fixed bug #1241228 where sliced view could get out-of-memory errors 
+    due to graphs
+  + Fixed bug #1143530 involving case-sensitivity in GFF file parsing
+  + File-type extensions now treated as case-insensitive.
+	+ Added Help->Console where diagnostic and operational data is printed.
+	+ Fixed round-off errors in the auto-scroll panel.
+  + Added a status bar that reports which items are selected, among other things
+
+
+IGB-3.58
+  + Bug fixes and enhancements for viewing graphs from '.bar' files 
+  + Usability enhancements for viewing graphs from '.sin' files.
+  + Now accepts content-type "text/xml" for DASGFF xml
+  + "Clear" button on the Pattern Search view now clears all the text fields
+
+IGB-3.56
+  + Bug fixes and enhancements for viewing graphs from '.sin' files
+  
+IGB-3.54
+  + Improvements to loading data when the "merge" box is not selected.
+  
+IGB-3.51
+  + Added capabilities for parsing '.sin' files in sin format 3,
+    including matching IDs to multiple items labeled as "id.0", "id.1", etc.
+  + Prelimiary code preparing for future support of the DAS/2 protocol
+  + Add group ID's from GFF (GFF version 1) files to the symbol hash
+  + Added support for loading data from the HuEx-1_0 GeneChip (TM)
+
+
+IGB-3.42
+  + When making graphs for '.sin' files, can now make separate graphs
+    for '+' and '-' strands, and these graphs automatically start
+    in the "stair-step" style
+  + Added a 'bp1' file format and a EfficientProbesetSymA object
+    for efficient representation of probe set data for the 
+    HuEx-1_0 GeneChip (TM)
+
+IGB-3.31
+  + Adding "Make graphs from scored intervals" preference to general 
+    options pane.
+  + Bug fixes in SmartGraphGlyph
+  + Added ability to "clone" graphs (duplicate them in the display)
+  + Added some heatmap coloring options in the Pivot View
+  + Changed some of the "Toggle" menu items to use JCheckBoxMenuItem
+  + Removed the "Add Graph" menu item.  Graphs are now opened with
+    "Open File"
+  + Removed the option to set the browser command in Mac OS X, as
+    it isn't needed.  Mac's "open" command works best.
+  + Added an additional optional format for the Axis Glyph: "ABBREV"
+  + Improvements in Edge Matching
+  + Stopped adding all the extra temporary sequences from the ".link.psl" 
+    alignment files to the list shown in QuickLoad
+  + Prelimiary code preparing for future support of the DAS/2 protocol
+  +  Changed how score-based graph thresholding is handled.  Now score 
+     thresholding can have both a min that score must be >=, 
+     and a max that score must be <=.  
+  
+
+IGB-3.22
+  + Version 3.22 is the initial release of the Integrated Genome Browser 
+    via SourceForge.
+  + The SorceForge release includes code for the GenoViz SDK, Genometry, 
+    and the Integraged Genome Browser (IGB).
+  + Earlier versions of the Integrated Genome Browser, including the code
+    from Genometry, had been released by Affymetrix, Inc.
+    http://www.affymetrix.com/support/developer/tools/affytools.affx
+  + Earlier versions of the GenoViz SDK had been released under the name
+    "Neomorphic Genome Software Development Kit" (NGSDK) by Neomorphic, Inc.,
+    and later as part of the source code for IGB, released by Affymetrix, Inc.
+  + Further development will occur through SourceForge.
+
+

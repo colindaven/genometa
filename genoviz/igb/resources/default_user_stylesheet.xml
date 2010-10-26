@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE IGB_STYLESHEET PUBLIC "-//genoviz//IGB Stylesheet 0.1//EN"
+    "http://genoviz.sourceforge.net/formats/stylesheets/igb_stylesheet_0_1.dtd"
+>
+<!--
+
+This is a sample "user" stylesheet.
+
+In future, we may have IGB load a user stylesheet from the applications directory
+at startup; then allow users to modify it through some sort of GUI; then save
+it back to the applications data directory at shut-down, similar to the way
+the bookmarks.html file is handled.
+
+This "default" user stylesheet could be copied to the applications directory
+during initial installation.
+
+But for now, it will simply stay hidden here in the jar and will be used only
+to test the proper cascading.  Specifically, the "user" stylesheet may extend 
+or override settings in the "system" stylesheet.
+
+-->
+
+<IGB_STYLESHEET>
+  
+<STYLES>
+  
+</STYLES>
+
+<ASSOCIATIONS>
+
+</ASSOCIATIONS>
+
+</IGB_STYLESHEET>

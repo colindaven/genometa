@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+
+  <context-param>
+    <param-name>genometry_mode</param-name>
+    <param-value>genopub</param-value>
+  </context-param>
+  
+	<context-param>
+		<param-name>genometry_server_dir_genopub</param-name>
+		<param-value>/path/to/das2/genopubdata/</param-value>
+	</context-param>
+ 
+	<context-param>
+		<param-name>maintainer_email</param-name>
+		<param-value>admin@example.com</param-value>
+	</context-param>
+
+	<!--                                                                  -->
+	<!-- the '/genome' at the end of xml_base matches the servlet-mapping -->
+	<!--                                                                  -->
+	<context-param>
+		<param-name>xml_base</param-name>
+		<param-value>http://www.example.com:8080/das2genopub/genome</param-value>
+	</context-param>
+	
+	<!-- Listener to obtain Hibernate session  --> 
+  <listener>
+    <listener-class>com.affymetrix.genometry.genopub.HibernateAppListener</listener-class>
+  </listener>	
+  
+	<servlet>
+		<servlet-name>GenoPubServlet</servlet-name>
+		<servlet-class>com.affymetrix.genometry.genopub.GenoPubServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>GenometryDas2Servlet</servlet-name>
+		<servlet-class>com.affymetrix.genometry.servlets.GenometryDas2Servlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GenoPubServlet</servlet-name>
+		<url-pattern>/genopub</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>GenoPubServlet</servlet-name>
+		<url-pattern>/genopub/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>index.html</url-pattern>
+	</servlet-mapping>
+	
+
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>AC_OETags.js</url-pattern>
+	</servlet-mapping>
+	
+
+	<servlet-mapping>
+		<servlet-name>GenometryDas2Servlet</servlet-name>
+		<url-pattern>/genome</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet-mapping>
+		<servlet-name>GenometryDas2Servlet</servlet-name>
+		<url-pattern>/genome/*</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+	<filter-name>Compress</filter-name>
+		<filter-class>com.affymetrix.genometry.servlets.GZIPFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>Compress</filter-name>
+		<servlet-name>GenometryDas2Servlet</servlet-name>
+	</filter-mapping>
+	
+	<!-- Session timeout set to 4 hours -->
+	<session-config>
+		<session-timeout>240</session-timeout>
+	</session-config>
+	
+	<!--  Security Constraint -->
+	<security-constraint>
+		<display-name>Das2User</display-name>
+		<web-resource-collection>
+			<web-resource-name>Login</web-resource-name>
+			<description>Login</description>
+			<url-pattern>GenoPub.swf</url-pattern>
+			<url-pattern>GenoPub.html</url-pattern>
+			<url-pattern>genopub</url-pattern>
+			<url-pattern>genopub/*</url-pattern>
+			<url-pattern>/genome</url-pattern>   
+			<url-pattern>/genome/*</url-pattern>   
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+			<role-name>user</role-name>
+			<role-name>guest</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>DIGEST</auth-method>
+		<realm-name>Das2</realm-name>
+	</login-config>
+	
+	
+	<security-role>
+		<role-name>admin</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>user</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>guest</role-name>
+	</security-role>
+	
+
+</web-app>

@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>GenoViz NeoSeq Demo</title>
+</head>
+<body BGCOLOR="#ddddee">
+<center><h2>GenoViz SDK NeoSeq Demo</h2></center>
+
+<center>
+<applet
+        code="genoviz.demo.NeoSeqDemo"
+        archive="genoviz.jar"
+        width=250
+        height=80>
+<param name="seq_file" value="data/test.fst">
+<strong>If you see this text, your browser apparently doesn't support Java!</strong>
+</applet>
+</center>
+<p>
+This demo exercises many of the methods in the NeoMapI API.
+Notice when resizing the window that the NeoSeq compensates,
+  and only displays rows in round increments of 10 or 20. &nbsp;
+Take a look at the 
+<a href="src/genoviz/demoNeoSeqDemo.java">source</a>,  
+which is considerably longer than most of the tutorials. &nbsp; However, notice 
+that most of this code is in adding lots of menus and tying those menus to NeoSeqI API calls.  &nbsp; 
+The part that sets up the map as it initially appears is still fairly small.   &nbsp;
+For more details on the API calls this applet demonstrates, take a look at the 
+JavaDocs for 
+<a href="../docs/com/affymetrix/genoviz/widget/NeoSeq.html">NeoSeqI</a>
+and 
+<a href="../docs/com/affymetrix/genoviz/widget/NeoWidget.html">NeoWidgetI</a>.
+
+<center>
+<h3><a href="src/genoviz/demo/NeoSeqDemo.java">Java Source Code</a></h3>
+<h3><a href="../index.html">GenoViz Overview</a></h3>
+</center>
+</body>
+</html>

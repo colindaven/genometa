@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>GenoViz NeoQualler Demo</title>
+</head>
+<body BGCOLOR="#ddddee">
+<center><h2>GenoViz NeoQualler Demo</h2></center>
+
+<center>
+<applet
+        code="genoviz.demo.NeoQuallerDemo"
+        archive="genoviz.jar"
+        width=700
+        height=400>
+  <param name="seqFile" value="data/qualtest.seq">
+  <param name="phredFile" value="data/qualtest.phred">
+  <!--param name="noControlPanel" value=""-->
+  <strong>If you see this text, your browser apparently doesn't support Java!</strong>
+</applet>
+<form>
+<input type="button" value="Properties..."
+       onclick="document.applets[0].showProperties();">
+</form>
+</center>
+
+<p>
+This demo exercises many of the methods in the NeoQuallerI API.  
+For more details on the API calls this applet demonstrates, take a look at the 
+JavaDocs for 
+<a href="../docs/com/affymetrix/genoviz/widget/NeoQualler.html">NeoQualler</a>
+and 
+<a href="../docs/com/affymetrix/genoviz/widget/NeoWidget.html">NeoWidget</a>.
+
+<center>
+<h3><a href="src/genoviz/demo/NeoQuallerDemo.java">Java Source Code</a></h3>
+<h3><a href="../index.html">GenoViz Overview</a></h3>
+</center>
+</body>
+</html>

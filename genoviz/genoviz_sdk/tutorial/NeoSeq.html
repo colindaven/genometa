@@ -1,0 +1,114 @@
+<html>
+<head>
+<title>        NeoSeq
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>        NeoSeq
+</h1>
+<p>        Now let's make our simple map program into a sequence map program.
+        We add a stanza at the end of our configuration file
+        that gives the residues in the sequence.
+</p>
+<p>        To show these residues
+        we introduce a NeoSeq to the program.
+        We put it in its own window (Frame)
+        and call its <code>setResidues()</code> method.
+</p>
+<p>        Scroll the configuration file down and find the "sequence" keyword
+        followed by the residues of the sequence.
+</p>
+
+<form>
+<textarea name="config" cols="60" rows="10">
+Range     1  100
+Offsets -20  100
+
+FeatureType ActiveSite  "-glyphtype TriangleGlyph -color magenta -offset 10"
+FeatureType AlphaHelix "-glyphtype SquiggleGlyph -foreground red -offset 10"
+FeatureType Domain "-glyphtype OutlineRectGlyph -foreground blue -offset 10"
+FeatureType Lipid "-glyphtype TriBarGlyph -color darkgrey -offset 10 -width 20"
+FeatureType Mutation "-glyphtype CenteredCircleGlyph -color red -offset 10"
+FeatureType Repeat "-glyphtype FillRectGlyph -color green -offset 10"
+
+ActiveSite    45  48
+AlphaHelix    56  70
+AlphaHelix    20  50
+Domain        40  60
+Lipid         75  75
+Mutation       3   3
+Mutation      70  70
+Repeat        25  30
+Repeat        85  90
+
+Sequence MDAKARNCLLQHREALEKDIKTSYIMDHMISNGVLSVIEEEKVKSQATQY
+         QRAAALIKMILNKDNCAYISFYNALLHEGYKDLAALLQSGLPLVSSS
+
+</textarea><br></br>
+<input        type="button" value="configure map"
+        onClick="document.applets[0].parseInputString(config.value)"
+>
+</form>
+
+<p>        Look at the <a href="../demo/src/genoviz/tutorial/SequenceMap0.java">source</a>.
+</p>
+
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.SequenceMap0"
+        height=150
+        width=570
+>
+<param name="config" value='
+Range     1  100
+Offsets -20  100
+
+FeatureType ActiveSite  "-glyphtype com.affymetrix.genoviz.glyph.TriangleGlyph -color magenta -offset 10"
+FeatureType AlphaHelix "-glyphtype com.affymetrix.genoviz.glyph.SquiggleGlyph -foreground red -offset 10"
+FeatureType Domain "-glyphtype com.affymetrix.genoviz.glyph.OutlineRectGlyph -foreground blue -offset 10"
+FeatureType Lipid "-glyphtype com.affymetrix.genoviz.glyph.TriBarGlyph -color darkgrey -offset 10 -width 20"
+FeatureType Mutation "-glyphtype com.affymetrix.genoviz.glyph.CenteredCircleGlyph -color red -offset 10"
+FeatureType Repeat "-glyphtype com.affymetrix.genoviz.glyph.FillRectGlyph -color green -offset 10"
+
+ActiveSite 45   48
+AlphaHelix     56   70
+AlphaHelix     20   50
+Domain         40   60
+Lipid          75   75
+Mutation        3   3
+Mutation        70  70
+Repeat         25   30
+Repeat         85   90
+
+Sequence MDAKARNCLLQHREALEKDIKTSYIMDHMISNGVLSVIEEEKVKSQATQY
+         QRAAALIKMILNKDNCAYISFYNALLHEGYKDLAALLQSGLPLVSSS
+'>
+</applet>
+</div class="applet">
+
+<h2>         Exercises
+</h2>
+<ol>
+<li>        When the sequence is read,
+        adjust the map's range
+        so that it is at least as long
+        as the sequence.
+</li>
+<li>        Make the NeoSeq's starting number match the NeoMap's range start.
+</li>
+</ol>
+
+<h2>        Next: <a href="Coordination.html">Coordinating Two Widgets</a>
+</h2>
+
+</body>
+</html>

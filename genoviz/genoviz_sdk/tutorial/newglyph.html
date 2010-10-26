@@ -1,0 +1,138 @@
+<html>
+<head>
+<title>        Creating Custom Glyphs
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>        Creating Custom Glyphs
+</h1>
+<p>        The collection of glyphs
+        that come with the GenoViz SDK
+        is a great starting point.
+<p>        However, one powerful feature of the SDK is support
+        for implementing new glyphs.
+        With a small amount of new code,
+        you can define a new glyph
+        that more closely reflects an abstraction
+        that you would like to display on a map.
+        RoundedRect is a simple example.
+        A new type of glyph,
+        it is drawn as a rounded rectangle.
+        To minimize the amount of new code,
+        this is subclassed from SolidGlyph.  
+<p>
+<pre>
+
+package tutorial;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import com.affymetrix.genoviz.bioviews.ViewI;
+import com.affymetrix.genoviz.glyph.SolidGlyph;
+
+public class RoundedRect extends SolidGlyph {
+
+  public void draw(ViewI view) {
+    this.calcPixels(view);
+    Rectangle bbox = this.getPixelBox();
+    Graphics g = view.getGraphics();
+    g.setColor(this.getColor());
+    g.fillRoundRect(bbox.x, bbox.y, bbox.width, bbox.height, 
+                    bbox.height, bbox.height);
+    super.draw(view);
+  }
+
+}
+</pre>
+
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.TutorialGlyphDemo"
+        height="150"
+        width="570"
+>
+</applet>
+</div class="applet">
+
+<p>        The code for the applet shown which uses RoundedRect is also minimal:
+<p>
+<pre>
+package tutorial;
+import java.applet.Applet;
+import java.awt.*;
+import com.affymetrix.genoviz.widget.NeoMap;
+import com.affymetrix.genoviz.awt.NeoPanel;
+import com.affymetrix.genoviz.bioviews.GlyphI;
+import javax.swing.JScrollBar;
+
+public class TutorialGlyphDemo extends Applet {
+
+	@Override
+	public void init() {
+		NeoMap map = new NeoMap(true, false);
+		map.setSelectionEvent(NeoMap.ON_MOUSE_DOWN);
+		map.setMapRange(0, 10000);
+		map.addAxis(30);
+		GlyphI tglyph;
+
+		tglyph = new RoundedRect();
+		tglyph.setCoords(5000, 50, 1000, 30);
+		tglyph.setColor(Color.green);
+		map.addItem(tglyph);
+
+		tglyph = new RoundedRect();
+		tglyph.setCoords(3000, 80, 1000, 15);
+		tglyph.setColor(Color.blue);
+		map.addItem(tglyph);
+
+		JScrollBar xzoomer = new JScrollBar(JScrollBar.VERTICAL);
+		map.setZoomer(JScrollBar.HORIZONTAL, xzoomer);
+
+		NeoPanel pan = new NeoPanel();
+		pan.setLayout(new BorderLayout());
+		pan.add("Center", map);
+		pan.add("West", xzoomer);
+		this.setLayout(new BorderLayout());
+		this.add("Center", pan);
+	}
+}
+</pre>
+
+<p>        When designing custom glyphs,
+        one often is concerned with how many pixels are available for drawing.
+        For example,
+        if you are drawing a glyph representing a stop codon.
+        You might draw a little red octagon if you have enough pixels
+        and a smaller red rectangle if you don't.
+        You probably also want to draw it at least one pixel wide
+        even if there is less than one pixel for three residues.
+</p>
+
+<h2>         Exercises
+</h2>
+<ol>
+<li>        Write a new directional glyph.
+                It is like an arrow glyph,
+                but has a "head" that is flush with the sides.
+                i.e. It is a "pointed rectangle".
+</li>
+<li>        Update SimpleMap4.java
+                ( from the "<a href="Styling.html">Styling</a>" page )
+                to use these new glyphs.
+</li>
+</ol>
+
+<h2>        Next: <a href="scaleglyph.html">Semantic Zooming</a>
+</h2>
+
+</body>
+</html>

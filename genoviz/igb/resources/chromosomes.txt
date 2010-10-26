@@ -1,0 +1,93 @@
+chr1	1	CHR1v01212004	chromosome1|c212	chr01|12001
+chr2	2	CHR2v01212004	chromosome2|c1348	chr02|12002
+chr3	3	CHR3v01212004	chromosome3|p20C8	chr03|12001
+chr4	4	arm_4	CHR4v01212004	chr04|12004
+chr5	5	CHR5v01212004	chr05|12005
+chr6	6	chr06|12006
+chr7	7	chr07|12007
+chr8	8	chr08|12008
+chr9	9	chr09|12009
+chr10	10	chr10|12010
+chr11	11	chr11|12011
+chr12	12	chr12|12012
+chr13	13
+chr14	14
+chr15	15
+chr16	16
+chr17	17
+chr18	18
+chr19	19
+chr20	20
+chr21	21
+chr22	22
+chr23	23
+chr24	24
+chr25	25
+chr26	26
+chr27	27
+chr28	28
+chr29	29
+chr30	30
+chr31	31
+chr32	32
+chr33	33
+chr34	34
+chr35	35
+chr36	36
+chr37	37
+chr38	38
+chrX	X	arm_X
+chrY	Y
+chrM	M	MT	chrMT	mitochondria	mitochondrion	NC_001709	chrM|11706
+chrC	C	chloroplast	chrC|11562
+chrUn	U	Un	chrU	ArmU
+chrUextra	ArmUextra
+chrI	I
+chrII	II
+chrIII	III
+chrIV	IV
+chrV	V
+chr1L	1L	arm_1L
+chr1R	1R	arm_1R
+chr2L	2L	arm_2L
+chr2R	2R	arm_2R
+chr2h	2h
+chr2RHet	2RHet
+chr2LHet	2LHet
+chr3L	3L	arm_3L
+chr3R	3R	arm_3R
+chr3h	3h
+chr3RHet	3RHet
+chr3LHet	3LHet
+chr4h	4h
+chrXh	Xh	XHet	chrXHet
+chrYh	Yh	YHet	chrYHet
+chr1_random	1_random
+chr2_random	2_random
+chr3_random	3_random
+chr4_random	4_random
+chr5_random	5_random
+chr6_random	6_random
+chr7_random	7_random
+chr8_random	8_random
+chr9_random	9_random
+chr10_random	10_random
+chr11_random	11_random
+chr12_random	12_random
+chr13_random	13_random
+chr14_random	14_random
+chr15_random	15_random
+chr16_random	16_random
+chr17_random	17_random
+chr18_random	18_random
+chr19_random	19_random
+chr20_random	20_random
+chr21_random	21_random
+chr22_random	22_random
+chrX_random	X_random
+chrY_random	Y_random
+chrUn_random	U_random	Un_random
+chr5_h2_hap1	5_h2_hap1
+chr6_cox_hap1	6_cox_hap1
+chr6_qbl_hap1	6_qbl_hap1
+chr22_h2_hap1	22_h2_hap1

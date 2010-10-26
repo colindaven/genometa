@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>        Semantic Zooming
+
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>        Semantic Zooming
+
+</h1>
+<p>        To take the glyph example a little bit further, you
+        can easily include functionality to display
+        amounts of information depending on the size that the 
+        glyph is rendered.
+<p>        Here is the <a href="../demo/src/genoviz/tutorial/ScaleText.java">source</a> for an example that will display a text String to 
+        fit inside the bounding area of its glyph.
+
+<p>
+
+
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.TutorialGlyphDemo2"
+        height="150"
+        width="570"
+>
+</applet>
+</div class="applet">
+
+<p>        The code for the applet shown which uses ScaleText is identical to the
+        previous example except that it creates glyphs of type ScaleText 
+        rather than RoundRect.
+
+<p>
+<pre>
+
+</pre>
+
+
+<h2>         Exercises
+</h2>
+<ol>
+<li>        Write a new text glyph that will crop a text string to fit within
+        the glyph and keep the font size fixed.
+           
+</li>
+<li>    In this example new fonts are created when the text is scaled, though often
+        they are created for sizes that may have been created previously.  Change the 
+        ScaleText glyph to allow it to cache commonly used font sizes.
+</li>
+</ol>
+
+<h2>        Next: <a href="Events.html">Responding to Events</a>
+</h2>
+
+</body>
+</html>

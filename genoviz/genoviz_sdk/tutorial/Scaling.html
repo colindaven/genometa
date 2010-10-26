@@ -1,0 +1,99 @@
+<html>
+<head>
+<title>        Scaling
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>        Scaling
+</h1>
+<p>        Adding scrollbars for zooming and panning is pretty easy.
+        The scaling is built into the widgets.
+        All we need do is attach the scrollbars.
+</p>
+
+The <a href="../demo/src/genoviz/tutorial/SimpleMap3.java">complete source code</a> 
+is long.  Here is the most relevant part:
+<pre>
+public class SimpleMap3 extends SimpleMap2 {
+
+  Adjustable zoomer, scroller;
+
+  public SimpleMap3() {
+    zoomer = new JScrollBar(JScrollBar.VERTICAL);
+    add("West", (Component)zoomer);
+    map.setRangeZoomer(zoomer);
+    scroller = new JScrollBar(JScrollBar.HORIZONTAL);
+    add("South", (Component)scroller);
+    map.setRangeScroller(scroller);
+  }
+}
+</pre>
+
+
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.SimpleMap3"
+        height="150"
+        width="100%"
+>
+<param name="config" value='
+Range     1  1000
+Offsets -100  100
+Glyph    20   60 "-glyphtype com.affymetrix.genoviz.glyph.FillRectGlyph -color blue -offset 10"
+Glyph    80  120 ""
+Glyph    80  120 "-glyphtype com.affymetrix.genoviz.glyph.TriangleGlyph -color black -offset 25"
+Glyph   112  140 "-glyphtype com.affymetrix.genoviz.glyph.FillOvalGlyph -color red"
+Glyph    40  100 "-glyphtype com.affymetrix.genoviz.glyph.ArrowGlyph" labeled left "An Arrow"
+'>
+</applet>
+</div class="applet">
+
+<p>        The API documentation uses the terms "pixel space" and "coordinate space".
+        They are perhaps a bit inelegant.
+        It's really fairly simple.
+        "Pixel space" has a coordinate system
+that corresponds to pixels on your screen.
+"Coordinate space" has a coordinate system
+that corresponds to your model.
+Zooming will change the scale of your map.
+So as you zoom in more pixels are used to represent an area
+of "coordinate space".
+</p>
+<p>        For example, with sequences,
+        the primary axis (in coordinate space) will correspond
+        to residues of the sequence.
+        Hence, coordinate 3 corresponds to the third residue
+        (or fourth if you start at 0).
+        The offset can be used to keep overlapping features
+        from obscuring each other
+        (although the packer also does this automatically).
+        Or the offset can be used to indicate function.
+        The idea is that you define biological features
+        and other entities in "coordinate space".
+</p>
+<p>        You will want to put features on a map
+        giving it coordinates that correspond to the model.
+        The map and its zoomers will figure out how many pixels to use.
+</p>
+
+<h2>         Exercises
+</h2>
+<ol>
+<li>        Add another scroll bar for vertical zooming.
+</li>
+</ol>
+
+<h2>        Next: <a href="Hairy.html">Scaling with Focus</a>
+</h2>
+
+</body>
+</html>

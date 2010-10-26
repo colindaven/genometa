@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<ruleset name="genoviz"
+    xmlns="http://pmd.sf.net/ruleset/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+
+  <description>This ruleset is for the Genoviz project</description>
+
+	<rule ref="rulesets/basic.xml">
+		<exclude name="ForLoopShouldBeWhileLoop" />
+		<exclude name="UnnecessaryFinalModifier" />
+	</rule>
+	<rule ref="rulesets/braces.xml/WhileLoopsMustUseBraces" />
+	<rule ref="rulesets/clone.xml" />
+	<rule ref="rulesets/codesize.xml">
+		<exclude name="TooManyMethods" />
+		<exclude name="ExcessiveParameterList" />
+	</rule>
+	<rule ref="rulesets/controversial.xml">
+		<exclude name="AtLeastOneConstructor" />
+		<exclude name="AssignmentInOperand" />
+		<exclude name="AvoidFinalLocalVariables" />
+		<exclude name="AvoidFinalLocalVariable" />
+		<exclude name="AvoidUsingShortType" />
+		<exclude name="BooleanInversion" />
+		<exclude name="CallSuperInConstructor" />
+		<exclude name="DataflowAnomalyAnalysis" />
+		<exclude name="DefaultPackage" />
+		<exclude name="OnlyOneReturn" />
+		<exclude name="UnnecessaryParentheses" />
+		<exclude name="UnusedModifier" />
+	</rule>
+	<rule ref="rulesets/coupling.xml">
+		<exclude name="ExcessiveImports" />
+		<exclude name="CouplingBetweenObjects" />
+	</rule>
+	<rule ref="rulesets/design.xml">
+		<exclude name="ConfusingTernary" />
+		<exclude name="TooFewBranchesForASwitchStatement" />
+		<exclude name="UncommentedEmptyConstructor" />
+		<exclude name="UncommentedEmptyMethod" />
+		<exclude name="UseCollectionIsEmpty" />
+		<exclude name="UseSingleton" />
+	</rule>
+	<rule ref="rulesets/finalizers.xml" />
+	<rule ref="rulesets/imports.xml" />
+	<rule ref="rulesets/j2ee.xml" >
+		<exclude name="DoNotUseThreads"/>
+	</rule>
+	<rule ref="rulesets/junit.xml" />
+	<rule ref="rulesets/logging-jakarta-commons.xml" />
+	<rule ref="rulesets/logging-java.xml">
+		<exclude name="SystemPrintln" />
+		<exclude name="AvoidPrintStackTrace" />
+	</rule>
+	<rule ref="rulesets/migrating.xml">
+		<exclude name="ReplaceVectorWithList" />
+		<exclude name="JUnit4TestShouldUseTestAnnotation" />
+	</rule>
+	<rule ref="rulesets/naming.xml">
+		<exclude name="ShortVariable" />
+		<exclude name="LongVariable" />
+		<exclude name="VariableNamingConventions" />
+		<exclude name="MethodNamingConventions" />
+		<exclude name="ClassNamingConventions" />
+		<exclude name="AbstractNaming" />
+		<exclude name="PackageCase" />
+		<exclude name="BooleanGetMethodName" />
+	</rule>
+	<rule ref="rulesets/optimizations.xml">
+		<exclude name="LocalVariableCouldBeFinal" />
+		<exclude name="MethodArgumentCouldBeFinal" />
+	</rule>
+	<rule ref="rulesets/strictexception.xml" />
+	<rule ref="rulesets/strings.xml" />
+	<rule ref="rulesets/sunsecure.xml" />
+	<rule ref="rulesets/typeresolution.xml">
+		<exclude name="LooseCoupling" />
+	</rule>
+  <rule ref="rulesets/unusedcode.xml"/>
+</ruleset>

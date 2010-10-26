@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>IGB 4.02 through 4.12 Release Notes.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Language" content="en-US" />
+<link rel="stylesheet" type="text/css" media="screen" href="/stylesheet.css" />
+<link rel="icon" href="/favicon.ico" />
+</head>
+
+
+<body>
+<br>
+<h1>IGB 4.02 to 4.12 release notes.</h1>
+
+Highlights:
+<ul>
+
+</li><li><b>Version 4.12</b>
+<ul>
+<li>Bugfixes, such as making sure to read the das_servers.txt file from QuickLoad servers
+</li></ul>
+
+<li><b>Version 4.10</b>:
+<ul>
+<li>Added support for multiple QuickLoad servers
+</li><li>IGB will start-up on the Genome and Sequence you were last looking at
+</li><li>The known bugs from version 4.02 have been fixed
+</li></ul>
+
+
+</li><li><b>Version 4.02</b>:
+<ul>
+<li>User preferences are specified in a graphical interface
+</li><li>The <u>igb_prefs.xml</u> file is being deprecated
+</li><li>Added support for data-loading from DAS/2 servers
+</li><li>Various bug fixes and enhancements
+</li></ul>
+
+</li></ul>
+
+<h2>User preference changes</h2>
+<h3>The <u>igb_prefs.xml</u> file is being deprecated.</h3>
+In versions 3.x, users had to set preferences, such as annotation colors in
+a file called <u>igb_prefs.xml</u>.  This file was difficult to edit and did not
+allow the changes to be immediately seen.
+<br>
+<br>
+With version 4, the <u>igb_prefs.xml</u> file is almost obsolete.
+The majority of users should ignore this file.
+(Very advanced users may still find a few uses for it.)
+If you are still sometimes using older versions of IGB, you may
+choose to keep your <u>igb_prefs.xml</u> file in place.  
+Version 4 will simply ignore most of the contents.
+
+<h3>Setting annotation preferences</h3>
+
+When you first load annotation data into IGB, <i>all</i> types of data
+will be displayed in the <i>same</i> default color and style.
+By default, only "RefSeq" data will display labels.
+<br>
+<br>
+You can change some properties just as before, by right-clicking on
+the tier labels and choosing "Hide", "Collapse", "Expand", "Adjust Max Expand",
+or "Change Annotation Color".  The main difference now is that these
+changes will be persistent.  If you shut down the program and
+restart it, these settings will remain.  (Except that hidden tiers
+will become visible again when you restart and reload that data.)
+<br>
+<br>
+
+To access more advanced features, right-click on the tier labels and
+choose "Customize".  Alternatively, you can access the same customization
+panel by choosing the "File-&gt;Preferences" menu.
+<br>
+<br>
+
+From the tier preferences panel, you can
+<ul>
+<li>set foreground and background colors,
+</li><li>change the displayed tier names
+</li><li>combine (+) and (-) tiers into a single (+/-) tier,
+</li><li>collapse or expand tiers,
+</li><li>change the maximum tier heights,
+</li><li>choose to draw data without connecting lines (appropriate for "repeats" and "contigs"),
+</li><li>choose to display labels.
+</li></ul>
+You may also change the <i>default</i> values of most of these properties.
+(A few of the default values are protected from changes.)
+For more details, use the "Help" menu on the preferences panel.
+Changes take effect as soon as you close this window.
+<br>
+<br>
+
+Regardless of whether you set properties from the preferences panel
+or by right-clicking a tier, the properties will persist between sessions.
+Settings for temporarily-created tiers, such as from the union of two
+tiers, do not persist between sessions.
+<br>
+<br>
+
+One other change to note: forward and reverse strands of the same annotation
+type now must have matching colors and styles.  Changing one strand automatically
+changes the other as well.  (We may later revise this to allow strands to
+be hidden independently.)
+
+
+<h2>Remaining features of <u>igb_prefs.xml</u></h2>
+
+Advanced users may still choose to specify the location of a QuickLoad server
+in <u>igb_prefs.xml</u>, or to specify URL's that can be used 
+by the "Get More Info" hyperlinks.
+
+<p>
+Here is an example of how to set the QuickLoad URL, 
+and how to add a hyperlink.
+</p>
+
+<code>
+&lt;tagval tag="QuickLoadUrl" val="http://netaffxdas.affymetrix.com/quickload_data/"/&gt;
+<br>
+&lt;annotation_url annot_type_regex="EnsGene"
+    url="http://www.ensembl.org/Homo_sapiens/textview?idx=All&amp;q=$$" /&gt;
+</code>
+
+<p>
+In version 4.02 the URL set this way in the "igb_prefs.xml" file 
+will replace the standard NetAffx QuickLoad URL.  (Due to a bug,
+any server set with the "Options" button in the QuickLoad panel will
+be ignored.)
+</p>
+<p>
+In version 4.10 and higher, you are allowed to have multiple QuickLoad servers.
+You will always have access to the NetAffx QuickLoad server,
+and you may add an optional "Personal" server using the 
+"Options" button in the QuickLoad panel.  To maintain
+compatibility with earlier versions, if a QuickLoad URL 
+is also set in the "igb_prefs.xml" file, it will become a third,
+"Auxiliary" QuickLoad server.
+</p>
+
+<h2>DAS/2 servers</h2>
+
+Beginning with version 4.02, there is support for loading data from DAS/2 servers.
+<br>
+<br>
+Earlier versions already had support for loading data from DAS servers.
+However, there is a new form of DAS server, DAS version 2.0, that is under development.
+Refer to http://biodas.org/ for more information on the DAS/2 specification.
+<br>
+<br>
+Two experimental DAS/2 servers are available now.  Feel free to test them, but
+be aware of their experimental nature.  Until the DAS/2 specification becomes
+stable, you will generally need the most recent version of IGB to use these
+experimental servers.
+
+
+<h2>DAS/1 servers</h2>
+You may continue to access DAS/1 servers as before, using
+"File-&gt;Load DAS Features".  
+<br>
+<br>
+If no DAS/1 servers are listed when you try that,
+or if you wish to add additional servers,
+you may add servers with "File-&gt;Preferences" in the "DAS Servers" panel.
+These two servers are a good place to start: 
+"http://genome.cse.ucsc.edu/cgi-bin/das/" and 
+"http://netaffxdas.affymetrix.com/das/"
+
+
+<h2>Bug Fixes</h2>
+
+There are various smaller enhancements and bug fixes, including:
+<ul>
+<li>enhancements and fixes in the "Pivot View"
+</li><li>curations have been disabled, but will return in improved form in a future release
+</li><li>the Graph Adjuster tab has been simplified somewhat
+</li><li>problems with "right-clicking" graphs on Macintosh have been resolved
+</li></ul>
+
+<h2>Known Bugs in Version 4.02</h2>
+
+Unfortunately, a few bugs were introduced with release 4.02.
+These bugs were fixed in version 4.10.
+
+<p>
+<b>QuickLoad server:</b>  The graphical interface for setting the location
+of the QuickLoad server <b>does not work</b> in version 4.02.  
+If you need to use a server other than the default one, 
+you will need to edit your "igb_prefs.xml" file.
+</p>
+<p>
+For example on Linux:<br>
+<code>
+&lt;tagval tag="QuickLoadUrl" val="file:///home/steve/quickload/" /&gt;
+</code>
+<br>
+or on Windows:
+<br>
+<code>
+&lt;tagval tag="QuickLoadUrl" val="file:///c:/Documents and Settings/name/quickload/" /&gt;
+</code>
+</p>
+
+<p>
+<b>Tier Labels:</b>
+If you change the tier label display name through the tier preferences panel,
+the name may not take effect until you re-start the program.  Likewise,
+if you change from displaying forward and reverse strands separately to displaying them
+together, the label may not update to reflect this change, although the data
+will be drawn in one or two tiers as you requested.
+</p>
+
+
+    <div id="footer">
+      <p class="center">
+      IGB is part of the <a href="http://genoviz.sourceforge.net">GenoViz project.</a>
+      Source code for IGB is released under the 
+      <a href="http://www.opensource.org/licenses/cpl1.0.php">Common Public License, v1.0</a> an 
+      <a href="http://www.opensource.org/docs/definition.php">OSI approved</a>
+      open source license. IGB uses other open source software packages
+      which are covered by their own open source licenses. </p>
+      <p class="center">
+      IGB is Copyright (c) 2000-2006 Affymetrix, Inc. Research
+      and development of IGB is supported in part by NIH grant
+      R01HG003040</p> 
+      <p class="center">
+      <a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=129420&amp;type=1" alt="SourceForge.net" /></a>
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      <a href="http://www.opensource.org/docs/definition.php"><img src="http://opensource.org/trademarks/osi-certified/web/osi-certified-60x50.jpg" alt="OSI Certified" width="60" height="50" border="0"></a>
+      </p>
+    </div>
+
+</body>
+</html>

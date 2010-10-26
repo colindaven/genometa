@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>        Data Adapters
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+<body>
+
+<h1>        Data Adapters
+</h1>
+<p>        Adding items directly to the map
+        or through the map's factories
+        by specifying a start and end position
+        works for simple annotations.
+        For more complex annotations,
+        classes
+        that implement the
+        interface
+        NeoDataAdapterI
+        provide a more general mechanism
+        to represent data models on the map.
+        However, making a data adapter class requires knowledge
+        of both the data model one wants to represent
+        and more of the internals of the map widget.
+</p>
+<p>        Data Adapters can be used
+        to automate building a visual representation
+        of datamodels.
+        Each data adapter is specific
+        to a particular class of data model.
+        Once a data adapter has been constructed
+        and added to the map,
+        calling Map.addData(model) will represent the model
+        in the map
+        in a manner specific to the data adapter
+        and its configuration.
+</p>
+<p>        A <a href="../demo/src/genoviz/demo/datamodel/ScoredAnnotation.java"
+        >ScoredAnnotation</a> models a scored annotation.
+        It extends an <a href="../demo/src/genoviz/demo/datamodel/Annotation.java">Annotation</a>.
+        It can be constructed
+        by giving it a start, an end, and a score
+        between 0 and 1 inclusive.
+</p>
+<p>        A <a href="../demo/src/genoviz/demo/adapter/ScoredAnnotAdapter.java"
+        >ScoredAnnotAdapter</a> uses the score
+        of an annotation
+        to determine a grayscale value
+        to color the glyph representing it.
+        Unless told otherwise,
+        it assumes a scoring system
+        that ranges from 0.0 to 1.0,
+        and maps this along a linear color scale,
+        from 0.0 = black to 1.0 = white.
+        Values outside this range will give unpredictable results.
+
+</p>
+
+<h2>         Exercises
+</h2>
+<ol>
+<li>        Add syntax to our SimpleMap program
+        to allow a user
+        to specify a scored annotation.
+        Use <a href="../demo/src/genoviz/demo/NeoMapDemo.java"
+        >NeoMapDemo</a> as an example to help guide you.
+</li>
+</ol>
+
+<h2>        Next: <a href="newglyph.html">Creating Custom Glyphs</a>
+</h2>
+
+</body>
+</html>

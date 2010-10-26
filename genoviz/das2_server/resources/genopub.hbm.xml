@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <!--              -->
+    <!-- MAIN OBJECTS -->
+    <!--              -->
+    
+    <!--  Annotation -->
+    <class name="com.affymetrix.genometry.genopub.Annotation" table="Annotation">
+        <id name="idAnnotation"                      column="idAnnotation"               type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name"                        column="name"                       type="string"/>
+        <property name="summary"                     column="summary"                    type="string"/>
+        <property name="description"                 column="description"                type="string"/>
+        <property name="fileName"                    column="fileName"                   type="string"/>
+        <property name="codeVisibility"              column="codeVisibility"             type="string"/>
+        <property name="idAnalysisType"              column="idAnalysisType"             type="integer"/>
+        <property name="idExperimentMethod"          column="idExperimentMethod"         type="integer"/>
+        <property name="idExperimentPlatform"        column="idExperimentPlatform"       type="integer"/>
+        <property name="idGenomeVersion"             column="idGenomeVersion"            type="integer"/>
+        <property name="idUser"                      column="idUser"                     type="integer"/>
+        <property name="idUserGroup"                 column="idUserGroup"                type="integer"/>
+        <property name="createdBy"                   column="createdBy"                  type="string"/>
+        <property name="createDate"                  column="createDate"                 type="java.sql.Date"/>
+        <property name="isLoaded"                    column="isLoaded"                   type="string"/>
+        
+		  	<set name="annotationGroupings" table="AnnotationToAnnotationGrouping" lazy="true" cascade="none">
+					<key column="idAnnotation"/>
+					<many-to-many column="idAnnotationGrouping" class="com.affymetrix.genometry.genopub.AnnotationGrouping"/>
+				</set>    
+				
+      
+    </class>
+
+    <!--  AnnotationGrouping -->
+    <class name="com.affymetrix.genometry.genopub.AnnotationGrouping" table="AnnotationGrouping">
+        <id name="idAnnotationGrouping"  column="idAnnotationGrouping"    type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name"                        column="name"                       type="string"/>
+        <property name="description"                 column="description"                type="string"/>
+        <property name="idParentAnnotationGrouping"  column="idParentAnnotationGrouping" type="integer"/>
+    		<many-to-one name="parentAnnotationGrouping" column="idParentAnnotationGrouping" class="com.affymetrix.genometry.genopub.AnnotationGrouping" cascade="none" insert="false" update="false" />
+        <property name="idGenomeVersion"             column="idGenomeVersion"            type="integer"/>
+        <property name="idUserGroup"                 column="idUserGroup"                type="integer"/>
+        <property name="createdBy"                   column="createdBy"                  type="string"/>
+        <property name="createDate"                  column="createDate"                 type="java.sql.Date"/>
+        
+        <set name="annotationGroupings" table="AnnotationGrouping" lazy="true" cascade="all" order-by="name">
+			    <key column="idParentAnnotationGrouping"/>
+			    <one-to-many class="com.affymetrix.genometry.genopub.AnnotationGrouping" />
+		    </set>   
+
+		    <set name="annotations" table="AnnotationToAnnotationGrouping" lazy="true" cascade="none">
+			    <key column="idAnnotationGrouping"/>
+			    <many-to-many column="idAnnotation" class="com.affymetrix.genometry.genopub.Annotation"/>
+		    </set>
+    </class>
+
+    
+    <!--  GenomeVersion -->
+    <class name="com.affymetrix.genometry.genopub.GenomeVersion" table="GenomeVersion">
+        <id name="idGenomeVersion"       column="idGenomeVersion"   type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name"            column="name"              type="string"/>
+        <property name="idOrganism"      column="idOrganism"        type="integer"/>
+        <property name="buildDate"       column="buildDate"         type="java.sql.Date"/>
+        <property name="coordURI"        column="coordURI"          type="string"/>
+        <property name="coordAuthority"  column="coordAuthority"    type="string"/>
+        <property name="coordVersion"    column="coordVersion"      type="string"/>
+        <property name="coordSource"     column="coordSource"       type="string"/>
+        <property name="coordTestRange"  column="coordTestRange"    type="string"/>
+		    <set name="segments" table="Segment" lazy="true" cascade="none" order-by="sortOrder">
+			    <key column="idGenomeVersion"/>
+			    <one-to-many class="com.affymetrix.genometry.genopub.Segment" />
+		    </set>        
+		    <set name="aliases" table="GenomeVersionAlias" lazy="true" cascade="none" order-by="alias">
+			    <key column="idGenomeVersion"/>
+			    <one-to-many class="com.affymetrix.genometry.genopub.GenomeVersionAlias" />
+		    </set>        
+		    <set name="annotationGroupings" table="AnnotationGrouping" lazy="false" cascade="none" order-by="name">
+			    <key column="idGenomeVersion"/>
+			    <one-to-many class="com.affymetrix.genometry.genopub.AnnotationGrouping" />
+		    </set>        
+		    <set name="annotations" table="Annotation" lazy="true" cascade="none" order-by="name">
+			    <key column="idGenomeVersion"/>
+			    <one-to-many class="com.affymetrix.genometry.genopub.Annotation" />
+		    </set>        
+    </class>
+    
+    <!--  GenomeVersionAlias -->
+    <class name="com.affymetrix.genometry.genopub.GenomeVersionAlias" table="GenomeVersionAlias">
+        <id name="idGenomeVersionAlias"  column="idGenomeVersionAlias"   type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="alias"            column="alias"              type="string"/>
+    </class> 
+
+
+    <!--  Organism -->
+    <class name="com.affymetrix.genometry.genopub.Organism" table="Organism">
+        <id name="idOrganism"            column="idOrganism"        type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name"            column="name"      type="string"/>
+        <property name="binomialName"    column="binomialName"      type="string"/>
+        <property name="commonName"      column="commonName"        type="string"/>
+        <property name="sortOrder"       column="sortOrder"         type="integer"/>
+        <property name="NCBITaxID"       column="NCBITaxID"         type="string"/>
+		    <set name="genomeVersions" table="GenomeVersion" lazy="true" cascade="all" order-by="buildDate">
+			    <key column="idOrganism"/>
+			    <one-to-many class="com.affymetrix.genometry.genopub.GenomeVersion" />
+		    </set>        
+    </class>
+    
+
+    <!--  Segment -->
+    <class name="com.affymetrix.genometry.genopub.Segment" table="Segment">
+        <id name="idSegment"            column="idSegment"         type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name"            column="name"              type="string"/>
+        <property name="length"          column="length"            type="integer"/>
+        <property name="sortOrder"       column="sortOrder"         type="integer"/>
+        <property name="idGenomeVersion" column="idGenomeVersion"   type="integer"/>
+    </class>
+
+    <!--  UnloadAnnotation -->
+    <class name="com.affymetrix.genometry.genopub.UnloadAnnotation" table="UnloadAnnotation">
+        <id name="idUnloadAnnotation"                column="idUnloadAnnotation"         type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="typeName"                    column="typeName"               type="string"/>
+        <property name="idUser"                      column="idUser"                 type="integer"/>
+        <property name="idGenomeVersion"             column="idGenomeVersion"        type="integer"/>
+    </class>
+        
+    
+    <!--  User -->
+    <class name="com.affymetrix.genometry.genopub.User" table="User">
+        <id name="idUser"       column="idUser"   type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="lastName"            column="lastName"              type="string"/>
+        <property name="firstName"           column="firstName"             type="string"/>
+        <property name="middleName"          column="middleName"            type="string"/>
+        <property name="userName"            column="userName"              type="string"/>
+        <property name="password"            column="password"              type="string"/>
+        <property name="email"               column="email"                 type="string"/>
+        <property name="institute"           column="institute"             type="string"/>
+		  	<set name="memberUserGroups" table="UserGroupMember" lazy="true" cascade="none">
+					<key column="idUser"/>
+					<many-to-many column="idUserGroup" class="com.affymetrix.genometry.genopub.UserGroup"/>
+				</set>
+		  	<set name="collaboratingUserGroups" table="UserGroupCollaborator" lazy="true" cascade="none">
+					<key column="idUser"/>
+					<many-to-many column="idUserGroup" class="com.affymetrix.genometry.genopub.UserGroup"/>
+				</set>
+		  	<set name="managingUserGroups" table="UserGroupManager" lazy="true" cascade="none">
+					<key column="idUser"/>
+					<many-to-many column="idUserGroup" class="com.affymetrix.genometry.genopub.UserGroup"/>
+				</set>
+        
+		  	<set name="roles" table="UserRole" lazy="true" cascade="none">
+			    <key column="idUser"/>
+			    <one-to-many class="com.affymetrix.genometry.genopub.UserRole" />
+		    </set>
+    </class>  
+    
+        
+    <!--  UserGroup -->
+    <class name="com.affymetrix.genometry.genopub.UserGroup" table="UserGroup">
+        <id name="idUserGroup"       column="idUserGroup"   type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name"            column="name"              type="string"/>
+        <property name="contact"         column="contact"           type="string"/>
+        <property name="email"           column="email"             type="string"/>
+        <property name="institute"       column="institute"         type="string"/>
+
+		    <set name="members" table="UserGroupMember" lazy="true" cascade="none">
+			    <key column="idUserGroup"/>
+			    <many-to-many column="idUser" class="com.affymetrix.genometry.genopub.User"/>
+		    </set>        
+		    <set name="collaborators" table="UserGroupCollaborator" lazy="true" cascade="none">
+			    <key column="idUserGroup"/>
+			    <many-to-many column="idUser" class="com.affymetrix.genometry.genopub.User"/>
+		    </set>        
+		    <set name="managers" table="UserGroupManager" lazy="true" cascade="none">
+			    <key column="idUserGroup"/>
+			    <many-to-many column="idUser" class="com.affymetrix.genometry.genopub.User"/>
+		    </set>        
+    </class>    
+    
+    <!--  UserRole -->
+    <class name="com.affymetrix.genometry.genopub.UserRole" table="UserRole">
+        <id name="idUserRole"       column="idUserRole"   type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="idUser"              column="idUser"                type="integer"/>
+        <property name="userName"            column="userName"              type="string"/>
+        <property name="roleName"            column="roleName"              type="string"/>
+    </class>  
+        
+    
+    <!--              -->
+    <!-- DICTIONARIES -->
+    <!--              -->
+    
+    <!-- AnalysisType -->
+    <class name="com.affymetrix.genometry.genopub.AnalysisType" table="AnalysisType">
+        <id name="idAnalysisType"  column="idAnalysisType"   type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name"               column="name"               type="string"/>
+        <property name="isActive"           column="isActive"           type="string"/>
+        <property name="idUser"             column="idUser"             type="integer"/>
+    </class> 
+    
+    <!-- ExperimentMethod -->
+    <class name="com.affymetrix.genometry.genopub.ExperimentMethod" table="ExperimentMethod">
+        <id name="idExperimentMethod"  column="idExperimentMethod"   type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name"               column="name"               type="string"/>
+        <property name="isActive"           column="isActive"           type="string"/>
+        <property name="idUser"             column="idUser"             type="integer"/>
+    </class>   
+    
+    <!-- ExperimentPlatform -->
+    <class name="com.affymetrix.genometry.genopub.ExperimentPlatform" table="ExperimentPlatform">
+        <id name="idExperimentPlatform"  column="idExperimentPlatform"   type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name"               column="name"               type="string"/>
+        <property name="isActive"           column="isActive"           type="string"/>
+        <property name="idUser"             column="idUser"             type="integer"/>
+    </class>     
+    
+    <!-- Visibility -->
+    <class name="com.affymetrix.genometry.genopub.Visibility" table="Visibility">
+        <id name="codeVisibility"  column="codeVisibility"   type="string">
+            <generator class="native"/>
+        </id>
+        <property name="name"               column="name"               type="string"/>
+    </class>            
+
+</hibernate-mapping>

@@ -1,0 +1,53 @@
+=== Installing the Classic DAS2 Server ===
+
+=== Modes ===
+There are two ways to configure the GenoViz Genometry DAS2 server:
+* Classic mode: The annotations are organized into a directory structure on the file system.
+* GenoPub mode: The annotations are managed by the GenoPub (Genomic Annotation Publisher), which stores information about each annotation in a database.  A web-based tool allows annotations to be easily added, described, and organized.  Through the tool, users and groups are managed and annotation security is specified. Access to annotations is brokered by the DAS2 server so that  only authorized users can gain access to these resources.
+
+=== REQUIREMENTS ===
+
+	- Java 6+, 64-bit recommended (http://java.sun.com/)
+	- Apache Tomcat 5.5+ (http://apache.tomcat.org/)
+	- Subversion client (Optional, for accessing example data set)
+
+
+=== CONFIGURATION ===
+
+== The context.xml file ==
+The web.xml file in the das2/META-INF directory must be properly configured before the das2 servlet will run. A list of the context parameters from the context.xml is below:
+
+	* genometry_server_dir - Path to the data files
+	* maintainer_email - Email address of the server's maintainer
+	* xml_base - URL that the server will answer to
+
+To download a sample data set, use subversion to export revision 102 from https://svn.transvar.org/repos/genomes/trunk/pub/das.  Many data files in the data directory are compressed with gzip and must be decompressed before they can be read by the server.  The total size of the data directory after decompression is approximately 1GB.
+
+  * svn export -r102 https://svn.transvar.org/repos/genomes/trunk/pub/das
+
+The xml_base context parameter is used by the servlet to build links back to itself.  For most configurations, changing the domain name of the server from the default (www.example.com) will be the only change necessary.
+
+== Configuring tomcat ==
+
+The das2 servlet with the sample data set will use up to 2 GB of RAM during startup (average usage will be under 500MB of RAM). Some useful options are listed below:
+
+	* -Xmx4096m: Use maximum 4GB of RAM for the heap
+	* -Xincgc: Use incremental garbage collection
+	
+The above options can be placed in the JAVA_OPTS environmental variable when using the self-contained tomcat from tomcat.apache.org.  On many Linux platforms, there is a configuration file available to place the above arguments in:
+
+	* RedHat: /etc/sysconfig/tomcat5
+	* Debian: /etc/default/tomcat5.5
+
+Note that 2GB of RAM is the maximum available when using a 32-bit Java Virtual Machine.
+
+=== INSTALLATION ===
+
+The das2 servlet can be installed by copying the entire das2 directory to tomcat's webapps directory.  Most tomcat servers are configured to detect new or updated web applications and will deploy them automatically.  Common locations for the webapps directory are:
+
+	* RedHat: /var/lib/tomcat5/webapps/
+	* Debian: /var/lib/tomcat5.5/webapps/
+
+The das2 servlet does not detect changes in the data directory.  The servlet must be reloaded before it will register any changes.
+
+The das2 servlet will need write access to the sub-directory <DATADIR>/.indexed. This is used to store indexing files.  It is rebuilt upon a restart of the servlet.

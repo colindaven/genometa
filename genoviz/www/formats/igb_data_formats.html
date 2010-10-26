@@ -1,0 +1,190 @@
+<h1>Data File Formats for use in IGB</h1>
+
+<h2>Summary of File Types</h2>
+
+<table border="1">
+<tr>
+<th>Type</th><th>Extension</th><th>Description</th>
+</tr>
+
+<tr>
+<td>BAM</td><td>.bam (with .bai index)</td>
+<td>A binary indexed version of the SAM format used for displaying alignment data. See the <a href="http://samtools.sourceforge.net/">SAMtools SourceForge page</a> for more details.  Supported in IGB 6.3.
+</td>
+</tr>
+
+<tr>
+<td>BED</td><td>.bed</td>
+<td>A tabular format developed for use with the UCSC genome browser. the
+  See <a href="http://genome.ucsc.edu/goldenPath/help/customTrack.html#BED">BED format description</a> for more details.
+</td>
+</tr>
+
+<tr>
+<td>Binary Files</td><td>.bps, .bgn, .brs, .bsnp, .brpt, .bnib, .bp1</td>
+<td>Binary formats developed specifically for IGB.  
+These are generally not documented.  Some documentation does exist for the
+  <a href="http://sourceforge.net/docman/display_doc.php?docid=27770&group_id=129420">.bnib</a> format.
+</td>
+</tr>
+
+<tr>
+<td>CHP</td><td>.chp</td>
+<td>Signal values and presence calls for probesets on Affymetrix microarrays.
+There are multiple sub-formats, identifiable from the file contents.  
+These files are created by various Affymetrix programs.</td>
+</tr>
+
+<tr>
+<td>DAS XML files</td><td>.das, .dasxml, .das2xml</td>
+<td>XML formats returned from DAS servers. See <a href="http://www.biodas.org/wiki/Main_Page">http://www.biodas.org</a>.
+<br /><br />
+  See <a href="http://www.biodas.org/documents/spec.html">DAS/1 specification</a> and
+<a href="http://biodas.org/documents/das2/das2_protocol.html">DAS/2 specification</a></td>
+</tr>
+
+<tr>
+<td>Fasta</td><td>.fa, .fas, .fasta</td>
+  <td>Sequence data in a simple ASCII format.  See <a href="http://en.wikipedia.org/wiki/FASTA_format">here</a>.
+  <br /><br />Recommended only for short sequences.  Otherwise, use the 2bit format from UCSC, or follow
+  these <a href="http://sourceforge.net/docman/display_doc.php?docid=27770&group_id=129420">instructions</a> to convert to the internal ".bnib" format.
+  <br /><br />IGB does not support the use of the Control-A character in the header lines.
+  </td>
+</tr>
+
+<tr>
+<td>GFF (General Feature Format)</td><td>.gff, gtf, .gff3</td>
+<td>General Feature Format.  There are several types
+of GFF file that use incompatible syntax.
+The original GFF format is <a href="http://www.sanger.ac.uk/Software/formats/GFF">GFF1</a>.
+A variant called <a href="http://genome.ucsc.edu/goldenPath/help/customTrack.html#GTF">GTF</a> is also used.
+<a href="http://song.sourceforge.net/gff3-jan04.shtml">GFF3</a> has been proposed
+to extend on GFF and to constrain the specification more tightly to avoid mutually-incompatible
+versions of GFF.
+If IGB has difficulty reading your GFF file, make sure that there is a line in
+the header similar to <tt>##gff-version 2</tt> that identifies the correct format number 1, 2 or 3.
+</td>
+</tr>
+
+<tr>
+<td>Graphs</td><td>.gr, .bgr, .sgr, .bar</td>
+<td>Numerical data that can be graphed as values at genomic coordinates.</td>
+</tr>
+
+<tr>
+<td>PSL</td><td>.psl, .psl3, .link.psl</td>
+<td>An alignment format developed by UCSC.  Please see the <a href="http://genome.ucsc.edu/goldenPath/help/customTrack.html#PSL">PSL format description</a> for more details.
+</td>
+</tr>
+
+<tr>
+<td>Scored Intervals, or Expression Graphs</td><td>.sin, .egr, .egr.txt</td>
+<td>A tabular format, described <a href="http://sourceforge.net/docman/display_doc.php?docid=33332&group_id=129420">here</a>, 
+  for associating arbitrary numbers of scores with genomic intervals.
+  <br /><br />
+  The filename ending ".egr" is preferred.  The other file extensions are kept for
+  compatibility with other existing software.
+</td>
+</tr>
+
+<tr>
+<td>Scored Map</td><td>.map</td>
+<td>An outdated format, replaced now by ".egr" files.</td>
+</tr>
+
+<tr>
+<td>USeq</td><td>.useq</td>
+<td>USeq is a binary indexed format used to display graph and annotation data. Please see the <a href="http://useq.sourceforge.net/">USEQ SourceForge page</a> for more details.</td>
+</tr>
+
+<tr>
+<td>Wiggle</td><td>.wig</td>
+<td><a href="http://genome.ucsc.edu/goldenPath/help/wiggle.html">Wiggle</a> 
+is a text format for graphical data designed for the
+UCSC genome browser.  IGB supports all 3 subtypes: BED, variableStep, fixedStep.</td>
+</tr>
+
+
+<tr>
+<td>2bit</td><td>.2bit</td>
+<td>A compact format for DNA sequences developed by UCSC.  Please see the <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format7">2bit format description</a> for more details.</td>  Supported in IGB 6.3.
+</tr>
+
+</table>
+
+
+<br />
+
+<h2>Additional Notes for certain formats</h2>
+
+<h3>BED</h3>
+
+<p>
+A tabular format for genomic annotations with anywhere from 3 to 12 columns.
+The full specification is available at <a href="http://genome.ucsc.edu/goldenPath/help/customTrack.html#PSL">UCSC</a>.
+</p>
+
+<p>
+Here is an example of a simple BED file with all 12 columns filled.
+(Spaces should be replaced with tab characters.  IGB will accept spaces
+instead of tabs, but that is not recommended for compatibility with other
+programs.)
+  <pre><code>
+track name=pairedReads description="Clone Paired Reads" useScore=1
+chr22 1000 5000 cloneA 960 + 1000 5000 0 2 567,488, 0,3512
+chr22 2000 6000 cloneB 900 - 2000 6000 0 2 433,399, 0,3601
+  </code></pre>
+</p>
+
+<p>
+NOTE: IGB will also tolerate, and safely ignore, an extra column placed before the first official column.  This is to accommodate the files we get from one particular source.
+</p>
+
+<h3>GFF and GTF</h3>
+
+<p>
+GFF (General Feature Format) is a tab-delimited file with 9 columns.
+</p>
+
+<p>
+There are several versions of GFF/GTF.
+</p>
+
+<p>
+You can give IGB a hint about which version you are using by including
+a line like this in the header at the top of the file.  Version 2 is the default.
+<code>
+##gff-version 2
+</code>
+</p>
+
+<p>
+The GFF format is described at 
+http://www.sanger.ac.uk/Software/formats/GFF/GFF_Spec.shtml
+</p>
+
+<p>
+The GTF format is described here
+http://genes.cs.wustl.edu/GTF2.html
+</p>
+
+<p>
+The GFF3 format is described here
+http://song.sourceforge.net/gff3-jan04.shtml
+</p>
+
+<p>
+  IGB can handle most versions of GFF/GTF, but may have difficulty with some 
+  rarely-used advanced features.  
+  IGB does not read any FASTA data that is included in some GFF3 files.  
+<p>
+</p>
+  Some GFF files created by Affymetrix make use of extensions to 
+  GFF that are specific to IGB.  These are indicated in the file headers 
+  by lines beginning with "##IGB-".  (The use of these extensions could have
+  been avoided by using GFF3, but IGB did not parse that format at the time
+  those files were created.)
+</p>
+
+
+

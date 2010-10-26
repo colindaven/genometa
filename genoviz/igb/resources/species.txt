@@ -1,0 +1,116 @@
+Ailuropoda melanoleuca	Giant panda	A_melanoleuca	ailMel
+Anolis carolinensis	Anole Lizard	A_carolinensis	anoCar	Anolis_carolinensis
+Anopheles gambiae	Mosquito	A_gambiae	anoGam
+Apis mellifera	European honey bee	A. mellifera	A_mellifera	apiMel
+Aplysia californica	California sea hare	A_californica	aplCal
+Arabidopsis thaliana	Thale cress	A_thaliana
+Arbacia punctulata	Purple-spined sea urchin	A_punctulata
+Bos taurus	Cow	B_taurus	bosTau	Bos_taurus
+Brachypodium distachyon	Purple false brome	B_distachyon
+Branchiostoma floridae	Lancet	B_floridae	braFlo
+Brassica rapa	Field mustard	B_rapa
+Caenorhabditis brenneri	C. brenneri (nematode)	C_brenneri	caePb
+Caenorhabditis briggsae	C. briggsae (nematode)	C_briggsae	cb
+Caenorhabditis elegans	C. elegans (nematode)	C_elegans	ce	Caenorhabditis_elegans
+Caenorhabditis japonica	C. japonica (nematode)	C_japonica	caeJap
+Caenorhabditis remanei	C. remanei (nematode)	C_remanei	caeRem
+Callithrix jacchus	Common marmoset	C_jacchus	calJac	Callithrix_jacchus
+Canis lupus familiaris	Dog	C_familiaris	canFam	Canis_familiaris
+Carica papaya	Papaya	C_papaya
+Cavia porcellus	Guinea pig	C_porcellus	cavPor	Cavia_porcellus
+Chlamydomanas reinhardtii	motile single-celled green alga C_reinhardtii
+Choloepus hoffmanni	Two-toed sloth	C_hoffmanni	choHof	Choloepus_hoffmanni
+Ciona intestinalis	vase tunicate (sea squirt)	C_intestinalis	ci	Ciona_intestinalis
+Ciona savignyi	Pacific sea squirt C. savignyi	C_savignyi		Ciona_savignyi
+Cucumis sativus	Cucumber	C_sativus
+Danio rerio	Zebrafish	D_rerio	danRer	Danio_rerio
+Dasypus novemcinctus	Nine-banded armadillo	D_novemcinctus		Dasypus_novemcinctus
+Dictyostelium discoideum	sequenced slice mold strain	D_discoideum
+Drosophila ananassae	D. ananassae (fruit fly)	D_ananassae	droAna
+Drosophila erecta	D. erecta (fruit fly)	D_erecta	droEre
+Drosophila grimshawi	D. grimshawi (fruit fly)	D_grimshawi	droGri
+Drosophila melanogaster	Common fruit fly	D. melanogaster	D_melanogaster	dm	Drosophila_melanogaster
+Drosophila mojavensis	D. mojavensis (fruit fly)	D_mojavensis	droMoj
+Drosophila persimilis	D. persimilis (fruit fly)	D_persimilis	droPer
+Drosophila pseudoobscura	D. pseudoobscura (fruit fly)	D_pseudoobscura	dp
+Drosophila sechellia	D. sechelia (fruit fly)	D_sechellia	droSec
+Drosophila simulans	D. simulans (fruit fly)	D_simulans	droSim
+Drosophila virilis	D. virilis (fruit fly)	D_virilis	droVir
+Drosophila yakuba	D. yakuba (fruit fly)	D_yakuba	droYak
+Dipodomys ordii	Kangaroo rat	D_ordii	dipOrd	Dipodomys_ordii
+Echinops telfairi	Lesser hedgehog tenrec	E_telfairi		Echinops_telfairi
+Equus caballus	Horse	E_caballus	equCab	Equus_caballus
+Erinaceus europaeus	European hedgehog	E_europaeus		Erinaceus_europaeus
+Escherichia coli	E. coli	E_coli
+Euprymna scolopes	Hawaiian bobtail squid	E_scolopes
+Felis catus	House Cat	F_catus	felCat	Felis_catus
+Gallus gallus	Chicken	G_gallus	galGal	Gallus_gallus
+Gasterosteus aculeatus	Stickleback	G_aculeatus	gasAcu	Gasterosteus_aculeatus
+Glycine max	Soybean	G_max	
+Gorilla gorilla	Western gorilla	G_gorilla	gorGor	Gorilla_gorilla
+Gossypium hirsutum	Upland cotton	G_hirsutum
+Homo sapiens	Human	H_sapiens	hg	Homo_sapiens
+Hordeum vulgare	Barley	H_vulgare
+Lemna gibba	Gibbous duckweed	L_gibba
+Loligo pealeii	Longfin inshore squid	L_pealeii
+Loxodonta africana	African bush elephant	L_africana	loxAfr	Loxodonta_africana
+Lotus japonicus	a model legume	L_japonicus
+Macaca mulatta	Rhesus monkey	M_mulatta	rheMac	Macaca_mulatta
+Macropus eugenii	Tammar wallaby	M_eugenii		Macropus_eugenii
+Manihot esculenta	Cassava	M_esculenta
+Medicago truncatula	Barrel medic	M_truncatula	
+Meleagris gallopavo	Turkey		M_gallopavo	Meleagris_gallopavo
+Microcebus murinus	Gray mouse lemur	M_murinus	micMur	Microcebus_murinus
+Mimulus guttatus	Monkey flower	M_guttatus
+Monodelphis domestica	Opossum	M_domestica	monDom	Monodelphis_domestica
+Mus musculus	House mouse	M_musculus	mm	Mus_musculus
+Mycobacterium abscessus	M. abcessus	M_abscessus	
+Mycobacterium smegmatis	M. smegmatis	M_smegmatis	
+Mycobacterium tuberculosis	M. tuberculosis	M_tuberculosis	
+Myotis lucifugus	Little brown bat	M_lucifugus		Myotis_lucifugus
+Nicotiana tabacum	Tobacco	N_tabacum
+Ochotona princeps	American pika	O_princeps		Ochotona_princeps
+Ornithorhynchus anatinus	Platypus	O_anatinus	ornAna	Ornithorhynchus_anatinus
+Oryctolagus cuniculus	European rabbit	O_cuniculus		Oryctolagus_cuniculus	oryCun
+Oryza sativa	Rice	O_sativa	
+Oryzias latipes	Medaka	O_latipes	oryLat	Oryzias_latipes
+Otolemur garnettii	Nothern greater galago	O_garnettii		Otolemur_garnettii
+Ostreococcus lucimarinus	O. lucimarinus	O_lucimarinus	
+Pan troglodytes	Chimp	P_troglodytes	panTro	Pan_troglodytes
+Petromyzon marinus	Lamprey	P_marinus	petMar
+Physcomitrella patens	Bryophyta	P_patens
+Pinus taeda	Loblolly Pine	P. taeda	P_taeda
+Plasmodium falciparum	P. falciparum	P_falciparum	Pfalciparum_3D7_plasmoDB-5.4	Pfalciparum_3D7_plasmoDB-5.5
+Pongo pygmaeus abelii	Orangutan	P_abelii	ponAbe	Pongo_pygmaeus
+Populus trichocarpa	Black cottonwood	P_trichocarpa	
+Pristionchus pacificus	P. pacificus (nematode)	P_pacificus	priPac
+Procavia capensis	Rock hyrax	P_capensis	proCap	Procavia_capensis
+Pseudomonas aeruginosa	P_aeruginosa	P. aeruginosa
+Pteropus vampyrus	Large flying fox	P_vampyrus	pteVam	Pteropus_vampyrus
+Rattus norvegicus	Rat	R_norvegicus	rn	Rattus_norvegicus
+Ricinis communis	Castor oil plant	R_comunis
+Saccharomyces cerevisiae	Yeast	S_cerevisiae	sacCer	Saccharomyces_cerevisiae
+Schizosaccharomyces pombe	Fission yeast	S_pombe	
+Sigmodon hispidus	Cotton rat	S_hispidus
+Sodalis glossinidius	S. glossinidius	S_glossinidius
+Solanum lycopersicum	Tomato	S_lycopersicum
+Sorex araneus	Eurasian shrew	S_araneus		Sorex_araneus
+Sorghum bicolor	Sorghum	S_bicolor	
+Spermophilus tridecemlineatus	Thirteen-lined ground squirrel	S_tridecemlineatus		Spermophilus_tridecemlineatus
+Strongylocentrotus purpuratus	Purple sea urchin	S_purpuratus	strPur
+Sus scrofa	Wild boar	S_scrofa		Sus_scrofa	susScr
+Taeniopygia guttata	Zebra finch	T_guttata	taeGut	Taeniopygia_guttata
+Takifugu rubripes	Fugu	T_rubripes	fr	Takifugu_rubripes
+Tarsius syrichta	Philippine tarsier	T_syrichta	tarSyr	Tarsius_syrichta
+Tetraodon nigroviridis	Tetraodon	T_nigroviridis	tetNig	Tetraodon_nigroviridis
+Tribolium castaneum	Red flour beetle	T_castaneum
+Triticum aestivum	Common wheat	T_aestivum
+Tupaia belangeri	Northern tree shrew	T_belangeri		Tupaia_belangeri
+Tursiops truncatus	Bottlenose dolphin	T_truncatus	turTru	Tursiops_truncatus
+Vicugna pacos	Alpaca	V_pacos	vicPac	Vicugna_pacos
+Vitis vinifera	Common grape vine	V_vinifera
+Xenopus laevis	African clawed frog	X_laevis
+Xenopus tropicalis	Pipid frog	X_tropicalis	xenTro	Xenopus_tropicalis
+Yersinia pestis	Bubonic plague pathogen	Y_pestis
+Yersinia pseudotuberculosis	Y. pseudotuberculosis	Y_pseudotuberculosis
+Zea mays	Maize	Z_mays

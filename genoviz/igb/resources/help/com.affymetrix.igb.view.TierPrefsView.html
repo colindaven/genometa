@@ -1,0 +1,33 @@
+<html>
+	<head />
+	<body>
+		<h1>Tiers</h1>
+		<p>Use this panel to change properties of annotation tiers.  Changes do not require re-start, and settings for most annotation types will be remembered between sessions.</p>
+		<h2>Default Row</h2>
+		<p>Properties on the default row apply when loading annotation types for which you have not previously set specific properties.  Once properties have been set for any annotation type, those settings will be remembered and used instead of the default properties.  Certain properties of the default row, such as Display Name, are not editable, since it would not be desirable for all annotation types to be given the same Display Name.
+		</p>
+		<h2>Tier ID</h2>
+		<p>The name of the tier.  If the name is shown in <i>italic</i> font, the settings for that tier will apply only to the current session.  If the tier name is shown in normal font, the settings will persist between sessions.  Non-persistent settings are used for graphs and temporary data resulting from arithmetic manipulations,  such as intersections and unions of tiers.  Such settings that are not remembered between sessions are indicated by a tier name in <i>italics</i>.</p>
+		<h2>Display Name</h2>
+		<p>Sets the name to display as the tier label.  By default, this is the same as Tier ID, but you can change the displayed name if you wish.</p>
+		<h2>Color and Background</h2>
+		<p>Sets the foreground and background colors.</p>
+		<h2>2 Tiers</h2>
+		<p>Whether to display annotations in two tiers (+) and (-), or one (+/-).</p>
+		<h2>Collapsed</h2>
+		<p>Whether to collapse the tier to its minimum height.</p>
+		<h2>Max Depth</h2>
+		<p>The maximum rows of annotations to show in tiers that are <em>not</em> collapsed.</p>
+		<h2>Connected</h2>
+		<p>Whether to connect groups of exons into transcripts.  Should be false for data with no intron-exon structure, such as repeats or contigs.  Setting this to false for items that <em>do</em> have intron-exon structure may affect whether labels are displayed.  See below.</p>
+		<h2>Label Field</h2>
+		<p>The name of the field to use to construct labels.  For most annotation types you may choose to use 'id' to turn labels on or leave this blank to turn off labels.  Turning labels off reduces the memory required by the program.  Not all annotation types have 'id' fields, so it isn't possible to use 'id' for all types.  Features in some annotation types have additional properties that you may choose to use for a label.  For example, with 'RefSeq' data, you may choose to use 'gene name'.  Check in the 'Selection Info' window to find the names of the properties for items of any type.</p>
+		<p>Note that when Connected is true, the label is constructed from the property value of the whole transcript.  When false, the label is constructed from the property values of each individual exon.  Since the individual exons and the whole transcripts may have properties with different names, changing the setting of Connected may affect which labels are shown.</p>
+		<h2>Apply Default Background</h2>
+		<p>Copies the background color from the default row to all other rows.</p>
+		<h2>Refresh Map</h2>
+		<p>Redraws the display applying any changes that have been made in the table.</p>
+		<h2>Auto Refresh</h2>
+		<p>If selected, the display will refresh automatically after each change.</p>
+	</body>
+</html>

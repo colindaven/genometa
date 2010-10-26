@@ -1,0 +1,10 @@
+README
+
+- The build file for this project relies on an installation of ant that should
+be located in ./ant1.6.2 . So as to not add yet another copy of ant to perforce,
+I've omitted it. Please make the appropriate changes to the build file before
+attempting to compile.
+
+- See the FlexTasks page on the flexteam wiki for more info:
+
+  http://flexteam.macromedia.com/flexwiki/index.php/FlexTasks

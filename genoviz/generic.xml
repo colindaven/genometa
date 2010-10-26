@@ -1,0 +1,151 @@
+<project>
+	<import file="common.xml" />
+
+  <target name="init">
+		<!-- Locations of subprojects -->
+		<property name="genoviz"       value="${basedir}/../genoviz_sdk" />
+		<property name="genometry"     value="${basedir}/../genometry" />
+		<property name="genometryImpl" value="${basedir}/../genometryImpl" />
+		<property name="igb"           value="${basedir}/../igb" />
+		<property name="das2server"    value="${basedir}/../das2_server" />
+		<property name="protannot"    value="${basedir}/../protannot" />
+
+		<!-- directory paths -->
+		<property name="lib.dir"     value="${basedir}/../ext" />
+		<property name="etc.dir"     value="${basedir}/../etc" />
+		<property name="src.dir"     value="${basedir}/src "/>
+		<property name="rsrc.dir"    value="${basedir}/resources" />
+		<property name="build.dir"   value="${basedir}/build" />
+		<property name="docs.dir"    value="${basedir}/docs" />
+		<property name="reports.dir" value="${basedir}/reports" />
+
+		<!-- JUnit test configuration -->
+		<property name="test.src.dir"    value="${basedir}/test" />
+		<property name="test.build.dir"  value="${basedir}/build-test" />
+		<property name="test.report.dir" value="${test.build.dir}" />
+
+		<!-- property list file -->
+		<property file="${basedir}/ant.properties" />
+
+		<property name="jarfile"       value="${project}.jar" />
+		<property name="report.prefix" value="${project}." />
+  </target>
+
+  <target name="compile" depends="common-init">
+		<mkdir dir="${build.dir}" />
+		<my.javac destdir="${build.dir}" />
+		<copy todir="${build.dir}" filtering="true">
+			<fileset dir="${rsrc.dir}" excludes="**/*.gif"/>
+		</copy>
+		<!-- Necessary to copy binary files separately, as filtering can corrupt them.  See http://ant.apache.org/manual/CoreTasks/copy.html for details. -->
+		<copy todir="${build.dir}" filtering="false">
+			<fileset dir="${rsrc.dir}"> 
+			<include name="**/*.gif"/>
+			</fileset>
+		</copy>
+  </target>
+
+  <target name="compile-tests" depends="compile">
+    <mkdir dir="${test.build.dir}" />
+		<my.javac srcdir="${test.src.dir}" destdir="${test.build.dir}" classpath="${junit.jar}:${test.classpath}" />
+  </target>
+
+	<target name="test" depends="compile-tests">
+		<mkdir dir="${test.report.dir}" />
+
+		<condition property="junit.printsummary" value="false" else="true">
+			<and>
+				<isset property="build.compiler.emacs" />
+			</and>
+		</condition>
+		<condition property="junit.showoutput" else="false">
+			<and>
+				<isset property="build.compiler.emacs" />
+			</and>
+		</condition>
+
+		<junit fork="true" printsummary="${junit.printsummary}" showoutput="${junit.showoutput}" haltonfailure="false" failureproperty="junit.failure" dir="${basedir}">
+			<jvmarg value="-Djava.awt.headless=true"/>
+			<classpath path="${junit.jar}:${test.classpath}" />
+			<formatter usefile="false" type="brief" if="build.compiler.emacs" />
+			<formatter type="xml" />
+			<batchtest todir="${test.build.dir}" >
+				<fileset dir="${test.build.dir}">
+					<include name="**/*Test.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+
+		<junitreport todir="${test.report.dir}">
+			<fileset dir="${test.build.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report todir="${test.report.dir}" />
+		</junitreport>
+
+		<fail if="junit.failure" />
+	</target>
+
+  <target name="jar" depends="compile">
+		<mkdir dir="${dist.dir}" />
+		<jar jarfile="${dist.dir}/${jarfile}" update="false">
+			<fileset dir="${build.dir}" />
+    </jar>
+  </target>
+
+	<target name="webstart" depends="jar">
+		<mkdir dir="${webstart.dir}" />
+		<my.signjar jar="${dist.dir}/${jarfile}" signedjar="${webstart.dir}/${jarfile}" />
+	</target>
+
+	<target name="webapp" depends="jar">
+		<mkdir dir="${webapp.dir}/WEB-INF/lib" />
+		<copy file="${dist.dir}/${jarfile}" todir="${webapp.dir}/WEB-INF/lib" />
+	</target>
+
+	<target name="all" depends="jar" />
+
+	<target name="docs" depends="common-init" description="Builds javadocs">
+		<mkdir dir="${docs.dir}"/>
+		<my.javadoc sourcepath="${src.dir}" classpath="${classpath}" />
+	</target>
+
+	<target name="pmd" depends="common-init,pmd-init" if="have.pmd" description="run pmd static analysis program">
+		<mkdir dir="${report.dir}/xml" />
+		<my.pmd />
+		<xslt in="${report.dir}/xml/${report.prefix}pmd.xml" style="${etc.dir}/pmd-nicerhtml.xsl" out="${report.dir}/${report.prefix}pmd.html" />
+	</target>
+
+	<target name="cpd" depends="common-init,cpd-init" if="have.cpd" description="run pmd's cut and paste detection">
+		<mkdir dir="${report.dir}/xml" />
+		<my.cpd>
+			<!-- for some reason, ${src.dir} will not work here -->
+			<fileset dir="src" includes="**/*.java" />
+		</my.cpd>
+		<xslt in="${report.dir}/xml/${report.prefix}cpd.xml" style="${etc.dir}/cpdhtml.xslt" out="${report.dir}/${report.prefix}cpd.html" />
+	</target>
+
+	<target name="findbugs" depends="compile,common-init,findbugs-init">
+		<mkdir dir="${report.dir}/xml" />
+		<my.findbugs >
+			<class location="${build.dir}" />
+		</my.findbugs>
+		<xslt in="${report.dir}/xml/${report.prefix}findbugs.xml" style="${findbugs.dir}/src/xsl/fancy.xsl" out="${report.dir}/${report.prefix}findbugs.html" />
+	</target>
+
+	<target name="clean" depends="common-init">
+    <delete file="${component}.jar"/>
+		<delete dir="${docs.dir}"/>
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${test.build.dir}" />
+		<delete dir="${test.report.dir}" />
+		<delete dir="${report.dir}" />
+  </target>
+
+	<target name="check-nullness" description="Check for nullness errors." depends="clean">
+		<mkdir dir="${build.dir}" />
+		<my.javac_checker destdir="${build.dir}"/>
+</target>
+
+</project>

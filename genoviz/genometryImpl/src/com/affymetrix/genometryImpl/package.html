@@ -1,0 +1,42 @@
+<html>
+<body>
+
+Genometry provides a unified data model
+to represent relationships between biological sequences.
+It can model such things as:<ul>
+<li>Annotations
+<li>Alignments
+<li>Sequence Composition
+</ul>
+
+It is less hierarchical than other models,
+like genome-centric and transcript-centric models.
+
+We aim to provide a model that is simple, expressive, and flexible
+while providing memory and computational efficiency.
+
+<p>Basic notions are {@link com.affymetrix.genometryImpl.BioSeq}s and {@link com.affymetrix.genometryImpl.SeqSpan}s.
+A composition of these and sequence relationships is modeled
+by a {@link com.affymetrix.genometryImpl.SeqSymmetry}.
+
+<p>Starting with these three interfaces
+we can model quite a bit:<ul>
+<li><q>Standard</q> Annotations
+<li>Singleton Annotations
+<li>Alternative Splicing
+<li>Pairwise Alignments
+<li>Annotations With a Depth Greater than Two
+<ul>
+<li>Affymetrix Probe Sets Mapped to a Genome
+<li>Gapped BLAST Results
+<li><q>Contained</q> Annotations
+</ul>
+<li>Annotations With a Breadth Greater than Two
+<li>Indels
+<li>Structure of Analyzed Sequence
+<li>Fuzzy Locations
+</ul>
+None of these requires explicit pointers from a {@link com.affymetrix.genometryImpl.BioSeq} to annotation.
+
+</body>
+</html>
