@@ -1,0 +1,30 @@
+Zoomen in IGB
+*************
+
+Aktuell vorhandene Zoom-Funktionen per Mausrad.
+-----------------------------------------------
+Im IGB ist es möglich in zwei Achsen zu zoomen. Sowohl auf der X- als auch auf der Y-Achse.
+
+Ein-Zoomen X-Achse:	Strg-Taste festhalten + Mausrad vorwärts
+Aus-Zoomen X-Achse:	Strg-Taste festhalten + Mausrad rückwärts
+
+Ein-Zoomen Y-Achse:	Alt-Taste festhalten + Mausrad vorwärts
+Aus-Zoomen Y-Achse:	Alt-Taste festhalten + Mausrad rückwärts
+
+Den Zoom-Mittelpunkt auf der X-Achse wird festlegen einer Linie auf den Sequez-Daten per Mausklick.
+Den zoom-Mittelpunkt auf der Y-Achse konnte ich nicht feststellen.
+-----------------------------------------------
+
+
+Das Zoomen ist im Projet "genoviz" implementiert. In der Klasse "widget.NeoMap" wird
+ein Standard MouseWheelListener als innere Klasse implementiert. Registriert wird diese
+in einer "Canvas"-Eigenschaft der NeoMap-Klasse.
+
+Da das zoomen auf beiden Achsen implementiert ist, könnte man als Zusatz folgende
+Eigenschaften implementieren:
+
+	- Der Benutzer kann einstellen, welche Tasten gedrückt gehalten werden müssen
+	  um zu zoomen.
+
+	- Der Zoom-Mittelpunkt wird mittels der Mausposition festgelegt.
+

@@ -1,0 +1,15 @@
+Die Sprach-Übersetzung für IGB erfolgt folgendermaßen:
+******************************************************
+
+Es gibt im "igb"-Projektordner die "igb.properties"-Datei, die
+IGB verwendet um die Übersetzungen festzulegen.
+In der Klasse "com.affymetrix.igb.IGBConstants" ist das Konstante Attribut
+"BUNDLE" vorhanden, das vom Typ ResourceBundle ist. Die Ressource wird über
+"ResourceBundle.getBundle("igb");". Java wird automatisch die propterties-Datei
+laden, die im root-Verzeichnis von IGB (später .jar Datei) liegt, laden.
+
+Beim Deployment wird auch das Projekt "igb-i18n" in die endgültige JAR-Datei 
+inkludiert. In diesem Projekt befinden sich verschiedene "properties"-Dateien, welche
+eine bestimmte Namenskonvention enthalten. Z.B. befindet sich dort die "igb_de.properties"-Datei,
+die für die Deutsche Übersetzungen vorhanden ist. Java wird später genau diese Datei als
+"ResourceBundle" laden, falls das "defaultLocale" vom System "de_DE" entspricht.
