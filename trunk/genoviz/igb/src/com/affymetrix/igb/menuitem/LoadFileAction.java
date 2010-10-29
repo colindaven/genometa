@@ -21,6 +21,13 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import net.sf.samtools.SAMFileReader;
+import net.sf.samtools.SAMFileWriter;
+import net.sf.samtools.SAMFileWriterFactory;
+import net.sf.samtools.SAMRecord;
+import net.sf.samtools.SAMFileHeader.SortOrder;
+
 import java.net.URI;
 import java.text.MessageFormat;
 import com.affymetrix.genometryImpl.GenometryModel;
@@ -108,7 +115,7 @@ public final class LoadFileAction extends AbstractAction {
 						new String[]{"2bit"},
 						".2bit Files"));
 		chooser.addChoosableFileFilter(new UniFileFilter(
-						new String[]{"bam"}, "BAM Files"));
+						new String[]{"sam", "bam"}, "SAM & BAM Files"));
 		chooser.addChoosableFileFilter(new UniFileFilter(
 						new String[]{"bed"}, "BED Files"));
 		chooser.addChoosableFileFilter(new UniFileFilter(
@@ -172,7 +179,7 @@ public final class LoadFileAction extends AbstractAction {
 	private static void loadFile(final FileTracker load_dir_tracker, final JFrame gviewerFrame) {
 
 		GenometryModel gmodel = GenometryModel.getGenometryModel();
-		MergeOptionChooser fileChooser = getFileChooser();
+		final MergeOptionChooser fileChooser = getFileChooser();
 		File currDir = load_dir_tracker.getFile();
 		if (currDir == null) {
 			currDir = new File(System.getProperty("user.home"));
@@ -185,7 +192,7 @@ public final class LoadFileAction extends AbstractAction {
 		if (option != JFileChooser.APPROVE_OPTION) {
 			return;
 		}
-
+		
 		load_dir_tracker.setFile(fileChooser.getCurrentDirectory());
 
 		final File[] fils = fileChooser.getSelectedFiles();
@@ -194,11 +201,63 @@ public final class LoadFileAction extends AbstractAction {
 
 		final boolean mergeSelected = loadGroup == gmodel.getSelectedSeqGroup();
 
-		for(File file : fils){
-			URI uri = file.toURI();
-			openURI(uri, file.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
-		}
+		for(final File file : fils){
+			final URI uri = file.toURI();
+			
+			if (uri.toString().toLowerCase().endsWith(".sam")) {
+				// sort and transform sam-file to bam-file
+				final File samFile = file;
+		        final File bamFile = new File(samFile.getName() + ".bam");
+				
+		        final String notLockedUpMsg = "Transforming " + samFile.getName() + " to " + bamFile.getName();
+		        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
+					@Override
+					public Void doInBackground() {
+						Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
+
+						SAMFileReader reader = new SAMFileReader(samFile);
+						reader.getFileHeader().setSortOrder(SortOrder.coordinate);
+				        final SAMFileWriter writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, bamFile);
+				       
+				        //reader.enableIndexCaching(true);
+				        System.out.println(reader.hasIndex());
+				        
+				        
+				        Iterator<SAMRecord> iterator = reader.iterator();
+				        
+				        long zstVorher;
+				        long zstNachher;
+
+				        zstVorher = System.currentTimeMillis();
+
+				        while (iterator.hasNext()) {
+				            writer.addAlignment(iterator.next());
+				        }
+
+				        
+				        reader.close();
+				        writer.close();
+				        
+				        zstNachher = System.currentTimeMillis();
+				        System.out.println("SAM->BAM benoetigte " + ((zstNachher - zstVorher)/1000) + " sec");
+				        
+				        
+				        System.out.println("BAM tempFile = " + bamFile.getAbsolutePath());
+						return null;
+					}
+
+					@Override
+					public void done() {
+						Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
+						openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
+					}
+				};
+				ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
+			} else {
+				openURI(uri, file.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
+			}
+		}
 	}
 
 	public static void openURI(URI uri, String fileName){
@@ -271,7 +330,7 @@ public final class LoadFileAction extends AbstractAction {
 		}
 		boolean autoload = PreferenceUtils.getBooleanParam(PreferenceUtils.AUTO_LOAD, PreferenceUtils.default_auto_load);
 		GenericFeature gFeature = new GenericFeature(fileName, null, version, new QuickLoad(version, uri), File.class, autoload);
-
+		
 		version.addFeature(gFeature);
 		gFeature.setVisible(); // this should be automatically checked in the feature tree
 
