@@ -27,10 +27,11 @@ import java.awt.event.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.List;
 
 import com.affymetrix.genoviz.util.ErrorHandler;
 import com.affymetrix.genometryImpl.util.DisplayUtils;
@@ -126,6 +127,7 @@ public final class IGB extends Application
 			// But it also may take away some things, like resizing buttons, that the
 			// user is used to in their operating system, so leave as false.
 			JFrame.setDefaultLookAndFeelDecorated(false);
+			
 
 
 			// if this is != null, then the user-requested l-and-f has already been applied
@@ -134,7 +136,7 @@ public final class IGB extends Application
 				if (os != null && os.toLowerCase().contains("windows")) {
 					try {
 						// It this is Windows, then use the Windows look and feel.
-						Class<?> cl = Class.forName("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+						Class<?> cl = Class.forName("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 						LookAndFeel look_and_feel = (LookAndFeel) cl.newInstance();
 
 						if (look_and_feel.isSupportedLookAndFeel()) {
