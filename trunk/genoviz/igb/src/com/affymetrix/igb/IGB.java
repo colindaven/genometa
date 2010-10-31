@@ -95,7 +95,11 @@ public final class IGB extends Application
 	private JMenu tools_menu;
 	private JMenu help_menu;
 	private JTabbedPane tab_pane;
+	private JTabbedPane left_tab_pane;
 	private JSplitPane splitpane;
+	private JSplitPane left_splitpane;
+	private JList metagenomics_list;
+	private DefaultListModel metagenomics_list_model;
 	public BookMarkAction bmark_action; // needs to be public for the BookmarkManagerView plugin
 	private JCheckBoxMenuItem toggle_edge_matching_item;
 	private JMenuItem move_tab_to_window_item;
@@ -407,7 +411,35 @@ public final class IGB extends Application
 			splitpane.setBottomComponent(tab_pane);
 		}
 
-		cpane.add("Center", splitpane);
+		// - this is example code for a vertical plugin sidebar -
+
+		// generate tabbed pane for plugins
+		left_tab_pane = new JTabbedPane();
+
+		// generate a default list model representing a metagenomics overview list
+		metagenomics_list_model = new DefaultListModel();
+		metagenomics_list_model.addElement("Overview");
+		metagenomics_list_model.addElement("- Species 1");
+		metagenomics_list_model.addElement("- Species 2");
+		metagenomics_list_model.addElement("- Species 3");
+
+		// generate a list to display list mode
+		metagenomics_list = new JList(metagenomics_list_model);
+
+		// add metagenomics plugin proxy to tabbed pane
+		left_tab_pane.addTab("Metagenomics", metagenomics_list);
+
+		// add a splitter for the left hand side, choose an appropriate width
+		left_splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		left_splitpane.setOneTouchExpandable(true);
+		left_splitpane.setDividerLocation(180);
+
+		// add new tabbed pane on left hand side, keep original contents on right
+		left_splitpane.setLeftComponent(left_tab_pane);
+		left_splitpane.setRightComponent(splitpane);
+
+		// add the new split pane to the main windows
+		cpane.add("Center", left_splitpane);
 
 		// Using JTabbedPane.SCROLL_TAB_LAYOUT makes it impossible to add a
 		// pop-up menu (or any other mouse listener) on the tab handles.
