@@ -207,10 +207,10 @@ public final class LoadFileAction extends AbstractAction {
 			if (uri.toString().toLowerCase().endsWith(".sam")) {
 				// sort and transform sam-file to bam-file
 				File samFile = file;
-				File bamFile = new File(samFile.getAbsolutePath() + ".bam");
+				File bamFile = changeFileExtension(samFile, ".bam");
 				boolean skipTransform = false;
 				boolean abordOpening = false;
-				
+	
 				if(bamFile.exists()) {
 					Object[] options = {"Open existing file", "Overwrite existing file", "Change name"};
 					int n = JOptionPane.showOptionDialog(gviewerFrame, "A BAM-File with the same name of the SAM-File already exists!",
@@ -246,7 +246,7 @@ public final class LoadFileAction extends AbstractAction {
 							break;
 						default: 
 							abordOpening = true;
-							break; // on closing dialog with X do ??
+							break; 
 					}
 				}
 				if(!abordOpening) {
@@ -255,15 +255,20 @@ public final class LoadFileAction extends AbstractAction {
 						final File outputFile = bamFile;	// threading needs final variable
 						final String notLockedUpMsg = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
 						SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-
 							@Override
 							public Void doInBackground() {
 								Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 
 								SAMFileReader reader = new SAMFileReader(inputFile);
-								reader.getFileHeader().setSortOrder(SortOrder.coordinate);
-								final SAMFileWriter writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, outputFile);
 
+								SAMFileWriter writer;
+								if(reader.getFileHeader().getSortOrder() == SortOrder.coordinate) {
+									writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), true, outputFile);
+								} else {
+									reader.getFileHeader().setSortOrder(SortOrder.coordinate);
+									writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, outputFile);
+								}
+								
 								Iterator<SAMRecord> iterator = reader.iterator();
 								while (iterator.hasNext()) {
 									writer.addAlignment(iterator.next());
@@ -272,7 +277,6 @@ public final class LoadFileAction extends AbstractAction {
 								reader.close();
 								writer.close();
 
-								System.out.println("BAM tempFile = " + outputFile.getAbsolutePath());
 								return null;
 							}
 
@@ -293,6 +297,24 @@ public final class LoadFileAction extends AbstractAction {
 				openURI(uri, file.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
 			}
 		}
+	}
+
+	/**
+	 * Creates a new file and changes the extension to the given Param.
+	 *
+	 * @param inputFile File to create new one from
+	 * @param newExtension Extension for the new file
+	 * @return New file with changed extension
+	 */
+	private static File changeFileExtension(File inputFile, String newExtension) {
+		String fileString = inputFile.getAbsolutePath();
+		String newUriString = fileString.substring(0, fileString.length() - 4);
+		if(newExtension.startsWith(".")) {
+			newUriString = newUriString + newExtension;
+		} else {
+			newUriString = newUriString + "." + newExtension;
+		}
+		return new File(newUriString);
 	}
 
 	public static void openURI(URI uri, String fileName){
