@@ -202,58 +202,93 @@ public final class LoadFileAction extends AbstractAction {
 		final boolean mergeSelected = loadGroup == gmodel.getSelectedSeqGroup();
 
 		for(final File file : fils){
-			final URI uri = file.toURI();
-			
+			URI uri = file.toURI();
+
 			if (uri.toString().toLowerCase().endsWith(".sam")) {
 				// sort and transform sam-file to bam-file
-				final File samFile = file;
-		        final File bamFile = new File(samFile.getName() + ".bam");
+				File samFile = file;
+				File bamFile = new File(samFile.getAbsolutePath() + ".bam");
+				boolean skipTransform = false;
+				boolean abordOpening = false;
 				
-		        final String notLockedUpMsg = "Transforming " + samFile.getName() + " to " + bamFile.getName();
-		        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				if(bamFile.exists()) {
+					Object[] options = {"Open existing file", "Overwrite existing file", "Change name"};
+					int n = JOptionPane.showOptionDialog(gviewerFrame, "A BAM-File with the same name of the SAM-File already exists!",
+						"Existing BAM-File", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-					@Override
-					public Void doInBackground() {
-						Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
+					switch(n) {
+						case 0:			// open existing bam file without transforming
+							skipTransform = true;
+							break;
+						case 1:	break;	// overwrite bam-file
+						case 2:			// open filechooser for new filename
+							JFileChooser fc = new JFileChooser() {
+								@Override
+								public void approveSelection() {
+									File selectedFile = getSelectedFile();
+									if (getDialogType() == SAVE_DIALOG && selectedFile != null && selectedFile.exists()) {
+										int result = JOptionPane.showOptionDialog(gviewerFrame, "File " + selectedFile.getName() + " already exists. Do you really want to overwrite?",
+																				"Overwrite Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+										
+										if (result == JOptionPane.NO_OPTION) { return; }
+									}
+									super.approveSelection();
+								}
+							};
 
-						SAMFileReader reader = new SAMFileReader(samFile);
-						reader.getFileHeader().setSortOrder(SortOrder.coordinate);
-				        final SAMFileWriter writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, bamFile);
-				       
-				        //reader.enableIndexCaching(true);
-				        System.out.println(reader.hasIndex());
-				        
-				        
-				        Iterator<SAMRecord> iterator = reader.iterator();
-				        
-				        long zstVorher;
-				        long zstNachher;
-
-				        zstVorher = System.currentTimeMillis();
-
-				        while (iterator.hasNext()) {
-				            writer.addAlignment(iterator.next());
-				        }
-
-				        
-				        reader.close();
-				        writer.close();
-				        
-				        zstNachher = System.currentTimeMillis();
-				        System.out.println("SAM->BAM benoetigte " + ((zstNachher - zstVorher)/1000) + " sec");
-				        
-				        
-				        System.out.println("BAM tempFile = " + bamFile.getAbsolutePath());
-						return null;
+							fc.setSelectedFile(bamFile);
+							int fcResult = fc.showSaveDialog(gviewerFrame);
+							if(fcResult == JFileChooser.APPROVE_OPTION) {
+								bamFile = fc.getSelectedFile();
+							} else {
+								abordOpening = true;
+							}
+							break;
+						default: 
+							abordOpening = true;
+							break; // on closing dialog with X do ??
 					}
+				}
+				if(!abordOpening) {
+					if(!skipTransform) {
+						final File inputFile = samFile;		// threading needs final variable
+						final File outputFile = bamFile;	// threading needs final variable
+						final String notLockedUpMsg = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
+						SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-					@Override
-					public void done() {
-						Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
-						openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
+							@Override
+							public Void doInBackground() {
+								Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
+
+								SAMFileReader reader = new SAMFileReader(inputFile);
+								reader.getFileHeader().setSortOrder(SortOrder.coordinate);
+								final SAMFileWriter writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, outputFile);
+
+								Iterator<SAMRecord> iterator = reader.iterator();
+								while (iterator.hasNext()) {
+									writer.addAlignment(iterator.next());
+								}
+
+								reader.close();
+								writer.close();
+
+								System.out.println("BAM tempFile = " + outputFile.getAbsolutePath());
+								return null;
+							}
+
+							@Override
+							public void done() {
+								Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
+								openURI(outputFile.toURI(), outputFile.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
+							}
+						};
+						ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
+					}else {
+							openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
 					}
-				};
-				ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
+				} else {
+					JOptionPane.showMessageDialog(gviewerFrame, "Open the file has been aborted!", "Info", JOptionPane.INFORMATION_MESSAGE);
+				}
 			} else {
 				openURI(uri, file.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
 			}
