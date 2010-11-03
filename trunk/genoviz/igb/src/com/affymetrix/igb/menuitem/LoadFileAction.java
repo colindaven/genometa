@@ -258,11 +258,12 @@ public final class LoadFileAction extends AbstractAction {
 							@Override
 							public Void doInBackground() {
 								Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
-
+								// While parsing: emit warnings but keep going if possible.
+								SAMFileReader.setDefaultValidationStringency(SAMFileReader.ValidationStringency.LENIENT);
 								SAMFileReader reader = new SAMFileReader(inputFile);
 
 								SAMFileWriter writer;
-								if(reader.getFileHeader().getSortOrder() == SortOrder.coordinate) {
+								if(reader.getFileHeader().getSortOrder() == SortOrder.coordinate) {	// SAM is already sorted!
 									writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), true, outputFile);
 								} else {
 									reader.getFileHeader().setSortOrder(SortOrder.coordinate);
