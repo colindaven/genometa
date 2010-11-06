@@ -135,7 +135,7 @@ public final class ProbeSetDisplayGlyphFactory implements MapViewGlyphFactoryI {
 	 *      probe set alignments
 	 *      includes transformations used by slice view and other alternative coordinate systems
 	 */
-	private GlyphI addToTier(SeqSymmetry consensus_sym, TierGlyph forward_tier, TierGlyph reverse_tier) {
+	private GlyphI addToTier(SeqSymmetry consensus_sym, TierGlyph forward_tier, TierGlyph reverse_tier) {//MPTAG
 
 		if (SeqUtils.getDepth(consensus_sym) != glyph_depth) {
 			System.out.println("ProbeSetDisplayGlyphFactory: at wrong depth!");

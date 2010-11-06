@@ -78,7 +78,7 @@ public class TrackView {
 	 *  be used.  Note: if style.isGraphTier() is true, then the given value of
 	 *  constant_height will be ignored and re-set to false.
 	 */
-	public static TierGlyph[] getTiers(
+	public static TierGlyph[] getTiers(//MPTAG
 			SeqMapView smv, boolean next_to_axis, ITrackStyleExtended style, boolean constant_heights) {
 		AffyTieredMap map = smv.getSeqMap();
 		TierGlyph axisTier = smv.getAxisTier();

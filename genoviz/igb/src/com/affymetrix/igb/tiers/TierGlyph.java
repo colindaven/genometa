@@ -15,6 +15,10 @@ import java.awt.Rectangle;
 import java.util.*;
 import java.awt.geom.Rectangle2D;
 
+/*
+ MPTAG
+ * Die KLasse zur Darstellung der einzelnen Gylphen.
+ */
 /**
  *  TierGlyph is intended for use with AffyTieredMap.
  *  Each tier in the TieredNeoMap is implemented as a TierGlyph, which can have different
@@ -164,6 +168,7 @@ public class TierGlyph extends SolidGlyph {
 			sorted = false;
 		}
 		super.addChild(glyph);
+//		com.affymetrix.igb.IGB.MPTAGprintClass("TierGlyph.addChild()",glyph);
 	}
 
 	/**

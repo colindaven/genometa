@@ -31,7 +31,6 @@ import com.affymetrix.genometryImpl.style.ITrackStyleExtended;
 import com.affymetrix.genometryImpl.span.SimpleMutableSeqSpan;
 import com.affymetrix.genometryImpl.symmetry.SimpleMutableSeqSymmetry;
 import com.affymetrix.genometryImpl.parsers.TrackLineParser;
-import com.affymetrix.genoviz.glyph.FillRectGlyph;
 
 import com.affymetrix.igb.tiers.AffyTieredMap;
 import com.affymetrix.igb.tiers.TierGlyph;
@@ -39,6 +38,10 @@ import com.affymetrix.igb.view.SeqMapView;
 
 import java.awt.Color;
 import java.util.*;
+//MPTAG Added for changes
+import com.affymetrix.genoviz.glyph.ArrowGlyph;
+import com.affymetrix.genoviz.util.NeoConstants;
+import java.awt.Font;
 
 /**
  *
@@ -50,9 +53,10 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	/** Set to true if the we can assume the container SeqSymmetry being passed
 	 *  to addLeafsToTier has all its leaf nodes at the same depth from the top.
 	 */
-	private static Class default_eparent_class = (new EfficientLineContGlyph()).getClass();
-	private static Class default_echild_class = (new FillRectGlyph()).getClass();
-	private static Class default_elabelled_parent_class = (new EfficientLabelledLineGlyph()).getClass();
+	private static Class default_eparent_class = (new EfficientLineContGlyph()).getClass();//MPTAG Glyphen die verwendet werden
+	private static Class default_echild_class = (new DirectionFillRectGlyph()).getClass();//MPTAG Glyphen die verwendet werden
+//	private static Class default_echild_class = (new ArrowGlyph()).getClass();//MPTAG Glyphen die verwendet werden
+	private static Class default_elabelled_parent_class = (new EfficientLabelledLineGlyph()).getClass();//MPTAG Glyphen die verwendet werden
 	private static final int DEFAULT_THICK_HEIGHT = 25;
 	private static final int DEFAULT_THIN_HEIGHT = 15;
 	private SeqMapView gviewer;
@@ -95,7 +99,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		}
 	}
 
-	public void createGlyph(SeqSymmetry sym, SeqMapView smv) {
+	public void createGlyph(SeqSymmetry sym, SeqMapView smv) {//MPTAG
 		gviewer = smv;
 
 		String meth = BioSeq.determineMethod(sym);
@@ -103,10 +107,10 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		if (meth != null) {
 			ITrackStyleExtended style = DefaultStateProvider.getGlobalStateProvider().getAnnotStyle(meth);
 			int glyph_depth = style.getGlyphDepth();
-
 			TierGlyph[] tiers = smv.getTiers(false, style);
 			tiers[0].setInfo(sym);
 			tiers[1].setInfo(sym);
+//			com.affymetrix.igb.IGB.MPTAGprintClass("GenericAnnotGlyphFactory.createGlyph()", sym);
 			if (style.getSeparate()) {
 				addLeafsToTier(sym, tiers[0], tiers[1], glyph_depth);
 			} else {
@@ -188,14 +192,19 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			ITrackStyleExtended the_style, TierGlyph the_tier, SeqSpan pspan,
 			AffyTieredMap map, SeqSymmetry sym,
 			BioSeq annotseq, BioSeq coordseq)
-			throws InstantiationException, IllegalAccessException {
+			throws InstantiationException, IllegalAccessException {//MPTAG Hier sollte die Richtungsglypen gesetzt werden
 		GlyphI pglyph = null;
 		if (parent_and_child && insym.getChildCount() > 0) {
 			pglyph = determineGlyph(parent_glyph_class, parent_labelled_glyph_class, the_style, insym, the_tier, pspan, map, sym);
 			// call out to handle rendering to indicate if any of the children of the
 			//    original annotation are completely outside the view
 			addChildren(insym, sym, the_style, annotseq, pglyph, map, coordseq);
-			handleAlignedResidueGlyphs(insym, annotseq, pglyph);
+			//MPTAG Added richtung des Tiers bestimmen
+			boolean isForward = true;
+			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
+				isForward = false;
+			}
+			handleAlignedResidueGlyphs(insym, annotseq, pglyph, isForward);//MPTAG Text anbringen
 		} else {
 			// depth !>= 2, so depth <= 1, so _no_ parent, use child glyph instead...
 			pglyph = determineGlyph(child_glyph_class, parent_labelled_glyph_class, the_style, insym, the_tier, pspan, map, sym);
@@ -217,7 +226,17 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		String label_field = the_style.getLabelField();
 		boolean use_label = label_field != null && (label_field.trim().length() > 0);
 		if (use_label) {
-			EfficientLabelledGlyph lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
+			//MPTAG Hier Arrow in abhängigkeit von Direction erzeugen
+			EfficientLabelledGlyph lglyph;
+			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
+				//Pfeil nach links
+				lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
+			}else{
+				//Pfeil nach rechts
+				lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
+			}
+			//MPTAG Ende
+			//orig - EfficientLabelledGlyph lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
 			Object property = getTheProperty(insym, label_field);
 			String label = (property == null) ? "" : property.toString();
 			if (the_tier.getDirection() == TierGlyph.Direction.REVERSE) {
@@ -229,6 +248,16 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			pheight = 2 * pheight;
 			pglyph = lglyph;
 		} else {
+			/*//MPTAG
+			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
+				pglyph = new ArrowGlyph();
+				((ArrowGlyph)pglyph).setOrientation(NeoConstants.HORIZONTAL);
+				((ArrowGlyph)pglyph).setForward(false);
+//				System.out.println("reverse Arrow added");
+			}else{
+				pglyph = new ArrowGlyph();
+			}
+			*///MPTAG End
 			pglyph = (GlyphI) glyphClass.newInstance();
 		}
 		pglyph.setCoords(pspan.getMin(), 0, pspan.getLength(), pheight);
@@ -289,7 +318,9 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 				if (cspan.getLength() == 0) {
 					cglyph = new DeletionGlyph();
 				} else {
-					cglyph = (GlyphI) child_glyph_class.newInstance();
+					cglyph = (GlyphI) child_glyph_class.newInstance(); 
+					//Hier wird die Kindglyphe erzeugt wenn sie sichtbar ist
+					//Diese ist aber noch nicht die Glyphe mit ATGC Drauf
 				}
 
 				Color child_color = getSymColor(child, the_style);
@@ -364,37 +395,49 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		return DEFAULT_THIN_HEIGHT;
 	}
 
-	private static void handleAlignedResidueGlyphs(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph) {
+	/**
+	 * MPTAG
+	 * Neuen Parameter isForwared eingeführt um es an die AlignedResidueGlyph weiterzugeben
+	 * @param sym
+	 * @param annotseq
+	 * @param pglyph Die Vaterglyphe, für deren Kinder die Residues gesetzt werden.
+	 * @param isForward true, wenn das umgebende Tier forward ist, false wenn nicht
+	 */
+	private static void handleAlignedResidueGlyphs(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph, boolean isForward) {
 		if (!(sym instanceof SymWithProps)) {
 			return;
 		}
 
-		boolean handleCigar = sym instanceof UcscBedSym;
+		boolean handleCigar = sym instanceof UcscBedSym; //MPTAG wenn BED Format verwendet wird. Verwenden wir aber nicht oder ?
 
 		// We are in an aligned residue glyph.
 		int childCount = sym.getChildCount();
 		if (childCount > 0) {
 			int startPos = 0;
 			for (int i = 0; i < childCount; i++) {
-				startPos = setResidues(sym.getChild(i), annotseq, pglyph, startPos, handleCigar, true);
+				startPos = setResidues(sym.getChild(i), annotseq, pglyph, startPos, handleCigar, true, isForward);
 			}
 		} else {
-			setResidues(sym, annotseq, pglyph, 0, false, false);
+			setResidues(sym, annotseq, pglyph, 0, false, false, isForward);
 			// Note that pglyph is replaced here.
 			// don't need to process cigar, since entire residue string is used
 		}
 	}
 
 	/**
+	 * MPTAG
+	 * Weiteren Parameter hinzugefügt der die Richtung des darüberliegenden Tiers weiterreicht.
+	 *
 	 * Determine and set the appropriate residues for this element.
 	 * @param sym
 	 * @param annotseq
 	 * @param pglyph
 	 * @param startPos - starting position of the current child in the residues string
 	 * @param handleCigar - indicates whether we need to process the cigar element.
+	 * @param isForward Die richtung des darüberliegenden Tiers
 	 * @return
-	 */
-	private static int setResidues(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph, int startPos, boolean handleCigar, boolean isChild) {
+	 *///MPTAG Hier wird aufgerufen das der Text auf die Glyphe gesetzt werden soll
+	private static int setResidues(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph, int startPos, boolean handleCigar, boolean isChild, boolean isForward) {
 		SeqSpan span = sym.getSpan(annotseq);
 		if (span == null) {
 			return startPos;
@@ -413,22 +456,28 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		AlignedResidueGlyph csg = null;
 		if (residues != null) {
 			String residueStr = residues.toString();
-			if (handleCigar) {
+			if (handleCigar) { //MPTAG Wenn BED Format verwendet wird
 				Object cigar = ((SymWithProps) sym).getProperty(BAM.CIGARPROP);
 				residueStr = BAM.interpretCigar(cigar, residueStr, startPos, span.getLength());
 				startPos += residueStr.length();
 			}
 			csg = new AlignedResidueGlyph();
+			//MPTAG added
+			csg.setDirection(isForward);
 			csg.setResidues(residueStr);
 			if (annotseq.getResidues(span.getStart(), span.getEnd()) != null) {
-				if (handleCigar) {
+				if (handleCigar) {//MPTAG Wenn BED Format verwendet wird
 					csg.setResidueMask(annotseq.getResidues(span.getMin(), span.getMin() + residueStr.length()));
+//					System.out.println("Residue set WITH BED");
 				} else {
 					csg.setResidueMask(annotseq.getResidues(span.getMin(), span.getMax()));
+//					System.out.println("Residue set without BED");
 				}
 			}
 			csg.setHitable(false);
 			csg.setCoords(span.getMin(), 0, span.getLengthDouble(), pglyph.getCoordBox().height);
+			//MPTAG added
+			csg.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 10));
 			if (isChild) {
 				pglyph.addChild(csg);
 			} else {

@@ -87,6 +87,7 @@ public class ArrowGlyph extends DirectedGlyph  {
 						offset_center);
 				break;
 			case WEST:
+				//MPTAG change to reverse
 				this.stem.x = pixelbox.x + headX;
 				this.stem.y = offset_center - stemWidth/2;
 				this.stem.width = pixelbox.width - headX;
