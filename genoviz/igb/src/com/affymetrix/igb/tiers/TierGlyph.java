@@ -16,7 +16,7 @@ import java.util.*;
 import java.awt.geom.Rectangle2D;
 
 /*
- MPTAG
+ * MPTAG
  * Die KLasse zur Darstellung der einzelnen Gylphen.
  */
 /**
@@ -528,6 +528,16 @@ public class TierGlyph extends SolidGlyph {
 	@Override
 	protected void drawSelectedReverse(ViewI view) {
 		this.drawSelectedOutline(view);
+	}
+
+	/**
+	 * MPTAG
+	 * Gibt den FasterExpandPacker zurück der bei der Initialisierung des Tiers angelegt wurde.
+	 * So kann ich die Werte aus dem alten Packer übernehmen und ändere nur den Wert den ich ändern will.
+	 * @return der FasterExpandPacker des Tiers
+	 */
+	public FasterExpandPacker getExpandPacker(){
+		return expand_packer;
 	}
 
 }
