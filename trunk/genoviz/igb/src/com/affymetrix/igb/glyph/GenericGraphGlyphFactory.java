@@ -39,7 +39,7 @@ public final class GenericGraphGlyphFactory implements MapViewGlyphFactoryI {
 		}
 	}
 
-	public void createGlyph(SeqSymmetry sym, SeqMapView smv) {
+	public void createGlyph(SeqSymmetry sym, SeqMapView smv) {//MPTAG
 		if (sym instanceof GraphSym) {
 			displayGraph((GraphSym) sym, smv, check_same_seq);
 		} else {

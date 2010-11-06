@@ -47,7 +47,7 @@ public class TrackStyle implements ITrackStyleExtended {
 	private static final String PREF_GLYPH_DEPTH = "Glyph Depth";
 	private static final String PREF_HEIGHT = "Height"; // height per glyph? // linear transform value?
 	private static final boolean default_show = true;
-	private static final boolean default_separate = true;
+	private static final boolean default_separate = true; //MPTAG changed from true
 	private static final boolean default_collapsed = false;
 	private static final boolean default_expandable = true;
 	private static final int default_max_depth = 10;

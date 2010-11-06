@@ -27,7 +27,7 @@ import java.util.prefs.PreferenceChangeListener;
  *
  */
 public final class AlignedResidueGlyph extends AbstractResiduesGlyph
-		 {
+		 {//MPTAG Hier werden auf die Glyphen ATCG gezeichnet
 	private SearchableCharIterator chariter;
 	private int residue_length = 0;
 	private final BitSet residueMask = new BitSet();
@@ -36,6 +36,9 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	// default to true for backward compatability
 	private boolean hitable = true;
 	public boolean packerClip = false;	// if we're in an overlapped glyph (top of packer), don't draw residues -- for performance
+
+	//MPTAG added
+	private boolean isForward = true;
 
 	private static final ColorHelper helper = new ColorHelper();
 
@@ -205,6 +208,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			Graphics g = view.getGraphics();
 			drawHorizontalResidues(g, pixel_width_per_base, str, seq_beg_index, seq_end_index, seq_pixel_offset);
 		}
+		addDirectionArrow(view.getGraphics(), view);
 	}
 
 	/**
@@ -221,6 +225,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		char[] charArray = residueStr.toCharArray();
 		drawResidueRectangles(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelbox.x, pixelbox.y, pixelbox.height);
 		drawResidueStrings(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelStart);
+		//MPTAG Prüft für jeden Buchstaben ob er passt. Reicht da nicht einmaliges Prüfen ?
 	}
 
 	private static void drawResidueRectangles(
@@ -298,5 +303,48 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	@Override
 	public boolean hit(Rectangle2D.Double coord_hitbox, ViewI view) {
 		return isVisible && isHitable() && coord_hitbox.intersects(coordbox);
+	}
+
+	/**
+	 * MPTAG
+	 * Methode um an die Glyphe einen Richtungspfeil anzuhängen
+	 *
+	 */
+	private void addDirectionArrow(Graphics g, ViewI view){
+		int numPoints = 3;
+		int arrowWidth = 5;
+		arrowWidth =  (int) (3 * (view.getTransform()).getScaleX());
+		int[] xpts = new int[numPoints];
+		int[] ypts = new int[numPoints];
+		if(isForward){
+			//Pfeil nach Rechts
+			xpts[0] = pixelbox.x+pixelbox.width; //Ecke oben an der Glyphe
+			ypts[0] = pixelbox.y;
+			xpts[1] = pixelbox.x+pixelbox.width; //Ecke unten an der Glyphe
+			ypts[1] = pixelbox.y + pixelbox.height;
+			xpts[2] = pixelbox.x+pixelbox.width + arrowWidth; //Spitze des Pfeils
+			ypts[2] = pixelbox.y + (pixelbox.height / 2);
+		}else{
+			//Pfeil nach links
+			xpts[0] = pixelbox.x; //Ecke oben an der Glyphe
+			ypts[0] = pixelbox.y;
+			xpts[1] = pixelbox.x; //Ecke unten an der Glyphe
+			ypts[1] = pixelbox.y + pixelbox.height;
+			xpts[2] = pixelbox.x - arrowWidth; //Spitze des Pfeils
+			ypts[2] = pixelbox.y + (pixelbox.height / 2);
+		}
+		Color c = g.getColor();
+		g.setColor(Color.RED);
+		g.fillPolygon(xpts, ypts, numPoints);
+		g.setColor(c);
+	}
+
+	/**
+	 * MPTAG
+	 * Methode zum setzen der Richtung der Glyphe um den Pfeil hinzuzufügen
+	 * @param isForward true wenn das Parenttier forward ist, false wenn nicht
+	 */
+	public void setDirection(boolean isForward){
+		this.isForward = isForward;
 	}
 }

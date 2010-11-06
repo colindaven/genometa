@@ -904,4 +904,14 @@ public final class IGB extends Application
 	public List<Object> getPlugins() {
 		return Collections.<Object>unmodifiableList(plugins);
 	}
+
+	public static void MPTAGprintClass(String callLocation, Object o){
+		System.out.println("MPTAG <<<>>> DEBUG OUTPUT at "+callLocation);
+		System.out.println(o.getClass().getCanonicalName()+ "\n");
+		try{
+			throw new Exception();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }

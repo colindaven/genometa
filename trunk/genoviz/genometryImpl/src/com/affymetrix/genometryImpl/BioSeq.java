@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 /**
  * @author $Id: BioSeq.java 6568 2010-08-02 15:16:14Z jnicol $
  */
-public final class BioSeq implements SearchableCharIterator {
+public final class BioSeq implements SearchableCharIterator { //MPTAG
 	private Map<String, SymWithProps> type_id2sym = null;   // lazy instantiation of type ids to container annotations
 	private Map<String, IndexedSyms> type_id2indexedsym = null;
 	private Map<String, SymLoader> type_id2symloader = null;

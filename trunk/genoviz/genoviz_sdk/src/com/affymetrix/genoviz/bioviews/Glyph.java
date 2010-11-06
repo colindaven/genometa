@@ -173,6 +173,7 @@ public abstract class Glyph implements GlyphI  {
 	public void draw(ViewI view)  {
 		if (DEBUG) {
 			Graphics2D g = view.getGraphics();
+			//MPTAG changed
 			g.setColor(Color.red);
 			view.transformToPixels(coordbox, pixelbox);
 			g.drawRect(pixelbox.x+1, pixelbox.y+1,

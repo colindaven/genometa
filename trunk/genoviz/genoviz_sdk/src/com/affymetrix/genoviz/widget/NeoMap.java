@@ -922,7 +922,7 @@ public class NeoMap extends NeoWidget implements
 		if (fac == null) {
 			throw new NullPointerException("factory cannot be null.");
 		}
-		GlyphI gl;
+		GlyphI gl; //MPTAG
 		if (start <= end) {
 			if (option_string == null) {
 				gl = fac.makeGlyph((double) start, (double) (end + 1));
