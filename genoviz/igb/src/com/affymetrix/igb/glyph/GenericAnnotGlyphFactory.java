@@ -161,7 +161,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			TierGlyph reverse_tier,
 			boolean parent_and_child) {
 		try {
-			AffyTieredMap map = gviewer.getSeqMap();
+			AffyTieredMap map = gviewer.getSeqMap(); //MPTAG enthält LabelGlyphs, die die Linke beschriftung beinhalten
 			BioSeq annotseq = gviewer.getAnnotatedSeq();
 			BioSeq coordseq = gviewer.getViewSeq();
 			SeqSymmetry sym = insym;
@@ -200,11 +200,11 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			//    original annotation are completely outside the view
 			addChildren(insym, sym, the_style, annotseq, pglyph, map, coordseq);
 			//MPTAG Added richtung des Tiers bestimmen
-			boolean isForward = true;
-			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
-				isForward = false;
-			}
-			handleAlignedResidueGlyphs(insym, annotseq, pglyph, isForward);//MPTAG Text anbringen
+			boolean isForward = ((UcscBedSym) insym).isForward();
+//			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
+//				isForward = false;
+//			}
+			handleAlignedResidueGlyphs(insym, annotseq, pglyph);//MPTAG Text anbringen
 		} else {
 			// depth !>= 2, so depth <= 1, so _no_ parent, use child glyph instead...
 			pglyph = determineGlyph(child_glyph_class, parent_labelled_glyph_class, the_style, insym, the_tier, pspan, map, sym);
@@ -396,14 +396,11 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	}
 
 	/**
-	 * MPTAG
-	 * Neuen Parameter isForwared eingeführt um es an die AlignedResidueGlyph weiterzugeben
 	 * @param sym
 	 * @param annotseq
 	 * @param pglyph Die Vaterglyphe, für deren Kinder die Residues gesetzt werden.
-	 * @param isForward true, wenn das umgebende Tier forward ist, false wenn nicht
 	 */
-	private static void handleAlignedResidueGlyphs(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph, boolean isForward) {
+	private static void handleAlignedResidueGlyphs(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph) {
 		if (!(sym instanceof SymWithProps)) {
 			return;
 		}
@@ -415,19 +412,16 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		if (childCount > 0) {
 			int startPos = 0;
 			for (int i = 0; i < childCount; i++) {
-				startPos = setResidues(sym.getChild(i), annotseq, pglyph, startPos, handleCigar, true, isForward);
+				startPos = setResidues(sym.getChild(i), annotseq, pglyph, startPos, handleCigar, true);
 			}
 		} else {
-			setResidues(sym, annotseq, pglyph, 0, false, false, isForward);
+			setResidues(sym, annotseq, pglyph, 0, false, false);
 			// Note that pglyph is replaced here.
 			// don't need to process cigar, since entire residue string is used
 		}
 	}
 
 	/**
-	 * MPTAG
-	 * Weiteren Parameter hinzugefügt der die Richtung des darüberliegenden Tiers weiterreicht.
-	 *
 	 * Determine and set the appropriate residues for this element.
 	 * @param sym
 	 * @param annotseq
@@ -437,7 +431,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	 * @param isForward Die richtung des darüberliegenden Tiers
 	 * @return
 	 *///MPTAG Hier wird aufgerufen das der Text auf die Glyphe gesetzt werden soll
-	private static int setResidues(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph, int startPos, boolean handleCigar, boolean isChild, boolean isForward) {
+	private static int setResidues(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph, int startPos, boolean handleCigar, boolean isChild) {
 		SeqSpan span = sym.getSpan(annotseq);
 		if (span == null) {
 			return startPos;
@@ -463,7 +457,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			}
 			csg = new AlignedResidueGlyph();
 			//MPTAG added
-			csg.setDirection(isForward);
+			csg.setDirection(getDirectionOfGlyph(sym));
 			csg.setResidues(residueStr);
 			if (annotseq.getResidues(span.getStart(), span.getEnd()) != null) {
 				if (handleCigar) {//MPTAG Wenn BED Format verwendet wird
@@ -496,5 +490,14 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		}
 
 		return startPos;
+	}
+
+	private static boolean getDirectionOfGlyph(SeqSymmetry sym){
+		if(sym instanceof SymWithProps){
+			if(((SymWithProps)sym).getProperty("forward")!= null){
+				return ((Boolean)((SymWithProps)sym).getProperty("forward"));
+			}
+		}
+		return false;
 	}
 }
