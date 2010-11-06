@@ -169,6 +169,15 @@ public class TrackView {
 		return tier;
 	}
 
+	/**
+	 * MPTAG
+	 * Stellt ein, ob die Tracks von oben nach unten oder von unten nach oben sortiert werden sollen.
+	 * Dies kann also mit Above_axis = false aufgerufen werden um die Sortierung von oben nach unten zu ändern
+	 * wenn es nur einen Track gibt und die Koordinaten achse oberhalb des Tracks ist.
+	 * @param tg
+	 * @param above_axis
+	 * @param constantHeights
+	 */
 	private static void setUpTrackPacker(TierGlyph tg, boolean above_axis, boolean constantHeights) {
 		FasterExpandPacker ep = new FasterExpandPacker();
 		ep.setConstantHeights(constantHeights);

@@ -376,18 +376,50 @@ public final class TierLabelManager {
 			TierGlyph tier = (TierGlyph) label.getInfo();
 			tiers.add(tier);
 		}
-
-		updatePositions();
+		//MPTAG Changed
+		//updatePositions();
 		// then repack of course (tiermap repack also redoes labelmap glyph coords...)
-		tiermap.packTiers(false, true, false);
+		tiermap.packTiers(updatePositions(), true, false);
 		tiermap.updateWidget();
 	}
 
-	private void updatePositions(){
+	/**
+	 * Sortiert nur die Labels um, jedoch nciht die Tiers selbst
+	 * @return Wenn ein Label einen neuen Packer gesetzt bekommen hat muss neu gezeichnet werden. das kann im draw geschehen.
+	 *  true wenn neu gezeichnet werden soll, false wenn nicht
+	 */
+	private boolean updatePositions(){
+		//MPTAG added
+		int coordIdx=-1;
+		boolean hasToBeRepacked = false;
 		List<TierLabelGlyph> label_glyphs = tiermap.getTierLabels();
 		for(int i=0; i<label_glyphs.size(); i++){
+			if(label_glyphs.get(i).getInfo() instanceof TransformTierGlyph){
+				//MPTAG bisher habe ich nichts eindeutigeres gefunden was darauf hin deutet das es die Achsengylphe ist
+				coordIdx = i;
+			}
 			label_glyphs.get(i).setPosition(i);
 		}
+		//Für alle über dem CoordIdx die Packerdirection auf Up setzen, für alle darunter auf down
+		for (int i= 0; i < label_glyphs.size(); i++) {
+			if(i < coordIdx){
+				FasterExpandPacker ep = ((TierGlyph) label_glyphs.get(i).getInfo()).getExpandPacker();
+				if(ep.getMoveType() != ExpandPacker.UP){
+					ep.setMoveType(ExpandPacker.UP);
+					((TierGlyph) label_glyphs.get(i).getInfo()).setExpandedPacker(ep);
+					hasToBeRepacked = true;
+				}
+			}else if(i > coordIdx){
+				FasterExpandPacker ep = ((TierGlyph) label_glyphs.get(i).getInfo()).getExpandPacker();
+				if(ep.getMoveType() != ExpandPacker.DOWN){
+					ep.setMoveType(ExpandPacker.DOWN);
+					((TierGlyph) label_glyphs.get(i).getInfo()).setExpandedPacker(ep);
+					hasToBeRepacked = true;
+				}
+			}
+		}
+		System.out.println("Achsenindex ist: "+ coordIdx+ " hasToBeRepacked? "+ hasToBeRepacked);
+		return hasToBeRepacked;
 	}
 
 	/**
