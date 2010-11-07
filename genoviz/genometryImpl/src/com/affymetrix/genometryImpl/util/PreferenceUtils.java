@@ -98,6 +98,10 @@ public abstract class PreferenceUtils {
 	public static Preferences getGraphPrefsNode() {
 		return PreferenceUtils.getTopNode().node("graphs");
 	}
+
+	public static Preferences getTooltipPrefsNode() {
+		return PreferenceUtils.getTopNode().node("tooltip");
+	}
 	
 	public static void saveIntParam(String param_name, int param) {
 		try {

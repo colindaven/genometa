@@ -50,6 +50,7 @@ import com.affymetrix.igb.tiers.TierLabelManager;
 import com.affymetrix.igb.tiers.TransformTierGlyph;
 import com.affymetrix.igb.util.GraphGlyphUtils;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
+import com.affymetrix.genometryImpl.util.TooltipUtils;
 import com.affymetrix.genoviz.util.ErrorHandler;
 import com.affymetrix.igb.action.RefreshDataAction;
 import com.affymetrix.igb.action.ShrinkWrapAction;
@@ -1757,20 +1758,25 @@ public class SeqMapView extends JPanel
 	 */
 	private static String convertPropsToString(String[][] properties){
 		StringBuilder props = new StringBuilder();
-		String value = null;
+		String name;
+		String value;
+		boolean show;
+		
 		props.append("<html>");
-		for(int i=0; i<properties.length; i++){
-			props.append("<b>");
-			props.append(properties[i][0]);
-			props.append(" : </b>");
-			if((value = properties[i][1]) != null){
-				int vallen = value.length();
-				props.append(value.substring(0, Math.min(25, vallen)));
-				if(vallen > 30) {
-					props.append(" ...");
+		for(int i = 0; i < properties.length; i++) {
+				name = properties[i][0];
+				value = properties[i][1];
+				show = PreferenceUtils.getTooltipPrefsNode().getBoolean(name, TooltipUtils.isShowByName(name));
+				if(show) {
+					if(value.length() > 25) {
+						value = value.substring(0, TooltipUtils.MAX_TOOLTIP_LENGTH) + " ...";
+					}
+					props.append("<b>");
+					props.append(name);
+					props.append(": </b>");
+					props.append(value);
+					props.append("<br>");
 				}
-			}
-			props.append("<br>");
 		}
 		props.append("</html>");
 
