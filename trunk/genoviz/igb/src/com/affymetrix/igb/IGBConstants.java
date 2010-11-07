@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  *  Some global constants.
  */
 public interface IGBConstants {
-	public static final ResourceBundle BUNDLE = ResourceBundle.getBundle("igb");
+	public static final ResourceBundle BUNDLE = ResourceBundle.getBundle("igb",new Locale(""));
 
 	public static final String APP_NAME         = BUNDLE.getString("appName");
 	public static final String APP_NAME_SHORT   = BUNDLE.getString("appNameShort");
