@@ -136,8 +136,8 @@ public final class IGB extends Application
 
 			// if this is != null, then the user-requested l-and-f has already been applied
 			if (System.getProperty("swing.defaultlaf") == null) {
-				String os = System.getProperty("os.name");
-				if (os != null && os.toLowerCase().contains("windows")) {
+				//String os = System.getProperty("os.name");
+				//if (os != null && os.toLowerCase().contains("windows")) {
 					try {
 						// It this is Windows, then use the Windows look and feel.
 						Class<?> cl = Class.forName("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -150,7 +150,7 @@ public final class IGB extends Application
 						// Windows look and feel is only supported on Windows, and only in
 						// some version of the jre.  That is perfectly ok.
 					}
-				}
+				//}
 			}
 			
 
