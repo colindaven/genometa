@@ -200,7 +200,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			//    original annotation are completely outside the view
 			addChildren(insym, sym, the_style, annotseq, pglyph, map, coordseq);
 			//MPTAG Added richtung des Tiers bestimmen
-			boolean isForward = ((UcscBedSym) insym).isForward();
+//			boolean isForward = ((UcscBedSym) insym).isForward();
 //			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
 //				isForward = false;
 //			}
