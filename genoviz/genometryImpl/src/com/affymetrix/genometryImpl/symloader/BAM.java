@@ -59,6 +59,7 @@ public final class BAM extends SymLoader {
     private SAMFileHeader header;
 	private final Set<BioSeq> seqs = new HashSet<BioSeq>();
 	private File indexFile = null;
+	private final double MAX_MEMORY_USAGE = 0.1;
 
 	private static List<LoadStrategy> strategyList = new ArrayList<LoadStrategy>();
 
@@ -209,6 +210,8 @@ public final class BAM extends SymLoader {
 	 * @return
 	 */
 	public List<SeqSymmetry> parse(BioSeq seq, int min, int max, boolean containerSym, boolean contained) {
+		Runtime rt = Runtime.getRuntime();
+		double endOfLastRead = 0;
 		init();
 		List<SeqSymmetry> symList = new ArrayList<SeqSymmetry>(1000);
 		CloseableIterator<SAMRecord> iter = null;
@@ -217,16 +220,28 @@ public final class BAM extends SymLoader {
 				iter = reader.query(seq.getID(), min, max, contained);
 				if (iter != null && iter.hasNext()) {
 					for (SAMRecord sr = iter.next(); iter.hasNext() && (!Thread.currentThread().isInterrupted()); sr = iter.next()) {
-						symList.add(convertSAMRecordToSymWithProps(sr, seq, featureName, featureName));
+						if((rt.totalMemory() - rt.freeMemory()) >= (rt.maxMemory()*MAX_MEMORY_USAGE)){
+							endOfLastRead = sr.getUnclippedEnd();
+							System.out.println("Set Bouds");
+							seq.setBounds(min, (int)endOfLastRead);
+							throw new OutOfMemoryError();
+						}
+						 else
+							symList.add(convertSAMRecordToSymWithProps(sr, seq, featureName, featureName));
 					}
 				}
 			}
-		} finally {
+		}
+		catch(OutOfMemoryError ofme){
+			ErrorHandler.errorPanel("Unable to load whole sequence. \nLoaded residues from " +min +  " to " +endOfLastRead);
+			System.gc();
+		}
+
+		finally {
 			if (iter != null) {
 				iter.close();
 			}
 		}
-
 		return symList;
 	}
 
