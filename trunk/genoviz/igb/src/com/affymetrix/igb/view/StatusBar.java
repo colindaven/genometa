@@ -24,7 +24,7 @@ public final class StatusBar extends JPanel {
 	private final JPopupMenu popup_menu = new JPopupMenu();
 	private final DecimalFormat num_format;
 	/** Delay in milliseconds between updates of the status (such as memory usage).  */
-	private static final int timer_delay_ms = 5000;
+	private static final int timer_delay_ms = 500;
 
 	private final Action cancel = new AbstractAction() {
 		private static final long serialVersionUID = 1l;
