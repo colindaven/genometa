@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.sf.picard.util.BuildBamIndex;
+import net.sf.picard.sam.BuildBamIndex;
 import net.sf.samtools.Cigar;
 import net.sf.samtools.CigarElement;
 import net.sf.samtools.CigarOperator;
@@ -519,10 +519,9 @@ public final class BAM extends SymLoader {
 
 		String input = "INPUT=" + bamfile.getAbsolutePath();
 		String output = "OUTPUT=" + indexfile.getAbsolutePath();
-		String overwrite = "OVERWRITE=true";
 		String quiet = "QUIET="+!DEBUG;
 		BuildBamIndex buildIndex = new BuildBamIndex();
-		buildIndex.instanceMain(new String[]{input, output, overwrite, quiet});
+		buildIndex.instanceMain(new String[]{input, output, quiet});
 	}
 
 	static private boolean findIndexFile(URI uri) {
