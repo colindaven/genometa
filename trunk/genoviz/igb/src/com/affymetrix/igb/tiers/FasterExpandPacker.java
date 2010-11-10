@@ -100,6 +100,8 @@ public final class FasterExpandPacker extends ExpandPacker {
 	private int max_slots_allowed = 1000;
 	private boolean constant_heights = true;
 
+	private boolean makeGlyphsDarker = true;
+
 	/**
 	 *  Sets the maximum depth of glyphs to pack in the tier.
 	 *  @param slotnum  a positive integer or zero; zero implies there is no
@@ -195,11 +197,14 @@ public final class FasterExpandPacker extends ExpandPacker {
 						layeredChild = child;	// First child that could be layered
 					} else {
 						// indicate to user that we're layering the glyphs -- we do this by making the layered glyphs a darker color
-						recurseSetColor(child.getColor().darker(), child);
+						if(makeGlyphsDarker)
+							recurseSetColor(child.getColor().darker(), child);
 						recurseSetPackerClipping(child);	// don't draw everything in the overlapped glyphs (for performance)
 						if (layeredChild.getColor() != child.getColor()) {
 							// first time through -- we haven't set the previous child's color yet.
-							recurseSetColor(layeredChild.getColor().darker(), layeredChild);
+							//MPTAG Hinzugefügt um konstante evrdukelung zu erhalten wenn die Koordinatenacse verschoben wird
+							if(makeGlyphsDarker)
+								recurseSetColor(layeredChild.getColor().darker(), layeredChild);
 							recurseSetPackerClipping(layeredChild);	// don't draw everything in the overlapped glyphs (for performance)
 						}
 					}
@@ -275,4 +280,10 @@ public final class FasterExpandPacker extends ExpandPacker {
 		return (slot_index * slot_height) + spacing;	// stacking down for layout
 	}
 
+	/**
+	 * setzt ob glyphen bei erneutem Zeichnen dunker gemacht werden oder nicht.
+	 */
+	public void setMakeGlyphsDarker(boolean makeGlyphsDarker){
+		this.makeGlyphsDarker = makeGlyphsDarker;
+	}
 }
