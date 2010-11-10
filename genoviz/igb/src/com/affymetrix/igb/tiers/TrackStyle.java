@@ -46,6 +46,8 @@ public class TrackStyle implements ITrackStyleExtended {
 	private static final String PREF_LABEL_FIELD = "Label Field";
 	private static final String PREF_GLYPH_DEPTH = "Glyph Depth";
 	private static final String PREF_HEIGHT = "Height"; // height per glyph? // linear transform value?
+	private static final String PREF_FORWARD_COLOR = "Forward Color";//MPTAG added for saving forward Color
+	private static final String PREF_REVERSE_COLOR = "Reverse Color";//MPTAG added for saving reverse Color
 	private static final boolean default_show = true;
 	private static final boolean default_separate = true; //MPTAG changed from true
 	private static final boolean default_collapsed = false;
@@ -53,6 +55,8 @@ public class TrackStyle implements ITrackStyleExtended {
 	private static final int default_max_depth = 10;
 	private static final Color default_color = Color.CYAN;
 	private static final Color default_background = Color.BLACK;
+	private static final Color default_forward_color = Color.RED;//MPTAG added for saving forward Color
+	private static final Color default_reverse_color = Color.BLUE;//MPTAG added for saving reverse Color
 	private static final String default_label_field = "";
 	private static final int default_glyph_depth = 2;
 	private static final double default_height = 20.0;
@@ -68,6 +72,8 @@ public class TrackStyle implements ITrackStyleExtended {
 	private int max_depth = default_max_depth;
 	private Color color = default_color;
 	private Color background = default_background;
+	private Color forward_color = default_forward_color;//MPTAG added for saving forward Color
+	private Color reverse_color = default_reverse_color;//MPTAG added for saving reverse Color
 	private String label_field = default_label_field;
 	private int glyph_depth = default_glyph_depth;
 	private double height = default_height;
@@ -692,4 +698,25 @@ public class TrackStyle implements ITrackStyleExtended {
 	public GenericFeature getFeature() {
 		return this.feature;
 	}
+
+	/*
+	 * MPTAG added Getter and Setter for forward and reverse colors
+	 */
+	public Color getForwardColor() {
+		return forward_color;
+	}
+
+	public void setForwardColor(Color forward_color) {
+		this.forward_color = forward_color;
+	}
+
+	public Color getReverseColor() {
+		return reverse_color;
+	}
+
+	public void setReverseColor(Color reverse_color) {
+		this.reverse_color = reverse_color;
+	}
+
+
 }

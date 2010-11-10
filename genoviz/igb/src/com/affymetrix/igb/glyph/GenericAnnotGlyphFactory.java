@@ -34,14 +34,12 @@ import com.affymetrix.genometryImpl.parsers.TrackLineParser;
 
 import com.affymetrix.igb.tiers.AffyTieredMap;
 import com.affymetrix.igb.tiers.TierGlyph;
+import com.affymetrix.igb.tiers.TrackStyle;
 import com.affymetrix.igb.view.SeqMapView;
 
 import java.awt.Color;
 import java.util.*;
 //MPTAG Added for changes
-import com.affymetrix.genoviz.glyph.ArrowGlyph;
-import com.affymetrix.genoviz.util.NeoConstants;
-import java.awt.Font;
 
 /**
  *
@@ -199,11 +197,6 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			// call out to handle rendering to indicate if any of the children of the
 			//    original annotation are completely outside the view
 			addChildren(insym, sym, the_style, annotseq, pglyph, map, coordseq);
-			//MPTAG Added richtung des Tiers bestimmen
-//			boolean isForward = ((UcscBedSym) insym).isForward();
-//			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
-//				isForward = false;
-//			}
 			handleAlignedResidueGlyphs(insym, annotseq, pglyph);//MPTAG Text anbringen
 		} else {
 			// depth !>= 2, so depth <= 1, so _no_ parent, use child glyph instead...
@@ -336,12 +329,29 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		DeletionGlyph.handleEdgeRendering(outside_children, pglyph, annotseq, coordseq, 0.0, DEFAULT_THIN_HEIGHT);
 	}
 
-	private static Color getSymColor(SeqSymmetry insym, ITrackStyleExtended style) {
+	private static Color getSymColor(SeqSymmetry insym, ITrackStyleExtended style) {//MPTAG heir ggf farbe für Richtung setzten
 		boolean use_score_colors = style.getColorByScore();
 		boolean use_item_rgb = "on".equalsIgnoreCase((String) style.getTransientPropertyMap().get(TrackLineParser.ITEM_RGB));
 
 		if (!(use_score_colors || use_item_rgb)) {
-			return style.getColor();
+			//return style.getColor();
+			if(getDirectionOfGlyph(insym)>0){
+				if(getDirectionOfGlyph(insym) == 1){
+					if(style instanceof TrackStyle){
+						return ((TrackStyle)style).getForwardColor();//MPTAG TODO globale Farbe für richtung holen
+					}else{
+						return Color.RED;
+					}
+				}else if(getDirectionOfGlyph(insym) == 2){
+					if(style instanceof TrackStyle){
+						return ((TrackStyle)style).getReverseColor();//MPTAG TODO globale Farbe für richtung holen
+					}else{
+						return Color.BLUE;
+					}
+				}
+			}else{
+				return style.getColor();
+			}
 		}
 
 		SeqSymmetry sym = insym;
@@ -470,8 +480,6 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			}
 			csg.setHitable(false);
 			csg.setCoords(span.getMin(), 0, span.getLengthDouble(), pglyph.getCoordBox().height);
-			//MPTAG added
-			csg.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 10));
 			if (isChild) {
 				pglyph.addChild(csg);
 			} else {
@@ -492,12 +500,27 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		return startPos;
 	}
 
-	private static boolean getDirectionOfGlyph(SeqSymmetry sym){
+	/**
+	 * MPTAG
+	 * Methode zum Finden der Richtung der Glyphe. Arbeitet zZt. nur auf Glypen die eine
+	 * SymWithProps haben bei der eine Proerty "forward" als boolean hinterlegt ist.
+	 * @param sym Die Sym aus der Versucht wird die Daten für die Richtung zu extrahieren.
+	 * @return Eine Richtung als Short, 0=None, 1=forward, 2=reverse
+	 */
+	private static short getDirectionOfGlyph(SeqSymmetry insym){
+		SeqSymmetry sym = insym;
+		if (insym instanceof DerivedSeqSymmetry) {
+			sym = (SymWithProps) getMostOriginalSymmetry(insym);
+		}
 		if(sym instanceof SymWithProps){
 			if(((SymWithProps)sym).getProperty("forward")!= null){
-				return ((Boolean)((SymWithProps)sym).getProperty("forward"));
+				if(((Boolean)((SymWithProps)sym).getProperty("forward"))==true){
+					return 1;
+				}else{
+					return 2;
+				}
 			}
 		}
-		return false;
+		return 0;
 	}
 }

@@ -7,6 +7,7 @@ import com.affymetrix.genometryImpl.util.ImprovedStringCharIter;
 import com.affymetrix.genometryImpl.util.SearchableCharIterator;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.genoviz.glyph.AbstractResiduesGlyph;
+import com.affymetrix.igb.tiers.TierGlyph;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -38,7 +39,8 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	public boolean packerClip = false;	// if we're in an overlapped glyph (top of packer), don't draw residues -- for performance
 
 	//MPTAG added
-	private boolean isForward = true;
+	//Direction is 0=none, 1=forward, 2=reverse
+	private short direction = 0;
 
 	private static final ColorHelper helper = new ColorHelper();
 
@@ -195,6 +197,8 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 					visible_seq_span, coordbox.height);
 			view.transformToPixels(scratchrect, pixelbox);
 			int seq_end_index = visible_seq_end - seq_beg;
+//			if(this.direction == 1 || this.direction == 2)
+//				addDirectionArrow(view);
 			if (seq_end_index > residue_length) {
 				seq_end_index = residue_length;
 			}
@@ -208,7 +212,6 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			Graphics g = view.getGraphics();
 			drawHorizontalResidues(g, pixel_width_per_base, str, seq_beg_index, seq_end_index, seq_pixel_offset);
 		}
-		addDirectionArrow(view.getGraphics(), view);
 	}
 
 	/**
@@ -307,16 +310,18 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 
 	/**
 	 * MPTAG
-	 * Methode um an die Glyphe einen Richtungspfeil anzuhängen
-	 *
+	 * Methode um an die Glyphe einen Richtungspfeil anzuhängen. Die Größe des Pfeils wird durch die
+	 * skalierung des Views *3 bestimmt
+	 * TODO ggf den Pfeil bei einem Pixel nicht mehr zeichnen
 	 */
-	private void addDirectionArrow(Graphics g, ViewI view){
+	private void addDirectionArrow( ViewI view){
 		int numPoints = 3;
 		int arrowWidth = 5;
 		arrowWidth =  (int) (3 * (view.getTransform()).getScaleX());
+//		updateGlyphSize(arrowWidth, view);
 		int[] xpts = new int[numPoints];
 		int[] ypts = new int[numPoints];
-		if(isForward){
+		if(this.direction == 1){
 			//Pfeil nach Rechts
 			xpts[0] = pixelbox.x+pixelbox.width; //Ecke oben an der Glyphe
 			ypts[0] = pixelbox.y;
@@ -324,7 +329,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			ypts[1] = pixelbox.y + pixelbox.height;
 			xpts[2] = pixelbox.x+pixelbox.width + arrowWidth; //Spitze des Pfeils
 			ypts[2] = pixelbox.y + (pixelbox.height / 2);
-		}else{
+		}else if(this.direction == 2){
 			//Pfeil nach links
 			xpts[0] = pixelbox.x; //Ecke oben an der Glyphe
 			ypts[0] = pixelbox.y;
@@ -333,6 +338,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			xpts[2] = pixelbox.x - arrowWidth; //Spitze des Pfeils
 			ypts[2] = pixelbox.y + (pixelbox.height / 2);
 		}
+		Graphics g = view .getGraphics();
 		Color c = g.getColor();
 		g.setColor(Color.RED);
 		g.fillPolygon(xpts, ypts, numPoints);
@@ -342,9 +348,18 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	/**
 	 * MPTAG
 	 * Methode zum setzen der Richtung der Glyphe um den Pfeil hinzuzufügen
-	 * @param isForward true wenn das Parenttier forward ist, false wenn nicht
+	 * @param 
 	 */
-	public void setDirection(boolean isForward){
-		this.isForward = isForward;
+	public void setDirection(short dir){
+		this.direction = dir;
+	}
+
+	private void updateGlyphSize(int arrowWidth, ViewI view){
+		if(this.direction == 1){//Pfeil nach rechts
+			residue_length += arrowWidth;
+		}else if(this.direction == 2){//Pfeil nach links
+			seq_beg -=arrowWidth;
+			residue_length += arrowWidth;
+		}
 	}
 }

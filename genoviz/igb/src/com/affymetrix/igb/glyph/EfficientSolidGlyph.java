@@ -25,7 +25,10 @@ import com.affymetrix.genoviz.bioviews.ViewI;
  *       methods if they are willing to stick with simple hits.
  */
 public class EfficientSolidGlyph extends Glyph  {
-  /**
+  
+	//Direction is 0=none, 1=forward, 2=reverse
+	private short direction = 0;
+	/**
    * @return whether or not this glyph is hitable
    * @see #setHitable
    */
@@ -38,5 +41,13 @@ public class EfficientSolidGlyph extends Glyph  {
   public boolean hit(Rectangle2D.Double coord_hitbox, ViewI view)  {
     return isVisible() && coord_hitbox.intersects(this.coordbox);
   }
+
+	public short getDirection(){
+		return this.direction;
+	}
+
+	public void setDirection(short direction){
+		this.direction = direction;
+	}
 
 }
