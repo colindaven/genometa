@@ -12,6 +12,7 @@
  */
 package com.affymetrix.igb.menuitem;
 
+import java.text.DecimalFormat;
 import com.affymetrix.igb.util.ThreadUtils;
 import com.affymetrix.igb.view.SeqGroupView;
 import com.affymetrix.igb.view.load.GeneralLoadView;
@@ -204,6 +205,14 @@ public final class LoadFileAction extends AbstractAction {
 		for(final File file : fils){
 			URI uri = file.toURI();
 
+			/*
+			if(uri.toString().toLowerCase().endsWith(".bam"))
+			{
+				SAMFileReader reader = new SAMFileReader(file);
+				System.out.println(reader.getFileHeader().getSortOrder());
+			}
+			*/
+
 			if (uri.toString().toLowerCase().endsWith(".sam")) {
 				// sort and transform sam-file to bam-file
 				File samFile = file;
@@ -254,6 +263,7 @@ public final class LoadFileAction extends AbstractAction {
 						final File inputFile = samFile;		// threading needs final variable
 						final File outputFile = bamFile;	// threading needs final variable
 						final String notLockedUpMsg = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
+
 						SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 							@Override
 							public Void doInBackground() {
@@ -271,8 +281,13 @@ public final class LoadFileAction extends AbstractAction {
 								}
 								
 								Iterator<SAMRecord> iterator = reader.iterator();
+								int i = 0;
 								while (iterator.hasNext()) {
 									writer.addAlignment(iterator.next());
+									i++;
+									if((i % 500000) == 0) {	// show progress in statusbar
+										Application.getSingleton().setStatus(notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads", false);
+									}
 								}
 
 								reader.close();
@@ -288,13 +303,13 @@ public final class LoadFileAction extends AbstractAction {
 							}
 						};
 						ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
-					}else {
+					}else {		// skip transform
 							openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
 					}
-				} else {
+				} else {	// abord opening
 					JOptionPane.showMessageDialog(gviewerFrame, "Open the file has been aborted!", "Info", JOptionPane.INFORMATION_MESSAGE);
 				}
-			} else {
+			} else {	// its no .sam file
 				openURI(uri, file.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
 			}
 		}
