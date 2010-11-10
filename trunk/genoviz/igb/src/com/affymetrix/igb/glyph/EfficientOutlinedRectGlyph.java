@@ -43,8 +43,47 @@ public final class EfficientOutlinedRectGlyph extends EfficientOutlineContGlyph 
       g.fillRect(pixelbox.x+1, pixelbox.y+1, pixelbox.width-2, pixelbox.height-2);
     }
 
+	//MPTAG added
+	//addDirectionArrow(view);
+
     super.draw(view);
   }
+
+	/**
+	 * MPTAG
+	 * Methode um an die Glyphe einen Richtungspfeil anzuhängen. Die Größe des Pfeils wird durch die
+	 * skalierung des Views *3 bestimmt
+	 * TODO ggf den Pfeil bei einem Pixel nicht mehr zeichnen
+	 */
+	private void addDirectionArrow( ViewI view){
+		int numPoints = 3;
+		int arrowWidth = 5;
+		arrowWidth =  (int) (3 * (view.getTransform()).getScaleX());
+		int[] xpts = new int[numPoints];
+		int[] ypts = new int[numPoints];
+		if(this.getDirection() == 1){
+			//Pfeil nach Rechts
+			xpts[0] = pixelbox.x+pixelbox.width; //Ecke oben an der Glyphe
+			ypts[0] = pixelbox.y;
+			xpts[1] = pixelbox.x+pixelbox.width; //Ecke unten an der Glyphe
+			ypts[1] = pixelbox.y + pixelbox.height;
+			xpts[2] = pixelbox.x+pixelbox.width + arrowWidth; //Spitze des Pfeils
+			ypts[2] = pixelbox.y + (pixelbox.height / 2);
+		}else if(this.getDirection() == 2){
+			//Pfeil nach links
+			xpts[0] = pixelbox.x; //Ecke oben an der Glyphe
+			ypts[0] = pixelbox.y;
+			xpts[1] = pixelbox.x; //Ecke unten an der Glyphe
+			ypts[1] = pixelbox.y + pixelbox.height;
+			xpts[2] = pixelbox.x - arrowWidth; //Spitze des Pfeils
+			ypts[2] = pixelbox.y + (pixelbox.height / 2);
+		}
+		Graphics g = view .getGraphics();
+		Color c = g.getColor();
+		g.setColor(Color.RED);
+		g.fillPolygon(xpts, ypts, numPoints);
+		g.setColor(c);
+	}
   
   /** Sets the outline color; the fill color is automatically calculated as  
    *  a darker shade. 

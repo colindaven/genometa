@@ -50,12 +50,15 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
   private static final String GLYPH_DEPTH = "Connected";
   private static final String LABEL_FIELD = "Label Field";
   private static final String HUMAN_NAME = "Display Name";
+  private static final String FORWARD_COLOR = "Forward Color"; //MPTAG added
+  private static final String REVERSE_COLOR = "Reverse Color"; //MPTAG added
 
   private final static String[] col_headings = {
     HUMAN_NAME,
     COLOR, BACKGROUND,
     SEPARATE, COLLAPSED,
     MAX_DEPTH, GLYPH_DEPTH, LABEL_FIELD, TIER_NAME,
+	FORWARD_COLOR, REVERSE_COLOR,  //MPTAG added
     //    GRAPH_TIER,
   };
 
@@ -68,6 +71,8 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
   private static final int COL_GLYPH_DEPTH = 6;
   private static final int COL_LABEL_FIELD = 7;
   private static final int COL_TIER_NAME = 8;
+  private static final int COL_FORWARD_COLOR = 9;
+  private static final int COL_REVERSE_COLOR = 10;
 
   private final TierPrefsTableModel model;
   private final ListSelectionModel lsm;
@@ -183,7 +188,7 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
     table.setEnabled( true ); // doesn't do anything ?
 
     table.setDefaultRenderer(Color.class, new ColorTableCellRenderer());
-    table.setDefaultEditor(Color.class, new ColorTableCellEditor());
+    table.setDefaultEditor(Color.class, new ColorTableCellEditor());//MPTAG der hier überträgt meine änderungen nicht!!
     table.setDefaultRenderer(Boolean.class, new BooleanTableCellRenderer());
 
     validate();
@@ -324,7 +329,9 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
     public boolean isCellEditable(int row, int column) {
       if (tier_styles.get(row) == default_annot_style) {
         if (column == COL_COLOR || column == COL_BACKGROUND || column == COL_SEPARATE
-            || column == COL_COLLAPSED || column == COL_MAX_DEPTH) {
+            || column == COL_COLLAPSED || column == COL_MAX_DEPTH
+			|| column == COL_FORWARD_COLOR || column == COL_REVERSE_COLOR  //MPTAG added
+			) {
           return true;
         }
         else {
@@ -387,6 +394,11 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
           else { return style.getHumanName(); }
 	//        case COL_GRAPH_TIER:
 	//	  return style.isGraphTier();
+		  //MPTAG added
+		case COL_FORWARD_COLOR:
+			return style.getForwardColor();
+		case COL_REVERSE_COLOR:
+			return style.getReverseColor();
         default:
           return null;
       }
@@ -433,6 +445,13 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
 	    style.setHumanName((String) value);
 	  }
           break;
+		  //MPTAG added
+		case COL_FORWARD_COLOR:
+			style.setForwardColor((Color) value);
+			break;
+		case COL_REVERSE_COLOR:
+			style.setReverseColor((Color) value);
+			break;
         default:
           System.out.println("Unknown column selected: " + col);;
       }
