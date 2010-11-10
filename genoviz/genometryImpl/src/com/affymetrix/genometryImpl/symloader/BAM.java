@@ -9,6 +9,7 @@ import com.affymetrix.genometryImpl.SymWithProps;
 import com.affymetrix.genometryImpl.UcscBedSym;
 import com.affymetrix.genometryImpl.general.SymLoader;
 import com.affymetrix.genometryImpl.span.SimpleSeqSpan;
+import com.affymetrix.genometryImpl.util.Constants;
 import com.affymetrix.genometryImpl.util.ErrorHandler;
 import com.affymetrix.genometryImpl.util.GeneralUtils;
 import com.affymetrix.genometryImpl.util.LoadUtils.LoadStrategy;
@@ -59,7 +60,6 @@ public final class BAM extends SymLoader {
     private SAMFileHeader header;
 	private final Set<BioSeq> seqs = new HashSet<BioSeq>();
 	private File indexFile = null;
-	private final double MAX_MEMORY_USAGE = 0.1;
 
 	private static List<LoadStrategy> strategyList = new ArrayList<LoadStrategy>();
 
@@ -220,7 +220,7 @@ public final class BAM extends SymLoader {
 				iter = reader.query(seq.getID(), min, max, contained);
 				if (iter != null && iter.hasNext()) {
 					for (SAMRecord sr = iter.next(); iter.hasNext() && (!Thread.currentThread().isInterrupted()); sr = iter.next()) {
-						if((rt.totalMemory() - rt.freeMemory()) >= (rt.maxMemory()*MAX_MEMORY_USAGE)){
+						if((rt.totalMemory() - rt.freeMemory()) >= (rt.maxMemory()*Constants.MAX_MEMORY_USAGE)){
 							endOfLastRead = sr.getUnclippedEnd();
 							System.out.println("Set Bouds");
 							seq.setBounds(min, (int)endOfLastRead);
