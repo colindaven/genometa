@@ -404,6 +404,7 @@ public final class TierLabelManager {
 		for (int i= 0; i < label_glyphs.size(); i++) {
 			if(i < coordIdx){
 				FasterExpandPacker ep = ((TierGlyph) label_glyphs.get(i).getInfo()).getExpandPacker();
+				ep.setMakeGlyphsDarker(false);//MPTAG dadruch sollen die Glyphen nichtmehr dunkler werden
 				if(ep.getMoveType() != ExpandPacker.UP){
 					ep.setMoveType(ExpandPacker.UP);
 					((TierGlyph) label_glyphs.get(i).getInfo()).setExpandedPacker(ep);
@@ -411,6 +412,7 @@ public final class TierLabelManager {
 				}
 			}else if(i > coordIdx){
 				FasterExpandPacker ep = ((TierGlyph) label_glyphs.get(i).getInfo()).getExpandPacker();
+				ep.setMakeGlyphsDarker(false);//MPTAG dadruch sollen die Glyphen nichtmehr dunkler werden
 				if(ep.getMoveType() != ExpandPacker.DOWN){
 					ep.setMoveType(ExpandPacker.DOWN);
 					((TierGlyph) label_glyphs.get(i).getInfo()).setExpandedPacker(ep);
@@ -418,7 +420,7 @@ public final class TierLabelManager {
 				}
 			}
 		}
-		System.out.println("Achsenindex ist: "+ coordIdx+ " hasToBeRepacked? "+ hasToBeRepacked);
+//		System.out.println("Achsenindex ist: "+ coordIdx+ " hasToBeRepacked? "+ hasToBeRepacked);
 		return hasToBeRepacked;
 	}
 
