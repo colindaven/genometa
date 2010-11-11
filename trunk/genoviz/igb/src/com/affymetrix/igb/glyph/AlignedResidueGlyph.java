@@ -229,6 +229,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		drawResidueRectangles(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelbox.x, pixelbox.y, pixelbox.height);
 		drawResidueStrings(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelStart);
 		//MPTAG Prüft für jeden Buchstaben ob er passt. Reicht da nicht einmaliges Prüfen ?
+		drawDirectionBar(true, g);
 	}
 
 	private static void drawResidueRectangles(
@@ -360,6 +361,22 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		}else if(this.direction == 2){//Pfeil nach links
 			seq_beg -=arrowWidth;
 			residue_length += arrowWidth;
+		}
+	}
+
+	private void drawDirectionBar(boolean topCorner, Graphics g){
+		if(this.direction >0){
+			Color tmpCol = g.getColor();
+			if(this.direction == 1){
+				g.setColor(Color.RED);
+			}else if(this.direction == 2){
+				g.setColor(Color.BLUE);
+			}
+			if(topCorner)
+				g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width , (int)(pixelbox.height * .25f) );
+			else
+				g.fillRect(pixelbox.x+(int)(pixelbox.height * .75f), pixelbox.y, pixelbox.width , (int)(pixelbox.height * .25f) );
+			g.setColor(tmpCol);
 		}
 	}
 }
