@@ -3,19 +3,19 @@
 <!-- Specify servers here with type, name, and url.  Type is "das", "das2", or "quickload" -->
 
 <!-- servers enabled by default -->
-<server type="das2" name="NetAffx" url="http://netaffxdas.affymetrix.com/das2/genome" />
-<server type="quickload" name="NetAffx" url="http://netaffxdas.affymetrix.com/quickload_data" />
+<server type="das2" name="NetAffx" url="http://netaffxdas.affymetrix.com/das2/genome" enabled="false" />
+<server type="quickload" name="NetAffx" url="http://netaffxdas.affymetrix.com/quickload_data" enabled="false" />
 
-<server type="das2" name="Bioviz" url="http://bioviz.org/das2/genome" />
-<server type="quickload" name="Bioviz" url="http://bioviz.org/quickload/"/>
+<server type="das2" name="Bioviz" url="http://bioviz.org/das2/genome" enabled="false" />
+<server type="quickload" name="Bioviz" url="http://bioviz.org/quickload/" enabled="false" />
 
-<server type="das" name="UCSC" url="http://genome.cse.ucsc.edu/cgi-bin/das/dsn" />
-<server type="das" name="Ensembl" url="http://www.ensembl.org/das/dsn" enabled="true" />
+<server type="das" name="UCSC" url="http://genome.cse.ucsc.edu/cgi-bin/das/dsn" enabled="false" />
+<server type="das" name="Ensembl" url="http://www.ensembl.org/das/dsn" enabled="false" />
 
-<server type="quickload" name="HughesLab" url="http://hugheslab.ccbr.utoronto.ca/igb/"/>
+<server type="quickload" name="HughesLab" url="http://hugheslab.ccbr.utoronto.ca/igb/" enabled="false" />
 
 <!-- caching of slow servers (e.g., UCSC and Ensembl) -->
-<server type="quickload" name="BioVizServerCache" url="http://bioviz.org/cached/" primary="true"/>
+<server type="quickload" name="BioVizServerCache" url="http://bioviz.org/cached/" primary="true" enabled="false"/>
 
 <!-- servers disabled by default -->
 <server type="das2" name="UofUtahBioinfoCore" url="http://bioserver.hci.utah.edu:8080/DAS2DB/genome" enabled="false" />
