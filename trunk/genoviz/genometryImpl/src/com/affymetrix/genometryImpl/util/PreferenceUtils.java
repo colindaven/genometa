@@ -35,6 +35,7 @@ import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
+import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -63,6 +64,7 @@ public abstract class PreferenceUtils {
 	public static final boolean default_auto_load = true;
 	static JFileChooser static_chooser = null;
 	static final SortedSet<String> keystroke_node_names = Collections.<String>synchronizedSortedSet(new TreeSet<String>());
+	static final DefaultListModel tooltips_editor_items = new DefaultListModel();
 	static String app_dir = null;
 
 	/**
@@ -102,7 +104,11 @@ public abstract class PreferenceUtils {
 	public static Preferences getTooltipPrefsNode() {
 		return PreferenceUtils.getTopNode().node("tooltip");
 	}
-	
+
+	public static Preferences getTooltipEditorPrefsNode() {
+		return PreferenceUtils.getTopNode().node("tooltip_editor");
+	}
+
 	public static void saveIntParam(String param_name, int param) {
 		try {
 			getTopNode().putInt(param_name, param);
@@ -290,6 +296,11 @@ public abstract class PreferenceUtils {
 	public static Collection<String> getKeystrokesNodeNames() {
 		/* Can not return an unmodifiableSet() because of synchronization */
 		return keystroke_node_names;
+	}
+
+	public static DefaultListModel getTooltipsEditorListModel() {
+		/* Can not return an unmodifiableSet() because of synchronization */
+		return tooltips_editor_items;
 	}
 
 	/**
