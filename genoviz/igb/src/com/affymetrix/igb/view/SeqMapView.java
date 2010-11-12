@@ -1694,7 +1694,8 @@ public class SeqMapView extends JPanel
 
 		if (!sym.isEmpty()) {
 			String[][] properties = PropertyView.getPropertiesRow(sym.get(0), this);
-			String tooltip = convertPropsToString(properties);
+			// String tooltip = convertPropsToString(properties);
+			String tooltip = convertPropsToEditorTooltip(properties);
 			((AffyLabelledTierMap) seqmap).setToolTip(tooltip);
 		} else if(glyphs.get(0) instanceof TierLabelGlyph){
 			Map<String, Object> properties = TierLabelManager.getTierProperties(((TierLabelGlyph) glyphs.get(0)).getReferenceTier());
@@ -1750,6 +1751,56 @@ public class SeqMapView extends JPanel
 
 		return props.toString();
 	}
+
+	/**
+	 * Constructs tooltip from preferences
+	 * @param properties
+	 * @return
+	 */
+	private static String convertPropsToEditorTooltip(String[][] properties){
+		// JOptionPane.showMessageDialog(null, "convertPropsToEditorTooltip()");
+		StringBuilder props = new StringBuilder();
+		String value;
+		HashMap<String,String> property_map = new HashMap<String,String>();
+
+		// convert String array to Map
+		for(int i = 0; i < properties.length; i++) {
+			property_map.put(properties[i][0], properties[i][1]);
+		}
+
+		props.append("<html>");
+		for(int i = 0; i < 20; i++) {
+				String index = String.valueOf(i);
+				String item = PreferenceUtils.getTooltipPrefsNode().get(index, "dummy");
+
+				if ( item.equals("blank line") ) {
+					props.append("<br>");
+				}
+				else if ( item.equals("dummy") ) {
+
+				}
+				else {
+					value = property_map.get(item);
+
+					if ( value == null ) value = "tag not available";
+
+					if(value.length() > 25) {
+						value = value.substring(0, TooltipUtils.MAX_TOOLTIP_LENGTH) + " ...";
+					}
+
+					props.append("<b>");
+					props.append(item);
+					props.append(": </b>");
+					props.append(value);
+					props.append("<br>");
+				}
+
+		}
+		props.append("</html>");
+
+		return props.toString();
+	}
+
 
 	/**
 	 * Converts given properties into string.

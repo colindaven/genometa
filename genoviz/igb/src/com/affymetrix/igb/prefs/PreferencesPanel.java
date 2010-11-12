@@ -87,6 +87,7 @@ public final class PreferencesPanel extends JPanel {
 		singleton.addPrefEditorComponent(new GraphsView());
 		singleton.addPrefEditorComponent(new OptionsView());
 		singleton.addPrefEditorComponent(new TooltipView());
+		singleton.addPrefEditorComponent(new TooltipEditorView());
 
 		return singleton;
 	}
