@@ -402,7 +402,18 @@ public final class IGB extends Application
 		splitpane.setOneTouchExpandable(true);
 		splitpane.setDividerSize(8);
 		splitpane.setDividerLocation(frm.getHeight() - (table_height + fudge));
-		splitpane.setTopComponent(map_view);
+
+
+		JTabbedPane neoMapPane = new JTabbedPane();
+		neoMapPane.insertTab("Sequence Viewer", null, map_view, "Sequence Viewer", 0);
+
+		//at firtst only for tests
+		BarGraphMap barGraph = new BarGraphMap();
+		barGraph.init();
+		neoMapPane.insertTab("Overview", null, barGraph, "Overview", 1);
+
+
+		splitpane.setTopComponent(neoMapPane);
 
 		boolean tab_panel_in_a_window = (PreferenceUtils.getComponentState(TABBED_PANES_TITLE).equals(PreferenceUtils.COMPONENT_STATE_WINDOW));
 		if (tab_panel_in_a_window) {
