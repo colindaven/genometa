@@ -49,7 +49,7 @@ public class BarGraphMap extends JPanel implements ComponentListener, MouseListe
 	NeoMap map;
 	AdjustableJSlider xzoomer;
 	AdjustableJSlider yzoomer;
-	Vector selected = new Vector();
+	Vector<LabelledRectGlyph> selected = new Vector<LabelledRectGlyph>();
 	private UnibrowHairline hairline = null;
 
 	public void init() {
@@ -137,14 +137,22 @@ public class BarGraphMap extends JPanel implements ComponentListener, MouseListe
 
 		Point2D.Double zoom_point = new Point2D.Double(nevt.getCoordX(), nevt.getCoordY());
 		List<GlyphI> hits = nevt.getItems();
-		int hcount = hits.size();
 
-		Iterator<GlyphI> it = hits.iterator();
-
-		
-
+		// DESELECT THE OLD GLYPHS
+		Iterator<LabelledRectGlyph> it = selected.iterator();
 		while( it.hasNext() ){
-			it.next().setForegroundColor(Color.MAGENTA);
+			it.next().setBackgroundColor(Color.RED);
+		}
+		selected.clear();
+		
+		Iterator<GlyphI> it2 = hits.iterator();
+		// SELECT THE NEW GLYPHS
+		while( it2.hasNext() ){
+			GlyphI g = it2.next();
+			if( g instanceof LabelledRectGlyph){
+				selected.add((LabelledRectGlyph)g);
+				((LabelledRectGlyph)g).setBackgroundColor(Color.MAGENTA);
+			}
 		}
 
 		if (hairline != null) {
