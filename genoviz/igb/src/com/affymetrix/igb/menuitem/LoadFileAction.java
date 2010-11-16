@@ -12,6 +12,7 @@
  */
 package com.affymetrix.igb.menuitem;
 
+import net.sf.samtools.SAMFileHeader;
 import java.text.DecimalFormat;
 import com.affymetrix.igb.util.ThreadUtils;
 import com.affymetrix.igb.view.SeqGroupView;
@@ -205,81 +206,74 @@ public final class LoadFileAction extends AbstractAction {
 		for(final File file : fils){
 			URI uri = file.toURI();
 
-			/*
-			if(uri.toString().toLowerCase().endsWith(".bam"))
-			{
-				SAMFileReader reader = new SAMFileReader(file);
-				System.out.println(reader.getFileHeader().getSortOrder());
-			}
-			*/
-
 			if (uri.toString().toLowerCase().endsWith(".sam")) {
-				// sort and transform sam-file to bam-file
-				File samFile = file;
-				File bamFile = changeFileExtension(samFile, ".bam");
-				boolean skipTransform = false;
-				boolean abordOpening = false;
-	
-				if(bamFile.exists()) {
-					Object[] options = {"Open existing file", "Overwrite existing file", "Change name"};
-					int n = JOptionPane.showOptionDialog(gviewerFrame, "A BAM-File with the same name of the SAM-File already exists!",
-						"Existing BAM-File", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				openSamFile(file, mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem(), gviewerFrame);
+			} else if(uri.toString().toLowerCase().endsWith(".bam")) {
+				openBamFile(file, mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem(), gviewerFrame);
+			} else {
+				openURI(uri, file.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
+			}
+		}
+	}
 
-					switch(n) {
-						case 0:			// open existing bam file without transforming
-							skipTransform = true;
-							break;
-						case 1:	break;	// overwrite bam-file
-						case 2:			// open filechooser for new filename
-							JFileChooser fc = new JFileChooser() {
-								@Override
-								public void approveSelection() {
-									File selectedFile = getSelectedFile();
-									if (getDialogType() == SAVE_DIALOG && selectedFile != null && selectedFile.exists()) {
-										int result = JOptionPane.showOptionDialog(gviewerFrame, "File " + selectedFile.getName() + " already exists. Do you really want to overwrite?",
-																				"Overwrite Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-										
-										if (result == JOptionPane.NO_OPTION) { return; }
-									}
-									super.approveSelection();
-								}
-							};
+	/**
+	 * Check first if the BAM-File is sorted (coordinate sort-order is needed). If so, open the BAM-File regular. If not, sort BAM-File.
+	 *
+	 * @param bamFile
+	 * @param mergeSelected
+	 * @param loadGroup
+	 * @param speciesName
+	 * @param gviewerFrame
+	 */
+	private static void openBamFile(File bamFile, final boolean mergeSelected, final AnnotatedSeqGroup loadGroup, final String speciesName, final JFrame gviewerFrame) {
+		// While parsing: emit warnings but keep going if possible.
+		SAMFileReader.setDefaultValidationStringency(SAMFileReader.ValidationStringency.LENIENT);
+		final SAMFileReader reader = new SAMFileReader(bamFile);
 
-							fc.setSelectedFile(bamFile);
-							int fcResult = fc.showSaveDialog(gviewerFrame);
-							if(fcResult == JFileChooser.APPROVE_OPTION) {
-								bamFile = fc.getSelectedFile();
-							} else {
-								abordOpening = true;
+		System.out.println(reader.getFileHeader().getSortOrder());
+
+		if(reader.getFileHeader().getSortOrder() == SAMFileHeader.SortOrder.coordinate) {
+			openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, speciesName);
+		} else {
+			// bamFile is not coordinate sorted, lets do it now (if the user confirms...)
+			//boolean userConfirmed = Application.confirmPanel("The BAM-File " + bamFile.getName() + " is not sorted on coordinates. Do you want to sort it now?");
+
+
+			Object[] options = {"Sort File", "Open without sorting", "Cancel"};
+			int dialogResult = JOptionPane.showOptionDialog(gviewerFrame, "The BAM-File seems to be not sorted by coordinates!\n"
+					+ "If you know that the File is sorted by coordinates, you can try to open it without sorting.",
+				"File not sorted", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+			switch(dialogResult) {
+				case 0:
+					JFileChooser fc = new JFileChooser() {
+						@Override
+						public void approveSelection() {
+							File selectedFile = getSelectedFile();
+							if (getDialogType() == SAVE_DIALOG && selectedFile != null && selectedFile.exists()) {
+								int result = JOptionPane.showOptionDialog(gviewerFrame, "File " + selectedFile.getName() + " already exists. Do you really want to overwrite?",
+																		"Overwrite Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+
+								if (result == JOptionPane.NO_OPTION) { return; }
 							}
-							break;
-						default: 
-							abordOpening = true;
-							break; 
-					}
-				}
-				if(!abordOpening) {
-					if(!skipTransform) {
-						final File inputFile = samFile;		// threading needs final variable
-						final File outputFile = bamFile;	// threading needs final variable
-						final String notLockedUpMsg = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
+							super.approveSelection();
+						}
+					};
+
+					fc.setSelectedFile(bamFile);
+					int fcResult = fc.showSaveDialog(gviewerFrame);
+					if(fcResult == JFileChooser.APPROVE_OPTION) {
+						final File newBamFile = fc.getSelectedFile();
+						final String notLockedUpMsg = "Sorting " + bamFile.getName() + " to " + newBamFile.getName();
 
 						SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 							@Override
 							public Void doInBackground() {
 								Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
-								// While parsing: emit warnings but keep going if possible.
-								SAMFileReader.setDefaultValidationStringency(SAMFileReader.ValidationStringency.LENIENT);
-								SAMFileReader reader = new SAMFileReader(inputFile);
 
-								SAMFileWriter writer;
-								if(reader.getFileHeader().getSortOrder() == SortOrder.coordinate) {	// SAM is already sorted!
-									writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), true, outputFile);
-								} else {
-									reader.getFileHeader().setSortOrder(SortOrder.coordinate);
-									writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, outputFile);
-								}
-								
+								reader.getFileHeader().setSortOrder(SortOrder.coordinate);
+								SAMFileWriter writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, newBamFile);
+
 								Iterator<SAMRecord> iterator = reader.iterator();
 								int i = 0;
 								while (iterator.hasNext()) {
@@ -299,19 +293,123 @@ public final class LoadFileAction extends AbstractAction {
 							@Override
 							public void done() {
 								Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
-								openURI(outputFile.toURI(), outputFile.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
+								openURI(newBamFile.toURI(), newBamFile.getName(), mergeSelected, loadGroup, speciesName);
 							}
 						};
 						ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
-					}else {		// skip transform
-							openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
 					}
-				} else {	// abord opening
-					JOptionPane.showMessageDialog(gviewerFrame, "Open the file has been aborted!", "Info", JOptionPane.INFORMATION_MESSAGE);
-				}
-			} else {	// its no .sam file
-				openURI(uri, file.getName(), mergeSelected, loadGroup, (String)fileChooser.speciesCB.getSelectedItem());
+					break;
+				case 1:
+					// try to open the bam file, maybe just the header-tag is not set to coordinate
+					openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, speciesName);
+					break;
 			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param samFile
+	 * @param mergeSelected
+	 * @param loadGroup
+	 * @param speciesName
+	 * @param gviewerFrame
+	 */
+	private static void openSamFile(final File samFile, final boolean mergeSelected, final AnnotatedSeqGroup loadGroup, final String speciesName, final JFrame gviewerFrame) {
+		// sort and transform sam-file to bam-file
+		File bamFile = changeFileExtension(samFile, ".bam");
+		boolean skipTransform = false;
+
+		if(bamFile.exists()) {
+			// if a bam file with same name as the sam file already exists, show confirmation dialog
+			Object[] options = {"Open existing file", "Overwrite existing file", "Change name"};
+			int n = JOptionPane.showOptionDialog(gviewerFrame, "A BAM-File with the same name of the SAM-File already exists!",
+				"Existing BAM-File", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+			switch(n) {
+				case 0:			// open existing bam file without transforming
+					skipTransform = true;
+					break;
+				case 1:	break;	// overwrite bam-file
+				case 2:			// open filechooser for new filename
+					JFileChooser fc = new JFileChooser() {
+						@Override
+						public void approveSelection() {
+							File selectedFile = getSelectedFile();
+							if (getDialogType() == SAVE_DIALOG && selectedFile != null && selectedFile.exists()) {
+								int result = JOptionPane.showOptionDialog(gviewerFrame, "File " + selectedFile.getName() + " already exists. Do you really want to overwrite?",
+																		"Overwrite Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+
+								if (result == JOptionPane.NO_OPTION) { return; }
+							}
+							super.approveSelection();
+						}
+					};
+
+					fc.setSelectedFile(bamFile);
+					int fcResult = fc.showSaveDialog(gviewerFrame);
+					if(fcResult == JFileChooser.APPROVE_OPTION) {
+						bamFile = fc.getSelectedFile();
+					} else {
+						// abord opening
+						JOptionPane.showMessageDialog(gviewerFrame, "Open the file has been aborted!", "Info", JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
+					break;
+				default:
+					// abord opening
+					JOptionPane.showMessageDialog(gviewerFrame, "Open the file has been aborted!", "Info", JOptionPane.INFORMATION_MESSAGE);
+					return;
+			}
+		}
+		
+		if(skipTransform) {
+			// open the existing bam file without doing anything
+			openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, speciesName);
+		}else {
+			final File inputFile = samFile;		// threading needs final variable
+			final File outputFile = bamFile;	// threading needs final variable
+			final String notLockedUpMsg = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
+
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				@Override
+				public Void doInBackground() {
+					Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
+					// While parsing: emit warnings but keep going if possible.
+					SAMFileReader.setDefaultValidationStringency(SAMFileReader.ValidationStringency.LENIENT);
+					SAMFileReader reader = new SAMFileReader(inputFile);
+
+					SAMFileWriter writer;
+					if(reader.getFileHeader().getSortOrder() == SortOrder.coordinate) {	// SAM is already sorted!
+						writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), true, outputFile);
+					} else {
+						reader.getFileHeader().setSortOrder(SortOrder.coordinate);
+						writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, outputFile);
+					}
+
+					Iterator<SAMRecord> iterator = reader.iterator();
+					int i = 0;
+					while (iterator.hasNext()) {
+						writer.addAlignment(iterator.next());
+						i++;
+						if((i % 500000) == 0) {	// show progress in statusbar
+							Application.getSingleton().setStatus(notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads", false);
+						}
+					}
+
+					reader.close();
+					writer.close();
+
+					return null;
+				}
+
+				@Override
+				public void done() {
+					Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
+					openURI(outputFile.toURI(), outputFile.getName(), mergeSelected, loadGroup, speciesName);
+				}
+			};
+			ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
 		}
 	}
 
