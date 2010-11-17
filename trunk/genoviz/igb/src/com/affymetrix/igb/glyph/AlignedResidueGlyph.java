@@ -230,6 +230,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		drawResidueStrings(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelStart);
 		//MPTAG Prüft für jeden Buchstaben ob er passt. Reicht da nicht einmaliges Prüfen ?
 		drawDirectionBar(true, g);
+		drawDirectionTriangle(false, g);
 	}
 
 	private static void drawResidueRectangles(
@@ -373,9 +374,64 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 				g.setColor(Color.BLUE);
 			}
 			if(topCorner)
-				g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width , (int)(pixelbox.height * .25f) );
+				g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width+1 , (int)(pixelbox.height * .25f) );
 			else
-				g.fillRect(pixelbox.x+(int)(pixelbox.height * .75f), pixelbox.y, pixelbox.width , (int)(pixelbox.height * .25f) );
+				g.fillRect(pixelbox.x, pixelbox.y+(int)(pixelbox.height * .75f)+1, pixelbox.width+1 , (int)(pixelbox.height * .25f) );
+			g.setColor(tmpCol);
+		}
+	}
+
+	private void drawDirectionTriangle(boolean topCorner, Graphics g){
+		int[] xPts;
+		int[] yPts;
+		if(this.direction >0){
+			xPts = new int[4];
+			yPts = new int[4];
+			Color tmpCol = g.getColor();
+			if(this.direction == 1){
+				if(topCorner){
+					xPts[0] = pixelbox.x;
+					yPts[0] = pixelbox.y;
+					xPts[1] = pixelbox.x + pixelbox.width;
+					yPts[1] = pixelbox.y;
+					xPts[2] = pixelbox.x + pixelbox.width;
+					yPts[2] = pixelbox.y + (int)(pixelbox.height * .05f);
+					xPts[3] = pixelbox.x;
+					yPts[3] = pixelbox.y + (int)(pixelbox.height * .25f);
+				}else{
+					xPts[0] = pixelbox.x;
+					yPts[0] = pixelbox.y + (int)(pixelbox.height * .75f);
+					xPts[1] = pixelbox.x + pixelbox.width;
+					yPts[1] = pixelbox.y + pixelbox.height - (int)(pixelbox.height * .05f);
+					xPts[2] = pixelbox.x + pixelbox.width;
+					yPts[2] = pixelbox.y + pixelbox.height;
+					xPts[3] = pixelbox.x;
+					yPts[3] = pixelbox.y + pixelbox.height;
+				}
+				g.setColor(Color.RED);
+			}else if(this.direction == 2){
+				if(topCorner){
+					xPts[0] = pixelbox.x + pixelbox.width;
+					yPts[0] = pixelbox.y;
+					xPts[1] = pixelbox.x;
+					yPts[1] = pixelbox.y;
+					xPts[2] = pixelbox.x;
+					yPts[2] = pixelbox.y + (int)(pixelbox.height * .05f);
+					xPts[3] = pixelbox.x + pixelbox.width;
+					yPts[3] = pixelbox.y + (int)(pixelbox.height * .25f);
+				}else{
+					xPts[0] = pixelbox.x + pixelbox.width;
+					yPts[0] = pixelbox.y + (int)(pixelbox.height * .75f);
+					xPts[1] = pixelbox.x;
+					yPts[1] = pixelbox.y + pixelbox.height - (int)(pixelbox.height * .05f);
+					xPts[2] = pixelbox.x;
+					yPts[2] = pixelbox.y + pixelbox.height;
+					xPts[3] = pixelbox.x + pixelbox.width;
+					yPts[3] = pixelbox.y + pixelbox.height;
+				}
+				g.setColor(Color.BLUE);
+			}
+			g.fillPolygon(xPts, yPts, 4);
 			g.setColor(tmpCol);
 		}
 	}

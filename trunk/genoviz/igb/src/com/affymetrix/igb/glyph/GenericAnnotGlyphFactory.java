@@ -24,6 +24,7 @@ import com.affymetrix.genometryImpl.SupportsCdsSpan;
 import com.affymetrix.genometryImpl.SymWithProps;
 import com.affymetrix.genometryImpl.TypeContainerAnnot;
 import com.affymetrix.genometryImpl.UcscBedSym;
+import com.affymetrix.genometryImpl.UcscGeneSym;
 import com.affymetrix.genometryImpl.symloader.BAM;
 import com.affymetrix.genometryImpl.util.SeqUtils;
 import com.affymetrix.genometryImpl.style.DefaultStateProvider;
@@ -219,17 +220,17 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		String label_field = the_style.getLabelField();
 		boolean use_label = label_field != null && (label_field.trim().length() > 0);
 		if (use_label) {
-			//MPTAG Hier Arrow in abhängigkeit von Direction erzeugen
-			EfficientLabelledGlyph lglyph;
-			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
-				//Pfeil nach links
-				lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
-			}else{
-				//Pfeil nach rechts
-				lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
-			}
-			//MPTAG Ende
-			//orig - EfficientLabelledGlyph lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
+//			//MPTAG Hier Arrow in abhängigkeit von Direction erzeugen
+//			EfficientLabelledGlyph lglyph;
+//			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
+//				//Pfeil nach links
+//				lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
+//			}else{
+//				//Pfeil nach rechts
+//				lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
+//			}
+//			//MPTAG Ende
+			EfficientLabelledGlyph lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
 			Object property = getTheProperty(insym, label_field);
 			String label = (property == null) ? "" : property.toString();
 			if (the_tier.getDirection() == TierGlyph.Direction.REVERSE) {
@@ -317,6 +318,18 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 				}
 
 				Color child_color = getSymColor(child, the_style);
+				//MPTAG added versuchen aus der Elternglyphe herauszubekommen ob diese schon eine Richtung hat
+				try{
+				if(getDirectionOfGlyph(insym) > 0){
+					if(getDirectionOfGlyph(insym) == 1){
+						child_color = ((TrackStyle)the_style).getForwardColor();
+					}else if(getDirectionOfGlyph(insym) == 2){
+						child_color = ((TrackStyle)the_style).getReverseColor();
+					}
+				}
+				}catch (Exception e){
+					System.out.println("Exception bei Zuweisung der Kindfarbe in GenericAnnotationGlyphFactory.addChildren()");
+				}
 				double cheight = handleCDSSpan(cdsSpan, cspan, cds_sym, child, annotseq, same_seq, child_color, pglyph, map);
 				cglyph.setCoords(cspan.getMin(), 0, cspan.getLength(), cheight);
 				cglyph.setColor(child_color);
@@ -519,6 +532,15 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 				}else{
 					return 2;
 				}
+			}
+		}
+		//Sehr besonderer Fall, den ich aber schon mehrfach gesehen habe.
+		// UcscGeneSym hat ein feld forward, welches direkt abgefreagt werden kann
+		if(insym instanceof UcscGeneSym){
+			if(((UcscGeneSym) insym).isForward()){
+				return 1;
+			}else{
+				return 2;
 			}
 		}
 		return 0;
