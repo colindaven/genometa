@@ -41,6 +41,8 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	//MPTAG added
 	//Direction is 0=none, 1=forward, 2=reverse
 	private short direction = 0;
+	private Color forwardColor;
+	private Color reverseColor;
 
 	private static final ColorHelper helper = new ColorHelper();
 
@@ -356,6 +358,14 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		this.direction = dir;
 	}
 
+	public void setForwardColor(Color fwdC){
+		this.forwardColor = fwdC;
+	}
+
+	public void setReverseColor(Color rwsC){
+		this.reverseColor = rwsC;
+	}
+
 	private void updateGlyphSize(int arrowWidth, ViewI view){
 		if(this.direction == 1){//Pfeil nach rechts
 			residue_length += arrowWidth;
@@ -369,9 +379,11 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		if(this.direction >0){
 			Color tmpCol = g.getColor();
 			if(this.direction == 1){
-				g.setColor(Color.RED);
+				if(this.forwardColor != null)
+					g.setColor(forwardColor);
 			}else if(this.direction == 2){
-				g.setColor(Color.BLUE);
+				if(this.reverseColor != null)
+					g.setColor(reverseColor);
 			}
 			if(topCorner)
 				g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width+1 , (int)(pixelbox.height * .25f) );
@@ -408,7 +420,8 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 					xPts[3] = pixelbox.x;
 					yPts[3] = pixelbox.y + pixelbox.height;
 				}
-				g.setColor(Color.RED);
+				if(this.forwardColor != null)
+					g.setColor(forwardColor);
 			}else if(this.direction == 2){
 				if(topCorner){
 					xPts[0] = pixelbox.x + pixelbox.width;
@@ -429,7 +442,8 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 					xPts[3] = pixelbox.x + pixelbox.width;
 					yPts[3] = pixelbox.y + pixelbox.height;
 				}
-				g.setColor(Color.BLUE);
+				if(this.reverseColor != null)
+					g.setColor(reverseColor);
 			}
 			g.fillPolygon(xPts, yPts, 4);
 			g.setColor(tmpCol);
