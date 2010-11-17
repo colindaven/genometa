@@ -198,7 +198,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			// call out to handle rendering to indicate if any of the children of the
 			//    original annotation are completely outside the view
 			addChildren(insym, sym, the_style, annotseq, pglyph, map, coordseq);
-			handleAlignedResidueGlyphs(insym, annotseq, pglyph);//MPTAG Text anbringen
+			handleAlignedResidueGlyphs(insym, the_style, annotseq, pglyph);//MPTAG added Style mit übergeben
 		} else {
 			// depth !>= 2, so depth <= 1, so _no_ parent, use child glyph instead...
 			pglyph = determineGlyph(child_glyph_class, parent_labelled_glyph_class, the_style, insym, the_tier, pspan, map, sym);
@@ -423,22 +423,22 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	 * @param annotseq
 	 * @param pglyph Die Vaterglyphe, für deren Kinder die Residues gesetzt werden.
 	 */
-	private static void handleAlignedResidueGlyphs(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph) {
+	private static void handleAlignedResidueGlyphs(SeqSymmetry sym, ITrackStyleExtended the_style, BioSeq annotseq, GlyphI pglyph) {//MPTAG changed ITrackstyle hinzugefügt
 		if (!(sym instanceof SymWithProps)) {
 			return;
 		}
 
-		boolean handleCigar = sym instanceof UcscBedSym; //MPTAG wenn BED Format verwendet wird. Verwenden wir aber nicht oder ?
+		boolean handleCigar = sym instanceof UcscBedSym;
 
 		// We are in an aligned residue glyph.
 		int childCount = sym.getChildCount();
 		if (childCount > 0) {
 			int startPos = 0;
 			for (int i = 0; i < childCount; i++) {
-				startPos = setResidues(sym.getChild(i), annotseq, pglyph, startPos, handleCigar, true);
+				startPos = setResidues(sym.getChild(i),	the_style, annotseq, pglyph, startPos, handleCigar, true);//MPTAG changed ITrackstyle hinzugefügt
 			}
 		} else {
-			setResidues(sym, annotseq, pglyph, 0, false, false);
+			setResidues(sym, the_style, annotseq, pglyph, 0, false, false);//MPTAG changed ITrackstyle hinzugefügt
 			// Note that pglyph is replaced here.
 			// don't need to process cigar, since entire residue string is used
 		}
@@ -454,7 +454,8 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	 * @param isForward Die richtung des darüberliegenden Tiers
 	 * @return
 	 *///MPTAG Hier wird aufgerufen das der Text auf die Glyphe gesetzt werden soll
-	private static int setResidues(SeqSymmetry sym, BioSeq annotseq, GlyphI pglyph, int startPos, boolean handleCigar, boolean isChild) {
+	//MPTAG changed ITrackstyle hinzugefügt
+	private static int setResidues(SeqSymmetry sym, ITrackStyleExtended the_style, BioSeq annotseq, GlyphI pglyph, int startPos, boolean handleCigar, boolean isChild) {
 		SeqSpan span = sym.getSpan(annotseq);
 		if (span == null) {
 			return startPos;
@@ -481,6 +482,8 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			csg = new AlignedResidueGlyph();
 			//MPTAG added
 			csg.setDirection(getDirectionOfGlyph(sym));
+			csg.setForwardColor(getSymColor(sym, the_style));
+			csg.setReverseColor(getSymColor(sym, the_style));
 			csg.setResidues(residueStr);
 			if (annotseq.getResidues(span.getStart(), span.getEnd()) != null) {
 				if (handleCigar) {//MPTAG Wenn BED Format verwendet wird
