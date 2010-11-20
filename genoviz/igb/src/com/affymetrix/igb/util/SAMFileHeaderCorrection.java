@@ -1,3 +1,5 @@
+package com.affymetrix.igb.util;
+
 import java.util.List;
 
 import net.sf.samtools.SAMFileHeader;

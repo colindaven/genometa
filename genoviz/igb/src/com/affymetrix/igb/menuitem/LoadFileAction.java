@@ -12,6 +12,7 @@
  */
 package com.affymetrix.igb.menuitem;
 
+import com.affymetrix.igb.util.JFileChooserWithOverwriteWarning;
 import net.sf.samtools.SAMFileHeader;
 import java.text.DecimalFormat;
 import com.affymetrix.igb.util.ThreadUtils;
@@ -247,20 +248,8 @@ public final class LoadFileAction extends AbstractAction {
 
 			switch(dialogResult) {
 				case 0:
-					JFileChooser fc = new JFileChooser() {
-						@Override
-						public void approveSelection() {
-							File selectedFile = getSelectedFile();
-							if (getDialogType() == SAVE_DIALOG && selectedFile != null && selectedFile.exists()) {
-								int result = JOptionPane.showOptionDialog(gviewerFrame, "File " + selectedFile.getName() + " already exists. Do you really want to overwrite?",
-																		"Overwrite Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-
-								if (result == JOptionPane.NO_OPTION) { return; }
-							}
-							super.approveSelection();
-						}
-					};
-
+					JFileChooser fc = new JFileChooserWithOverwriteWarning();
+					
 					fc.setSelectedFile(bamFile);
 					int fcResult = fc.showSaveDialog(gviewerFrame);
 					if(fcResult == JFileChooser.APPROVE_OPTION) {
@@ -334,19 +323,7 @@ public final class LoadFileAction extends AbstractAction {
 					break;
 				case 1:	break;	// overwrite bam-file
 				case 2:			// open filechooser for new filename
-					JFileChooser fc = new JFileChooser() {
-						@Override
-						public void approveSelection() {
-							File selectedFile = getSelectedFile();
-							if (getDialogType() == SAVE_DIALOG && selectedFile != null && selectedFile.exists()) {
-								int result = JOptionPane.showOptionDialog(gviewerFrame, "File " + selectedFile.getName() + " already exists. Do you really want to overwrite?",
-																		"Overwrite Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-
-								if (result == JOptionPane.NO_OPTION) { return; }
-							}
-							super.approveSelection();
-						}
-					};
+					JFileChooser fc = new JFileChooserWithOverwriteWarning();
 
 					fc.setSelectedFile(bamFile);
 					int fcResult = fc.showSaveDialog(gviewerFrame);
