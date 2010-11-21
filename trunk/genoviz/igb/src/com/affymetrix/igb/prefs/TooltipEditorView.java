@@ -16,17 +16,39 @@ import java.awt.event.*;
  */
 public final class TooltipEditorView extends IPrefEditorComponent implements PreferenceChangeListener {
 
-	private final JList list = new JList();
 	private final DefaultListModel model;
+	/*
+	private final JList list = new JList();
 	private final JButton add_button = new JButton("Add Element");
 	private final JButton remove_button = new JButton("Remove Element");
 	private final JButton up_button = new JButton("Up");
 	private final JButton down_button = new JButton("Down");
 	private final JButton default_button = new JButton("Set Defaults");
 	private final JComboBox element_cb = new JComboBox();
+	*/
+
+	
+	private javax.swing.JButton add_blank_line_button;
+    private javax.swing.JButton add_button;
+    private javax.swing.JButton default_button;
+    private javax.swing.JButton down_button;
+    private javax.swing.JPanel editor_panel;
+    private javax.swing.JComboBox element_cb;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList list;
+    private javax.swing.JPanel main_panel;
+    private javax.swing.JLabel max_length_desc_l;
+    private javax.swing.JFormattedTextField max_length_ff;
+    private javax.swing.JSlider max_length_sl;
+    private javax.swing.JButton remove_button;
+    private javax.swing.JPanel settings_panel;
+    private javax.swing.JButton up_button;
+	
 
 	public TooltipEditorView() {
 		super();
+
+		initComponents();
 
 		fillCombobox();
 
@@ -34,26 +56,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		this.setToolTipText("Edit Tooltip display");
 		this.setLayout(new BorderLayout());
 
-		element_cb.setMinimumSize(new Dimension(300,50));
-		element_cb.setMaximumSize(new Dimension(300,50));
-
-		element_cb.setAlignmentX(LEFT_ALIGNMENT);
-
-		//Box button_box = new Box(BoxLayout.Y_AXIS);
-		Box button_box = Box.createVerticalBox();
-		button_box.add(element_cb);
-		button_box.add(Box.createVerticalStrut(25));
-		button_box.add(add_button);
-		button_box.add(remove_button);
-		button_box.add(up_button);
-		button_box.add(down_button);
-		button_box.add(Box.createVerticalStrut(25));
-		button_box.add(default_button);
-		button_box.add( Box.createVerticalGlue() );
-
-		JScrollPane scroll_pane = new JScrollPane(list);
-		this.add(scroll_pane, BorderLayout.CENTER);
-		this.add(button_box, BorderLayout.EAST);
+		this.add( main_panel, BorderLayout.CENTER );
 
 		model = new DefaultListModel();
 
@@ -93,6 +96,12 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 			public void actionPerformed(ActionEvent ae) {
 				setDefaults();
+			}
+		});
+		add_blank_line_button.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent ae) {
+				addBlankLineAction();
 			}
 		});
 
@@ -151,6 +160,15 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		}
 	}
 
+	public void addBlankLineAction() {
+		if (model.size() < 20) {
+			model.addElement("[----------]");
+			writeElement(model.size() - 1);
+		} else {
+			JOptionPane.showMessageDialog(null, "Maximum number of tooltip items reached");
+		}
+	}
+
 	public void upAction() {
 		//JOptionPane.showMessageDialog(null, "upAction()");
 		int index = list.getSelectedIndex();
@@ -187,7 +205,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 			JOptionPane.showMessageDialog(null, "Can't remove last item.");
 		} else {
 			model.remove(index);
-			list.setSelectedIndex(0);
+			list.setSelectedIndex(index-1);
 		}
 		writeAllElements();
 	}
@@ -198,8 +216,22 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		element_cb.addItem("chromosome");
 		element_cb.addItem("start");
 		element_cb.addItem("end");
-		element_cb.addItem("wrong item");
-		element_cb.addItem("blank line");
+		element_cb.addItem("length");
+		element_cb.addItem("type");
+		element_cb.addItem("residues");
+		element_cb.addItem("VN");
+		element_cb.addItem("score");
+		element_cb.addItem("SEQ");
+		element_cb.addItem("SM");
+		element_cb.addItem("baseQuality");
+		element_cb.addItem("cigar");
+		element_cb.addItem("XA");
+		element_cb.addItem("forward");
+		element_cb.addItem("NM");
+		element_cb.addItem("method");
+		element_cb.addItem("MD");
+		element_cb.addItem("CL");
+		element_cb.addItem("miep");
 	}
 
 	synchronized void writeAllElements() {
@@ -253,4 +285,160 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		model.addElement("CL");
 		writeAllElements();
 	}
+
+
+    private void initComponents() {
+
+        main_panel = new javax.swing.JPanel();
+        settings_panel = new javax.swing.JPanel();
+        max_length_desc_l = new javax.swing.JLabel();
+        max_length_sl = new javax.swing.JSlider();
+        default_button = new javax.swing.JButton();
+        max_length_ff = new javax.swing.JFormattedTextField();
+        editor_panel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        list = new javax.swing.JList();
+        add_button = new javax.swing.JButton();
+        element_cb = new javax.swing.JComboBox();
+        add_blank_line_button = new javax.swing.JButton();
+        up_button = new javax.swing.JButton();
+        down_button = new javax.swing.JButton();
+        remove_button = new javax.swing.JButton();
+
+        settings_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
+
+        max_length_desc_l.setText("Max. Length");
+
+        max_length_sl.setMaximum(50);
+        max_length_sl.setMinimum(10);
+        max_length_sl.setValue(25);
+
+        default_button.setText("Reset to defaults");
+
+        max_length_ff.setText("25");
+
+        javax.swing.GroupLayout settings_panelLayout = new javax.swing.GroupLayout(settings_panel);
+        settings_panel.setLayout(settings_panelLayout);
+        settings_panelLayout.setHorizontalGroup(
+            settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settings_panelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(max_length_desc_l)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(default_button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                    .addComponent(max_length_ff, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        settings_panelLayout.setVerticalGroup(
+            settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settings_panelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(max_length_ff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(max_length_desc_l))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(default_button)
+                .addContainerGap())
+        );
+
+        editor_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Editor"));
+
+        list.setBackground(new java.awt.Color(255, 255, 204));
+        list.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(list);
+
+        add_button.setText("Add item:");
+
+        add_blank_line_button.setText("Add Blank Line");
+
+        up_button.setText("Move up");
+
+        down_button.setText("Move down");
+
+        remove_button.setText("Remove item");
+
+        javax.swing.GroupLayout editor_panelLayout = new javax.swing.GroupLayout(editor_panel);
+        editor_panel.setLayout(editor_panelLayout);
+        editor_panelLayout.setHorizontalGroup(
+            editor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editor_panelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(editor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(remove_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(down_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(up_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(add_blank_line_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addGroup(editor_panelLayout.createSequentialGroup()
+                        .addComponent(add_button, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(element_cb, 0, 75, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        editor_panelLayout.setVerticalGroup(
+            editor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editor_panelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
+                    .addGroup(editor_panelLayout.createSequentialGroup()
+                        .addGroup(editor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(element_cb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(add_button))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(add_blank_line_button)
+                        .addGap(18, 18, 18)
+                        .addComponent(up_button)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(down_button)
+                        .addGap(18, 18, 18)
+                        .addComponent(remove_button)))
+                .addContainerGap())
+        );
+
+        add_button.getAccessibleContext().setAccessibleName("add_button");
+        add_blank_line_button.getAccessibleContext().setAccessibleName("add_blank_line_button");
+
+        javax.swing.GroupLayout main_panelLayout = new javax.swing.GroupLayout(main_panel);
+        main_panel.setLayout(main_panelLayout);
+        main_panelLayout.setHorizontalGroup(
+            main_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, main_panelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(main_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(settings_panel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(editor_panel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        main_panelLayout.setVerticalGroup(
+            main_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(main_panelLayout.createSequentialGroup()
+                .addComponent(editor_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(settings_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(main_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(main_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+    }
+
 }
