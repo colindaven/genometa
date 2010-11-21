@@ -101,10 +101,6 @@ public abstract class PreferenceUtils {
 		return PreferenceUtils.getTopNode().node("graphs");
 	}
 
-	public static Preferences getTooltipPrefsNode() {
-		return PreferenceUtils.getTopNode().node("tooltip");
-	}
-
 	public static Preferences getTooltipEditorPrefsNode() {
 		return PreferenceUtils.getTopNode().node("tooltip_editor");
 	}

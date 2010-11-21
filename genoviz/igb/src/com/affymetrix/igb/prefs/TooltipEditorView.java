@@ -63,10 +63,10 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		list.setModel(model);
 
 		try {
-			PreferenceUtils.getTooltipPrefsNode().flush();
+			PreferenceUtils.getTooltipEditorPrefsNode().flush();
 		} catch (Exception e) {
 		}
-		PreferenceUtils.getTooltipPrefsNode().addPreferenceChangeListener(this);
+		PreferenceUtils.getTooltipEditorPrefsNode().addPreferenceChangeListener(this);
 
 		add_button.addActionListener(new ActionListener() {
 
@@ -111,7 +111,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 	public void refresh() {
 		//JOptionPane.showMessageDialog(null, "refresh()");
-		if (PreferenceUtils.getTooltipPrefsNode().getBoolean("refresh", false)) {
+		if (PreferenceUtils.getTooltipEditorPrefsNode().getBoolean("refresh", false)) {
 			return;
 		}
 		//JOptionPane.showMessageDialog(null, "refreshing view");
@@ -120,7 +120,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 	private void updateList() {
 		//JOptionPane.showMessageDialog(null, "showShortcuts()");
-		Preferences tooltip_editor_node = PreferenceUtils.getTooltipPrefsNode();
+		Preferences tooltip_editor_node = PreferenceUtils.getTooltipEditorPrefsNode();
 		String num;
 
 		if ( tooltip_editor_node.get( "0", "dummy").equals("dummy") ) {
@@ -141,10 +141,10 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 	public void preferenceChange(PreferenceChangeEvent evt) {
 		//JOptionPane.showMessageDialog(null, "preferenceChange()");
-		if (evt.getNode() != PreferenceUtils.getTooltipPrefsNode()) {
+		if (evt.getNode() != PreferenceUtils.getTooltipEditorPrefsNode()) {
 			return;
 		}
-		Boolean refresh = PreferenceUtils.getTooltipPrefsNode().getBoolean("refresh", true);
+		Boolean refresh = PreferenceUtils.getTooltipEditorPrefsNode().getBoolean("refresh", true);
 		if (refresh == true) {
 			//JOptionPane.showMessageDialog(null, "refresh is true");
 			refresh();
@@ -236,7 +236,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 	synchronized void writeAllElements() {
 		//JOptionPane.showMessageDialog(null, "writeAllElements()");
-		Preferences tooltip_editor_node = PreferenceUtils.getTooltipPrefsNode();
+		Preferences tooltip_editor_node = PreferenceUtils.getTooltipEditorPrefsNode();
 		tooltip_editor_node.putBoolean("refresh", false);
 		for (int i = 0; i < 20; i++) {
 			String num = new String().valueOf(i);
@@ -252,7 +252,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	}
 
 	void writeElement(int index) {
-		Preferences tooltip_editor_node = PreferenceUtils.getTooltipPrefsNode();
+		Preferences tooltip_editor_node = PreferenceUtils.getTooltipEditorPrefsNode();
 		String num = new String().valueOf(index);
 		String item = new String();
 		item = (String) model.get(index);
