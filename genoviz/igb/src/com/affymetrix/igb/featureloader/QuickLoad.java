@@ -161,7 +161,9 @@ public final class QuickLoad extends SymLoader {
 						return null;
 					}
 
-					loadAndAddSymmetries(feature, overlapSpan);
+					List<SeqSymmetry> tmp_list = loadAndAddSymmetries(feature, overlapSpan);
+					if(tmp_list.size() < overlapSpan.getEnd())
+						gviewer.zoomTo(0, (tmp_list.size() / 2));					
 
 					TrackView.updateDependentData();
 				} catch (Exception ex) {

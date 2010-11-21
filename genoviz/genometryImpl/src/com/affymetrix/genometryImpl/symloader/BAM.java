@@ -222,8 +222,6 @@ public final class BAM extends SymLoader {
 					for (SAMRecord sr = iter.next(); iter.hasNext() && (!Thread.currentThread().isInterrupted()); sr = iter.next()) {
 						if((rt.totalMemory() - rt.freeMemory()) >= (rt.maxMemory()*Constants.MAX_MEMORY_USAGE)){
 							endOfLastRead = sr.getUnclippedEnd();
-							System.out.println("Set Bouds");
-							seq.setBounds(min, (int)endOfLastRead);
 							throw new OutOfMemoryError();
 						}
 						 else
