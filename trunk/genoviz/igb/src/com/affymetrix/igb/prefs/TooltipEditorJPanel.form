@@ -72,10 +72,15 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="max_length_desc_l" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="max_length_sl" min="-2" pref="228" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="max_length_desc_l" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="max_length_sl" min="-2" pref="228" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="enable_tooltips_cb" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="default_button" alignment="1" pref="220" max="32767" attributes="0"/>
@@ -94,9 +99,18 @@
                           <Component id="max_length_sl" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="max_length_desc_l" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="default_button" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="default_button" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="enable_tooltips_cb" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -122,6 +136,16 @@
             <Component class="javax.swing.JFormattedTextField" name="max_length_ff">
               <Properties>
                 <Property name="text" type="java.lang.String" value="25"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="enable_tooltips_cb">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Enable tooltips"/>
+                <Property name="toolTipText" type="java.lang.String" value="Enable tooltips"/>
+                <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                  <Insets value="[2, 6, 2, 2]"/>
+                </Property>
               </Properties>
             </Component>
           </SubComponents>
