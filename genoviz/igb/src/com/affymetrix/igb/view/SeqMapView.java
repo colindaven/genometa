@@ -1772,8 +1772,9 @@ public class SeqMapView extends JPanel
 		for(int i = 0; i < 20; i++) {
 				String index = String.valueOf(i);
 				String item = PreferenceUtils.getTooltipPrefsNode().get(index, "dummy");
+				Boolean available = true;
 
-				if ( item.equals("blank line") ) {
+				if ( item.equals("[----------]") ) {
 					props.append("<br>");
 				}
 				else if ( item.equals("dummy") ) {
@@ -1782,17 +1783,24 @@ public class SeqMapView extends JPanel
 				else {
 					value = property_map.get(item);
 
-					if ( value == null ) value = "tag not available";
+					if ( value == null ) {
+						value = "tag not available";
+						available = false;
+					}
 
 					if(value.length() > 25) {
 						value = value.substring(0, TooltipUtils.MAX_TOOLTIP_LENGTH) + " ...";
 					}
+
+					if (!available) props.append("<font color=\"#555555\">");
 
 					props.append("<b>");
 					props.append(item);
 					props.append(": </b>");
 					props.append(value);
 					props.append("<br>");
+
+					if (!available) props.append("</font>");
 				}
 
 		}

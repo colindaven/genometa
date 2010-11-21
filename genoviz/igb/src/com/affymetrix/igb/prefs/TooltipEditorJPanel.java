@@ -2,291 +2,37 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.affymetrix.igb.prefs;
 
-import com.affymetrix.genometryImpl.util.PreferenceUtils;
-import java.awt.*;
-import java.util.prefs.*;
-import javax.swing.*;
-import java.awt.event.*;
+/*
+ * ToolTipEditorJPanel.java
+ *
+ * Created on 21.11.2010, 11:07:58
+ */
+
+package com.affymetrix.igb.prefs;
 
 /**
  *
  * @author Markus
+ *
+ * this JPanel is for reference purposes only, variable declarations and the init
+ * method should be copied to TooltipEditorView
+ *
  */
-public final class TooltipEditorView extends IPrefEditorComponent implements PreferenceChangeListener {
+public class TooltipEditorJPanel extends javax.swing.JPanel {
 
-	private final DefaultListModel model;
-	/*
-	private final JList list = new JList();
-	private final JButton add_button = new JButton("Add Element");
-	private final JButton remove_button = new JButton("Remove Element");
-	private final JButton up_button = new JButton("Up");
-	private final JButton down_button = new JButton("Down");
-	private final JButton default_button = new JButton("Set Defaults");
-	private final JComboBox element_cb = new JComboBox();
-	*/
+    /** Creates new form ToolTipEditorJPanel */
+    public TooltipEditorJPanel() {
+        initComponents();
+    }
 
-	
-	private javax.swing.JButton add_blank_line_button;
-    private javax.swing.JButton add_button;
-    private javax.swing.JButton default_button;
-    private javax.swing.JButton down_button;
-    private javax.swing.JPanel editor_panel;
-    private javax.swing.JComboBox element_cb;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList list;
-    private javax.swing.JPanel main_panel;
-    private javax.swing.JLabel max_length_desc_l;
-    private javax.swing.JFormattedTextField max_length_ff;
-    private javax.swing.JSlider max_length_sl;
-    private javax.swing.JButton remove_button;
-    private javax.swing.JPanel settings_panel;
-    private javax.swing.JButton up_button;
-	
-
-	public TooltipEditorView() {
-		super();
-
-		initComponents();
-
-		fillCombobox();
-
-		this.setName("Tooltip Editor");
-		this.setToolTipText("Edit Tooltip display");
-		this.setLayout(new BorderLayout());
-
-		this.add( main_panel, BorderLayout.CENTER );
-
-		model = new DefaultListModel();
-
-		list.setModel(model);
-
-		try {
-			PreferenceUtils.getTooltipPrefsNode().flush();
-		} catch (Exception e) {
-		}
-		PreferenceUtils.getTooltipPrefsNode().addPreferenceChangeListener(this);
-
-		add_button.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent ae) {
-				addAction();
-			}
-		});
-		up_button.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent ae) {
-				upAction();
-			}
-		});
-		down_button.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent ae) {
-				downAction();
-			}
-		});
-		remove_button.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent ae) {
-				removeAction();
-			}
-		});
-		default_button.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent ae) {
-				setDefaults();
-			}
-		});
-		add_blank_line_button.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent ae) {
-				addBlankLineAction();
-			}
-		});
-
-		updateList();
-		validate();
-	}
-
-	public void refresh() {
-		//JOptionPane.showMessageDialog(null, "refresh()");
-		if (PreferenceUtils.getTooltipPrefsNode().getBoolean("refresh", false)) {
-			return;
-		}
-		//JOptionPane.showMessageDialog(null, "refreshing view");
-		updateList();
-	}
-
-	private void updateList() {
-		//JOptionPane.showMessageDialog(null, "showShortcuts()");
-		Preferences tooltip_editor_node = PreferenceUtils.getTooltipPrefsNode();
-		String num;
-
-		if ( tooltip_editor_node.get( "0", "dummy").equals("dummy") ) {
-			setDefaults();
-		}
- else
-		{
-
-		model.clear();
-		for (int i = 0; i < 20; i++) {
-			num = new String().valueOf(i);
-			if (!(tooltip_editor_node.get(num, "dummy").equals("dummy"))) {
-				model.addElement(tooltip_editor_node.get(num, "no value"));
-			}
-		}
-		}
-	}
-
-	public void preferenceChange(PreferenceChangeEvent evt) {
-		//JOptionPane.showMessageDialog(null, "preferenceChange()");
-		if (evt.getNode() != PreferenceUtils.getTooltipPrefsNode()) {
-			return;
-		}
-		Boolean refresh = PreferenceUtils.getTooltipPrefsNode().getBoolean("refresh", true);
-		if (refresh == true) {
-			//JOptionPane.showMessageDialog(null, "refresh is true");
-			refresh();
-		}
-	}
-
-	public void addAction() {
-		if (model.size() < 20) {
-			model.addElement(element_cb.getSelectedItem());
-			writeElement(model.size() - 1);
-		} else {
-			JOptionPane.showMessageDialog(null, "Maximum number of tooltip items reached");
-		}
-	}
-
-	public void addBlankLineAction() {
-		if (model.size() < 20) {
-			model.addElement("[----------]");
-			writeElement(model.size() - 1);
-		} else {
-			JOptionPane.showMessageDialog(null, "Maximum number of tooltip items reached");
-		}
-	}
-
-	public void upAction() {
-		//JOptionPane.showMessageDialog(null, "upAction()");
-		int index = list.getSelectedIndex();
-		if (index == -1) {
-			JOptionPane.showMessageDialog(null, "Select something to move.");
-		} else if (index > 0) {
-			String temp = (String) model.remove(index);
-			model.add(index - 1, temp);
-			list.setSelectedIndex(index - 1);
-		}
-		writeElement(index - 1);
-		writeElement(index);
-	}
-
-	public void downAction() {
-		//JOptionPane.showMessageDialog(null, "downAction()");
-		int index = list.getSelectedIndex();
-		if (index == -1) {
-			JOptionPane.showMessageDialog(null, "Select something to move.");
-		} else if (index < model.size() - 1) {
-			String temp = (String) model.remove(index);
-			model.add(index + 1, temp);
-			list.setSelectedIndex(index + 1);
-		}
-		writeElement(index + 1);
-		writeElement(index);
-	}
-
-	public void removeAction() {
-		int index = list.getSelectedIndex();
-		if (index == -1) {
-			JOptionPane.showMessageDialog(null, "Select something to remove.");
-		} else if (model.size() == 1) {
-			JOptionPane.showMessageDialog(null, "Can't remove last item.");
-		} else {
-			model.remove(index);
-			list.setSelectedIndex(index-1);
-		}
-		writeAllElements();
-	}
-
-	public void fillCombobox() {
-		element_cb.addItem("name");
-		element_cb.addItem("id");
-		element_cb.addItem("chromosome");
-		element_cb.addItem("start");
-		element_cb.addItem("end");
-		element_cb.addItem("length");
-		element_cb.addItem("type");
-		element_cb.addItem("residues");
-		element_cb.addItem("VN");
-		element_cb.addItem("score");
-		element_cb.addItem("SEQ");
-		element_cb.addItem("SM");
-		element_cb.addItem("baseQuality");
-		element_cb.addItem("cigar");
-		element_cb.addItem("XA");
-		element_cb.addItem("forward");
-		element_cb.addItem("NM");
-		element_cb.addItem("method");
-		element_cb.addItem("MD");
-		element_cb.addItem("CL");
-		element_cb.addItem("miep");
-	}
-
-	synchronized void writeAllElements() {
-		//JOptionPane.showMessageDialog(null, "writeAllElements()");
-		Preferences tooltip_editor_node = PreferenceUtils.getTooltipPrefsNode();
-		tooltip_editor_node.putBoolean("refresh", false);
-		for (int i = 0; i < 20; i++) {
-			String num = new String().valueOf(i);
-			String item = new String();
-			if (i < model.size()) {
-				item = (String) model.get(i);
-			} else {
-				item = "dummy";
-			}
-			tooltip_editor_node.put(num, item);
-		}
-		tooltip_editor_node.putBoolean("refresh", true);
-	}
-
-	void writeElement(int index) {
-		Preferences tooltip_editor_node = PreferenceUtils.getTooltipPrefsNode();
-		String num = new String().valueOf(index);
-		String item = new String();
-		item = (String) model.get(index);
-		//JOptionPane.showMessageDialog(null, item);
-		tooltip_editor_node.put(num, item);
-	}
-
-	void setDefaults()
-	{
-		model.clear();
-		model.addElement("name");
-		model.addElement("id");
-		model.addElement("chromosome");
-		model.addElement("start");
-		model.addElement("end");
-		model.addElement("length");
-		model.addElement("type");
-		model.addElement("residues");
-		model.addElement("VN");
-		model.addElement("score");
-		model.addElement("SEQ");
-		model.addElement("SM");
-		model.addElement("baseQuality");
-		model.addElement("cigar");
-		model.addElement("XA");
-		model.addElement("forward");
-		model.addElement("NM");
-		model.addElement("method");
-		model.addElement("MD");
-		model.addElement("CL");
-		writeAllElements();
-	}
-
-
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         main_panel = new javax.swing.JPanel();
@@ -439,6 +185,25 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                 .addContainerGap()
                 .addComponent(main_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-    }
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton add_blank_line_button;
+    private javax.swing.JButton add_button;
+    private javax.swing.JButton default_button;
+    private javax.swing.JButton down_button;
+    private javax.swing.JPanel editor_panel;
+    private javax.swing.JComboBox element_cb;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList list;
+    private javax.swing.JPanel main_panel;
+    private javax.swing.JLabel max_length_desc_l;
+    private javax.swing.JFormattedTextField max_length_ff;
+    private javax.swing.JSlider max_length_sl;
+    private javax.swing.JButton remove_button;
+    private javax.swing.JPanel settings_panel;
+    private javax.swing.JButton up_button;
+    // End of variables declaration//GEN-END:variables
 
 }
