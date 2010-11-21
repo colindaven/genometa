@@ -1771,7 +1771,7 @@ public class SeqMapView extends JPanel
 		props.append("<html>");
 		for(int i = 0; i < 20; i++) {
 				String index = String.valueOf(i);
-				String item = PreferenceUtils.getTooltipPrefsNode().get(index, "dummy");
+				String item = PreferenceUtils.getTooltipEditorPrefsNode().get(index, "dummy");
 				Boolean available = true;
 
 				if ( item.equals("[----------]") ) {
@@ -1817,25 +1817,21 @@ public class SeqMapView extends JPanel
 	 */
 	private static String convertPropsToString(String[][] properties){
 		StringBuilder props = new StringBuilder();
-		String name;
-		String value;
-		boolean show;
+		String value = null;
 		
 		props.append("<html>");
-		for(int i = 0; i < properties.length; i++) {
-				name = properties[i][0];
-				value = properties[i][1];
-				show = PreferenceUtils.getTooltipPrefsNode().getBoolean(name, TooltipUtils.isShowByName(name));
-				if(show) {
-					if(value.length() > 25) {
-						value = value.substring(0, TooltipUtils.MAX_TOOLTIP_LENGTH) + " ...";
-					}
-					props.append("<b>");
-					props.append(name);
-					props.append(": </b>");
-					props.append(value);
-					props.append("<br>");
+		for(int i=0; i<properties.length; i++){
+			props.append("<b>");
+			props.append(properties[i][0]);
+			props.append(" : </b>");
+			if((value = properties[i][1]) != null){
+				int vallen = value.length();
+				props.append(value.substring(0, Math.min(25, vallen)));
+				if(vallen > 30) {
+					props.append(" ...");
 				}
+			}
+			props.append("<br>");
 		}
 		props.append("</html>");
 
