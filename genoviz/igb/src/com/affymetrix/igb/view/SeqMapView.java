@@ -50,12 +50,12 @@ import com.affymetrix.igb.tiers.TierLabelManager;
 import com.affymetrix.igb.tiers.TransformTierGlyph;
 import com.affymetrix.igb.util.GraphGlyphUtils;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
-import com.affymetrix.genometryImpl.util.TooltipUtils;
 import com.affymetrix.genoviz.util.ErrorHandler;
 import com.affymetrix.igb.action.RefreshDataAction;
 import com.affymetrix.igb.action.ShrinkWrapAction;
 import com.affymetrix.igb.action.ToggleHairlineLabelAction;
 import com.affymetrix.igb.glyph.CytobandGlyph;
+import com.affymetrix.igb.prefs.TooltipEditorView;
 import com.affymetrix.igb.tiers.AxisStyle;
 import com.affymetrix.igb.tiers.MouseShortCut;
 import com.affymetrix.igb.tiers.TierLabelGlyph;
@@ -90,7 +90,8 @@ public class SeqMapView extends JPanel
 	boolean show_edge_matches = true;
 	protected boolean coord_shift = false;
 	private boolean hairline_is_labeled = true;
-	private boolean show_prop_tooltip = true;
+	public static boolean SHOW_PROP_TOOLTIP = PreferenceUtils.getTooltipEditorPrefsNode().getBoolean(
+			"enable_tooltips", TooltipEditorView.DEFAULT_ENABLE_TOOLTIPS);
 	private final Set<ContextualPopupListener> popup_listeners = new CopyOnWriteArraySet<ContextualPopupListener>();
 	/**
 	 *  maximum number of query glyphs for edge matcher.
@@ -1681,7 +1682,7 @@ public class SeqMapView extends JPanel
 	 * @param glyphs
 	 */
 	public final void setToolTip(List<GlyphI> glyphs){
-		if(!show_prop_tooltip) {
+		if(!SHOW_PROP_TOOLTIP) {
 			return;
 		}
 
@@ -1709,7 +1710,7 @@ public class SeqMapView extends JPanel
 	 * @param glyph
 	 */
 	public final void setToolTip(int x, GraphGlyph glyph){
-		if(!show_prop_tooltip) {
+		if(!SHOW_PROP_TOOLTIP) {
 			return;
 		}
 
@@ -1763,6 +1764,9 @@ public class SeqMapView extends JPanel
 		String value;
 		HashMap<String,String> property_map = new HashMap<String,String>();
 
+		int max_length = PreferenceUtils.getTooltipEditorPrefsNode().getInt("tooltip_length",
+				TooltipEditorView.DEFAULT_MAX_TOOLTIP_LENGTH);
+
 		// convert String array to Map
 		for(int i = 0; i < properties.length; i++) {
 			property_map.put(properties[i][0], properties[i][1]);
@@ -1788,8 +1792,8 @@ public class SeqMapView extends JPanel
 						available = false;
 					}
 
-					if(value.length() > 25) {
-						value = value.substring(0, TooltipUtils.MAX_TOOLTIP_LENGTH) + " ...";
+					if(value.length() > max_length) {
+						value = value.substring(0, max_length) + " ...";
 					}
 
 					if (!available) props.append("<font color=\"#555555\">");
@@ -1839,13 +1843,13 @@ public class SeqMapView extends JPanel
 	}
 
 	public boolean togglePropertiesTooltip(){
-		show_prop_tooltip =  !show_prop_tooltip;
+		SHOW_PROP_TOOLTIP =  !SHOW_PROP_TOOLTIP;
 		((AffyLabelledTierMap)seqmap).setToolTip(null);
-		return show_prop_tooltip;
+		return SHOW_PROP_TOOLTIP;
 	}
 
 	public final boolean shouldShowPropTooltip(){
-		return show_prop_tooltip;
+		return SHOW_PROP_TOOLTIP;
 	}
 
 	final void addToRefreshList(SeqMapRefreshed smr){

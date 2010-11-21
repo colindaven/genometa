@@ -5,10 +5,16 @@
 package com.affymetrix.igb.prefs;
 
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
+import com.affymetrix.igb.view.SeqMapView;
 import java.awt.*;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.*;
 import javax.swing.*;
 import java.awt.event.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -34,6 +40,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
     private javax.swing.JButton down_button;
     private javax.swing.JPanel editor_panel;
     private javax.swing.JComboBox element_cb;
+    private javax.swing.JCheckBox enable_tooltips_cb;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList list;
     private javax.swing.JPanel main_panel;
@@ -43,6 +50,9 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
     private javax.swing.JButton remove_button;
     private javax.swing.JPanel settings_panel;
     private javax.swing.JButton up_button;
+
+	public static final int DEFAULT_MAX_TOOLTIP_LENGTH = 25;
+	public static final boolean DEFAULT_ENABLE_TOOLTIPS = true;
 	
 
 	public TooltipEditorView() {
@@ -104,6 +114,24 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 				addBlankLineAction();
 			}
 		});
+		max_length_sl.addChangeListener(new ChangeListener() {
+
+			public void stateChanged(ChangeEvent e) {
+				lengthSliderChange();
+			}
+		});
+		int max_length = PreferenceUtils.getTooltipEditorPrefsNode().getInt("tooltip_length", DEFAULT_MAX_TOOLTIP_LENGTH);
+		max_length_sl.setValue(max_length);
+		max_length_ff.setText((new Integer(max_length)).toString());
+		max_length_ff.setEditable(false);
+		enable_tooltips_cb.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				enableTooltips();
+			}
+		});
+		boolean enable_tooltip = PreferenceUtils.getTooltipEditorPrefsNode().getBoolean("enable_tooltips", DEFAULT_ENABLE_TOOLTIPS);
+		enable_tooltips_cb.setSelected(enable_tooltip);
 
 		updateList();
 		validate();
@@ -197,6 +225,17 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		writeElement(index);
 	}
 
+	public void lengthSliderChange() {
+		int length = max_length_sl.getValue();
+		max_length_ff.setText((new Integer(length)).toString());
+		PreferenceUtils.getTooltipEditorPrefsNode().putInt("tooltip_length", length);
+	}
+
+	public void enableTooltips() {
+		PreferenceUtils.getTooltipEditorPrefsNode().putBoolean("enable_tooltips", enable_tooltips_cb.isSelected());
+		SeqMapView.SHOW_PROP_TOOLTIP = enable_tooltips_cb.isSelected();
+	}
+
 	public void removeAction() {
 		int index = list.getSelectedIndex();
 		if (index == -1) {
@@ -205,7 +244,12 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 			JOptionPane.showMessageDialog(null, "Can't remove last item.");
 		} else {
 			model.remove(index);
-			list.setSelectedIndex(index-1);
+			if(index > 0) {
+				list.setSelectedIndex(index-1);
+			}
+			else {
+				list.setSelectedIndex(0);
+			}
 		}
 		writeAllElements();
 	}
@@ -284,9 +328,13 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		model.addElement("MD");
 		model.addElement("CL");
 		writeAllElements();
+
+		max_length_sl.setValue(DEFAULT_MAX_TOOLTIP_LENGTH);
+		max_length_ff.setText((new Integer(DEFAULT_MAX_TOOLTIP_LENGTH)).toString());
+		PreferenceUtils.getTooltipEditorPrefsNode().putInt("tooltip_length", DEFAULT_MAX_TOOLTIP_LENGTH);
 	}
-
-
+ 
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
         main_panel = new javax.swing.JPanel();
@@ -295,6 +343,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
         max_length_sl = new javax.swing.JSlider();
         default_button = new javax.swing.JButton();
         max_length_ff = new javax.swing.JFormattedTextField();
+        enable_tooltips_cb = new javax.swing.JCheckBox();
         editor_panel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         list = new javax.swing.JList();
@@ -317,15 +366,23 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
         max_length_ff.setText("25");
 
+        enable_tooltips_cb.setSelected(true);
+        enable_tooltips_cb.setText("Enable tooltips");
+        enable_tooltips_cb.setToolTipText("Enable tooltips");
+        enable_tooltips_cb.setMargin(new java.awt.Insets(2, 6, 2, 2));
+
         javax.swing.GroupLayout settings_panelLayout = new javax.swing.GroupLayout(settings_panel);
         settings_panel.setLayout(settings_panelLayout);
         settings_panelLayout.setHorizontalGroup(
             settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settings_panelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(max_length_desc_l)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settings_panelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(max_length_desc_l)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(enable_tooltips_cb))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(default_button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
@@ -340,9 +397,15 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                     .addComponent(max_length_ff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_desc_l))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(default_button)
-                .addContainerGap())
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settings_panelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(default_button)
+                        .addContainerGap())
+                    .addGroup(settings_panelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(enable_tooltips_cb)
+                        .addContainerGap())))
         );
 
         editor_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Editor"));
@@ -439,6 +502,6 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                 .addContainerGap()
                 .addComponent(main_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-    }
+    }// </editor-fold>
 
 }

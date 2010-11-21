@@ -41,6 +41,7 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
         max_length_sl = new javax.swing.JSlider();
         default_button = new javax.swing.JButton();
         max_length_ff = new javax.swing.JFormattedTextField();
+        enable_tooltips_cb = new javax.swing.JCheckBox();
         editor_panel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         list = new javax.swing.JList();
@@ -63,15 +64,23 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
 
         max_length_ff.setText("25");
 
+        enable_tooltips_cb.setSelected(true);
+        enable_tooltips_cb.setText("Enable tooltips");
+        enable_tooltips_cb.setToolTipText("Enable tooltips");
+        enable_tooltips_cb.setMargin(new java.awt.Insets(2, 6, 2, 2));
+
         javax.swing.GroupLayout settings_panelLayout = new javax.swing.GroupLayout(settings_panel);
         settings_panel.setLayout(settings_panelLayout);
         settings_panelLayout.setHorizontalGroup(
             settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settings_panelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(max_length_desc_l)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settings_panelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(max_length_desc_l)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(enable_tooltips_cb))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(default_button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
@@ -86,9 +95,15 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
                     .addComponent(max_length_ff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_desc_l))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(default_button)
-                .addContainerGap())
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settings_panelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(default_button)
+                        .addContainerGap())
+                    .addGroup(settings_panelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(enable_tooltips_cb)
+                        .addContainerGap())))
         );
 
         editor_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Editor"));
@@ -195,6 +210,7 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
     private javax.swing.JButton down_button;
     private javax.swing.JPanel editor_panel;
     private javax.swing.JComboBox element_cb;
+    private javax.swing.JCheckBox enable_tooltips_cb;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList list;
     private javax.swing.JPanel main_panel;
