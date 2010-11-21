@@ -243,7 +243,7 @@ public final class LoadFileAction extends AbstractAction {
 
 			Object[] options = {"Sort File", "Open without sorting", "Cancel"};
 			int dialogResult = JOptionPane.showOptionDialog(gviewerFrame, "The BAM-File seems to be not sorted by coordinates!\n"
-					+ "If you know that the File is sorted by coordinates, you can try to open it without sorting.",
+					+ "If you know that the File is already sorted by coordinates, you can try to open it without sorting.",
 				"File not sorted", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 			switch(dialogResult) {
