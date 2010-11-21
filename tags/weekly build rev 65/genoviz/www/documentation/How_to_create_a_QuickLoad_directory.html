@@ -1,0 +1,144 @@
+<br />
+<h1>Creating a QuickLoad File System</h1>
+<br />
+It is easy to create your own QuickLoad directory for use with IGB. <br />
+You may wish to do this to hold local copies of public sequence and <br />
+annotation data or to hold your private annotation data for your <br />
+organism(s) of interest.<br />
+<br />
+All that is required is a set of directories and files organized in<br />
+a particular way. You must then let IGB know where the main<br />
+directory is located.  The files may be located either on a <br />
+local file system or on a web server.<br />
+<br /><a href="http://bioviz.org/quickload/">http://bioviz.org/quickload/</a>
+<br />
+<br />
+<b>Structure of the QuickLoad Directory</b><br />
+<br />
+QuickLoad requires a collection of directories, one for each <br />
+genome, plus a few index files.<br />
+<br />
+(Although we speak of "genomes" and "chromosomes" here, you can<br />
+generalize this to any collection of annotated sequences.)<br />
+<br />
+<br />
+The top-level directory must contain:<br />
+  One sub-directory for each genome<br />
+  Required File: contents.txt<br />
+  Optional File: synonyms.txt<br />
+<br />
+Each genome directory must contain:<br />
+  Required File: annots.xml (or older annots.txt)<br />
+  Required: Either "mod_chromInfo.txt" or "liftAll.lft"<br />
+  Optional: A set of files with genomic sequence for each chromosome<br />
+  Optional: Any additional annotation files you wish<br />
+<br />
+When setting up your own QuickLoad directory, you may wish<br />
+to refer to the Bioviz QuickLoad server:
+<a href="http://bioviz.org/quickload/">http://bioviz.org/quickload/</a> as a guide to create your own.</br>
+<br />
+<br />
+<br />
+<br />
+<b>Formats of QuickLoad files</b><br />
+<br />
+<br />
+<u>"contents.txt"</u><br />
+<br />
+The file "contents.txt" is a list of the genomes available in your <br />
+QuickLoad server.<br />
+The file has two columns, separated by tabs.<br />
+Column 1 contains the names of the genome directories.<br />
+Column 2 contains human-readable descriptions of the genomes.<br />
+<br />
+<br />
+<u>"synonyms.txt"</u><br />
+<br />
+The file "synonyms.txt" contains a list of synonyms for genomes <br />
+and chromosomes.  Each line contains any number of synonyms for an <br />
+individual sequence, separated by tabs.<br />
+<br />
+This file helps IGB recognize identical sequences that have <br />
+different names on different QuickLoad, DAS, and DAS/2 servers.<br />
+<br />
+<br />
+
+<u>"annots.xml"</u><br />
+<br />
+A list of the annotation files and their properties in a given genome directory.<br />
+You should not list sequence data files here, but only list<br />
+annotation files.<br />
+<br />
+The annotation files can be in a wide variety of formats.<br />
+The formats will be recognized based on the filename extensions.<br />
+<br />
+<br />
+
+<u>"mod_chromInfo.txt"</u><br />
+<br />
+Lists the names of the chromosomes and their lengths.  <br />
+Each line contains <br />
+NAME <i>tab</i> LENGTH.<br />
+
+<br/>
+
+<u>"liftAll.lft"</u><br />
+<br />
+Describes how contigs are assembled into chromosomes.<br />
+<br />
+Each line contains <br />
+CONTIG_START <i>tab</i> CONTIG_NAME <i>tab</i> CONTIG_LENGTH <i>tab</i> CHROMOSOME_NAME <i>tab</i> CHROMOSOME_LENGTH<br />
+
+<br />
+<br />
+You must provide either a "mod_chromInfo.txt" or "liftAll.lft" file.<br />
+
+<br />
+<br />
+<br />
+<b>Optional Sequence and Annotation Files</b><br />
+<br />
+Each genome directory can contain as few or as many annotation files<br />
+as you wish.  Each annotation file should be listed in the <br />
+"annots.xml" file.<br />
+<br />
+A wide variety of file formats is accepted, and the files are <br />
+recognized based on their filename extensions,
+such as ".psl", ".bed", ".wig", et cetera.<br />
+An incomplete list of formats supported by IGB can be found <a href="http://sourceforge.net/apps/trac/genoviz/wiki/File%20Formats">here</a>.<br />
+<br />
+It is not required, but your files will load much faster if you <br />
+first convert them to some binary formats designed for use in IGB.<br />
+Instructions on creating these binary files will be given later.<br />
+<br />
+Each genome directory can optionally contain sequence data for some <br />
+or all of the chromosomes.  Sequence files should use the binary <br />
+"bnib" format designed for use in IGB.  Sequence files must have <br />
+names that match the name of the corresponding chromosome, <br />
+for example "chr12.bnib".<br />
+Instructions for creating a bnib file can be found <a href="http://sourceforge.net/apps/trac/genoviz/wiki/Converting%20FASTA%20to%20BNIB">here</a>.<br />
+<br />
+<br />
+<br />
+<b>Configuring IGB to use your QuickLoad files</b><br />
+<br />
+<br />
+Starting with IGB version 5.4, it is possible to have arbitrarily many
+QuickLoad servers.  There are default Bioviz and Affymetrix QuickLoad servers,
+but you can add more servers.  
+Go to File->Preferences->Data Sources and look for the "Add Server" panel.  
+Specify your server's URL (or click on Local Directory and select your local directory).<br />
+<br />
+The URL should look similar to one of these:
+<ul>
+<li>A web site: "http://netaffxdas.affymetrix.com/quickload_data/"
+<li>A local Windows file: "file:///c:/Documents and Settings/name/quickload/"
+<li>A local Unix/Mac file: "file:///home/susan/quickload/"
+</ul>
+Note the three slashes in "file:///".<br />
+
+Specify a friendly server name, and specify the "QuickLoad" type.  
+Click "Add".  
+The information for the new server will immediately be available.
+
+<br />

@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	xmlns:util="util.*"  
+	creationComplete="init();">
+
+
+	<mx:HTTPService             
+    id="getUsersAndGroups" 
+    url="genopub/usersAndGroups"
+    resultFormat="e4x"
+    result="onGetUsersAndGroups(event)"
+    fault="parentApplication.onFailHttpRequest('Failed to get users and groups', event)"
+    method="POST"
+    useProxy="false">
+    <mx:request>
+    </mx:request>
+   </mx:HTTPService> 
+   
+   	 
+   <mx:HTTPService             
+    id="deleteUserGroup" 
+    url="genopub/groupDelete"
+    resultFormat="e4x"
+    showBusyCursor="true"
+    result="onDeleteUserGroup(event)"
+    fault="parentApplication.onFailHttpRequest('Failed to remove group', event)"
+    method="POST"
+    useProxy="false">
+    <mx:request>
+    </mx:request>
+   </mx:HTTPService> 
+   
+   <mx:HTTPService             
+    id="updateUserGroup" 
+    url="genopub/groupUpdate"
+    resultFormat="e4x"
+    showBusyCursor="true"
+    result="onUpdateUserGroup(event)"
+    fault="parentApplication.onFailHttpRequest('Failed to update group', event)"
+    method="POST"
+    useProxy="false">
+    <mx:request>
+    </mx:request>
+   </mx:HTTPService> 
+   
+    
+   	 
+   <mx:HTTPService             
+    id="deleteUser" 
+    url="genopub/userDelete"
+    resultFormat="e4x"
+    showBusyCursor="true"
+    result="onDeleteUser(event)"
+    fault="parentApplication.onFailHttpRequest('Failed to remove group', event)"
+    method="POST"
+    useProxy="false">
+    <mx:request>
+    </mx:request>
+   </mx:HTTPService> 
+   
+   <mx:HTTPService             
+    id="updateUser" 
+    url="genopub/userUpdate"
+    resultFormat="e4x"
+    showBusyCursor="true"
+    result="onUpdateUser(event)"
+    fault="parentApplication.onFailHttpRequest('Failed to update group', event)"
+    method="POST"
+    useProxy="false">
+    <mx:request>
+    </mx:request>
+   </mx:HTTPService> 
+    
+    
+     
+    
+	<mx:Script>
+        <![CDATA[
+        import util.UIEvent;
+        import mx.events.CollectionEvent;
+        import mx.events.CollectionEventKind;
+       	import mx.events.DragEvent;
+		import mx.managers.DragManager;
+        import mx.core.DragSource;
+    	import mx.events.ListEvent;
+		import mx.rpc.events.ResultEvent;
+	    import mx.controls.Alert;
+    	import mx.controls.Menu;
+    	import mx.events.MenuEvent;
+    	import mx.managers.PopUpManager;
+    	import mx.events.CloseEvent;
+        
+        private var itemToSelect:Object = null;  
+              
+        private var firstTime:Boolean = true;
+        
+	    public function init():void
+        {
+			if (parentApplication.isAdmin()) {
+    			this.currentState = "AdminState";
+    		} else {
+    			this.currentState = "LabManagerState";
+    		} 
+    		      	
+        	members.addEventListener(CollectionEvent.COLLECTION_CHANGE,       this.underlyingGroupMembershipChange);
+        	collaborators.addEventListener(CollectionEvent.COLLECTION_CHANGE, this.underlyingGroupMembershipChange);
+        	managers.addEventListener(CollectionEvent.COLLECTION_CHANGE,      this.underlyingGroupMembershipChange);
+
+            refreshUsersAndGroups();
+        }
+        
+        public function refreshUsersAndGroupsAndSelect(theItemToSelect:XML):void {
+        	itemToSelect = theItemToSelect;
+        	refreshUsersAndGroups();
+        }
+        
+        public function refreshUsersAndGroups():void {
+        	getUsersAndGroups.send();
+        }
+                    
+		private function onGetUsersAndGroups(event:ResultEvent):void {
+			if (getUsersAndGroups.lastResult.name() == "UsersAndGroups") {
+				// Refresh the dictionaries so that the dropdowns are up-to-date.
+				if (!firstTime) {
+					parentApplication.getDictionaries.send();
+				}
+				firstTime = false;					
+							
+				if (this.dirtyUser != null) {
+					this.dirtyUser.resetDirty();
+				}
+				if (this.dirtyGroup != null) {
+					this.dirtyGroup.resetDirty();
+				} 
+				
+				callLater(selectItem); 
+
+			} else if (getUsersAndGroups.lastResult.name() == "Error") {
+				Alert.show(getUsersAndGroups.lastResult.@message);
+			} else {
+				Alert.show("An error occurred while getting users and groups");				
+			}		
+		}
+		
+		private function selectItem():void {
+			if (itemToSelect != null) {
+				var item:Object = null;
+				if (itemToSelect.name() == "UserGroup") {
+					item = getUsersAndGroups.lastResult.UserGroup.(@idUserGroup == itemToSelect.@idUserGroup);
+					if (item != null) {
+						this.groupGrid.selectedItem = item[0];
+						groupGrid.scrollToIndex(groupGrid.selectedIndex);
+			  			this.mainViewStack.selectedChild = this.groupView;  
+
+						this.userGrid.selectedItem = null;
+					}
+				} else if (itemToSelect.name() == "User") {
+					item = getUsersAndGroups.lastResult.User.(@idUser == itemToSelect.@idUser);
+					if (item != null) {
+						this.userGrid.selectedItem = item[0];
+						userGrid.scrollToIndex(userGrid.selectedIndex);
+			  			this.mainViewStack.selectedChild = this.userView;
+			  			this.userRoleRadioGroup.selectedValue = userGrid.selectedItem.@role;  
+			  			
+			  			this.groupGrid.selectedItem = null;
+					}
+				}
+			} else {
+				this.mainViewStack.selectedChild = this.blankView;
+				this.userGrid.selectedItem = null;
+				this.groupGrid.selectedItem = null;
+				
+			}
+		}
+		
+		private function onGroupClick():void {
+			this.itemToSelect = this.groupGrid.selectedItem;
+			if (this.dirtyGroup != null) {
+				this.dirtyGroup.resetDirty();
+			} 
+  			this.mainViewStack.selectedChild = this.groupView;
+  			userGrid.selectedItem = null;  
+  		}
+		
+		private function onUserClick():void {
+			this.itemToSelect = this.userGrid.selectedItem;
+			if (this.dirtyUser != null) {
+				this.dirtyUser.resetDirty();
+			} 
+  			this.mainViewStack.selectedChild = this.userView;
+  			this.userRoleRadioGroup.selectedValue = userGrid.selectedItem.@role;  
+  			groupGrid.selectedItem = null;
+		}
+  
+
+        /***********************************************************************
+        * 
+        * GROUP FUNCTIONS
+        *  
+        */        
+        private function newGroup():void {
+            var groupAddWindow:UserGroupAddWindow = UserGroupAddWindow(PopUpManager.createPopUp(parentApplication.mainArea, UserGroupAddWindow, true));
+            PopUpManager.centerPopUp(groupAddWindow);
+            groupAddWindow.groupName.setFocus();
+        }	
+        
+        private function promptToRemoveUserGroup():void {
+         	Alert.show("Remove group " + groupGrid.selectedItem.@label + "?",
+						null, 
+						(Alert.YES | Alert.NO), this, 
+						onPromptToRemoveUserGroup);     
+         	
+        }
+        		
+		private function onPromptToRemoveUserGroup(event:CloseEvent):void {
+            if (event.detail==Alert.YES) {
+            	removeUserGroup();
+            }
+        }
+        		
+        private function removeUserGroup():void {
+        	var params:Object = new Object();
+        	params.idUserGroup = groupGrid.selectedItem.@idUserGroup;
+        	deleteUserGroup.send(params);
+        }
+        
+        private function onDeleteUserGroup(event:ResultEvent):void {
+		  if (deleteUserGroup.lastResult.name() == "SUCCESS") {
+		  	this.dirtyGroup.resetDirty();
+		  	this.itemToSelect = null;
+		  	refreshUsersAndGroups();			
+		  } else if (deleteUserGroup.lastResult.name() == "Error") {
+			Alert.show(deleteUserGroup.lastResult.@message);
+		  } else {
+			Alert.show("An error occurred while removing group");				
+		  }
+		}
+		
+		private function saveUserGroup():void {
+			var params:Object = new Object();
+        	params.idUserGroup   = groupGrid.selectedItem.@idUserGroup;
+        	params.name              = groupName.text;
+        	params.contact           = this.groupContact.text;
+        	params.email             = this.groupEmail.text;
+        	params.institute         = this.groupInstitute.text;
+        	
+        	params.membersXML        = "<members>"       + this.groupMemberGrid.dataProvider.toXMLString()       + "</members>";
+        	params.collaboratorsXML  = "<collaborators>" + this.groupCollaboratorGrid.dataProvider.toXMLString() + "</collaborators>";
+        	params.managersXML       = "<managers>"      + this.groupManagerGrid.dataProvider.toXMLString()      + "</managers>";
+
+        	updateUserGroup.send(params);
+		}
+		
+		 
+        private function onUpdateUserGroup(event:ResultEvent):void {
+		  if (updateUserGroup.lastResult.name() == "SUCCESS") {
+		  	this.dirtyGroup.resetDirty();
+		  	this.itemToSelect = this.groupGrid.selectedItem;
+		  	refreshUsersAndGroups();			
+		  } else if (updateUserGroup.lastResult.name() == "Error") {
+			Alert.show(updateUserGroup.lastResult.@message);
+		  } else {
+			Alert.show("An error occurred while saving group");				
+		  }
+		}
+		private function underlyingGroupMembershipChange(event:CollectionEvent):void {
+			if (event.kind == CollectionEventKind.RESET || event.kind == CollectionEventKind.REFRESH) {
+				// ignore refresh and resets 
+				return;
+			}
+			dirtyGroup.setDirty();
+		}
+		private function removeMember():void {
+			if (groupMemberGrid.selectedItem != null) {
+				dirtyGroup.setDirty();
+				members.removeItemAt(members.getItemIndex(groupMemberGrid.selectedItem));
+			}			
+		}
+		
+		private function removeCollaborator():void {
+			if (groupCollaboratorGrid.selectedItem != null) {
+				dirtyGroup.setDirty();
+				collaborators.removeItemAt(collaborators.getItemIndex(groupCollaboratorGrid.selectedItem));
+			}			
+		}
+		private function removeManager():void {
+			if (groupManagerGrid.selectedItem != null) {
+				dirtyGroup.setDirty();
+				managers.removeItemAt(managers.getItemIndex(groupManagerGrid.selectedItem));
+			}			
+		}
+
+        /***********************************************************************
+        * 
+        * USER FUNCTIONS 
+        *  
+        */        
+        private function newUser():void {
+            var userAddWindow:UserAddWindow = UserAddWindow(PopUpManager.createPopUp(parentApplication.mainArea, UserAddWindow, true));
+            PopUpManager.centerPopUp(userAddWindow);
+            userAddWindow.firstName.setFocus();
+        }	
+
+        private function promptToRemoveUser():void {
+         	Alert.show("Remove user " + userGrid.selectedItem.@label + "?",
+						null, 
+						(Alert.YES | Alert.NO), this, 
+						onPromptToRemoveUser);     
+         	
+        }
+        		
+		private function onPromptToRemoveUser(event:CloseEvent):void {
+            if (event.detail==Alert.YES) {
+            	removeUser();
+            }
+        }
+        		
+        private function removeUser():void {
+        	var params:Object = new Object();
+        	params.idUser = userGrid.selectedItem.@idUser;
+        	deleteUser.send(params);
+        }
+        
+        private function onDeleteUser(event:ResultEvent):void {
+		  if (deleteUser.lastResult.name() == "SUCCESS") {
+		  	this.dirtyUser.resetDirty();
+		  	this.itemToSelect = null;
+		  	refreshUsersAndGroups();			
+		  } else if (deleteUser.lastResult.name() == "Error") {
+			Alert.show(deleteUser.lastResult.@message);
+		  } else {
+			Alert.show("An error occurred while removing user");				
+		  }
+		}
+		
+		private function saveUser():void {
+			var params:Object = new Object();
+        	params.idUser            = userGrid.selectedItem.@idUser;
+        	params.firstName         = this.firstName.text;
+        	params.lastName          = this.lastName.text;
+        	params.middleName        = this.middleName.text;
+        	params.email             = this.userEmail.text;
+        	params.institute         = this.userInstitute.text;
+        	params.userName          = this.userName.text;
+        	params.password          = this.password.text;
+        	params.role              = this.userRoleRadioGroup.selectedValue;
+
+        	updateUser.send(params);
+		}
+		
+		 
+        private function onUpdateUser(event:ResultEvent):void {
+		  if (updateUser.lastResult.name() == "SUCCESS") {
+		  	this.dirtyUser.resetDirty();
+		  	this.itemToSelect = this.userGrid.selectedItem;
+		  	refreshUsersAndGroups();			
+		  } else if (updateUser.lastResult.name() == "Error") {
+			Alert.show(updateUser.lastResult.@message);
+		  } else {
+			Alert.show("An error occurred while saving user");				
+		  }
+		}
+		
+
+
+        ]]>
+        
+        
+
+    </mx:Script>
+
+    
+    <mx:XMLListCollection id="members" source="{groupGrid.selectedItem.members.User}"/>
+    <mx:XMLListCollection id="collaborators" source="{groupGrid.selectedItem.collaborators.User}"/>
+    <mx:XMLListCollection id="managers" source="{groupGrid.selectedItem.managers.User}"/>
+
+	<mx:VBox width="100%" height="100%" 
+		paddingBottom="2" 
+		paddingLeft="0" 
+		paddingRight="0" 
+		paddingTop="0" 
+		verticalGap="3">
+		<mx:HDividedBox width="100%" height="100%">
+		    <mx:VBox   verticalGap="4" styleName="headerBar" height="100%" width="300"    paddingBottom="1">
+				<mx:VBox width="100%" height="100%" verticalGap="2">
+			        <mx:HBox horizontalGap="2"  width="100%" horizontalAlign="left">	
+			            <mx:Label text="Groups" width="60" styleName="headerLabel" />	           
+			    		<mx:LinkButton   
+			    			icon="@Embed(source='assets/group_new.png')" 
+			    			styleName="linkMenuButton"   
+			    			click="newGroup()" 
+			    			toolTip="Add group"   
+			    			id="addGroupButton" label="New group"/>
+			           	<mx:LinkButton   
+			           		icon="@Embed(source='assets/group_remove.png')" 
+			           		disabledIcon="@Embed(source='assets/group_remove_disable.png')"
+			           		enabled="{groupGrid.selectedItem != null}"
+			    			styleName="linkMenuButton"   
+			           		click="promptToRemoveUserGroup()" 
+			           		toolTip="Delete group"   id="deleteGroupButton" label="Remove group"/>
+			           	
+		            </mx:HBox>
+					<mx:DataGrid height="100%" width="100%" 
+						dataProvider="{getUsersAndGroups.lastResult.UserGroup}" 
+						borderStyle="solid" 
+        		    	click="{onGroupClick()}" 
+        		    	id="groupGrid"
+        		    	showHeaders="false"
+        		    	dropShadowEnabled="true" 
+        		    	dropShadowColor="#858282">
+        		    	<mx:columns>
+        		    		<mx:DataGridColumn dataField="@label"/>
+        		    	</mx:columns>
+					</mx:DataGrid>								
+				</mx:VBox>
+				
+				<mx:VBox width="100%" height="100%" verticalGap="2">
+			    
+					<mx:HBox  horizontalGap="2"  width="100%" horizontalAlign="left" paddingTop="4" >	
+			            <mx:Label text="Users" width="60" styleName="headerLabel"/>	           
+			    		<mx:LinkButton   
+			    			icon="@Embed(source='assets/vcard_new.png')" 
+			    			styleName="linkMenuButton"  
+			    			click="newUser()" toolTip="Add user"   id="addUserButton" label="New user"/>
+  					    <mx:LinkButton   
+  					    	icon="@Embed(source='assets/vcard_remove.png')" 
+  							disabledIcon="@Embed(source='assets/vcard_remove_disable.png')"
+			           		enabled="{userGrid.selectedItem != null}"
+			    			styleName="linkMenuButton"  
+  					    	click="promptToRemoveUser()" 
+  					    	toolTip="Delete user"   id="deleteUserButton" label="Remove user"/>
+		            </mx:HBox>
+					<mx:DataGrid height="100%" width="100%" 
+						dataProvider="{getUsersAndGroups.lastResult.User}" 
+						borderStyle="solid" 
+        		    	click="{onUserClick()}" 
+        		    	id="userGrid"
+        		    	showHeaders="false"
+        		    	dropShadowEnabled="true" 
+        		    	dropShadowColor="#858282" dragEnabled="true">
+        		    	<mx:columns>
+        		    		<mx:DataGridColumn dataField="@label"/>
+        		    	</mx:columns>
+					</mx:DataGrid>								
+				</mx:VBox>
+				<mx:HBox width="100%" horizontalAlign="left" paddingBottom="0">
+					<mx:LinkButton styleName="linkMenuButton" label="Refresh" icon="@Embed(source='assets/refresh.png')" click="{itemToSelect=null;refreshUsersAndGroups()}"/>
+					
+				</mx:HBox>
+				
+		    </mx:VBox>
+			<mx:ViewStack id="mainViewStack" width="100%" height="100%" creationPolicy="all">
+			    <mx:Panel id="blankView" width="100%" height="100%"   borderThicknessBottom="26">			    	
+			    </mx:Panel>
+			
+				
+				<mx:Panel id="userView" width="100%" height="100%" title="User" titleIcon="{parentApplication.iconUser}">
+				  <mx:VBox styleName="panelBody" width="100%" height="100%" verticalGap="8">
+					<mx:HBox width="100%" horizontalGap="0" verticalAlign="middle">
+						<mx:Label text="First name:" width="140"/>
+						<mx:TextInput id="firstName" width="200" text="{userGrid.selectedItem.@firstName}" change="dirtyUser.setDirty()" maxChars="200"/>
+						<mx:Label text="Middle:"/>
+						<mx:TextInput id="middleName"  width="50" text="{userGrid.selectedItem.@middleName}" change="dirtyUser.setDirty()" maxChars="100"/>
+					</mx:HBox>
+					<mx:HBox width="100%" horizontalGap="0" verticalAlign="middle">
+						<mx:Label text="Last name:" width="140"/>
+						<mx:TextInput id="lastName"  width="200" text="{userGrid.selectedItem.@lastName}" change="dirtyUser.setDirty()" maxChars="200"/>
+					</mx:HBox>
+					<mx:HBox width="100%" horizontalGap="0">
+						<mx:Label text="Email:" width="140"/>
+						<mx:TextInput id="userEmail"  width="100%" text="{userGrid.selectedItem.@email}" change="dirtyUser.setDirty()" maxChars="500"/>
+					</mx:HBox>
+					<mx:HBox width="100%" horizontalGap="0">
+						<mx:Label text="Institute:" width="140"/>
+						<mx:TextInput id="userInstitute"  width="100%" text="{userGrid.selectedItem.@institute}" change="dirtyUser.setDirty()" maxChars="200"/>
+					</mx:HBox>
+					
+					<mx:HBox width="100%"  horizontalGap="0" verticalAlign="middle">
+						<mx:Label text="User name:" width="140"/>
+						<mx:TextInput text="{userGrid.selectedItem.@userName}" id="userName" width="200" change="dirtyUser.setDirty()" maxChars="30"/>
+					</mx:HBox>
+					<mx:HBox width="100%" id="hbox1" horizontalGap="0" verticalAlign="middle">
+						<mx:Label text="Password:" width="140"/>
+						<mx:TextInput displayAsPassword="true"  text="{userGrid.selectedItem.@passwordDisplay}" id="password"  width="200" change="dirtyUser.setDirty()" maxChars="30"/>
+					</mx:HBox>
+					<mx:HBox width="100%"  id="hbox2" verticalAlign="middle">
+						<mx:Label text="Role:" width="140"/>
+						<mx:RadioButtonGroup id="userRoleRadioGroup"/>
+						<mx:RadioButton label="User" groupName="userRoleRadioGroup"  value="user" change="dirtyUser.setDirty()"  id="radioUserRole" click="dirtyUser.setDirty()"/>
+						<mx:RadioButton label="Admin" groupName="userRoleRadioGroup" value="admin"  change="dirtyUser.setDirty()"  id="radioAdminRole" click="dirtyUser.setDirty()"/>
+						<mx:RadioButton label="Guest" groupName="userRoleRadioGroup" value="guest"  change="dirtyUser.setDirty()"  id="radioGuestRole" click="dirtyUser.setDirty()"/>
+					</mx:HBox>
+					<mx:HBox horizontalGap="0" width="100%" id="hbox3">
+						<mx:Label text="Member of Groups:" width="140"/>
+						<mx:Text width="100%"  text="{userGrid.selectedItem.@memberGroups}" id="text1"/>
+					</mx:HBox>
+					<mx:HBox horizontalGap="0" width="100%" id="hbox5">
+						<mx:Label text="Collaborator in Groups:" width="140"/>
+						<mx:Text width="100%"  text="{userGrid.selectedItem.@collaboratorGroups}"/>
+					</mx:HBox>
+					<mx:HBox horizontalGap="0" width="100%" id="hbox4">
+						<mx:Label text="Manager of Groups:" width="140"/>
+						<mx:Text width="100%"  text="{userGrid.selectedItem.@managerGroups}"/>
+					</mx:HBox>
+						
+				  	
+				  	
+				  </mx:VBox>
+				    
+					
+					<mx:ControlBar horizontalAlign="right">
+					    <util:DirtyNote id="dirtyUser"
+					      enabled="{userGrid.selectedItem.@canWrite == 'Y' ? true : false}" />
+					    <mx:Button  label="Save" 
+					    	enabled="{userGrid.selectedItem.@canWrite == 'Y' ? true : false}" 
+					    	id="saveUserButton"  click="saveUser()" 
+					    	icon="@Embed(source='assets/save.png')"  
+					    	disabledIcon="@Embed(source='assets/save_disable.png')"/>
+					</mx:ControlBar>
+				</mx:Panel>
+				
+				<mx:Panel id="groupView" width="100%" height="100%" title="Group" titleIcon="{parentApplication.iconGroup}">
+				    <mx:VBox styleName="panelBody" width="100%" height="100%" verticalGap="0">			
+						<mx:HBox width="100%"  paddingBottom="8" horizontalGap="0">
+							<mx:Label text="User Group name:"  width="140"/>
+							<mx:TextInput id="groupName" width="100%" text="{groupGrid.selectedItem.@name}" change="dirtyGroup.setDirty()" maxChars="200"/>
+						</mx:HBox>
+						<mx:HBox width="100%" horizontalGap="0" paddingBottom="8">
+							<mx:Label text="Contact name:" width="140"/>
+							<mx:TextInput id="groupContact"  width="100%" text="{groupGrid.selectedItem.@contact}" change="dirtyGroup.setDirty()" maxChars="500"/>
+						</mx:HBox>
+						
+						<mx:HBox width="100%" horizontalGap="0" paddingBottom="8">
+							<mx:Label text="Contact email:" width="140"/>
+							<mx:TextInput id="groupEmail"  width="100%" text="{groupGrid.selectedItem.@email}" change="dirtyGroup.setDirty()" maxChars="500"/>
+						</mx:HBox>
+						<mx:HBox width="100%" horizontalGap="0" paddingBottom="8">
+							<mx:Label text="Contact institute:" width="140"/>
+							<mx:TextInput id="groupInstitute"  width="100%" text="{groupGrid.selectedItem.@institute}" change="dirtyGroup.setDirty()" maxChars="200"/>
+						</mx:HBox>
+					
+						<mx:HBox horizontalGap="0">
+							<mx:Label text="Drag users from bottom left onto list" fontWeight="bold" fontStyle="italic"/>
+						</mx:HBox>
+						<mx:HBox height="100%" horizontalGap="10">
+							<mx:VBox width="100%" height="100%" verticalGap="1" paddingLeft="8">
+							    <mx:VBox width="100%" verticalGap="0">
+									<mx:Label text="Members"/>
+									<mx:LinkButton   
+										 icon="@Embed(source='assets/vcard_remove.png')"
+										 label="Remove member"
+										 disabledIcon="@Embed(source='assets/vcard_remove_disable.png')"
+										 styleName="linkMenuButton"  
+										 click="removeMember()"
+										 enabled="{groupMemberGrid.selectedItem != null}" 
+										 toolTip="Remove member"   paddingLeft="0"/>
+							    </mx:VBox>
+								<mx:DataGrid height="100%" 
+									dataProvider="{members}" 
+									borderStyle="solid" 
+									id="groupMemberGrid"
+									showHeaders="false"
+									dropEnabled="true">
+										    	<mx:columns>
+										    		<mx:DataGridColumn dataField="@label" width="170"/>
+										    	</mx:columns>
+								</mx:DataGrid>
+							</mx:VBox>
+							<mx:VBox width="100%" height="100%" verticalGap="1">
+							    <mx:VBox width="100%" verticalGap="0">
+									<mx:Label text="Collaborators"/>
+									<mx:LinkButton   
+										 icon="@Embed(source='assets/vcard_remove.png')"
+										 disabledIcon="@Embed(source='assets/vcard_remove_disable.png')"
+										 styleName="linkMenuButton"  
+										 label="Remove collaborator"
+										 click="removeCollaborator()"
+										 enabled="{groupCollaboratorGrid.selectedItem != null}" 
+										 toolTip="Remove member"   paddingLeft="0"/>									
+								</mx:VBox>
+								<mx:DataGrid height="100%" 
+									dataProvider="{collaborators}" 
+									borderStyle="solid" 
+									id="groupCollaboratorGrid"
+									showHeaders="false"
+									dropEnabled="true">
+										    	<mx:columns>
+										    		<mx:DataGridColumn dataField="@label" width="170"/>
+										    	</mx:columns>
+								</mx:DataGrid>
+							</mx:VBox>
+							<mx:VBox width="100%" height="100%" verticalGap="1">
+								<mx:VBox width="100%" verticalGap="0">
+									<mx:Label text="Managers"/>
+									<mx:LinkButton   
+										 icon="@Embed(source='assets/vcard_remove.png')"
+										 disabledIcon="@Embed(source='assets/vcard_remove_disable.png')"
+										 styleName="linkMenuButton" 
+										 label="Remove manager" 
+										 click="removeManager()"
+										 enabled="{groupManagerGrid.selectedItem != null}" 
+										 toolTip="Remove member"   paddingLeft="0"/>									
+								</mx:VBox>
+								<mx:DataGrid height="100%" 
+									dataProvider="{managers}" 
+									borderStyle="solid" 
+									id="groupManagerGrid"
+									showHeaders="false"
+									dropEnabled="true">
+										    	<mx:columns>
+										    		<mx:DataGridColumn dataField="@label" width="170"/>
+										    	</mx:columns>
+								</mx:DataGrid>
+							</mx:VBox>
+						</mx:HBox>
+						
+					</mx:VBox>
+					<mx:ControlBar horizontalAlign="right">
+					    <util:DirtyNote id="dirtyGroup" 
+					    	enabled="{groupGrid.selectedItem.@canWrite == 'Y' ? true : false}" />
+					    <mx:Button  label="Save" 
+					    	id="saveGroupButton"  
+					    	click="saveUserGroup()" 
+					    	enabled="{groupGrid.selectedItem.@canWrite == 'Y' ? true : false}"
+					    	icon="@Embed(source='assets/save.png')"  
+					    	disabledIcon="@Embed(source='assets/save_disable.png')"/>
+					</mx:ControlBar>
+				</mx:Panel>
+				
+				
+
+			</mx:ViewStack>
+		</mx:HDividedBox>
+	</mx:VBox>
+	
+	<mx:states>
+		<mx:State name="AdminState"/>
+		<mx:State name="LabManagerState">
+			<mx:SetProperty target="{groupName}" name="editable" value="false"/>
+			<mx:SetProperty target="{saveUserButton}" name="enabled" value="false"/>
+			<mx:RemoveChild target="{addGroupButton}"/>
+			<mx:RemoveChild target="{deleteGroupButton}"/>
+			<mx:RemoveChild target="{addUserButton}"/>
+			<mx:RemoveChild target="{deleteUserButton}"/>
+			<mx:RemoveChild target="{hbox1}"/>
+			<mx:SetProperty target="{firstName}" name="editable" value="false"/>
+			<mx:SetProperty target="{lastName}" name="editable" value="false"/>
+			<mx:SetProperty target="{userName}" name="editable" value="false"/>
+			<mx:SetProperty target="{middleName}" name="editable" value="false"/>
+			<mx:RemoveChild target="{hbox2}"/>
+			<mx:RemoveChild target="{text1}"/>
+			<mx:RemoveChild target="{hbox3}"/>
+			<mx:RemoveChild target="{hbox4}"/>
+			<mx:RemoveChild target="{hbox5}"/>
+		</mx:State>
+	</mx:states>
+
+</mx:Canvas>

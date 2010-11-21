@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>        Styling
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>        Styling
+</h1>
+<p>        Now we implement style commands
+        to our configuration file.
+        We can specify a configuration
+        for a type of feature
+        on our map.
+        To do this
+        we introduce a new keyword "FeatureType".
+        Then for each new feature type
+        we create a factory.
+        Then when we encounter that feature type
+        in our configuration file
+        we use the factory for that feature type.
+        In this way we can set a style
+        for each type of feature.
+</p>
+<p>        Here is an example of a configuration file with style.
+</p>
+
+<form>
+<textarea name="config" cols="60" rows="10">
+Range     1  100
+Offsets -20  100
+
+FeatureType ActiveSite  "-glyphtype com.affymetrix.genoviz.glyph.TriangleGlyph -color magenta -offset 10"
+FeatureType AlphaHelix "-glyphtype com.affymetrix.genoviz.glyph.SquiggleGlyph -foreground red -offset 10"
+FeatureType Domain "-glyphtype com.affymetrix.genoviz.glyph.OutlineRectGlyph -foreground blue -offset 10"
+FeatureType Lipid "-glyphtype com.affymetrix.genoviz.glyph.TriBarGlyph -color darkgrey -offset 10 -width 20"
+FeatureType Mutation "-glyphtype com.affymetrix.genoviz.glyph.CenteredCircleGlyph -color red -offset 10"
+FeatureType Repeat "-glyphtype com.affymetrix.genoviz.glyph.FillRectGlyph -color green -offset 10"
+
+ActiveSite    45  48
+AlphaHelix    56  70
+AlphaHelix    20  50
+Domain        40  60
+Lipid         75  75
+Mutation       3   3
+Mutation      70  70
+Repeat        25  30
+Repeat        85  90
+
+
+</textarea><br>
+<input        type="button" value="configure map"
+        onClick="document.applets[0].parseInputString(config.value)"
+>
+</form>
+
+<p>        Look at the <a href="../demo/src/genoviz/tutorial/SimpleMap4.java">source</a>.
+        We have added a Hashtable to store the new factories.
+        When a "FeatureType" keyword is encountered
+        we create a new factory
+        and add it to the Hashtable
+        indexed by its name.
+        Later we may come across a name that is not a keyword.
+        Before we would just display an error
+        Now we check the hashtable
+        to see if it's one of our features.
+        If it is,
+        we add it
+        using the factory found
+        in the Hashtable.
+</p>
+
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.SimpleMap4"
+        height="150"
+        width="570"
+>
+<param name="config" value='
+Range     1  100
+Offsets -20  100
+
+FeatureType ActiveSite  "-glyphtype com.affymetrix.genoviz.glyph.TriangleGlyph -color magenta -offset 10"
+FeatureType AlphaHelix "-glyphtype com.affymetrix.genoviz.glyph.SquiggleGlyph -foreground red -offset 10"
+FeatureType Domain "-glyphtype com.affymetrix.genoviz.glyph.OutlineRectGlyph -foreground blue -offset 10"
+FeatureType Lipid "-glyphtype com.affymetrix.genoviz.glyph.TriBarGlyph -color darkgrey -offset 10 -width 20"
+FeatureType Mutation "-glyphtype com.affymetrix.genoviz.glyph.CenteredCircleGlyph -color red -offset 10"
+FeatureType Repeat "-glyphtype com.affymetrix.genoviz.glyph.FillRectGlyph -color green -offset 10"
+
+ActiveSite 45   48
+AlphaHelix     56   70
+AlphaHelix     20   50
+Domain         40   60
+Lipid          75   75
+Mutation        3   3
+Mutation        70  70
+Repeat         25   30
+Repeat         85   90
+'>
+</applet>
+</div class="applet">
+
+<h2>         Exercises
+</h2>
+<ol>
+<li>        Experiment with other feature types
+        by editing the above text box
+        and clicking the button.
+</li>
+</ol>
+
+<h2>        Next: <a href="DataAdapters.html">Data Adapters</a>
+</h2>
+
+</body>
+</html>

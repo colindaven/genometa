@@ -1,0 +1,3 @@
+Source for the tutorials is in ../demos/src/genoviz/tutorial.  It can be
+compiled using 'ant demos' in the root directory of the genoviz project.
+The root directory is two directories up from this README (../..).

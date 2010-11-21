@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!-- This is a very simple example DAS XML data. -->
+
+<DASGFF>
+  <GFF version="1.0" href="http://genome.cse.ucsc.edu/cgi-bin/das/hg10/features">
+     <SEGMENT id="chr22" start="20000000" stop="21000000" version="1.00" label="chr22">
+        <FEATURE id="Em:D87024.C22.12.chr22.20012405.0" label="Em:D87024.C22.12">
+           <TYPE id="sanger22" category="transcription" reference="no">sanger22_type</TYPE>
+           <METHOD></METHOD>
+           <START>20012406</START>
+           <END>20012451</END>
+           <SCORE>-</SCORE>
+           <ORIENTATION>+</ORIENTATION>
+           <PHASE>-</PHASE>
+           <!-- Links and Notes can occur inside or outside the <GROUP> element, or both -->
+           <NOTE>This is a feature note</NOTE>
+           <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr22:20012405-20012900&amp;db=hg10">Link to UCSC Browser for the feature</LINK>
+           <GROUP id="Em:D87024.C22.12.chr22.20012405">
+             <LINK href="http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr22:20012405-20012900&amp;db=hg10">Link to UCSC Browser</LINK>
+             <NOTE>This is a group note</NOTE>
+           </GROUP>
+       </FEATURE>
+     </SEGMENT>
+  </GFF>
+</DASGFF>

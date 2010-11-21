@@ -1,0 +1,26 @@
+<Context path="/das2" debug="0" reloadable="true">
+	<Parameter name="genometry_server_dir" value="/path/to/das2/data"/>
+	<Parameter name="maintainer_email" value="admin@example.com"/>
+	<Parameter name="xml_base" value="http://www.example.com/das2/genome"/>
+
+	<!-- Optimised Logging routine.  Configured to log in 'combined'
+	     log format. -->
+	<!--
+	<Valve
+	    className="org.apache.catalina.valves.FastCommonAccessLogValve"
+	    directory="${catalina.home}/logs/"
+	    prefix="das2_access-"
+	    suffix=".log"
+	    pattern="combined" />
+	-->
+
+	<!-- Custom log format.  Is equivalent to 'combined' log format
+	     but appends the number of milliseconds required to service
+	     request to every line. -->
+	<Valve
+	    className="org.apache.catalina.valves.AccessLogValve"
+	    directory="${catalina.home}/logs/"
+	    prefix="das2_access-"
+	    suffix=".log"
+	    pattern='%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %Dms' />
+</Context>

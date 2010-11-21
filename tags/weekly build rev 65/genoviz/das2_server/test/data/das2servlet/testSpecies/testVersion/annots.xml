@@ -1,0 +1,6 @@
+<files>
+  <file name="testFile.psl" title="testFile" description=""/>
+  <file name="testRestrict.psl" title="testFile" description="restricted file"/>
+  <file name="testZip.bed.gz" title="testFile" description="Zipped file"/>
+  <file name="testZip2.bed" title="testFile" description="Zipped file, but specified as a non-zip"/>
+</files>

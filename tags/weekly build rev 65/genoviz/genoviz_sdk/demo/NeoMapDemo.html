@@ -1,0 +1,127 @@
+<html>
+  <head>
+    <title>GenoViz NeoMap Demo</title>
+  </head>
+  <body BGCOLOR="#ddddee">
+
+    <center>
+      
+      <h2>GenoViz NeoMap Demo </h2>
+      
+      <applet
+        code="genoviz.demo.NeoMapDemo"
+        archive="genoviz.jar"
+        width=100%
+        height=400 >
+        <!--<param name="background" value="./images/neologo.gif">-->
+        <strong>
+          If you see this text, your browser apparently doesn't
+          support Java!</strong>
+      </applet>
+
+    </center>
+    
+    <p>
+      This demo exercises many of the methods in the NeoMapI API.
+      The <a href="src/genoviz/demo/NeoMapDemo.java">source</a>
+      is considerably longer than most of the tutorials.  However,
+      notice that most of this code is in adding lots of menus and
+      tying those menus to NeoMapI API calls.  The part that sets up
+      the map as it initially appears is still fairly small.  For more
+      details on the API calls this applet demonstrates, take a look
+      at the JavaDocs for <a
+      href="../docs/com/affymetrix/genoviz/widget/NeoMap.html"> NeoMap
+      </a> and <a
+      href="../docs/com/affymetrix/genoviz/widget/NeoWidget.html">
+      NeoWidget</a>.
+    </p>
+
+    <p>
+      One important point which is not so obvious in the source code
+      is what gets taken care of automatically by the NeoMap.  For
+      example, consider the coordination of zooming and scrolling.
+      When the applet runs, two windows should be brought up, one that
+      contains the map and scrollbars for scrolling the map, and
+      another window with two other scrollbars for scaling/zooming the
+      map (actually these are all JScrollBars).  We put the zoom
+      controls in a separate window to emphasize that these controls
+      are not part of the map widget itself, but can easily be
+      registered as map widget controls.  In the source code this is
+      straightforward:
+    </p>
+
+    <pre>
+xzoomer = new JScrollBar(JScrollBar.HORIZONTAL);
+yzoomer = new JScrollBar(JScrollBar.HORIZONTAL);
+map.setZoomer(map.X, xzoomer);
+map.setZoomer(map.Y, yzoomer);
+    </pre>
+    
+
+    <p>
+      After setting up a map this way, user interaction with the
+      xzoomer or yzoomer scrollbars will change the scale of the map.
+      You can also control the scale of a map via API calls like:
+    </p>
+
+<pre>
+map.zoom(map.X, 2)  
+</pre>
+
+    <p>
+      which will scale the map to 2 pixels/base (assuming this is a
+      DNA-based map).  The NeoMap will automatically propagate this
+      change to the xzoomer scrollbar.
+    </p>
+
+    <p>
+      It is not obvious where to put controls for scaling a map.  In
+      contrast, most people are used to the metaphor of a scrollbar
+      attached to a panel which scrolls the contents of the window.
+      Therefore support for automatically attaching scroll bars to the
+      map is included in the NeoMap.  In fact if you look at the demo
+      source code you'll see there's no explicit mention of the
+      scrollbars for scrolling.  If you want more control over NeoMap
+      scrolling you can use a NeoMap constructor that takes booleans
+      for whether to automatically attach horizontal and vertical
+      scrollers.  If internal scrollers are turned off, external
+      scrollers can be added much like zoomers:
+    </p>
+
+    <pre>
+map = new NeoMap(true, false);  // turn off internal vertical scroller
+yscroller = new JScrollBar(JScrollBar.VERTICAL);
+map.setScroller(map.Y, yscroller);
+</pre>
+
+    <p>
+      In either case (external or internal scrollers), API calls like:
+    </p>
+
+<pre>
+map.scroll(map.X, 50) 
+</pre>
+
+    <p>
+      automatically propagate changes to the scrollers.  And user
+      interaction with the zoomer scrollbars or API calls to
+      map.zoom(orientation, scale) also automatically propagate
+      appropriate changes to the scrollbar, modifying the size and
+      position of the scroll thumb.
+    </p>    
+
+    <p>
+      To reiterate, for more details on the many API calls this applet
+      demonstrates take a look at the JavaDocs for <a
+      href="../docs/com/affymetrix/genoviz/widget/NeoMap.html">NeoMap</a>
+      and <a
+      href="../docs/com/affymetrix/genoviz/widget/NeoWidget.html">NeoWidget</a>.
+    </p>
+
+    <center>
+      <h3><a href="src/genoviz/demo/NeoMapDemo.java">Java Source Code</a></h3>
+      <h3><a href="../index.html">GenoViz Overview</a></h3>
+    </center>
+
+  </body>
+</html>

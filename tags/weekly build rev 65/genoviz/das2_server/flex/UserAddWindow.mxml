@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+	title="Add user"
+	showCloseButton="true" 
+	width="538" 
+	height="134"
+	verticalGap="0"
+	close="closeWindow()"
+	titleIcon="{parentApplication.iconUser}"
+	layout="vertical" backgroundAlpha="100" defaultButton="{saveButton}">
+ 	
+    <mx:HTTPService             
+      id="addUser" 
+      url="genopub/userAdd"
+      resultFormat="e4x"
+      result="onAddUser(event)"
+      fault="parentApplication.onFailHttpRequest('Failed to add user', event)"
+      method="POST"
+      useProxy="false">
+      <mx:request>
+         <firstName>{firstName.text}</firstName>
+         <lastName>{lastName.text}</lastName>
+         <userName>{userName.text}</userName>
+      </mx:request>
+    </mx:HTTPService> 
+    
+       
+    <mx:Script>
+	<![CDATA[
+	
+	import mx.managers.PopUpManager;
+	import mx.rpc.events.ResultEvent;
+	import mx.controls.Alert;
+	
+
+   	private function onAddUser(event:ResultEvent):void {
+		if (addUser.lastResult.name() == "SUCCESS") {			
+			closeWindow();
+			var itemToSelect:XML = new XML(
+			   "<User " +
+			     "idUser='" + addUser.lastResult.@idUser + "'" +
+			    "/>");
+			parentApplication.userGroupView.refreshUsersAndGroupsAndSelect(itemToSelect);
+		} else if (addUser.lastResult.name() == "Error") {
+			Alert.show(addUser.lastResult.@message);
+		} else {
+			Alert.show("An error occurred while adding user");				
+		}		
+	}
+
+   
+    private function closeWindow():void {
+		PopUpManager.removePopUp(this);		
+	}
+	
+	]]>
+    </mx:Script>
+    
+    <mx:VBox height="100%" width="100%" styleName="panelBody" verticalGap="8">
+		<mx:HBox width="100%" paddingTop="4" horizontalGap="0">
+			<mx:Label text="First name:" width="72"/>
+			<mx:TextInput id="firstName" width="120" maxChars="200"/>
+			<mx:Label text="Middle:" paddingLeft="4"/>
+			<mx:TextInput id="middleName" width="35" maxChars="100"/>
+			<mx:Label text="Last name:" paddingLeft="4"/>
+			<mx:TextInput id="lastName" width="120" maxChars="200"/>
+		</mx:HBox>
+		<mx:HBox width="100%" horizontalGap="0">
+			<mx:Label text="User name:" width="72"/>
+			<mx:TextInput id="userName" width="205" text="{firstName.text.toLowerCase() + '.' + lastName.text.toLowerCase()}"/>
+		</mx:HBox>
+    	
+    </mx:VBox>
+
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button id="saveButton"  
+			enabled="{firstName.text != &quot;&quot; ? true : false &amp;&amp; lastName.text != &quot;&quot; &amp;&amp; userName.text != &quot;&quot;}" 
+			icon="{parentApplication.iconSave}" 
+			disabledIcon="{parentApplication.iconSaveDisabled}" 
+			label="Save"
+			click="{addUser.send()}"/>
+		<mx:Button id="cancelButton" label="Cancel" click="closeWindow()"/>
+	</mx:ControlBar>
+</mx:TitleWindow>

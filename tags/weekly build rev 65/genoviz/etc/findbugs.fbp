@@ -1,0 +1,34 @@
+<Project projectName="IGB/Genoviz">
+  <Jar>dist/das2server.jar</Jar>
+  <Jar>dist/genometry.jar</Jar>
+  <Jar>dist/genoviz.jar</Jar>
+  <Jar>dist/igb.jar</Jar>
+  <Jar>dist/protannot.jar</Jar>
+  <AuxClasspathEntry>ext/affx_fusion.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/antlr-2.7.6rc1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/asm-attrs.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/asm.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/cglib-2.1.3.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/checkers.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/commons-codec-1.4.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/commons-collections-2.1.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/commons-compress-1.0.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/commons-logging-1.0.4.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/cos.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/dom4j-1.6.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/emma.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/emma_ant.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/freehep-2.1.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/hibernate3.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/image4j.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/org.mortbay.jetty.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>ext/flex_sdk/lib</AuxClasspathEntry>
+  <SrcDir>igb/src</SrcDir>
+  <SrcDir>das2_server/src</SrcDir>
+  <SrcDir>genoviz_sdk/src</SrcDir>
+  <SrcDir>genometryImpl/src</SrcDir>
+  <SrcDir>protannot/src</SrcDir>
+  <SuppressionFilter>
+    <LastVersion value="-1" relOp="NEQ"/>
+  </SuppressionFilter>
+</Project>

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US">
+  <head>
+    <title>GenoViz</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheet.css" />
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+
+  <body>
+    <h1>GenoViz</h1>
+    
+    <h2>Tools for Genomic Data Visualization and Data Sharing</h2>
+      
+    <p>The <a href="http://sourceforge.net/projects/genoviz/">GenoViz project</a> includes several components:</p>
+      <ul>
+        <li><b>GenoViz SDK</b> (software development kit) is a 
+          library of re-usable components for genomics data visualization. 
+        </li>
+
+        <li><b>Genometry</b> is a unified data model to represent relationships
+          between biological sequences. It is mainly used in the Integrated Genome Browser.
+        </li>
+
+        <li>The <b>Integrated Genome Browser</b> (<b>IGB</b>, pronounced "ig-bee") is a desktop
+          application that uses both the GenoViz SDK and Genometry. It supports visualization and
+          exploration of genes, genomes, and genome-scale data sets, especially data from genome tiling arrays. 
+          IGB can display data from multiple data sources, including <a href="http://biodas.org/">DAS</a> (Distributed Annotation System) servers and
+        local files on your file system.
+        </li>
+
+	<li>The <b>GenoViz DAS/2 server</b> allows distribution of genomic data using the <a href="http://www.biodas.org/wiki/DAS/2">DAS/2</a> protocol. (DAS/2 efficiently shares massive genomic datasets derived from next generation sequencing and high density microarray experiments using both binary and text data formats.)
+	</li>
+
+       <li><b>GenoPub</b> is a rich-client Flex web database application (and extension of the DAS/2 server) for organizing and annotating data hosted by the DAS/2 server.  GenoPub implements a user-group security model enabling the controlled distribution of public and private datasets.  
+	 <a href="http://bioserver.hci.utah.edu/BioInfo/index.php/Software:DAS2">Click</a> for further details. 
+        </li>
+
+	<li><b>ProtAnnot</b> is used to visualize alternative splicing and its
+effects on proteins.  Click <a href="http://www.bioviz.org/protannot">here</a> for more details.</li>
+
+      </ul>
+      <p>To view or obtain the GenoViz source code, visit the <a href="http://sourceforge.net/projects/genoviz">GenoViz project page</a> hosted at 
+<a href="http://sourceforge.net/projects/genoviz"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=129420&amp;type=10" width="80" height="15" alt="Get GenoViz at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>.
+          <p>
+      Please report <a href="http://sourceforge.net/tracker/?atid=714744&amp;group_id=129420&amp;func=browse">bugs</a> 
+      and <a href="http://sourceforge.net/tracker/?atid=714747&amp;group_id=129420&amp;func=browse">feature requests</a>
+      using the <a href="http://sourceforge.net/tracker/?group_id=129420">request tracker</a> provided
+      on the GenoViz project pages.
+    </p>
+
+    
+    <table>
+      <tr>
+        <td valign="top">
+          <b>IGB Resources</b>
+          <ul>
+            <li><b>Download</b>
+            <p>Visit <a href="http://igb.bioviz.org">igb.bioviz.org</a> to obtain a copy of the Integrated Genome Browser. This site also hosts additional documentation, links to news items and updates, and is the most up-to-date source of information about IGB.</p>
+            <p>Affymetrix also hosts an <a href="http://www.affymetrix.com/partners_programs/programs/developer/tools/download_igb.affx">IGB download page</a> for use with Affymetrix array products.</p>
+            </li>
+            <li><b>Documentation</b>
+              <p>BioViz hosts an <a href="http://wiki.transvar.org/confluence/display/igbman/Home">IGB Wiki</a> that contains updated information from the manual and GenoViz wiki.</p>
+            <p><a href="http://genoviz.sourceforge.net/release_notes/igb_release.html">Release notes (HTML)</a> for version 4.0 and up.</p>
+              <p>Older resources:</p>
+		<ul>
+		 <li><a href="IGB_User_Guide.pdf">Manual (PDF)</a> for IGB 6.0</li>
+		 <li><a href="https://sourceforge.net/apps/trac/genoviz/wiki/IGB">GenoViz Wiki</a></li>
+		</ul>
+	    </li>
+          </ul>
+        </td>
+        <td valign="top">
+          <img src="images/igb-screenshot-144k.jpg" alt="IGB Screenshot" width="420" height="450" /><br/><br/>
+          Several additional <a href="http://sourceforge.net/project/screenshots.php?group_id=129420">screenshots</a> illustrate
+            more capabilities of IGB.
+        </td>
+      </tr>
+    </table>
+    
+    <p>
+      <b>Feedback</b>
+    </p>
+    <p>
+      This software is provided <i>as is</i>, with the hope that it will be useful.  
+	Please read the
+      <a href="http://www.affymetrix.com/support/developer/tools/affytools.affx">terms and conditions</a>.
+    </p>
+   
+    <div id="footer">
+      <p class="center">
+      Source code for IGB is released under the 
+      <a href="http://www.opensource.org/licenses/cpl1.0.php">Common Public License, v1.0</a> an 
+      <a href="http://www.opensource.org/docs/definition.php">OSI approved</a>
+      open source license. IGB uses other open source software packages that
+      are distributed in binary form with each release, including 
+      <a href="http://sourceforge.net/projects/jetty/">Jetty</a> from Mortbay Consulting, 
+      <a href="http://java.freehep.org/vectorgraphics/">VectorGraphics</a> from FreeHEP.org,
+      <a href="http://picard.sourceforge.net/">Picard</a> from SourceForge,
+      <a href="http://www.affymetrix.com/support/developer/fusion/index.affx?terms=no">Fusion SDK</a> from Affymetrix,
+      and <a href="http://java.sun.com/products/servlet/index.jsp">Servlets</a>.
+      Each of these packages is covered by one of several open source licenses.</p>
+      <p class="center">
+      IGB is Copyright (c) 2000-2007 Affymetrix, Inc. Research
+      and development of IGB is supported in part by NIH grant
+      R01HG003040</p> 
+      <p class="center">
+      <a href="http://validator.w3.org/check?uri=http%3A%2F%2Fgenoviz.sourceforge.net%2F"><img src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" width="88" height="31" /></a>
+      <a href="http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2Fgenoviz.sourceforge.net%2Fstylesheet.css" rel="external"><img src="images/valid-css.png" alt="Valid CSS!" width="88" height="31" /></a>
+      <a href="http://www.opensource.org/docs/definition.php"><img src="http://opensource.org/trademarks/osi-certified/web/osi-certified-60x50.jpg" alt="OSI Certified" width="60" height="50" /></a>
+      <a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=129420&amp;type=1" alt="SourceForge.net" /></a>
+      </p>
+    </div>
+  </body>
+</html>

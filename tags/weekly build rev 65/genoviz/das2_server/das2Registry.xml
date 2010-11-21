@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+
+<!-- Internal dtd doc -->
+<!DOCTYPE das2Registry [
+	<!ELEMENT das2Registry (das2Server+)>
+	<!ELEMENT das2Server (serverName, serverURL, serverImplementation, serverDescription, contactOrganization, contactEmail+, contactURL*)>
+	<!ELEMENT serverName (#PCDATA)>
+	<!ELEMENT serverURL (#PCDATA)>
+	<!ELEMENT serverImplementation (#PCDATA)>
+	<!ELEMENT serverDescription (#PCDATA)>
+	<!ELEMENT contactOrganization (#PCDATA)>
+	<!ELEMENT contactEmail (#PCDATA)>
+	<!ELEMENT contactURL (#PCDATA)>
+]>
+
+<!-- Start of the registry -->
+<das2Registry>
+
+
+
+
+	<!-- Here is a server entry. Copy, paste it immediately below, and modify it to match your server, all but the last field is required, keep the order of the elements the same.  -->
+	<!-- PLEASE VALIDATE YOUR ENTRY by copying this entire document and pasting it into http://www.xmlvalidation.com/documentation.0.html?&L=0 -->
+	<das2Server>
+		<!-- The name of the server as it should be displayed in applications -->
+		<serverName>NetAffx</serverName>
+		
+		<!-- The url of the server for programmatic access to das/2 resources, this should return a sources xml response listing all of the species and genome builds served by the server -->
+		<serverURL>http://netaffxdas.affymetrix.com/das2/genome</serverURL>
+		
+		<!-- The DAS/2 server implementation -->
+		<serverImplementation>GenoViz Genometry Classic</serverImplementation>
+		
+		<!-- Free text description of the server and its contents -->
+		<serverDescription>Serves a variety of reference annotations for many species as well as annotations for most of Affymetrix's genomics products</serverDescription>
+		
+		<!-- What organization is administering this server -->
+		<contactOrganization>Affymetrix</contactOrganization>
+		
+		<!-- One or more contact email address -->
+		<contactEmail>steve_chervitz@affymetrix.com</contactEmail>
+		<contactEmail>support@affymetrix.com</contactEmail>
+		
+		
+		<!-- Optional, one or more human readable urls for the organization or other related information -->
+		<contactURL>http://netaffxdas.affymetrix.com/das2/</contactURL>
+		<contactURL>http://www.affymetrix.com</contactURL>
+	</das2Server>
+
+	
+	
+	<!-- Here is a server entry. Copy, paste it immediately below, and modify it to match your server, all but the last field is required, keep the order of the elements the same.  -->
+	<!-- PLEASE VALIDATE YOUR ENTRY by copying this entire document and pasting it into http://www.xmlvalidation.com/documentation.0.html?&L=0 -->
+	<das2Server>
+		<!-- The name of the server as it should be displayed in applications -->
+		<serverName>UofUtahBioinfoCore</serverName>
+		
+		<!-- The url of the server for programmatic access to das/2 resources, this should return a sources xml response listing all of the species and genome builds served by the server -->
+		<serverURL>http://bioserver.hci.utah.edu:8080/DAS2DB/genome</serverURL>
+		
+		<!-- The DAS/2 server implementation -->
+		<serverImplementation>GenoViz Genometry GenoPub</serverImplementation>
+		
+		<!-- Free text description of the server and its contents -->
+		<serverDescription>Serves annotations for a variety of organisms interrogated by researchers at the University of Utah and Huntsman Cancer Institute</serverDescription>
+		
+		<!-- What organization is administering this server -->
+		<contactOrganization>University of Utah Bioinformatics Core Facility</contactOrganization>
+		
+		<!-- One or more contact email address -->
+		<contactEmail>bioinformaticscore@utah.edu</contactEmail>
+		<contactEmail>david.nix@hci.utah.edu</contactEmail>
+		
+		<!-- Optional, one or more human readable urls for the organization or other related information -->
+		<contactURL>http://bioserver.hci.utah.edu:8080/DAS2DB/</contactURL>
+		<contactURL>http://bioserver.hci.utah.edu</contactURL>
+		<contactURL>http://bioserver.hci.utah.edu:8080/DAS2DB/genopub</contactURL>
+	</das2Server>
+	
+	
+	
+	<!-- Here is a server entry. Copy, paste it immediately below, and modify it to match your server, all but the last field is required, keep the order of the elements the same.  -->
+	<!-- PLEASE VALIDATE YOUR ENTRY by copying this entire document and pasting it into http://www.xmlvalidation.com/documentation.0.html?&L=0 -->
+	<das2Server>
+		<!-- The name of the server as it should be displayed in applications -->
+		<serverName>Bioviz</serverName>
+		
+		<!-- The url of the server for programmatic access to das/2 resources, this should return a sources xml response listing all of the species and genome builds served by the server -->
+		<serverURL>http://www.bioviz.org/das2/genome</serverURL>
+		
+		<!-- The DAS/2 server implementation -->
+		<serverImplementation>GenoViz Genometry Classic</serverImplementation>
+		
+		<!-- Free text description of the server and its contents -->
+		<serverDescription>Serves a variety of annotations for many species with an emphasis on plants.</serverDescription>
+		
+		<!-- What organization is administering this server -->
+		<contactOrganization>University of North Carolina, Charlotte</contactOrganization>
+		
+		<!-- One or more contact email address -->
+		<contactEmail>sgblanch@uncc.edu</contactEmail>
+		<contactEmail>aloraine@uncc.edu</contactEmail>
+		
+		<!-- Optional, one or more human readable urls for the organization or other related information -->
+		<contactURL>http://www.bioviz.org/das2/</contactURL>
+		<contactURL>http://www.transvar.org/</contactURL>
+	</das2Server>
+
+	
+
+	<!-- Here is a server entry. Copy, paste it immediately below, and modify it to match your server, all but the last field is required, keep the order of the elements the same.  -->
+	<!-- PLEASE VALIDATE YOUR ENTRY by copying this entire document and pasting it into http://www.xmlvalidation.com/documentation.0.html?&L=0 -->
+	<das2Server>
+		<!-- The name of the server as it should be displayed in applications -->
+		<serverName>epigenome.at</serverName>
+		
+		<!-- The url of the server for programmatic access to das/2 resources, this should return a sources xml response listing all of the species and genome builds served by the server -->
+		<serverURL>http://india907.server4you.de:8080/das2/genome</serverURL>
+		
+		<!-- The DAS/2 server implementation -->
+		<serverImplementation>GenoViz Genometry Classic</serverImplementation>
+		
+		<!-- Free text description of the server and its contents -->
+		<serverDescription>Serves public and private (GenAu only) NGS and chip-chip data mostly for mouse and human</serverDescription>
+		
+		<!-- What organization is administering this server -->
+		<contactOrganization>GEN-AU, Genome Research in Austria</contactOrganization>
+		
+		<!-- One or more contact email address -->
+		<contactEmail>tamir@imp.univie.ac.at</contactEmail>
+		
+		<!-- Optional, one or more human readable urls for the organization or other related information -->
+		<contactURL>http://epigenome.at</contactURL>
+		<contactURL>http://www.gen-au.at</contactURL>
+	</das2Server>
+	
+	
+	
+	
+	
+
+</das2Registry>

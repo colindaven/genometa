@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FEATURES 
+    xmlns="http://biodas.org/documents/das2"
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+   xml:base="http://www.bioviz.org/das2/genome/A_thaliana_TAIR8/" >
+  <FEATURE uri="gb%7CES212034" title="gb|ES212034" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CES212034" range="0:102:1" />
+     <LOC segment="chr1" range="1359864:1360290:-1" />
+     <PART uri="gb%7CES212034.0" />
+     <PART uri="gb%7CES212034.1" />
+     <PART uri="gb%7CES212034.2" />
+  </FEATURE>
+  <FEATURE uri="gb%7CES212034.0" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CES212034" range="0:39:1" />
+     <LOC segment="chr1" range="1360251:1360290:-1" />
+     <PARENT uri="gb%7CES212034" />
+  </FEATURE>
+  <FEATURE uri="gb%7CES212034.1" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CES212034" range="40:68:1" />
+     <LOC segment="chr1" range="1360223:1360251:-1" />
+     <PARENT uri="gb%7CES212034" />
+  </FEATURE>
+  <FEATURE uri="gb%7CES212034.2" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CES212034" range="68:102:1" />
+     <LOC segment="chr1" range="1359864:1359898:-1" />
+     <PARENT uri="gb%7CES212034" />
+  </FEATURE>
+  <FEATURE uri="gb%7CEL188829" title="gb|EL188829" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CEL188829" range="0:101:1" />
+     <LOC segment="chr1" range="1360796:1361139:1" />
+     <PART uri="gb%7CEL188829.0" />
+     <PART uri="gb%7CEL188829.1" />
+  </FEATURE>
+  <FEATURE uri="gb%7CEL188829.0" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CEL188829" range="0:35:1" />
+     <LOC segment="chr1" range="1360796:1360831:1" />
+     <PARENT uri="gb%7CEL188829" />
+  </FEATURE>
+  <FEATURE uri="gb%7CEL188829.1" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CEL188829" range="35:101:1" />
+     <LOC segment="chr1" range="1361073:1361139:1" />
+     <PARENT uri="gb%7CEL188829" />
+  </FEATURE>
+  <FEATURE uri="gb%7CDR367859" title="gb|DR367859" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CDR367859" range="1:629:1" />
+     <LOC segment="chr1" range="1361073:1361966:-1" />
+     <PART uri="gb%7CDR367859.0" />
+     <PART uri="gb%7CDR367859.1" />
+     <PART uri="gb%7CDR367859.2" />
+     <PART uri="gb%7CDR367859.3" />
+  </FEATURE>
+  <FEATURE uri="gb%7CDR367859.0" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CDR367859" range="1:430:1" />
+     <LOC segment="chr1" range="1361537:1361966:-1" />
+     <PARENT uri="gb%7CDR367859" />
+  </FEATURE>
+  <FEATURE uri="gb%7CDR367859.1" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CDR367859" range="430:523:1" />
+     <LOC segment="chr1" range="1361316:1361409:-1" />
+     <PARENT uri="gb%7CDR367859" />
+  </FEATURE>
+  <FEATURE uri="gb%7CDR367859.2" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CDR367859" range="523:616:1" />
+     <LOC segment="chr1" range="1361085:1361178:-1" />
+     <PARENT uri="gb%7CDR367859" />
+  </FEATURE>
+  <FEATURE uri="gb%7CDR367859.3" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CDR367859" range="617:629:1" />
+     <LOC segment="chr1" range="1361073:1361085:-1" />
+     <PARENT uri="gb%7CDR367859" />
+  </FEATURE>
+  <FEATURE uri="gb%7CAU237044" title="gb|AU237044" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CAU237044" range="0:630:1" />
+     <LOC segment="chr1" range="1361085:1361980:-1" />
+     <PART uri="gb%7CAU237044.0" />
+     <PART uri="gb%7CAU237044.1" />
+     <PART uri="gb%7CAU237044.2" />
+     <PART uri="gb%7CAU237044.3" />
+  </FEATURE>
+  <FEATURE uri="gb%7CAU237044.0" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CAU237044" range="0:443:1" />
+     <LOC segment="chr1" range="1361537:1361980:-1" />
+     <PARENT uri="gb%7CAU237044" />
+  </FEATURE>
+  <FEATURE uri="gb%7CAU237044.1" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CAU237044" range="443:536:1" />
+     <LOC segment="chr1" range="1361316:1361409:-1" />
+     <PARENT uri="gb%7CAU237044" />
+  </FEATURE>
+  <FEATURE uri="gb%7CAU237044.2" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CAU237044" range="536:580:1" />
+     <LOC segment="chr1" range="1361134:1361178:-1" />
+     <PARENT uri="gb%7CAU237044" />
+  </FEATURE>
+  <FEATURE uri="gb%7CAU237044.3" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CAU237044" range="582:630:1" />
+     <LOC segment="chr1" range="1361085:1361133:-1" />
+     <PARENT uri="gb%7CAU237044" />
+  </FEATURE>
+  <FEATURE uri="gb%7CDR367860" title="gb|DR367860" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CDR367860" range="1:594:1" />
+     <LOC segment="chr1" range="1361107:1361966:-1" />
+     <PART uri="gb%7CDR367860.0" />
+     <PART uri="gb%7CDR367860.1" />
+     <PART uri="gb%7CDR367860.2" />
+  </FEATURE>
+  <FEATURE uri="gb%7CDR367860.0" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CDR367860" range="1:430:1" />
+     <LOC segment="chr1" range="1361537:1361966:-1" />
+     <PARENT uri="gb%7CDR367860" />
+  </FEATURE>
+  <FEATURE uri="gb%7CDR367860.1" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CDR367860" range="430:523:1" />
+     <LOC segment="chr1" range="1361316:1361409:-1" />
+     <PARENT uri="gb%7CDR367860" />
+  </FEATURE>
+  <FEATURE uri="gb%7CDR367860.2" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CDR367860" range="523:594:1" />
+     <LOC segment="chr1" range="1361107:1361178:-1" />
+     <PARENT uri="gb%7CDR367860" />
+  </FEATURE>
+  <FEATURE uri="gb%7CAV536714" title="gb|AV536714" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CAV536714" range="0:495:1" />
+     <LOC segment="chr1" range="1361338:1361961:-1" />
+     <PART uri="gb%7CAV536714.0" />
+     <PART uri="gb%7CAV536714.1" />
+  </FEATURE>
+  <FEATURE uri="gb%7CAV536714.0" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CAV536714" range="0:424:1" />
+     <LOC segment="chr1" range="1361537:1361961:-1" />
+     <PARENT uri="gb%7CAV536714" />
+  </FEATURE>
+  <FEATURE uri="gb%7CAV536714.1" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CAV536714" range="424:495:1" />
+     <LOC segment="chr1" range="1361338:1361409:-1" />
+     <PARENT uri="gb%7CAV536714" />
+  </FEATURE>
+  <FEATURE uri="gb%7CEH961270" title="gb|EH961270" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CEH961270" range="0:115:1" />
+     <LOC segment="chr1" range="1361354:1361592:1" />
+     <PART uri="gb%7CEH961270.0" />
+     <PART uri="gb%7CEH961270.1" />
+     <PART uri="gb%7CEH961270.2" />
+     <PART uri="gb%7CEH961270.3" />
+     <PART uri="gb%7CEH961270.4" />
+  </FEATURE>
+  <FEATURE uri="gb%7CEH961270.0" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CEH961270" range="0:33:1" />
+     <LOC segment="chr1" range="1361354:1361387:1" />
+     <PARENT uri="gb%7CEH961270" />
+  </FEATURE>
+  <FEATURE uri="gb%7CEH961270.1" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CEH961270" range="34:41:1" />
+     <LOC segment="chr1" range="1361387:1361394:1" />
+     <PARENT uri="gb%7CEH961270" />
+  </FEATURE>
+  <FEATURE uri="gb%7CEH961270.2" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CEH961270" range="44:59:1" />
+     <LOC segment="chr1" range="1361394:1361409:1" />
+     <PARENT uri="gb%7CEH961270" />
+  </FEATURE>
+  <FEATURE uri="gb%7CEH961270.3" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CEH961270" range="59:79:1" />
+     <LOC segment="chr1" range="1361537:1361557:1" />
+     <PARENT uri="gb%7CEH961270" />
+  </FEATURE>
+  <FEATURE uri="gb%7CEH961270.4" type="EST+%28spliced%2C+single+map%29" >
+     <LOC segment="gb%7CEH961270" range="80:115:1" />
+     <LOC segment="chr1" range="1361557:1361592:1" />
+     <PARENT uri="gb%7CEH961270" />
+  </FEATURE>
+</FEATURES>

@@ -1,0 +1,58 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.6 (Macintosh; U; PPC) [Netscape]">
+   <title>        Hello Again
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+<body>
+
+<h1>
+Hello Again - Adding a Glyph</h1>
+Now let's flesh this out a bit with the help of a few more GenoViz classes.
+<p>Look at the <a href="../demo/src/genoviz/tutorial/HelloMap.java">source</a>.
+<p>
+In the first few lines,
+we introduce a few methods for setting parameters of the map:
+<pre>
+map.setMapRange(0, 1000);
+map.setMapOffset(0, 100);
+map.addAxis(10);
+</pre>
+<p>We set the horizontal range of the map and the vertical offsets the map will handle.
+Range numbers increase from left to right. Offset numbers increase from
+top to bottom. We also specify that we want an axis drawn near the top
+of the map (offset 10 from the top).
+
+<p>The next thing we do is add a glyph to the map. GenoViz supplies
+a number of glyphs you can use, and there are several ways to add glyphs to maps.  
+The simplest way is:  
+<pre>
+map.addItem(300, 500);
+</pre>
+
+<p>The arguments to NeoMap.addItem() are the start and end coordinates of the glyph, specified in the coordinate system that was set by the NeoMap.setMapRange() call.  In this case we are relying on the NeoMap's default glyph settings, which are to use a FillRectGlyph with color set to black and a defaut thickness.<br>
+
+<p>You could add several glyphs all of the same type to the map in different horizontal
+locations without reconfiguring.
+
+<br>&nbsp;
+<p>Here's how it looks running as an Applet.
+<p><applet 
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.HelloMap"
+        height="150"
+        width="100%"
+></applet>
+<h2>
+Next: <a href="SimpleMap.html">Simple Map</a></h2>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>        Importing Data From "Flat" Files
+</title>
+<link rel="stylesheet"
+        type="text/css" 
+        href="simple.css"
+        title="Simple Style"
+>
+</head>
+
+<body>
+
+<h1>        Importing Data From "Flat" Files
+</h1>
+                Much data is available
+                in ASCII files.
+                These files come 
+                in various formats
+                from various sources.
+                The GenoViz SDK includes classes
+                that recognize several common biological information formats.
+                These classes are in the package
+                <a href="../doc/api/com/affymetrix/genoviz/parser/package-summary.html"
+                >com.affymetrix.genoviz.parser</a>
+                and (usually) implement the
+                <a href="../doc/api/com/affymetrix/genoviz/parser/ContentParser.html"
+                >ContentParser</a> interface.
+
+<p>                The ContentParser interface is simple.
+                It has an
+                <a href="../doc/api/com/affymetrix/genoviz/parser/ContentParser.html#importContent"
+                >importContent</a> method
+                which will parse bytes arriving via an InputStream
+                and return an object modeling the data.
+                A new class implementing ContentParser should be defined
+                for each pair of format and data model.
+
+<p>                Here we have a very small applet
+                that can display the contents of a fasta file
+                in a NeoSeq.
+                As you can see,
+                the <a href="../demo/src/genoviz/tutorial/ParseOne.java">source</a> code is quite short.
+<p>
+<form>
+<input        type="button" value="Go get:"
+        onClick="document.applets[0].loadSequence(config.value)"
+>
+<input name="config" size="60"
+value = "test.fasta">
+</form>
+
+<p>
+<div class="applet">
+<applet
+    codebase="../demo"
+    archive="genoviz.jar"
+        code="genoviz.tutorial.ParseOne"
+        height="150"
+        width="480"
+>
+</applet>
+</div class="applet">
+
+<h2>         Exercises
+</h2>
+<ol>
+<li>        Use the ExportContent to save the fasta data in another file.
+                What happened to the comments?
+<li>        Create ParseTwo that parses an ABI trace and displays it
+                in a NeoSeq.
+<li>        Modify ParseTwo so that it can also parse a trace from an SCF file.
+</ol>
+
+<h2>        Next: <a href="narcissus.html">Writing Your Own Parser</a>
+</h2>
+
+</body>
+</html>

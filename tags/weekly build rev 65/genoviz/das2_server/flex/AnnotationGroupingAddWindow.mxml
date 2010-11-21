@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+	title="{'Add new annotation folder to ' + parentName}"
+	showCloseButton="true" 
+	width="452" 
+	height="140"
+	verticalGap="0"
+	close="closeWindow()"
+	titleIcon="{parentApplication.iconAnnotationGrouping}"
+	layout="vertical" backgroundAlpha="100" defaultButton="{saveButton}">
+ 	
+    <mx:HTTPService             
+      id="addAnnotationGrouping" 
+      url="genopub/annotationGroupingAdd"
+      resultFormat="e4x"
+      result="onAddAnnotationGrouping(event)"
+      fault="parentApplication.onFailHttpRequest('Failed to add annotation folder', event)"
+      method="POST"
+      useProxy="false">
+      <mx:request>
+         <name>{annotationGroupingName.text}</name>
+         <idGenomeVersion>{genomeVersion.@idGenomeVersion}</idGenomeVersion>
+         <idParentAnnotationGrouping>{idParentAnnotationGrouping}</idParentAnnotationGrouping>
+         <idUserGroup>{userGroupCombo.selectedItem != null ? userGroupCombo.selectedItem.@id : ''}</idUserGroup>
+      </mx:request>
+    </mx:HTTPService> 
+    
+       
+    <mx:Script>
+	<![CDATA[
+	
+	import mx.managers.PopUpManager;
+	import mx.rpc.events.ResultEvent;
+	import mx.controls.Alert;
+	
+	[Bindable]
+	public var idParentAnnotationGrouping:Object = null;
+	[Bindable]
+	public var parentName:Object = null;
+	[Bindable]
+	private var genomeVersion:Object = null;
+
+	public function init(genomeVersion:Object, parent:Object):void {
+		this.genomeVersion = genomeVersion;
+		if (parent != null) {
+			this.idParentAnnotationGrouping = parent.@idAnnotationGrouping;
+			parentName = parent.@label;		
+			
+			// If the parent folder is owned by a user group,
+			// setup this folder the same way.
+			if (parent.@idUserGroup != null && parent.@idUserGroup != "") {
+				for each (var item:Object in userGroupCombo.dataProvider) {
+					if (item.@id == parent.@idUserGroup) {
+						userGroupCombo.selectedItem = item;
+						break;
+					}
+				}
+			}	
+		} else {
+			parentName = genomeVersion.@name;
+		}
+	}
+	
+
+   	private function onAddAnnotationGrouping(event:ResultEvent):void {
+		if (addAnnotationGrouping.lastResult.name() == "SUCCESS") {			
+			closeWindow();
+			var itemToSelect:XML = new XML(
+			   "<AnnotationGrouping " +
+			     "idAnnotationGrouping='" + addAnnotationGrouping.lastResult.@idAnnotationGrouping + "'" +
+			    "/>");
+			parentApplication.annotationsView.refreshAnnotationsAndSelect(itemToSelect);
+		} else if (addAnnotationGrouping.lastResult.name() == "Error") {
+			Alert.show(addAnnotationGrouping.lastResult.@message);
+		} else {
+			Alert.show("An error occurred while adding annotation folder");				
+		}		
+	}
+
+   
+    private function closeWindow():void {
+		PopUpManager.removePopUp(this);		
+	}
+	
+	]]>
+    </mx:Script>
+    <mx:VBox width="100%" height="100%" styleName="panelBody" verticalGap="10">
+		<mx:HBox  width="100%" paddingTop="4">
+			<mx:Label text="Folder name:" width="105"/>
+			<mx:TextInput id="annotationGroupingName" width="100%" maxChars="2000"/>
+	</mx:HBox>
+		<mx:HBox width="100%" id="hbox2">
+			<mx:Label text="User Group:" width="105"/>
+			<mx:ComboBox id="userGroupCombo" dataProvider="{parentApplication.dictionaryMyUserGroup}" width="100%" labelField="@name"></mx:ComboBox>
+		</mx:HBox>
+    	
+    </mx:VBox>
+
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button id="saveButton"  
+			enabled="{annotationGroupingName.text != null ? true : false}" 
+			icon="{parentApplication.iconSave}" 
+			disabledIcon="{parentApplication.iconSaveDisabled}" 
+			label="Save"
+			click="{addAnnotationGrouping.send()}"/>
+		<mx:Button id="cancelButton" label="Cancel" click="closeWindow()"/>
+	</mx:ControlBar>
+</mx:TitleWindow>

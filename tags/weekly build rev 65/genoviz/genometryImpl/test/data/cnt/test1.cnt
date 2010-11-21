@@ -1,0 +1,11 @@
+[Header]
+ChipType1=TestCntParser
+[ColumnName]
+ProbeSet	Chromosome	Position	Log2Ratio  
+[Data]
+Marker1	chr1	2224111	0.054294  
+Marker2	chr1	2224112	10.051188  
+Marker3	chr1	2224113	100.051188  
+Marker4	chr1	2224114	10.051188  
+Marker5	chr1	2500000	10.051188  
+Marker6	chr2	53452	0.288990 

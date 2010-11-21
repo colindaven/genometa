@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox  xmlns:mx="http://www.adobe.com/2006/mxml"
+	visible="{isDirtyFlag &amp;&amp; enabled}" backgroundColor="#ffff99"  
+	horizontalAlign="right" paddingTop="0" 
+	paddingBottom="1" paddingLeft="4" paddingRight="4"  
+	cornerRadius="4" 
+	borderStyle="solid" 
+	fontStyle="normal" fontWeight="normal">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.containers.Panel;
+			import mx.managers.PopUpManager;
+			import mx.core.IFlexDisplayObject;
+			
+			[Bindable]
+            private var isDirtyFlag:Boolean = false;
+            
+            private var popup:IFlexDisplayObject = null;
+            
+			public function isDirty():Boolean {
+				return isDirtyFlag;
+			}
+			
+
+			private function setDirtyVisual():void {
+				var p:Panel = null;
+				if (this.parentDocument is Panel) {					
+					p = Panel(parentDocument);
+				} else if (this.parent.parent is Panel) {
+					p = Panel(parent.parent);
+				}
+				if (p != null) {
+					if (p.title.indexOf("*") < 0) {
+						p.title = "*" + p.title;
+					}
+				}
+			}
+			
+			private function resetDirtyVisual():void {
+				var p:Panel = null;
+				if (this.parentDocument is Panel) {					
+					p = Panel(parentDocument);
+				} else if (this.parent.parent is Panel) {
+					p = Panel(parent.parent);
+				}
+				if (p != null) {
+					if (p.title.indexOf("*") == 0) {
+						p.title = p.title.substring(1);
+					}
+				}
+			}
+
+			public function setDirty():void {
+				isDirtyFlag = true;
+				if (this.enabled) {
+					setDirtyVisual();
+				}
+			}
+			public function resetDirty():void {
+				isDirtyFlag = false;
+				if (this.enabled) {
+					resetDirtyVisual();
+				}
+			}               
+		]]>
+	</mx:Script>
+			<mx:Text  textAlign="right" text="Your changes have not been saved"/>
+</mx:HBox>

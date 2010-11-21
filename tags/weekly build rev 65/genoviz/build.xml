@@ -1,0 +1,491 @@
+<!--                                                                 -->
+<!-- Test file for new, improved build system.  There are still a    -->
+<!-- number of problems to be worked out.  This files does not yet   -->
+<!-- have test, demo, or run targets. The test and demo targets may  -->
+<!-- have to be one off, or the targets need to be added to all sub- -->
+<!-- projects via the common.xml.  The common.xml should also be     -->
+<!-- be able to be used on a sub-project alone.                      -->
+<!--                                                                 -->
+<project name="IGB" basedir=".">
+	<import file="common.xml" />
+
+	<target name="init">
+		<property name="name" value="Integrated Genome Browser" />
+
+		<!-- Locations of subprojets -->
+		<property name="genoviz"       value="${basedir}/genoviz_sdk" />
+		<property name="genometry"     value="${basedir}/genometryImpl" />
+		<property name="igb"           value="${basedir}/igb" />
+		<property name="igb-18n"       value="${basedir}/igb-i18n" />
+		<property name="das2server"    value="${basedir}/das2_server" />
+		<property name="protannot"    value="${basedir}/protannot" />
+
+		<!-- directory paths -->
+		<property name="lib.dir"    value="${basedir}/ext" />
+		<property name="etc.dir"    value="${basedir}/etc" />
+		<property name="demos.dir"  value="${genoviz}/demo" />
+		<property name="docs.dir"   value="${basedir}/doc/api" />
+		<property name="report.dir" value="${basedir}/reports" />
+
+		 <property name="javadoc.src.path"   value="${genoviz}/src:${genoviz}/test:${genoviz}/demo/src:${genometry}/src:${genometry}/test:${igb}/src:${igb}/test:${das2server}/src:${das2server}/test:${protannot}/src" />
+	</target>
+
+	<target name="compile" depends="common-init" description="Compile all genoviz subprojects">
+		<iterate target="compile" />
+	</target>
+
+	<target name="flex" if="should_compile_flex" depends="common-init" description="Compile Flex GenoPub application">
+		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/> 
+		<mxmlc fork="true" maxmemory="128m" file="${das2server}/flex/GenoPub.mxml" output="${webapp.dir}/GenoPub.swf">
+	        <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+	        <source-path path-element="${FLEX_HOME}/frameworks"/>
+			    <compiler.debug>true</compiler.debug>			
+		</mxmlc>
+		<html-wrapper 
+		      title="GenoPub"
+		      file="GenoPub.html"
+		      width="100%"
+		      height="100%"
+		      application="GenoPub"
+		      swf="GenoPub"
+		      version-major="9"
+		      version-minor="0"
+		      version-revision="0"
+		      history="false"
+		      template="express-installation"
+		      output="${webapp.dir}"/>
+	</target>	
+
+	<target name="demos" depends="jar" description="Compile genoviz demos">
+		<!--<ant antfile="${basedir}/generic.xml" dir="${basedir}/genoviz_sdk" target="docs">
+			<property name="docs.dir"   value="${basedir}/genoviz_sdk/docs" />
+		</ant>-->
+		<my.javac srcdir="${demos.dir}/src" destdir="${demos.dir}" classpath="${genoviz}/build" />
+
+		<copy file="${dist.dir}/genoviz.jar" todir="${demos.dir}" />
+	</target>
+
+	<target name="compile-tests" depends="common-init">
+		<iterate target="compile-tests" />
+	</target>
+
+	<target name="check-nullness" depends="common-init" description="Check all genoviz subprojects for null references not satisfied by contract">
+		<iterate target="check-nullness" />
+	</target>
+
+	<target name="test" depends="common-init" description="Run unit tests for all genoviz subprojects">
+		<iterate target="test" />
+	</target>
+
+	<target name="jar" depends="common-init" description="Create jar files for all genoviz subprojects">
+		<iterate target="jar" />
+	</target>
+
+	<target name="webstart" depends="common-init" description="Create webstart-compatible IGB jars">
+		<iterate target="webstart" />
+
+		<delete file="${webstart.dir}/das2server.jar" />
+
+		<my.signjar jar="${lib.dir}/affx_fusion.jar"       signedjar="${webstart.dir}/affx_fusion.jar" />
+		<my.signjar jar="${lib.dir}/freehep-2.1.1.jar"     signedjar="${webstart.dir}/freehep-2.1.1.jar" />
+		<my.signjar jar="${lib.dir}/jlfgr-1_0.jar"         signedjar="${webstart.dir}/jlfgr-1_0.jar" />
+		<my.signjar jar="${lib.dir}/image4j.jar"           signedjar="${webstart.dir}/image4j.jar" />
+		<my.signjar jar="${lib.dir}/commons-codec-1.4.jar" signedjar="${webstart.dir}/commons-codec-1.4.jar" />
+		<my.signjar jar="${lib.dir}/sam.jar" signedjar="${webstart.dir}/sam.jar" />
+		<my.signjar jar="${lib.dir}/picard.jar" signedjar="${webstart.dir}/picard.jar" />
+		<my.signjar jar="${lib.dir}/colt.jar" signedjar="${webstart.dir}/colt.jar" />
+
+		<!-- <jar jarfile="${webstart.dir}/igb.jar" index="true" indexMetaInf="true"> -->
+		<jar destfile="${webstart.dir}/igb.jar">
+			<zipfileset src="${dist.dir}/igb.jar">
+				<exclude name="igb_default_prefs.xml" />
+			</zipfileset>
+			<!--
+			<indexjars>
+				<fileset dir="${webstart.dir}">
+					<exclude name="igb.jar" />
+					<include name="*.jar" />
+				</fileset>
+			</indexjars>
+			-->
+		</jar>
+
+		<my.signjar jar="${webstart.dir}/igb.jar" />
+
+		<copy file="${igb}/resources/igb_default_prefs.xml" tofile="${webstart.dir}/igb_prefs.xml" />
+		<copy file="${jnlp.file.path}" tofile="${webstart.dir}/igb.jnlp" filtering="true" overwrite="true" />
+		<copy file="${jnlp.largefile.path}" tofile="${webstart.dir}/igb-large.jnlp" filtering="true" overwrite="true" />
+		<copy file="${jnlp.basefile.path}" tofile="${webstart.dir}/igb-base.jnlp" filtering="true" overwrite="true" />
+		<copy file="${jnlp.icon.path}" tofile="${webstart.dir}/${jnlp.icon.name}" />
+<!--		<copy file="${jnlp.splashicon.path}" tofile="${webstart.dir}/${jnlp.splashicon.name}" />-->
+	</target>
+
+	<target name="webapp" depends="jar,flex" description="Create das2servlet web application">
+		<mkdir dir="${webapp.dir}/WEB-INF/classes" />
+		<mkdir dir="${webapp.dir}/WEB-INF/lib" />
+
+		<copy todir="${webapp.dir}" overwrite="true">
+			<fileset dir="${das2server}">
+				<include name="*.css" />
+				<include name="index.html" />
+				<include name="*.ico" />
+				<include name="*.png" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${webapp.dir}/WEB-INF/classes">
+			<fileset dir="${das2.resources}">
+				<include name="das2Registry.xml" />
+				<include name="logging.properties" />
+			</fileset>
+		</copy> 
+
+		<copy todir="${webapp.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}">
+				<include name="hibernate3.jar"/>
+				<include name="image4.jar" /> 		
+				<include name="org.mortbay.jetty.jar"/>
+			</fileset>
+			<fileset dir="${dist.dir}">
+				<include name="das2server.jar" />
+				<include name="genometry.jar" />
+				<include name="protannot.jar" />
+			</fileset>
+		</copy>
+		
+		<antcall target="webapp-copy-genopub-files"/>
+
+		<copy file="${web.xml}" tofile="${webapp.dir}/WEB-INF/web.xml" overwrite="true"/>
+		<copy file="${context.xml}" tofile="${webapp.dir}/META-INF/context.xml" overwrite="true"/>
+	</target>
+
+	<target name="webapp-copy-genopub-files" if="das2genopub">
+		<copy todir="${webapp.dir}/WEB-INF/classes">
+			<fileset dir="${das2.resources}">
+				<include name="hibernate.cfg.xml" />
+				<include name="genopub.hbm.xml" />
+				<include name="log4j.properties" />
+			</fileset>
+		</copy> 
+		<copy todir="${webapp.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}">
+				<include name="antlr-2.7.6rc1.jar"/>
+				<include name="asm.jar" /> 
+				<include name="asm-attrs.jar" /> 
+				<include name="cglib-2.1.3.jar" /> 
+				<include name="commons-collections-2.1.1.jar"/>
+				<include name="commons-codec-1.4.jar"/>
+				<include name="commons-compress-1.0.jar"/>
+				<include name="commons-logging-1.0.4.jar"/>
+				<include name="cos.jar"/>
+				<include name="dom4j-1.6.1.jar"/>
+				<include name="jta.jar" /> 	
+				<include name="log4j-1.2.11.jar"/>
+			</fileset>
+    </copy>
+	</target>
+	
+	<target name="all" depends="exe" description="Runs the 'jar' and 'exe' tasks">
+		<iterate target="all" />
+	</target>
+
+	<target name="report" depends="test,docs,pmd,cpd,findbugs" description="Generate reports about the project" />
+
+	<target name="pmd" depends="common-init,pmd-init" if="have.pmd" description="run pmd static analysis program">
+		<iterate target="pmd" />
+	</target>
+
+	<target name="cpd" depends="common-init,cpd-init" if="have.cpd" description="run pmd's cut and paste detection">
+		<mkdir dir="${report.dir}/xml" />
+		<my.cpd outputFile="${report.dir}/xml/cpd.xml">
+			<fileset dir=".">
+				<exclude name="*/test/**/*.java" />
+				<exclude name="*/demo/**/*.java" />
+				<include name="**/*.java" />
+			</fileset>
+		</my.cpd>
+		<xslt in="${report.dir}/xml/cpd.xml" style="${etc.dir}/cpdhtml.xslt" out="${report.dir}/cpd.html" />
+	</target>
+
+	<target name="findbugs" depends="compile,common-init,findbugs-init" if="have.findbugs" description="run findbugs static analysis program">
+		<iterate target="findbugs" />
+	</target>
+
+	<target name="clean" depends="common-init">
+		<delete file="igb_exe.jar"/>
+		<delete file="protannot_exe.jar"/>
+		<delete file="${genoviz}/genoviz.jar" />
+		<delete file="${demos.dir}/genoviz.jar" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${webstart.dir}" />
+		<delete dir="${webapp.dir}" />
+		<delete dir="${demos.dir}/genoviz" />
+		<delete dir="${report.dir}" />
+
+		<iterate target="clean" />
+	</target>
+
+	<target name="docs" depends="common-init" description="Create java documentation for all genoviz subprojects">
+		<mkdir dir="${docs.dir}"/>
+		<my.javadoc sourcepath="${javadoc.src.path}">
+			<classpath>
+				<fileset dir="${lib.dir}" includes="*.jar" />
+				<pathelement path="${junit.jar}" />
+			</classpath>
+		</my.javadoc>
+	</target> 
+
+	<target name="exe" depends="jar" description="Create a single-jar IGB application">
+		<jar jarfile="igb_exe.jar" update="false">
+			<manifest>
+				<attribute name="Main-Class" value="com.affymetrix.igb.IGB"/>
+<!--				<attribute name="SplashScreen-Image" value="com/affymetrix/igb/igb_splash.gif"/>-->
+			</manifest>
+			<metainf file="LICENSE.html"/>
+			<metainf file="NOTICES.txt"/>
+			<zipgroupfileset dir="${dist.dir}">
+				<exclude name="das2server.jar" />
+				<exclude name="protannot.jar" />
+				<include name="*.jar"/>
+			</zipgroupfileset>
+			<zipgroupfileset dir="${lib.dir}">
+				<include name="affx_fusion.jar"/>
+				<include name="freehep-2.1.1.jar"/>
+				<include name="jlfgr-1_0.jar"/>
+				<include name="image4j.jar" />
+				<include name="commons-codec-1.4.jar"/>
+				<include name="sam.jar" />
+				<include name="picard.jar" />
+				<include name="colt.jar" />
+			</zipgroupfileset>
+		</jar>
+		<jar jarfile="protannot_exe.jar" update="false">
+			<manifest>
+				<attribute name="Main-Class" value="org.bioviz.protannot.ProtAnnotMain"/>
+			</manifest>
+			<zipgroupfileset dir="${dist.dir}">
+				<include name="genometry.jar"/>
+				<include name="genoviz.jar"/>
+				<include name="protannot.jar"/>
+			</zipgroupfileset>
+			<zipgroupfileset dir="${lib.dir}">
+				<include name="freehep-2.1.1.jar"/>
+				<include name="jlfgr-1_0.jar"/>
+				<include name="colt.jar" />
+				<include name="sam.jar" />
+			</zipgroupfileset>
+		</jar>
+	</target>
+
+	<target name="run" depends="compile" description="run IGB">
+		<condition property="apple.jvmargs" value="-Xdock:name=IGB -Xdock:icon=${jnlp.icon.path}" else="" >
+			<os family="mac" />
+		</condition>
+		<java fork="true" maxmemory="${igb.maxmem}" classname="com.affymetrix.igb.IGB">
+			<jvmarg line="${igb.jvmargs}" />
+			<jvmarg value="-Xms32m" />
+<!--			<jvmarg value="-splash:${jnlp.splashicon.path}" />-->
+			<jvmarg line="${apple.jvmargs}" />
+			<sysproperty key="java.util.logging.config.file" value="${basedir}/etc/logging.properties" />
+			<sysproperty key="apple.laf.useScreenMenuBar" value="true" />
+			<classpath>
+				<fileset dir="${lib.dir}" includes="*.jar" />
+				<dirset dir="${basedir}">
+					<include name="*/build" />
+				</dirset>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="run_Protannot" depends="compile" description="run Protannot">
+		<condition property="apple.jvmargs" value="-Xdock:name=Protannot " else="" >
+			<os family="mac" />
+		</condition>
+		<java fork="true" classname="org.bioviz.protannot.ProtAnnotMain">
+			<jvmarg line="${apple.jvmargs}" />
+			<sysproperty key="apple.laf.useScreenMenuBar" value="true" />
+			<classpath>
+				<fileset dir="${lib.dir}" includes="freehep-2.1.1.jar" />
+				<fileset dir="${lib.dir}" includes="jlfgr-1_0.jar"/>
+				<fileset dir="${lib.dir}" includes="colt.jar" />
+				<fileset dir="${lib.dir}" includes="sam.jar" />
+				<dirset dir="${basedir}">
+					<include name="genometryImpl/build" />
+					<include name="genoviz_sdk/build" />
+					<include name="protannot/build" />
+				</dirset> 
+			</classpath>
+		</java>
+	</target>
+
+	<target name="debug-nb-protannot" depends="compile" description="debug protannot" >
+        <nbjpdastart addressproperty="jpda.address" name="protannot" transport="dt_socket">
+            <classpath>
+				<fileset dir="${lib.dir}" includes="freehep-2.1.1.jar" />
+				<fileset dir="${lib.dir}" includes="jlfgr-1_0.jar"/>
+				<fileset dir="${lib.dir}" includes="colt.jar" />
+				<fileset dir="${lib.dir}" includes="sam.jar" />
+				<dirset dir="${basedir}">
+					<include name="genometryImpl/build" />
+					<include name="genoviz_sdk/build" />
+					<include name="protannot/build" />
+				</dirset>
+			</classpath>
+        </nbjpdastart>
+        <java fork="true" classname="org.bioviz.protannot.ProtAnnotMain">
+			<classpath>
+				<fileset dir="${lib.dir}" includes="freehep-2.1.1.jar" />
+				<fileset dir="${lib.dir}" includes="colt.jar" />
+				<fileset dir="${lib.dir}" includes="sam.jar" />
+				<dirset dir="${basedir}">
+					<include name="genometryImpl/build" />
+					<include name="genoviz_sdk/build" />
+					<include name="protannot/build" />
+				</dirset>
+			</classpath>
+			<jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+		</java>
+    </target>
+	
+	<target name="release" depends="release-igb, release-das2server, release-igb-webstart, release-genoviz-sdk" description="Package IGB for Release" />
+
+	<target name="release-igb" depends="exe">
+		<mkdir dir="${release.dir}/igb" />
+
+		<copy todir="${release.dir}/igb">
+			<fileset dir="${basedir}">
+				<include name="NOTICES.txt" />
+				<include name="RELEASES.txt" />
+				<include name="LICENSE.html" />
+				<include name="run_igb.*" />
+				<include name="igb_exe.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="*.txt" />
+				<exclude name="README.txt" />
+			</fileset>
+		</copy>
+
+		<zip destfile="${release.dir}/igb.zip" basedir="${release.dir}">
+			<include name="igb/**" />
+		</zip>
+	</target>
+
+	<target name="release-das2server" depends="common-init">
+		<mkdir dir="${release.dir}/${das2_release}" />
+
+		<antcall target="webapp">
+			<param name="webapp.dir" value="${release.dir}/${das2_release}/${das2_webapp}" />
+		</antcall>
+		
+		<copy todir="${release.dir}/${das2_release}">
+			<fileset dir="${basedir}">
+				<include name="NOTICES.txt" />
+				<include name="RELEASES.txt" />
+				<include name="LICENSE.html" />
+			</fileset>
+			<fileset file="${lib.dir}/APACHE_LICENSE_2.txt" />
+		</copy>	
+
+		<copy  file="${das2server}/${das2_install_notes}" tofile="${release.dir}/${das2_release}/INSTALL.txt" overwrite="true"/>
+
+	  <antcall target="release-copy-genopub-sql"/>
+		
+		<zip destfile="${release.dir}/${das2_release}.zip" basedir="${release.dir}">
+			<include name="${das2_release}/**" />
+		</zip>
+	</target>
+	
+	<target name="release-copy-genopub-sql" if="das2genopub">
+		<copy todir="${release.dir}/${das2_release}">
+			<fileset file="${das2server}/genopub.sql" />
+		</copy>	
+	</target>
+
+	<target name="deploy-das2server" depends="release-das2server" description="Copy das2 web application to apache tomcat">
+		<copy todir="${server.deploy.dir}/${das2_webapp}" overwrite="true">
+			<fileset dir="${release.dir}/${das2_release}/${das2_webapp}">
+				<include name="**/*" />
+			</fileset>
+		</copy> 
+	</target>
+
+	<target name="release-igb-webstart" depends="common-init">
+		<mkdir dir="${release.dir}/igb-webstart" />
+
+		<antcall target="webstart">
+			<param name="webstart.dir" value="${release.dir}/igb-webstart" />
+		</antcall>
+
+		<copy todir="${release.dir}/igb-webstart">
+			<fileset dir="${basedir}">
+				<include name="NOTICES.txt" />
+				<include name="RELEASES.txt" />
+				<include name="LICENSE.html" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="*.txt" />
+				<exclude name="README.txt" />
+			</fileset>
+		</copy>
+
+		<zip destfile="${release.dir}/igb-webstart.zip" basedir="${release.dir}">
+			<include name="igb-webstart/**" />
+		</zip>
+	</target>
+
+	<target  name="release-genoviz-sdk" depends="jar, demos">
+		<mkdir dir="${release.dir}/genoviz-sdk" />
+		<copy todir="${release.dir}/genoviz-sdk/genoviz-sdk/">
+			<fileset file="${dist.dir}/genoviz.jar" />
+			<fileset dir="${basedir}">
+				<include name="NOTICES.txt" />
+				<include name="RELEASES.txt" />
+				<include name="LICENSE.html" />
+			</fileset>
+			<fileset dir="${genoviz}">
+				<include name="index.html" />
+				<include name="tutorial/**" />
+				<include name="demo/**" />
+			</fileset>
+		</copy>
+		<zip destfile="${release.dir}/genoviz-sdk.zip" basedir="${release.dir}" >
+			<include name="genoviz-sdk/**" />
+		</zip>
+	</target>
+
+	<target name="profile-nb" if="netbeans.home">
+		<ant target="profile-nb" antfile="nbproject/ide-targets.xml" /> 
+	</target>
+
+	<target name="profile-single-nb" if="netbeans.home">
+		<ant target="profile-single-nb" antfile="nbproject/ide-targets.xml" /> 
+	</target>
+
+	<!--                                                                 -->
+	<!-- Macro to pass targets to each sub project.  All sub projects    -->
+	<!-- are build using generic.xml.                                    -->
+	<!--                                                                 -->
+	<macrodef name="iterate">
+		<attribute name="target" default=""/>
+		<sequential>
+			<condition property="findbugs">
+				<equals arg1="@{target}" arg2="findbugs" />
+			</condition>
+			<subant target="@{target}" genericantfile="generic.xml" inheritall="true">
+				<!-- multiple dirsets ensure dependency ordering -->
+				<dirset dir="${basedir}">
+					<include name="genoviz_sdk" />
+					<include name="genometryImpl" />
+					<include name="igb-i18n" unless="findbugs" />
+				</dirset>
+				<dirset dir="${basedir}">
+					<include name="igb" />
+					<include name="protannot" />
+					<include name="das2_server" />
+				</dirset>
+			</subant>
+		</sequential>
+	</macrodef>
+</project>
