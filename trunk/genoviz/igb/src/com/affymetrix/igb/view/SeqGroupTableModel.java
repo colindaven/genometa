@@ -2,7 +2,13 @@ package com.affymetrix.igb.view;
 
 import com.affymetrix.genometryImpl.AnnotatedSeqGroup;
 import com.affymetrix.genometryImpl.BioSeq;
+import com.affymetrix.genometryImpl.SeqSymmetry;
+import com.affymetrix.genometryImpl.general.GenericFeature;
+import com.affymetrix.genometryImpl.span.SimpleSeqSpan;
 import com.affymetrix.igb.IGBConstants;
+import com.affymetrix.igb.featureloader.QuickLoad;
+import com.affymetrix.igb.view.load.GeneralLoadUtils;
+import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 final class SeqGroupTableModel extends AbstractTableModel {
@@ -18,7 +24,7 @@ final class SeqGroupTableModel extends AbstractTableModel {
 	}
 
 	public int getColumnCount() {
-		return 2;
+		return 3;
 	}
 
 	public Object getValueAt(int row, int col) {
@@ -31,6 +37,14 @@ final class SeqGroupTableModel extends AbstractTableModel {
 					return "";	// don't show the "whole genome" size, because it disagrees with the chromosome total
 				}
 				return Long.toString((long) seq.getLengthDouble());
+			} else if (col == 2) {
+				GenericFeature genf = GeneralLoadUtils.getSelectedVersionFeatures().get(0);
+
+				if (genf.symL == null)
+					return -1;
+
+				List<SeqSymmetry> los = (List<SeqSymmetry>) genf.symL.getRegion(new SimpleSeqSpan(seq.getMin(), seq.getMax() -1, seq));
+				return los.size();
 			}
 		}
 		return null;
@@ -42,6 +56,8 @@ final class SeqGroupTableModel extends AbstractTableModel {
 			return "("+ getRowCount() +") Sequence(s)";
 		} else if (col == 1) {
 			return "Length";
+		} else if (col == 2) {
+			return "Reads";
 		} else {
 			return null;
 		}
@@ -51,6 +67,8 @@ final class SeqGroupTableModel extends AbstractTableModel {
 	public Class<?> getColumnClass(int c) {
 		switch (c) {
 			case 1:
+				return Integer.class;
+			case 2:
 				return Integer.class;
 			default:
 				return super.getColumnClass(c);

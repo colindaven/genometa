@@ -184,6 +184,19 @@ public final class BioSeq implements SearchableCharIterator { //MPTAG
 		return 0;
 	}
 
+	/**
+	 * Gives unmodifiable access to the annotations attatched to this BioSeq.
+	 *
+	 * @todo review
+	 * @author Matthias Wieding-Drewes <m@wieding-drewes.de>
+	 * @return This BioSeq's annotations.
+	 */
+	public List<SeqSymmetry> getAnnotations() {
+		if (this.annots != null)
+			return  Collections.unmodifiableList(this.annots);
+		return null;
+	}
+
 	public /*@Nullable*/ SeqSymmetry getAnnotation(int index) {
 		if (null != annots && index < annots.size())
 			return annots.get(index);
@@ -243,8 +256,8 @@ public final class BioSeq implements SearchableCharIterator { //MPTAG
 			if (symID == null) {
 				throw new RuntimeException("sym.getID() == null && (! needsContainer(sym)), this should never happen!");
 			}
-			if (type_id2sym == null) { 
-				type_id2sym = new LinkedHashMap<String,SymWithProps>(); 
+			if (type_id2sym == null) {
+				type_id2sym = new LinkedHashMap<String,SymWithProps>();
 			} else {
 				if (type_id2sym.containsKey(symID) && sym.equals(type_id2sym.get(id))) {
 					return;	// sym already in hash (and thus also annots list)
@@ -294,7 +307,7 @@ public final class BioSeq implements SearchableCharIterator { //MPTAG
 		}
 		container.addChild(sym);
 	}
-	
+
 	/*
 	 * Remove annotation (clear and unload) from DAS/2 server
 	 */
@@ -363,7 +376,7 @@ public final class BioSeq implements SearchableCharIterator { //MPTAG
 		}
 		return type_id2indexedsym.get(type);
 	}
-	
+
 	public boolean removeIndexedSym(String type) {
 		if(type_id2indexedsym == null || !type_id2indexedsym.containsKey(type)) {
 			return false;
@@ -397,11 +410,11 @@ public final class BioSeq implements SearchableCharIterator { //MPTAG
 		if(type_id2symloader == null || !type_id2symloader.containsKey(type)) {
 			return false;
 		}
-		
+
 		type_id2symloader.remove(type);
 		return true;
 	}
-	
+
 	/**
 	 * Returns true if the sym is of a type needs to be wrapped in a {@link TypeContainerAnnot}.
 	 * GraphSym's and ScoredContainerSym's are added directly, not in containers.
@@ -464,7 +477,7 @@ public final class BioSeq implements SearchableCharIterator { //MPTAG
 	public String getResidues(int start, int end) {
 		return getResidues(start, end, ' ');
 	}
-		
+
 	/** Gets residues.
 	 *  @param fillchar  Character to use for missing residues;
 	 *     warning: this parameter is used only if {@link #getResiduesProvider()} is null.
@@ -654,7 +667,7 @@ public final class BioSeq implements SearchableCharIterator { //MPTAG
 		}
 		return residues_provider.indexOf(str, fromIndex);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.getID();
