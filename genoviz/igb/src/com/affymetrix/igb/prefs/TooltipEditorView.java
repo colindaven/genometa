@@ -332,6 +332,9 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		max_length_sl.setValue(DEFAULT_MAX_TOOLTIP_LENGTH);
 		max_length_ff.setText((new Integer(DEFAULT_MAX_TOOLTIP_LENGTH)).toString());
 		PreferenceUtils.getTooltipEditorPrefsNode().putInt("tooltip_length", DEFAULT_MAX_TOOLTIP_LENGTH);
+
+		enable_tooltips_cb.setSelected(DEFAULT_ENABLE_TOOLTIPS);
+		PreferenceUtils.getTooltipEditorPrefsNode().putBoolean("enable_tooltips", DEFAULT_ENABLE_TOOLTIPS);
 	}
  
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
