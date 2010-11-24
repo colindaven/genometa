@@ -232,15 +232,10 @@ public final class LoadFileAction extends AbstractAction {
 		SAMFileReader.setDefaultValidationStringency(SAMFileReader.ValidationStringency.LENIENT);
 		final SAMFileReader reader = new SAMFileReader(bamFile);
 
-		System.out.println(reader.getFileHeader().getSortOrder());
-
 		if(reader.getFileHeader().getSortOrder() == SAMFileHeader.SortOrder.coordinate) {
 			openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, speciesName);
 		} else {
 			// bamFile is not coordinate sorted, lets do it now (if the user confirms...)
-			//boolean userConfirmed = Application.confirmPanel("The BAM-File " + bamFile.getName() + " is not sorted on coordinates. Do you want to sort it now?");
-
-
 			Object[] options = {"Sort File", "Open without sorting", "Cancel"};
 			int dialogResult = JOptionPane.showOptionDialog(gviewerFrame, "The BAM-File seems to be not sorted by coordinates!\n"
 					+ "If you know that the File is already sorted by coordinates, you can try to open it without sorting.",
@@ -248,8 +243,8 @@ public final class LoadFileAction extends AbstractAction {
 
 			switch(dialogResult) {
 				case 0:
-					JFileChooser fc = new JFileChooserWithOverwriteWarning();
-					
+					JFileChooserWithOverwriteWarning fc = new JFileChooserWithOverwriteWarning();
+					fc.setSourceFile(bamFile);
 					fc.setSelectedFile(bamFile);
 					int fcResult = fc.showSaveDialog(gviewerFrame);
 					if(fcResult == JFileChooser.APPROVE_OPTION) {
@@ -261,8 +256,9 @@ public final class LoadFileAction extends AbstractAction {
 							public Void doInBackground() {
 								Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 
-								reader.getFileHeader().setSortOrder(SortOrder.coordinate);
-								SAMFileWriter writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, newBamFile);
+								SAMFileHeader newHeader = SAMFileHeaderCorrection.getCorrectedHeader(reader.getFileHeader());
+								newHeader.setSortOrder(SortOrder.coordinate);
+								SAMFileWriter writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(newHeader, false, newBamFile);
 
 								Iterator<SAMRecord> iterator = reader.iterator();
 								int i = 0;
@@ -323,8 +319,8 @@ public final class LoadFileAction extends AbstractAction {
 					break;
 				case 1:	break;	// overwrite bam-file
 				case 2:			// open filechooser for new filename
-					JFileChooser fc = new JFileChooserWithOverwriteWarning();
-
+					JFileChooserWithOverwriteWarning fc = new JFileChooserWithOverwriteWarning();
+					fc.setSourceFile(bamFile);
 					fc.setSelectedFile(bamFile);
 					int fcResult = fc.showSaveDialog(gviewerFrame);
 					if(fcResult == JFileChooser.APPROVE_OPTION) {
@@ -358,12 +354,14 @@ public final class LoadFileAction extends AbstractAction {
 					SAMFileReader.setDefaultValidationStringency(SAMFileReader.ValidationStringency.LENIENT);
 					SAMFileReader reader = new SAMFileReader(inputFile);
 
+					SAMFileHeader newHeader = SAMFileHeaderCorrection.getCorrectedHeader(reader.getFileHeader());
+
 					SAMFileWriter writer;
-					if(reader.getFileHeader().getSortOrder() == SortOrder.coordinate) {	// SAM is already sorted!
-						writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), true, outputFile);
+					if(newHeader.getSortOrder() == SortOrder.coordinate) {	// SAM is already sorted!
+						writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(newHeader, true, outputFile);
 					} else {
-						reader.getFileHeader().setSortOrder(SortOrder.coordinate);
-						writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), false, outputFile);
+						newHeader.setSortOrder(SortOrder.coordinate);
+						writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(newHeader, false, outputFile);
 					}
 
 					Iterator<SAMRecord> iterator = reader.iterator();
