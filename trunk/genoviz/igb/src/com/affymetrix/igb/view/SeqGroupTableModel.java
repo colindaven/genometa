@@ -38,16 +38,7 @@ final class SeqGroupTableModel extends AbstractTableModel {
 				}
 				return Long.toString((long) seq.getLengthDouble());
 			} else if (col == 2) {
-				GenericFeature genf = GeneralLoadUtils.getSelectedVersionFeatures().get(0);
-
-				if (genf.symL == null)
-					return -1;
-
-				@SuppressWarnings("unchecked")
-				List<SeqSymmetry> los = (List<SeqSymmetry>) genf.symL.getRegion(new SimpleSeqSpan(seq.getMin(), seq.getMax() -1, seq));
-
-				return los.size();
-
+				return GeneralLoadUtils.getNumberOfSymmetriesforSeq(seq);
 			}
 		}
 		return null;
