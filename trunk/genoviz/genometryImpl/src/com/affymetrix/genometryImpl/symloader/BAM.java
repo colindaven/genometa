@@ -30,6 +30,7 @@ import net.sf.picard.sam.BuildBamIndex;
 import net.sf.samtools.Cigar;
 import net.sf.samtools.CigarElement;
 import net.sf.samtools.CigarOperator;
+import net.sf.samtools.SAMException;
 
 import net.sf.samtools.SAMRecord;
 import net.sf.samtools.SAMFileHeader;
@@ -124,11 +125,17 @@ public final class BAM extends SymLoader {
 			if(initTheSeqs()){
 				super.init();
 			}
-		} catch (SAMFormatException ex) {
-			ErrorHandler.errorPanel("SAM exception", "A SAMFormatException has been thrown by the Picard tools.\n" +
-					"Please validate your BAM files and contact the Picard project at http://picard.sourceforge.net." +
-					"See console for the details of the exception.\n");
-			ex.printStackTrace();
+		
+		} catch (SAMException ex) {
+			if(ex instanceof SAMFormatException) {
+				SAMFormatException sAMFormatException = (SAMFormatException) ex;
+				ErrorHandler.errorPanel("SAM exception", "A SAMFormatException has been thrown by the Picard tools.\n" +
+						"Please validate your BAM files and contact the Picard project at http://picard.sourceforge.net." +
+						"See console for the details of the exception.\n");
+				sAMFormatException.printStackTrace();
+			} else {
+				ErrorHandler.errorPanel("BAM Exception", ex.getMessage());
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -508,7 +515,7 @@ public final class BAM extends SymLoader {
 		}
 	}
 
-	static private void createIndexFile(File bamfile) throws IOException{
+	static private void createIndexFile(File bamfile) throws IOException, SAMException {
 		File indexfile = new File(bamfile.getAbsolutePath() + ".bai");
 		if (!indexfile.createNewFile()) {
 			return;

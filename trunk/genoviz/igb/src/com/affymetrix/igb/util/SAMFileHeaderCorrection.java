@@ -26,7 +26,8 @@ public class SAMFileHeaderCorrection {
 
 	public SAMFileHeaderCorrection() {}
 
-	public static SAMFileHeader correctHeader(String headerString) {
+	public static SAMFileHeader getCorrectedHeader(SAMFileHeader header) {
+		String headerString = header.getTextHeader();
 		StringLineReader lineReader = new StringLineReader(headerString);
 
 		String nextLine;
