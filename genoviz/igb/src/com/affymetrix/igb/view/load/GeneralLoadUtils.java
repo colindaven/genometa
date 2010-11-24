@@ -854,4 +854,25 @@ public final class GeneralLoadUtils {
 		}
 		return versionNames;
 	}
+
+	/**
+	 * Querys the number of Symmetries for a given bio seq from the currently selected GenericFeature.
+	 *
+	 * This Symmetries are for example reads.
+	 *
+	 * @param seq BioSeq to query
+	 * @return number of Symmetries
+	 */
+	public static int getNumberOfSymmetriesforSeq(BioSeq seq) {
+		GenericFeature genf = GeneralLoadUtils.getSelectedVersionFeatures().get(0);
+
+		if (genf.symL == null) {
+			return -1;
+		}
+		@SuppressWarnings("unchecked")
+		List<SeqSymmetry> los = (List<SeqSymmetry>) genf.symL.getRegion(new SimpleSeqSpan(seq.getMin(), seq.getMax() - 1, seq));
+
+		return los.size();
+	}
+
 }
