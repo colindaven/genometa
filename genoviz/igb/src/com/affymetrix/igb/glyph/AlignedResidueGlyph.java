@@ -7,7 +7,6 @@ import com.affymetrix.genometryImpl.util.ImprovedStringCharIter;
 import com.affymetrix.genometryImpl.util.SearchableCharIterator;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.genoviz.glyph.AbstractResiduesGlyph;
-import com.affymetrix.igb.tiers.TierGlyph;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -44,6 +43,9 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	private Color forwardColor;
 	private Color reverseColor;
 
+	//BFTAG added
+	private final double glyphScaleingFactor = 0.15;
+
 	private static final ColorHelper helper = new ColorHelper();
 
 	public void setParentSeqStart(int beg) {
@@ -61,6 +63,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	public int getParentSeqEnd() {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
 	private static final class ColorHelper implements PreferenceChangeListener {
 		private static final Map<String, Color> DEFAULT_COLORS;
 		private final Color[] colors;
@@ -164,6 +167,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	// Essentially the same as SequenceGlyph.drawHorizontal
 	@Override
 	public void draw(ViewI view) {
+
 		if (packerClip || chariter == null) {
 			return;	// don't draw residues
 		}
@@ -197,6 +201,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			// ***** semantic zooming to show more detail *****
 			Rectangle2D.Double scratchrect = new Rectangle2D.Double(visible_seq_beg, coordbox.y,
 					visible_seq_span, coordbox.height);
+			
 			view.transformToPixels(scratchrect, pixelbox);
 			int seq_end_index = visible_seq_end - seq_beg;
 //			if(this.direction == 1 || this.direction == 2)
@@ -212,7 +217,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			int seq_pixel_offset = pixelbox.x;
 			String str = chariter.substring(seq_beg_index, seq_end_index);
 			Graphics g = view.getGraphics();
-			drawHorizontalResidues(g, pixel_width_per_base, str, seq_beg_index, seq_end_index, seq_pixel_offset);
+			drawHorizontalResidues(g, view, pixel_width_per_base, str, seq_beg_index, seq_end_index, seq_pixel_offset);
 		}
 	}
 
@@ -221,18 +226,20 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	 *
 	 * <p> We are showing letters regardless of the height constraints on the glyph.
 	 */
-	private void drawHorizontalResidues(Graphics g,
+	private void drawHorizontalResidues(Graphics g, ViewI view,
 			double pixelsPerBase,
 			String residueStr,
 			int seqBegIndex,
 			int seqEndIndex,
 			int pixelStart) {
 		char[] charArray = residueStr.toCharArray();
+		//BFTAG sorgt dafür, dass die Rechtecke mit den Dreicken nicht größer als View-Höhe*glyphScaleingFactor-Pixel werden
+		checkPixelBoxHeight((int)(view.getPixelBox().height * glyphScaleingFactor));
 		drawResidueRectangles(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelbox.x, pixelbox.y, pixelbox.height);
 		drawResidueStrings(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelStart);
 		//MPTAG Prüft für jeden Buchstaben ob er passt. Reicht da nicht einmaliges Prüfen ?
 		drawDirectionBar(true, g);
-		drawDirectionTriangle(false, g);
+		//drawDirectionTriangle(false, g);
 	}
 
 	private static void drawResidueRectangles(
@@ -249,6 +256,12 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			int offset = (int) (j * pixelsPerBase);
 			//ceiling is done to the width because we want the width to be as wide as possible to avoid losing pixels.
 			g.fillRect(x + offset, y, intPixelsPerBase, height);
+		}
+	}
+	
+	private void checkPixelBoxHeight(int maxHeight){
+		if(pixelbox.height > maxHeight){
+			pixelbox.height = maxHeight;
 		}
 	}
 

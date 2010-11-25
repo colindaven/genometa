@@ -532,6 +532,8 @@ public class TrackStyle implements ITrackStyleExtended {
 			if (DEBUG_NODE_PUTS) {
 				System.out.println("   %%%%% node.put() in AnnotStyle.setHeight(): " + human_name + ", " + h);
 			}
+			// BFTAG welche Höhe wird hier beeinflusst? Setzen von einem festen Wert ändert nichts
+			// an letztendlicher Glyphenhöhe ?!
 			getNode().putDouble(PREF_HEIGHT, h);
 		}
 	}
