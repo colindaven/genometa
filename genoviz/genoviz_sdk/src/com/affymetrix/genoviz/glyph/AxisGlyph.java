@@ -82,7 +82,7 @@ public class AxisGlyph extends Glyph {
 
 	// This DecimalFormat is used with the COMMA format.
 	// It simply instructs java to insert commas between every three characters.
-	DecimalFormat comma_format = new DecimalFormat("#,###.###");
+	protected DecimalFormat comma_format = new DecimalFormat("#,###.###");
 
 
 	// A couple constants used only in the draw method.
@@ -91,8 +91,8 @@ public class AxisGlyph extends Glyph {
 	// A couple of temporary rectangles used in the draw method
 	private final Rectangle2D.Double select_coord = new Rectangle2D.Double();
 	private final Rectangle select_pix = new Rectangle();
-	private final Rectangle2D.Double scratchcoords = new Rectangle2D.Double();
-	private final Rectangle scratchpixels = new Rectangle();
+	protected final Rectangle2D.Double scratchcoords = new Rectangle2D.Double();
+	protected final Rectangle scratchpixels = new Rectangle();
 
 	/**
 	 * Sets the font in which labels will be rendered.
@@ -347,9 +347,9 @@ public class AxisGlyph extends Glyph {
 		setCenter();
 	}
 
-	double center_line;
-	static int centerLineThickness = 2;
-	private Rectangle2D.Double lastCoordBox = null;
+	protected double center_line;
+	protected static int centerLineThickness = 2;
+	protected Rectangle2D.Double lastCoordBox = null;
 
 	/**
 	 * Centers the center_line within this axis' coordbox.
@@ -368,7 +368,7 @@ public class AxisGlyph extends Glyph {
 	 * Places the center_line inside the coordbox.
 	 * This should only be called when the coordbox has moved.
 	 */
-	private void placeCenter(ViewI theView) {
+	protected void placeCenter(ViewI theView) {
 
 		if (null == lastCoordBox) { // then this is the first time we've done this.
 
@@ -716,7 +716,7 @@ public class AxisGlyph extends Glyph {
 	 * @param clipbox
 	 * @param rev_tick_const
 	 */
-	private void drawTicks(double tick_loc, double max_map, double tick_increment, double tick_scaled_loc, double tick_scaled_increment, Graphics g, ViewI view, double scene_start, double scene_end, FontMetrics fm, int center_line_start, double rev_tick_loc, double rev_tick_scaled_loc, Rectangle clipbox, double rev_tick_const) {
+	protected void drawTicks(double tick_loc, double max_map, double tick_increment, double tick_scaled_loc, double tick_scaled_increment, Graphics g, ViewI view, double scene_start, double scene_end, FontMetrics fm, int center_line_start, double rev_tick_loc, double rev_tick_scaled_loc, Rectangle clipbox, double rev_tick_const) {
 		if (!reversed) {
 			drawForwardTick(tick_loc, max_map, tick_increment, tick_scaled_loc, tick_scaled_increment, g, view, scene_start, scene_end, fm, center_line_start);
 		} else {
@@ -774,7 +774,7 @@ public class AxisGlyph extends Glyph {
 	 * @param center_line_start
 	 * @param clipbox
 	 */
-	private void drawSubTicks(double subtick_loc, double subtick_increment, LinearTransform cumulative, double rev_subtick_loc, double max_map, Graphics g, ViewI view, double scene_start, double scene_end, int center_line_start, Rectangle clipbox) {
+	protected void drawSubTicks(double subtick_loc, double subtick_increment, LinearTransform cumulative, double rev_subtick_loc, double max_map, Graphics g, ViewI view, double scene_start, double scene_end, int center_line_start, Rectangle clipbox) {
 		double subtick_scaled_increment;
 		double subtick_scaled_loc;
 		if (orient == VERTICAL) {
@@ -829,7 +829,7 @@ public class AxisGlyph extends Glyph {
 	}
 
 
-	private void setColorForSelections(Graphics g, ViewI view, int canvas_loc) {
+	protected void setColorForSelections(Graphics g, ViewI view, int canvas_loc) {
 		if (selected_regions != null) {
 			g.setColor(getForegroundColor());
 			for (int[] select_range : selected_regions) {
@@ -844,7 +844,7 @@ public class AxisGlyph extends Glyph {
 	}
 
 
-	private void setColorForSelections2(Graphics g, ViewI view, int center_line_start) {
+	protected void setColorForSelections2(Graphics g, ViewI view, int center_line_start) {
 		// Drawing selected major axis ticks and labels in red if selected
 		if (selected_regions != null) {
 			g.setColor(getBackgroundColor());
@@ -909,7 +909,7 @@ public class AxisGlyph extends Glyph {
 	 * @param theNumber to convert
 	 * @return a String representing the number.
 	 */
-	private String stringRepresentation(double theNumber, double theIncrement) {
+	protected String stringRepresentation(double theNumber, double theIncrement) {
 		double double_label = theNumber / this.label_scale;
 		int int_label;
 		// This fix should be faster than checking the string
@@ -954,7 +954,7 @@ public class AxisGlyph extends Glyph {
 	}
 
 
-	private final double tickIncrement(double theUnitsPerPixel, double thePixelsPerUnit) {
+	protected final double tickIncrement(double theUnitsPerPixel, double thePixelsPerUnit) {
 		double result = 1;
 		double increment = 1;
 		double remainder;
