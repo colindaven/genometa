@@ -869,6 +869,11 @@ public class NeoMap extends NeoWidget implements
 		return axis;
 	}
 
+	public void addAxis(AxisGlyph axis) {
+		scene.getGlyph().addChild(axis);
+		axes.add(axis);
+	}
+
 	public void setRangeZoomer(Adjustable adj) {
 		setZoomer(X, adj);
 	}
