@@ -12,203 +12,342 @@
  */
 package com.affymetrix.igb.view;
 
+import com.affymetrix.genometryImpl.AnnotatedSeqGroup;
+import com.affymetrix.genometryImpl.BioSeq;
 import com.affymetrix.genoviz.awt.AdjustableJSlider;
-import java.applet.*;
-import java.awt.event.AdjustmentEvent;
 import java.awt.event.MouseEvent;
-import java.net.MalformedURLException;
 import java.util.*;
 
-import com.affymetrix.genoviz.awt.NeoPanel;
 import com.affymetrix.genoviz.bioviews.GlyphI;
 import com.affymetrix.genoviz.bioviews.LinearTransform;
 import com.affymetrix.genoviz.event.NeoMouseEvent;
-import com.affymetrix.genoviz.glyph.AxisGlyph;
 import com.affymetrix.genoviz.widget.NeoMap;
-import com.affymetrix.genoviz.glyph.BasicGraphGlyph;
-import com.affymetrix.genoviz.glyph.BasicImageGlyph;
-import com.affymetrix.genoviz.glyph.LabelledRectGlyph;
+import com.affymetrix.igb.glyph.fhh.*;
 import com.affymetrix.genoviz.util.NeoConstants;
-import com.affymetrix.genoviz.widget.NeoWidget;
+import com.affymetrix.igb.view.load.GeneralLoadUtils;
 import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.AdjustmentListener;
+import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
 import java.awt.geom.Point2D;
-import java.net.URL;
-import javax.swing.JApplet;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
-public class BarGraphMap extends JPanel implements ComponentListener, MouseListener, AdjustmentListener{
+public class BarGraphMap extends JPanel {
 
+	// Java GUI Components
 	NeoMap map;
 	AdjustableJSlider xzoomer;
 	AdjustableJSlider yzoomer;
+	// Glyph Lists
 	Vector<LabelledRectGlyph> selected = new Vector<LabelledRectGlyph>();
-
 	Vector<GlyphI> glyphs = new Vector<GlyphI>();
+	// Hairline
 	private UnibrowHairline hairline = null;
+	//
+	private int _maxValue = 10;
+	private int _seqCount = 0;
+	private int _barWidth = 10;
+	private int _barMargin = 1;
+	private float _verticalInitialZoom = 1.1f;// percantage (a value greater then 1.0 zooms out!)
+	private int _achsisOffset = 40;
+	private int _barOffset = _achsisOffset + 1;
+	private boolean _initialized = false;
+	private AnnotatedSeqGroup _currentSeqGroup = null;
+	//private TreeSet<SeqReads> _currentStatistics = null;
+	private LinkedList<SeqReads>  _currentStatistics = null;
+	private HashMap<AnnotatedSeqGroup, LinkedList<SeqReads>> _groups = null;
 
-	public void init() {
-		map = new NeoMap(true, true );  // no internal vertical scroller
-		//map.setZoomBehavior(NeoMap.X,  NeoMap.CONSTRAIN_COORD, 0);
-		//map.setZoomBehavior(NeoMap.Y,  NeoMap.CONSTRAIN_COORD, 0);
+	public BarGraphMap() {
+		_groups = new HashMap<AnnotatedSeqGroup, LinkedList<SeqReads>>();
+
+		// init NeoMap
+		initNeoMap();
+
+		// inits Gui Components
+		initGuiComponents();
+	}
+
+	/**
+	 * Within this method we need a SequenceGroup to init
+	 * the BarGraph
+	 */
+	public void init(AnnotatedSeqGroup seqGroup) {
+		if (_currentSeqGroup == seqGroup) {
+			return;
+		}
+
+		map.clearWidget();
+		glyphs.clear();
+		selected.clear();
+		_maxValue = 10;
+		_seqCount = 0;
+		_currentSeqGroup = seqGroup;
+
+
+		SwingUtilities.invokeLater(new Runnable() {
+
+			public void run() {
+
+				if (_currentSeqGroup == null) {
+					loadTestData();
+				} else {
+					loadData();
+				}
+
+
+
+
+				// X (Vertical) Range
+				map.setMapOffset(0, _barOffset + _seqCount * (_barWidth + _barMargin));
+
+				// Y (Horizontal) Range
+				map.setMapRange(-(int) ((float) _maxValue * _verticalInitialZoom), 0);
+
+
+
+				AxisGlyph axis = new AxisGlyph(NeoConstants.VERTICAL);
+				axis.setCoords(_achsisOffset - 10, map.getScene().getCoordBox().y, 20,
+						map.getScene().getCoordBox().height);
+				axis.setTickPlacement(AxisGlyph.LEFT);
+				axis.setCoords(_achsisOffset, 0, 0, -((float) _maxValue * _verticalInitialZoom));
+				map.addAxis(axis);
+
+				// dreates hairline, to mark selection
+				hairline = new UnibrowHairline(map);
+				// scroll by default in at the minimum coordinate of Y-Achsis
+				map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
+
+				map.stretchToFit();
+
+				map.scroll(NeoMap.Y, -((float) _maxValue * _verticalInitialZoom));
+
+
+				hairline.setSpot(getXZoomPoint(_barOffset));
+
+				map.updateWidget();
+
+				_initialized = true;
+			}
+		});
+	}
+
+	private void initNeoMap() {
+		// with internal vertical and horizontal scroller
+		map = new NeoMap(true, true, NeoConstants.VERTICAL, new LinearTransform());
+		// double buffered canvas (no flicker)
 		map.getNeoCanvas().setDoubleBuffered(false);
-		//map.setScrollIncrementBehavior(NeoMap.X, NeoMap.AUTO_SCROLL_INCREMENT);
-
-		//map.setScrollIncrementBehavior(NeoMap.Y, NeoMap.AUTO_SCROLL_INCREMENT);
-		map.setMapOffset(-200, 0);
-		map.setMapRange(0, 1000);
-		//map.addAxis(0);
-		//map.stretchToFit(true, true);
+		// add and init zoom abilities
 		xzoomer = new AdjustableJSlider(Adjustable.HORIZONTAL);
 		yzoomer = new AdjustableJSlider(Adjustable.VERTICAL);
-		yzoomer.addAdjustmentListener(this);
 		map.setZoomer(NeoMap.X, xzoomer);
 		map.setZoomer(NeoMap.Y, yzoomer);
-		map.addComponentListener(this);
+
+		// listen if the component will resized
+		map.addComponentListener(new ComponentAdapter() {
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+
+					public void run() {
+						if (!_initialized) {
+							return;
+						}
+						map.scroll(NeoMap.Y, -((float) _maxValue * _verticalInitialZoom));
+						map.updateWidget();
+						// scroll by default in at the minimum coordinate of X-Achsis
+						hairline.setSpot(getXZoomPoint(_barOffset));
+						// scroll by default in at the minimum coordinate of Y-Achsis
+						map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
+					}
+				});
+			}
+		});
+
+		// add mouse listener
+		map.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (!(e instanceof NeoMouseEvent)) {
+					return;
+				}
+				mouseSelection((NeoMouseEvent) e);
+			}
+		});
+	}
+
+	private void initGuiComponents() {
+		// init GUI
 		Container cpane = this;
 		cpane.setLayout(new BorderLayout());
 		cpane.add("Center", map);
 		cpane.add("North", xzoomer);
 		cpane.add("West", yzoomer);
-		map.getNeoCanvas().addComponentListener(this);
-		map.addMouseListener(this);
-
-		// dreates hairline, to mark selection
-		hairline = new UnibrowHairline(map);
-
-
-		map.configure("-glyphtype com.affymetrix.genoviz.glyph.AxisGlyph -orient " + NeoConstants.VERTICAL);
-		AxisGlyph ag;
-		ag = (AxisGlyph) map.addItem(0, 0 );
-		glyphs.add(ag);
-		ag.setForegroundColor(Color.black);
-		ag.setCoords(0, 0, 20,
-					0);
-		//rg.setColor(Color.RED);
-		//rg.setText("NC 1212");
-		//rg.setCoords(0, 0, 10, -100);
-
-		//double xcoords[] = {0, 100, 200, 300, 400, 500, 600, 700, 800, 900};
-		//double ycoords[] = {0, -50, -25, 25, 100, 50, 175, -10, 50, 74};
-
-		/*map.configure("-glyphtype BasicGraphGlyph -foreground pink -offset 0 "
-				+ "-width 200 -packer null");
-		BasicGraphGlyph sg = (BasicGraphGlyph) map.addItem(0, 900);
-		sg.setPointCoords(xcoords, ycoords);
-		sg.setBackgroundColor(Color.red);*/
-
-		map.configure("-glyphtype com.affymetrix.genoviz.glyph.LabelledRectGlyph ");
-
-		// Put a an alpha helix image (or images, if tiled) from 600 to 700.
-		LabelledRectGlyph rg;
-		rg = (LabelledRectGlyph) map.addItem(0, 100 );
-		glyphs.add(rg);
-		rg.setColor(Color.RED);
-		rg.setText("NC 1213");
-		rg.setCoords(0, 0, 10, -100);
-
-		LabelledRectGlyph rg2;
-		rg2 = (LabelledRectGlyph) map.addItem(0, 100 );
-		glyphs.add(rg2);
-		rg2.setColor(Color.RED);
-		rg2.setText("NC 1212");
-		rg2.setCoords(11, 0, 10, -100);
 	}
-	
-	public void componentHidden(ComponentEvent e) {
 
-    }
-    public void componentMoved(ComponentEvent e) {
-
-    }
-    public void componentResized(ComponentEvent e) {
-		// update graphs and annotations when the map is resized.
-		//SwingUtilities.invokeLater(new Runnable() {
-			//public void run() {
-				/*Rectangle mapbox = map.getView().getPixelBox();
-				for (int i = 0; i < glyphs.size(); i++) {
-					
-				}*/
-				//map.stretchToFit(false, true);
-				//map.updateWidget();
-				//map.zoomOffset(0.0);
-
-
-		map.scroll(NeoMap.Y, -200.0);
-		map.updateWidget();
-
-			//}
-		//});
-    }
-    public void componentShown(ComponentEvent e) {
-
-
-    }
-	public void mouseClicked(MouseEvent e) {
-	}
-	public void mousePressed(MouseEvent e) {
-		//throw new UnsupportedOperationException("Not supported yet.");
-	}
-	public void mouseReleased(MouseEvent evt) {
-		if (!(evt instanceof NeoMouseEvent)) {
-			return;
-		}
-		NeoMouseEvent nevt = (NeoMouseEvent) evt;
-
+	private void mouseSelection(NeoMouseEvent nevt) {
 		Point2D.Double zoom_point = new Point2D.Double(nevt.getCoordX(), nevt.getCoordY());
+
+		Point pixZoomPoint = new Point();
+		map.getView().transformToPixels(zoom_point, pixZoomPoint);
+
+		
+		//pixZoomPoint.x -= _barOffset;
+
+		if (pixZoomPoint.x < _barOffset) {
+			pixZoomPoint.x = 0;
+		} else{
+			pixZoomPoint.x -= _barOffset;
+		}
+
+
+		map.getView().transformToCoords(pixZoomPoint, zoom_point);
+
 		List<GlyphI> hits = nevt.getItems();
 
 		// DESELECT THE OLD GLYPHS
 		Iterator<LabelledRectGlyph> it = selected.iterator();
-		while( it.hasNext() ){
+		while (it.hasNext()) {
 			it.next().setBackgroundColor(Color.RED);
 		}
 		selected.clear();
-		
+
 		Iterator<GlyphI> it2 = hits.iterator();
 		// SELECT THE NEW GLYPHS
 
-		//while( it2.hasNext() ){//  multiselection
-		if( it2.hasNext() ){
+		while (it2.hasNext()) {
 			GlyphI g = it2.next();
 			System.out.println(g.getCoordBox().getY());
-			if( g instanceof LabelledRectGlyph){
-				selected.add((LabelledRectGlyph)g);
-				((LabelledRectGlyph)g).setBackgroundColor(Color.MAGENTA);
+			if (g instanceof LabelledRectGlyph) {
+				selected.add((LabelledRectGlyph) g);
+				((LabelledRectGlyph) g).setBackgroundColor(Color.MAGENTA);
+				break;// no multiselection
 			}
 		}
 
 
 		if (hairline != null) {
-			hairline.setSpot((int)zoom_point.getX());
+			hairline.setSpot((int) zoom_point.getX());
 		}
 
-		map.setZoomBehavior(NeoMap.X, NeoMap.CONSTRAIN_COORD, (int)zoom_point.getX());
+		//map.setZoomBehavior(NeoMap.X, NeoMap.CONSTRAIN_COORD, (int)zoom_point.getX());
 
 		map.updateWidget();
 	}
 
-	public void mouseEntered(MouseEvent e) {
-	}
-	public void mouseExited(MouseEvent e) {
-		//throw new UnsupportedOperationException("Not supported yet.");
+	private void addBar(int reads, String name) {
+		LabelledRectGlyph g = new LabelledRectGlyph();
+		g.setColor(Color.RED);
+		g.setText(name);
+		g.setRotPitch(Math.toRadians(-90.0));
+		g.setPixelOffset( /*glyphs.size()*5 +*/_barOffset);
+		g.setCoords(glyphs.size() * (_barWidth + _barMargin), 0, 10, -reads);
+		//g.setCoords(glyphs.size()*(_barWidth), 0, 10, -reads);
+		glyphs.add(g);
+		map.addItem(g);
 	}
 
-	public void adjustmentValueChanged(AdjustmentEvent e) {
-		System.out.println(e.getValue());
+	private void loadData() {
+		if (_currentSeqGroup == null) {
+			throw new RuntimeException("Sequence Group is null!");
+		}
+
+
+		if (_groups.containsKey(_currentSeqGroup)) {
+			_currentStatistics = _groups.get(_currentSeqGroup);
+		} else {
+			// create new read statistics list
+			//_currentStatistics = new TreeSet<SeqReads>(new SeqReadsComparator());
+			_currentStatistics = new LinkedList<SeqReads>();
+
+			int c  = 0;
+			for (BioSeq bs : _currentSeqGroup.getSeqList()) {
+				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesforSeq(bs));
+				_currentStatistics.add(tmpSeqRead);
+				if( ++c == 300) break;
+			}
+
+
+			Collections.sort(_currentStatistics, new SeqReadsComparator());
+
+			_groups.put(_currentSeqGroup, _currentStatistics);
+		}
+
+		_seqCount = _currentStatistics.size();
+
+		int c = 0;
+		for (SeqReads sr : _currentStatistics) {
+			c++;
+			int reads = sr.getReads().intValue();
+			String id = sr.getSeq().getID();
+
+			String barText = "[" + c + "][" + reads + "] " + id;
+
+			System.out.println("addBar: -= " + barText + " =-");
+
+			addBar(reads, barText);
+			if (reads > _maxValue) {
+				_maxValue = reads;
+			}
+		}
+	}
+
+	private void loadTestData() {
+		_maxValue = 100000;
+		_seqCount = 1000;
+		int divid = (int) (_maxValue / (float) _seqCount);
+
+		Random rand = new Random();
+		for (int i = 0; i < _seqCount; i++) {
+			int reads = _maxValue - (divid * i + rand.nextInt(divid));
+			addBar(reads, "[" + (i + 1) + "] NC " + reads);
+		}
+	}
+
+	private double getXZoomPoint(int zx) {
+		Point pixZoomPoint = new Point(zx, 0);
+		Point2D.Double zoom_point = new Point2D.Double();
+
+		if (pixZoomPoint.x < _barOffset) {
+			pixZoomPoint.x = _barOffset;
+		}
+		map.getView().transformToCoords(pixZoomPoint, zoom_point);
+		return zoom_point.x;
+	}
+
+	public class SeqReadsComparator implements Comparator<SeqReads> {
+		public int compare(SeqReads o1, SeqReads o2) {
+			return GeneralLoadUtils.getNumberOfSymmetriesforSeq(o2.getSeq())
+					- GeneralLoadUtils.getNumberOfSymmetriesforSeq(o1.getSeq());
+		}
+	}
+
+	public class SeqReads {
+
+		private BioSeq _seq = null;
+		private Integer _reads = null;
+
+		public SeqReads(BioSeq seq, int reads) {
+			_seq = seq;
+			_reads = new Integer(reads);
+		}
+
+		/**
+		 * @return the _seq
+		 */ public BioSeq getSeq() {
+			return _seq;
+		}
+
+		/**
+		 * @return the _reads
+		 */ public Integer getReads() {
+			return _reads;
+		}
 	}
 }
