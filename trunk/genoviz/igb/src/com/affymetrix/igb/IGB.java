@@ -65,6 +65,8 @@ import com.affymetrix.igb.action.*;
 import com.affymetrix.igb.util.ScriptFileLoader;
 import com.affymetrix.igb.util.ThreadUtils;
 import com.affymetrix.igb.view.external.ExternalViewer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import static com.affymetrix.igb.IGBConstants.BUNDLE;
 import static com.affymetrix.igb.IGBConstants.APP_NAME;
@@ -113,6 +115,8 @@ public final class IGB extends Application
 	private AnnotatedSeqGroup prev_selected_group = null;
 	private BioSeq prev_selected_seq = null;
 	public static volatile String commandLineBatchFileStr = null;	// Used to run batch file actions if passed via command-line
+	private JTabbedPane neoMapPane;
+	private BarGraphMap barGraph;
 	
 	/**
 	 * Start the program.
@@ -404,14 +408,27 @@ public final class IGB extends Application
 		splitpane.setDividerLocation(frm.getHeight() - (table_height + fudge));
 
 
-		JTabbedPane neoMapPane = new JTabbedPane();
+		neoMapPane = new JTabbedPane();
 		neoMapPane.insertTab("Sequence Viewer", null, map_view, "Sequence Viewer", 0);
 
 		//at firtst only for tests
-		BarGraphMap barGraph = new BarGraphMap();
-		barGraph.init();
-		neoMapPane.insertTab("Overview", null, barGraph, "Overview", 1);
 
+
+		barGraph = new BarGraphMap();
+		neoMapPane.insertTab("Overview", null, barGraph, "Overview", 1);
+		neoMapPane.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if( neoMapPane.getSelectedComponent() == barGraph ){
+					if( GenometryModel.getGenometryModel().getSelectedSeqGroup() != null  ){
+						barGraph.init( GenometryModel.getGenometryModel().getSelectedSeqGroup() );
+					}else
+					{
+						barGraph.init( null );
+					}
+					
+				}
+			}
+		});
 
 		splitpane.setTopComponent(neoMapPane);
 
