@@ -51,19 +51,29 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
     private javax.swing.JPanel settings_panel;
     private javax.swing.JButton up_button;
 
+	private boolean _isBAM;
+
 	public static final int DEFAULT_MAX_TOOLTIP_LENGTH = 25;
 	public static final boolean DEFAULT_ENABLE_TOOLTIPS = true;
 	
 
-	public TooltipEditorView() {
+	public TooltipEditorView(boolean isBAM) {
 		super();
+
+		_isBAM = isBAM;
 
 		initComponents();
 
 		fillCombobox();
 
-		this.setName("Tooltip Editor");
-		this.setToolTipText("Edit Tooltip display");
+		if(_isBAM) {
+			this.setName("Tooltip Editor BAM");
+			this.setToolTipText("Edit Tooltip BAM display");
+		}
+		else {
+			this.setName("Tooltip Editor GGF");
+			this.setToolTipText("Edit Tooltip GGF display");
+		}
 		this.setLayout(new BorderLayout());
 
 		this.add( main_panel, BorderLayout.CENTER );
@@ -72,11 +82,20 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 		list.setModel(model);
 
-		try {
-			PreferenceUtils.getTooltipEditorPrefsNode().flush();
-		} catch (Exception e) {
+		if(_isBAM) {
+			try {
+				PreferenceUtils.getTooltipEditorBAMPrefsNode().flush();
+			} catch (Exception e) {
+			}
+			PreferenceUtils.getTooltipEditorBAMPrefsNode().addPreferenceChangeListener(this);
 		}
-		PreferenceUtils.getTooltipEditorPrefsNode().addPreferenceChangeListener(this);
+		else {
+			try {
+				PreferenceUtils.getTooltipEditorGFFPrefsNode().flush();
+			} catch (Exception e) {
+			}
+			PreferenceUtils.getTooltipEditorGFFPrefsNode().addPreferenceChangeListener(this);
+		}
 
 		add_button.addActionListener(new ActionListener() {
 
@@ -120,9 +139,6 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 				lengthSliderChange();
 			}
 		});
-		int max_length = PreferenceUtils.getTooltipEditorPrefsNode().getInt("tooltip_length", DEFAULT_MAX_TOOLTIP_LENGTH);
-		max_length_sl.setValue(max_length);
-		max_length_ff.setText((new Integer(max_length)).toString());
 		max_length_ff.setEditable(false);
 		enable_tooltips_cb.addActionListener(new ActionListener() {
 
@@ -130,53 +146,85 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 				enableTooltips();
 			}
 		});
-		boolean enable_tooltip = PreferenceUtils.getTooltipEditorPrefsNode().getBoolean("enable_tooltips", DEFAULT_ENABLE_TOOLTIPS);
-		enable_tooltips_cb.setSelected(enable_tooltip);
-
+		updateGlobalTooltipSettings();
 		updateList();
 		validate();
 	}
 
 	public void refresh() {
 		//JOptionPane.showMessageDialog(null, "refresh()");
-		if (PreferenceUtils.getTooltipEditorPrefsNode().getBoolean("refresh", false)) {
-			return;
+		if(_isBAM) {
+			if (PreferenceUtils.getTooltipEditorBAMPrefsNode().getBoolean("refresh", false)) {
+				return;
+			}
 		}
+		else {
+			if (PreferenceUtils.getTooltipEditorGFFPrefsNode().getBoolean("refresh", false)) {
+				return;
+			}
+		}
+		
 		//JOptionPane.showMessageDialog(null, "refreshing view");
 		updateList();
 	}
 
+	public void updateGlobalTooltipSettings() {
+		int max_length = PreferenceUtils.getTooltipEditorBAMPrefsNode().getInt("tooltip_length", DEFAULT_MAX_TOOLTIP_LENGTH);
+		max_length_sl.setValue(max_length);
+		max_length_ff.setText((new Integer(max_length)).toString());
+
+		boolean enable_tooltip = PreferenceUtils.getTooltipEditorBAMPrefsNode().getBoolean("enable_tooltips", DEFAULT_ENABLE_TOOLTIPS);
+		enable_tooltips_cb.setSelected(enable_tooltip);
+	}
+
 	private void updateList() {
 		//JOptionPane.showMessageDialog(null, "showShortcuts()");
-		Preferences tooltip_editor_node = PreferenceUtils.getTooltipEditorPrefsNode();
+		Preferences tooltip_editor_node = null;
+		if(_isBAM) {
+			tooltip_editor_node = PreferenceUtils.getTooltipEditorBAMPrefsNode();
+		}
+		else {
+			tooltip_editor_node = PreferenceUtils.getTooltipEditorGFFPrefsNode();
+		}
 		String num;
 
 		if ( tooltip_editor_node.get( "0", "dummy").equals("dummy") ) {
 			setDefaults();
 		}
- else
-		{
-
-		model.clear();
-		for (int i = 0; i < 20; i++) {
-			num = new String().valueOf(i);
-			if (!(tooltip_editor_node.get(num, "dummy").equals("dummy"))) {
-				model.addElement(tooltip_editor_node.get(num, "no value"));
+		else {
+			model.clear();
+			for (int i = 0; i < 20; i++) {
+				num = new String().valueOf(i);
+				if (!(tooltip_editor_node.get(num, "dummy").equals("dummy"))) {
+					model.addElement(tooltip_editor_node.get(num, "no value"));
+				}
 			}
-		}
 		}
 	}
 
 	public void preferenceChange(PreferenceChangeEvent evt) {
 		//JOptionPane.showMessageDialog(null, "preferenceChange()");
-		if (evt.getNode() != PreferenceUtils.getTooltipEditorPrefsNode()) {
-			return;
+		if(_isBAM) {
+			if (evt.getNode() != PreferenceUtils.getTooltipEditorBAMPrefsNode()) {
+				return;
+			}
+			Boolean refresh = PreferenceUtils.getTooltipEditorBAMPrefsNode().getBoolean("refresh", true);
+			if (refresh == true) {
+				//JOptionPane.showMessageDialog(null, "refresh is true");
+				refresh();
+			}
 		}
-		Boolean refresh = PreferenceUtils.getTooltipEditorPrefsNode().getBoolean("refresh", true);
-		if (refresh == true) {
-			//JOptionPane.showMessageDialog(null, "refresh is true");
-			refresh();
+		else {
+			if (evt.getNode() != PreferenceUtils.getTooltipEditorGFFPrefsNode()) {
+				return;
+			}
+			Boolean refresh = PreferenceUtils.getTooltipEditorGFFPrefsNode().getBoolean("refresh", true);
+			if (refresh == true) {
+				//JOptionPane.showMessageDialog(null, "refresh is true");
+				refresh();
+			}
 		}
+		
 	}
 
 	public void addAction() {
@@ -228,12 +276,11 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	public void lengthSliderChange() {
 		int length = max_length_sl.getValue();
 		max_length_ff.setText((new Integer(length)).toString());
-		PreferenceUtils.getTooltipEditorPrefsNode().putInt("tooltip_length", length);
+		PreferenceUtils.getTooltipEditorBAMPrefsNode().putInt("tooltip_length", length);
 	}
 
 	public void enableTooltips() {
-		PreferenceUtils.getTooltipEditorPrefsNode().putBoolean("enable_tooltips", enable_tooltips_cb.isSelected());
-		SeqMapView.SHOW_PROP_TOOLTIP = enable_tooltips_cb.isSelected();
+		PreferenceUtils.getTooltipEditorBAMPrefsNode().putBoolean("enable_tooltips", enable_tooltips_cb.isSelected());
 	}
 
 	public void removeAction() {
@@ -255,32 +302,53 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	}
 
 	public void fillCombobox() {
-		element_cb.addItem("name");
-		element_cb.addItem("id");
-		element_cb.addItem("chromosome");
-		element_cb.addItem("start");
-		element_cb.addItem("end");
-		element_cb.addItem("length");
-		element_cb.addItem("type");
-		element_cb.addItem("residues");
-		element_cb.addItem("VN");
-		element_cb.addItem("score");
-		element_cb.addItem("SEQ");
-		element_cb.addItem("SM");
-		element_cb.addItem("baseQuality");
-		element_cb.addItem("cigar");
-		element_cb.addItem("XA");
-		element_cb.addItem("forward");
-		element_cb.addItem("NM");
-		element_cb.addItem("method");
-		element_cb.addItem("MD");
-		element_cb.addItem("CL");
-		element_cb.addItem("miep");
+		if(_isBAM) {
+			element_cb.addItem("name");
+			element_cb.addItem("id");
+			element_cb.addItem("chromosome");
+			element_cb.addItem("start");
+			element_cb.addItem("end");
+			element_cb.addItem("length");
+			element_cb.addItem("type");
+			element_cb.addItem("residues");
+			element_cb.addItem("VN");
+			element_cb.addItem("score");
+			element_cb.addItem("SEQ");
+			element_cb.addItem("SM");
+			element_cb.addItem("baseQuality");
+			element_cb.addItem("cigar");
+			element_cb.addItem("XA");
+			element_cb.addItem("forward");
+			element_cb.addItem("NM");
+			element_cb.addItem("method");
+			element_cb.addItem("MD");
+			element_cb.addItem("CL");
+			element_cb.addItem("miep");
+		}
+		else {
+			element_cb.addItem("chromosome");
+			element_cb.addItem("start");
+			element_cb.addItem("end");
+			element_cb.addItem("length");
+			element_cb.addItem("type");
+			element_cb.addItem("feature_type");
+			element_cb.addItem("source");
+			element_cb.addItem("locus_tag");
+			element_cb.addItem("db_xref");
+			element_cb.addItem("ID");
+			element_cb.addItem("method");
+		}
 	}
 
 	synchronized void writeAllElements() {
 		//JOptionPane.showMessageDialog(null, "writeAllElements()");
-		Preferences tooltip_editor_node = PreferenceUtils.getTooltipEditorPrefsNode();
+		Preferences tooltip_editor_node = null;
+		if(_isBAM) {
+			tooltip_editor_node = PreferenceUtils.getTooltipEditorBAMPrefsNode();
+		}
+		else {
+			tooltip_editor_node = PreferenceUtils.getTooltipEditorGFFPrefsNode();
+		}
 		tooltip_editor_node.putBoolean("refresh", false);
 		for (int i = 0; i < 20; i++) {
 			String num = new String().valueOf(i);
@@ -296,7 +364,13 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	}
 
 	void writeElement(int index) {
-		Preferences tooltip_editor_node = PreferenceUtils.getTooltipEditorPrefsNode();
+		Preferences tooltip_editor_node = null;
+		if(_isBAM) {
+			tooltip_editor_node = PreferenceUtils.getTooltipEditorBAMPrefsNode();
+		}
+		else {
+			tooltip_editor_node = PreferenceUtils.getTooltipEditorGFFPrefsNode();
+		}
 		String num = new String().valueOf(index);
 		String item = new String();
 		item = (String) model.get(index);
@@ -304,39 +378,54 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		tooltip_editor_node.put(num, item);
 	}
 
-	void setDefaults()
-	{
+	void setDefaults() {
 		model.clear();
-		model.addElement("name");
-		model.addElement("id");
-		model.addElement("chromosome");
-		model.addElement("start");
-		model.addElement("end");
-		model.addElement("length");
-		model.addElement("type");
-		model.addElement("residues");
-		model.addElement("VN");
-		model.addElement("score");
-		model.addElement("SEQ");
-		model.addElement("SM");
-		model.addElement("baseQuality");
-		model.addElement("cigar");
-		model.addElement("XA");
-		model.addElement("forward");
-		model.addElement("NM");
-		model.addElement("method");
-		model.addElement("MD");
-		model.addElement("CL");
+		if(_isBAM) {
+			model.addElement("name");
+			model.addElement("id");
+			model.addElement("chromosome");
+			model.addElement("start");
+			model.addElement("end");
+			model.addElement("length");
+			model.addElement("type");
+			model.addElement("residues");
+			model.addElement("VN");
+			model.addElement("score");
+			model.addElement("SEQ");
+			model.addElement("SM");
+			model.addElement("baseQuality");
+			model.addElement("cigar");
+			model.addElement("XA");
+			model.addElement("forward");
+			model.addElement("NM");
+			model.addElement("method");
+			model.addElement("MD");
+			model.addElement("CL");
+		}
+		else {
+			model.addElement("chromosome");
+			model.addElement("start");
+			model.addElement("end");
+			model.addElement("length");
+			model.addElement("type");
+			model.addElement("feature_type");
+			model.addElement("source");
+			model.addElement("locus_tag");
+			model.addElement("db_xref");
+			model.addElement("ID");
+			model.addElement("method");
+		}
 		writeAllElements();
 
 		max_length_sl.setValue(DEFAULT_MAX_TOOLTIP_LENGTH);
 		max_length_ff.setText((new Integer(DEFAULT_MAX_TOOLTIP_LENGTH)).toString());
-		PreferenceUtils.getTooltipEditorPrefsNode().putInt("tooltip_length", DEFAULT_MAX_TOOLTIP_LENGTH);
+		PreferenceUtils.getTooltipEditorBAMPrefsNode().putInt("tooltip_length", DEFAULT_MAX_TOOLTIP_LENGTH);
 
 		enable_tooltips_cb.setSelected(DEFAULT_ENABLE_TOOLTIPS);
-		PreferenceUtils.getTooltipEditorPrefsNode().putBoolean("enable_tooltips", DEFAULT_ENABLE_TOOLTIPS);
+		PreferenceUtils.getTooltipEditorBAMPrefsNode().putBoolean("enable_tooltips", DEFAULT_ENABLE_TOOLTIPS);
 	}
- 
+	
+	
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
@@ -344,7 +433,6 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
         settings_panel = new javax.swing.JPanel();
         max_length_desc_l = new javax.swing.JLabel();
         max_length_sl = new javax.swing.JSlider();
-        default_button = new javax.swing.JButton();
         max_length_ff = new javax.swing.JFormattedTextField();
         enable_tooltips_cb = new javax.swing.JCheckBox();
         editor_panel = new javax.swing.JPanel();
@@ -356,16 +444,15 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
         up_button = new javax.swing.JButton();
         down_button = new javax.swing.JButton();
         remove_button = new javax.swing.JButton();
+        default_button = new javax.swing.JButton();
 
-        settings_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
+        settings_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Global tooltip settings"));
 
         max_length_desc_l.setText("Max. Length");
 
         max_length_sl.setMaximum(50);
         max_length_sl.setMinimum(10);
         max_length_sl.setValue(25);
-
-        default_button.setText("Reset to defaults");
 
         max_length_ff.setText("25");
 
@@ -387,9 +474,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                         .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(enable_tooltips_cb))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(default_button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                    .addComponent(max_length_ff, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                .addComponent(max_length_ff, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addContainerGap())
         );
         settings_panelLayout.setVerticalGroup(
@@ -400,15 +485,9 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                     .addComponent(max_length_ff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_desc_l))
-                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(settings_panelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(default_button)
-                        .addContainerGap())
-                    .addGroup(settings_panelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(enable_tooltips_cb)
-                        .addContainerGap())))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(enable_tooltips_cb)
+                .addContainerGap())
         );
 
         editor_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Editor"));
@@ -428,6 +507,8 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
         remove_button.setText("Remove item");
 
+        default_button.setText("Reset to defaults");
+
         javax.swing.GroupLayout editor_panelLayout = new javax.swing.GroupLayout(editor_panel);
         editor_panel.setLayout(editor_panelLayout);
         editor_panelLayout.setHorizontalGroup(
@@ -436,15 +517,16 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(editor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(remove_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addComponent(down_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addComponent(up_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addComponent(add_blank_line_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addGroup(editor_panelLayout.createSequentialGroup()
+                .addGroup(editor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(remove_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(down_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(up_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(add_blank_line_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, editor_panelLayout.createSequentialGroup()
                         .addComponent(add_button, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(element_cb, 0, 75, Short.MAX_VALUE)))
+                        .addComponent(element_cb, 0, 75, Short.MAX_VALUE))
+                    .addComponent(default_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
                 .addContainerGap())
         );
         editor_panelLayout.setVerticalGroup(
@@ -464,7 +546,9 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(down_button)
                         .addGap(18, 18, 18)
-                        .addComponent(remove_button)))
+                        .addComponent(remove_button)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                        .addComponent(default_button)))
                 .addContainerGap())
         );
 
@@ -487,9 +571,11 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
             .addGroup(main_panelLayout.createSequentialGroup()
                 .addComponent(editor_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(settings_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(settings_panel, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        settings_panel.getAccessibleContext().setAccessibleName("Global Tooltip Settings");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

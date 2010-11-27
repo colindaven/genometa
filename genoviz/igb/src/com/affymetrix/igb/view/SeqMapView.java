@@ -90,8 +90,7 @@ public class SeqMapView extends JPanel
 	boolean show_edge_matches = true;
 	protected boolean coord_shift = false;
 	private boolean hairline_is_labeled = true;
-	public static boolean SHOW_PROP_TOOLTIP = PreferenceUtils.getTooltipEditorPrefsNode().getBoolean(
-			"enable_tooltips", TooltipEditorView.DEFAULT_ENABLE_TOOLTIPS);
+	private boolean show_prop_tooltip = true;
 	private final Set<ContextualPopupListener> popup_listeners = new CopyOnWriteArraySet<ContextualPopupListener>();
 	/**
 	 *  maximum number of query glyphs for edge matcher.
@@ -1682,7 +1681,10 @@ public class SeqMapView extends JPanel
 	 * @param glyphs
 	 */
 	public final void setToolTip(List<GlyphI> glyphs){
-		if(!SHOW_PROP_TOOLTIP) {
+		if(!show_prop_tooltip) {
+			return;
+		}
+		if(!PreferenceUtils.getTooltipEditorBAMPrefsNode().getBoolean("enable_tooltips", TooltipEditorView.DEFAULT_ENABLE_TOOLTIPS)) {
 			return;
 		}
 
@@ -1695,8 +1697,14 @@ public class SeqMapView extends JPanel
 
 		if (!sym.isEmpty()) {
 			String[][] properties = PropertyView.getPropertiesRow(sym.get(0), this);
+			String tooltip = "";
+			if(properties[4][0].equals("type") && properties[4][1].equals("gene")) {
+				tooltip = convertPropsToEditorTooltip(properties, false);
+			}
+			else {
+				tooltip = convertPropsToEditorTooltip(properties, true);
+			}
 			// String tooltip = convertPropsToString(properties);
-			String tooltip = convertPropsToEditorTooltip(properties);
 			((AffyLabelledTierMap) seqmap).setToolTip(tooltip);
 		} else if(glyphs.get(0) instanceof TierLabelGlyph){
 			Map<String, Object> properties = TierLabelManager.getTierProperties(((TierLabelGlyph) glyphs.get(0)).getReferenceTier());
@@ -1710,7 +1718,10 @@ public class SeqMapView extends JPanel
 	 * @param glyph
 	 */
 	public final void setToolTip(int x, GraphGlyph glyph){
-		if(!SHOW_PROP_TOOLTIP) {
+		if(!show_prop_tooltip) {
+			return;
+		}
+		if(!PreferenceUtils.getTooltipEditorBAMPrefsNode().getBoolean("enable_tooltips", TooltipEditorView.DEFAULT_ENABLE_TOOLTIPS)) {
 			return;
 		}
 
@@ -1758,13 +1769,13 @@ public class SeqMapView extends JPanel
 	 * @param properties
 	 * @return
 	 */
-	private static String convertPropsToEditorTooltip(String[][] properties){
+	private static String convertPropsToEditorTooltip(String[][] properties, boolean isBAM){
 		// JOptionPane.showMessageDialog(null, "convertPropsToEditorTooltip()");
 		StringBuilder props = new StringBuilder();
 		String value;
 		HashMap<String,String> property_map = new HashMap<String,String>();
 
-		int max_length = PreferenceUtils.getTooltipEditorPrefsNode().getInt("tooltip_length",
+		int max_length = PreferenceUtils.getTooltipEditorBAMPrefsNode().getInt("tooltip_length",
 				TooltipEditorView.DEFAULT_MAX_TOOLTIP_LENGTH);
 
 		// convert String array to Map
@@ -1775,14 +1786,27 @@ public class SeqMapView extends JPanel
 		props.append("<html>");
 		for(int i = 0; i < 20; i++) {
 				String index = String.valueOf(i);
-				String item = PreferenceUtils.getTooltipEditorPrefsNode().get(index, "dummy");
+				String item = "";
+				if(isBAM) {
+					item = PreferenceUtils.getTooltipEditorBAMPrefsNode().get(index, "dummy");
+				}
+				else {
+					item = PreferenceUtils.getTooltipEditorGFFPrefsNode().get(index, "dummy");
+				}
 				Boolean available = true;
 
 				if ( item.equals("[----------]") ) {
 					props.append("<br>");
 				}
 				else if ( item.equals("dummy") ) {
-
+					props.append("<font color=\"#FF0000\">");
+					value = property_map.get(item);
+					props.append("<b>");
+					props.append(item);
+					props.append(": </b>");
+					props.append(value);
+					props.append("<br>");
+					props.append("</font>");
 				}
 				else {
 					value = property_map.get(item);
@@ -1843,13 +1867,13 @@ public class SeqMapView extends JPanel
 	}
 
 	public boolean togglePropertiesTooltip(){
-		SHOW_PROP_TOOLTIP =  !SHOW_PROP_TOOLTIP;
+		show_prop_tooltip =  !show_prop_tooltip;
 		((AffyLabelledTierMap)seqmap).setToolTip(null);
-		return SHOW_PROP_TOOLTIP;
+		return show_prop_tooltip;
 	}
 
 	public final boolean shouldShowPropTooltip(){
-		return SHOW_PROP_TOOLTIP;
+		return show_prop_tooltip;
 	}
 
 	final void addToRefreshList(SeqMapRefreshed smr){

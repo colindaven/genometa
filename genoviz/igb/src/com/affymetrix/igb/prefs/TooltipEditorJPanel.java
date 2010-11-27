@@ -39,7 +39,6 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
         settings_panel = new javax.swing.JPanel();
         max_length_desc_l = new javax.swing.JLabel();
         max_length_sl = new javax.swing.JSlider();
-        default_button = new javax.swing.JButton();
         max_length_ff = new javax.swing.JFormattedTextField();
         enable_tooltips_cb = new javax.swing.JCheckBox();
         editor_panel = new javax.swing.JPanel();
@@ -51,16 +50,15 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
         up_button = new javax.swing.JButton();
         down_button = new javax.swing.JButton();
         remove_button = new javax.swing.JButton();
+        default_button = new javax.swing.JButton();
 
-        settings_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
+        settings_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Global tooltip settings"));
 
         max_length_desc_l.setText("Max. Length");
 
         max_length_sl.setMaximum(50);
         max_length_sl.setMinimum(10);
         max_length_sl.setValue(25);
-
-        default_button.setText("Reset to defaults");
 
         max_length_ff.setText("25");
 
@@ -82,9 +80,7 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
                         .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(enable_tooltips_cb))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(default_button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                    .addComponent(max_length_ff, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                .addComponent(max_length_ff, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addContainerGap())
         );
         settings_panelLayout.setVerticalGroup(
@@ -95,15 +91,9 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
                     .addComponent(max_length_ff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_desc_l))
-                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(settings_panelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(default_button)
-                        .addContainerGap())
-                    .addGroup(settings_panelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(enable_tooltips_cb)
-                        .addContainerGap())))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(enable_tooltips_cb)
+                .addContainerGap())
         );
 
         editor_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Editor"));
@@ -123,6 +113,8 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
 
         remove_button.setText("Remove item");
 
+        default_button.setText("Reset to defaults");
+
         javax.swing.GroupLayout editor_panelLayout = new javax.swing.GroupLayout(editor_panel);
         editor_panel.setLayout(editor_panelLayout);
         editor_panelLayout.setHorizontalGroup(
@@ -131,15 +123,16 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(editor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(remove_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addComponent(down_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addComponent(up_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addComponent(add_blank_line_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addGroup(editor_panelLayout.createSequentialGroup()
+                .addGroup(editor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(remove_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(down_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(up_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(add_blank_line_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, editor_panelLayout.createSequentialGroup()
                         .addComponent(add_button, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(element_cb, 0, 75, Short.MAX_VALUE)))
+                        .addComponent(element_cb, 0, 75, Short.MAX_VALUE))
+                    .addComponent(default_button, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
                 .addContainerGap())
         );
         editor_panelLayout.setVerticalGroup(
@@ -159,7 +152,9 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(down_button)
                         .addGap(18, 18, 18)
-                        .addComponent(remove_button)))
+                        .addComponent(remove_button)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                        .addComponent(default_button)))
                 .addContainerGap())
         );
 
@@ -182,9 +177,11 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
             .addGroup(main_panelLayout.createSequentialGroup()
                 .addComponent(editor_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(settings_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(settings_panel, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        settings_panel.getAccessibleContext().setAccessibleName("Global Tooltip Settings");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

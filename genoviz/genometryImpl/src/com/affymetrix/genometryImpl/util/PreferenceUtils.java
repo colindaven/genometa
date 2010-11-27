@@ -101,8 +101,12 @@ public abstract class PreferenceUtils {
 		return PreferenceUtils.getTopNode().node("graphs");
 	}
 
-	public static Preferences getTooltipEditorPrefsNode() {
-		return PreferenceUtils.getTopNode().node("tooltip_editor");
+	public static Preferences getTooltipEditorBAMPrefsNode() {
+		return PreferenceUtils.getTopNode().node("tooltip_editor_bam");
+	}
+
+	public static Preferences getTooltipEditorGFFPrefsNode() {
+		return PreferenceUtils.getTopNode().node("tooltip_editor_ggf");
 	}
 
 	public static void saveIntParam(String param_name, int param) {
