@@ -14,6 +14,7 @@ package com.affymetrix.igb.view;
 
 import com.affymetrix.genometryImpl.AnnotatedSeqGroup;
 import com.affymetrix.genometryImpl.BioSeq;
+import com.affymetrix.genometryImpl.GenometryModel;
 import com.affymetrix.genoviz.awt.AdjustableJSlider;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -24,6 +25,7 @@ import com.affymetrix.genoviz.event.NeoMouseEvent;
 import com.affymetrix.genoviz.widget.NeoMap;
 import com.affymetrix.igb.glyph.fhh.*;
 import com.affymetrix.genoviz.util.NeoConstants;
+import com.affymetrix.igb.Application;
 import com.affymetrix.igb.view.load.GeneralLoadUtils;
 import java.awt.Adjustable;
 import java.awt.BorderLayout;
@@ -44,8 +46,8 @@ public class BarGraphMap extends JPanel {
 	AdjustableJSlider xzoomer;
 	AdjustableJSlider yzoomer;
 	// Glyph Lists
-	Vector<LabelledRectGlyph> selected = new Vector<LabelledRectGlyph>();
-	Vector<GlyphI> glyphs = new Vector<GlyphI>();
+	Vector<SeqBarGlyph> selected = new Vector<SeqBarGlyph>();
+	Hashtable<SeqBarGlyph, SeqReads> _bars = new Hashtable<SeqBarGlyph, SeqReads>();
 	// Hairline
 	private com.affymetrix.igb.glyph.fhh.UnibrowHairline hairline = null;
 	//
@@ -58,9 +60,11 @@ public class BarGraphMap extends JPanel {
 	private int _barOffset = _achsisOffset + 1;
 	private boolean _initialized = false;
 	private AnnotatedSeqGroup _currentSeqGroup = null;
-	//private TreeSet<SeqReads> _currentStatistics = null;
 	private LinkedList<SeqReads>  _currentStatistics = null;
 	private HashMap<AnnotatedSeqGroup, LinkedList<SeqReads>> _groups = null;
+	private final static GenometryModel gmodel = GenometryModel.getGenometryModel();
+
+	private final SeqReads TEST_SEQ = new SeqReads(null, 0);
 
 	public BarGraphMap() {
 		_groups = new HashMap<AnnotatedSeqGroup, LinkedList<SeqReads>>();
@@ -82,7 +86,7 @@ public class BarGraphMap extends JPanel {
 		}
 
 		map.clearWidget();
-		glyphs.clear();
+		_bars.clear();
 		selected.clear();
 		_maxValue = 10;
 		_seqCount = 0;
@@ -195,22 +199,10 @@ public class BarGraphMap extends JPanel {
 
 	private void mouseSelection(NeoMouseEvent nevt) {
 		Point2D.Double zoom_point = new Point2D.Double(nevt.getCoordX(), nevt.getCoordY());
-
-		//Point pixZoomPoint = new Point();
-		/*double coordBarOffset = _barOffset / map.getView().getTransform().getScaleX();
-		//map.getView().transformToPixels(zoom_point, pixZoomPoint);
-
-		if (zoom_point.x < coordBarOffset) {
-			zoom_point.x = 0;
-		} else{
-			zoom_point.x -= coordBarOffset;
-		}*/
-		//map.getView().transformToCoords(pixZoomPoint, zoom_point);
-
 		List<GlyphI> hits = nevt.getItems();
 
 		// DESELECT THE OLD GLYPHS
-		Iterator<LabelledRectGlyph> it = selected.iterator();
+		Iterator<SeqBarGlyph> it = selected.iterator();
 		while (it.hasNext()) {
 			it.next().setBackgroundColor(Color.RED);
 		}
@@ -222,14 +214,24 @@ public class BarGraphMap extends JPanel {
 		while (it2.hasNext()) {
 			GlyphI g = it2.next();
 			System.out.println(g.getCoordBox().getY());
-			if (g instanceof LabelledRectGlyph) {
-				selected.add((LabelledRectGlyph) g);
-				((LabelledRectGlyph) g).setBackgroundColor(Color.MAGENTA);
+			if (g instanceof SeqBarGlyph) {
+				selected.add((SeqBarGlyph) g);
+				((SeqBarGlyph) g).setBackgroundColor(Color.MAGENTA);
 				break;// no multiselection
 			}
 		}
 
-
+		// select the sequence in the seq group and jump to the
+		// seq map view
+		if( selected.size() > 0 ){
+			BioSeq seq = _bars.get(selected.get(0)).getSeq();
+			if( seq != null){
+				if (seq != gmodel.getSelectedSeq()) {
+				  gmodel.setSelectedSeq(seq);
+				  Application.getSingleton().changeMainView(Application.MAIN_VIEW_SEQMAP);
+				}
+			}
+		}
 		if (hairline != null) {
 			hairline.setSpot((int) zoom_point.x );
 		}
@@ -239,15 +241,15 @@ public class BarGraphMap extends JPanel {
 		map.updateWidget();
 	}
 
-	private void addBar(int reads, String name) {
-		LabelledRectGlyph g = new LabelledRectGlyph();
+	private void addBar(int reads, String name, SeqReads readsAnalysis) {
+		SeqBarGlyph g = new SeqBarGlyph();
 		g.setColor(Color.RED);
 		g.setText(name);
 		g.setRotPitch(Math.toRadians(-90.0));
-		g.setPixelOffset( /*glyphs.size()*5 +*/_barOffset);
-		g.setCoords(glyphs.size() * (_barWidth + _barMargin), 0, 10, -reads);
-		//g.setCoords(glyphs.size()*(_barWidth), 0, 10, -reads);
-		glyphs.add(g);
+		g.setPixelOffset( /*_bars.size()*5 +*/_barOffset);
+		g.setCoords(_bars.size() * (_barWidth + _barMargin), 0, 10, -reads);
+		//g.setCoords(_bars.size()*(_barWidth), 0, 10, -reads);
+		_bars.put(g, readsAnalysis);
 		map.addItem(g);
 	}
 
@@ -289,7 +291,7 @@ public class BarGraphMap extends JPanel {
 
 			System.out.println("addBar: -= " + barText + " =-");
 
-			addBar(reads, barText);
+			addBar(reads, barText,sr  );
 			if (reads > _maxValue) {
 				_maxValue = reads;
 			}
@@ -304,7 +306,7 @@ public class BarGraphMap extends JPanel {
 		Random rand = new Random();
 		for (int i = 0; i < _seqCount; i++) {
 			int reads = _maxValue - (divid * i + rand.nextInt(divid));
-			addBar(reads, "[" + (i + 1) + "] NC " + reads);
+			addBar(reads, "[" + (i + 1) + "] NC " + reads, TEST_SEQ);
 		}
 	}
 

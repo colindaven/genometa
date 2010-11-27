@@ -19,6 +19,9 @@ public abstract class Application {
 	static Application singleton = null;
 	private final Map<Class<?>, IPlugin> plugin_hash = new HashMap<Class<?>, IPlugin>();
 
+	public static final int MAIN_VIEW_SEQMAP = 0;
+	public static final int MAIN_VIEW_BARCHART = 1;
+
 	public Application() {
 		singleton = this;
 		status_bar = new StatusBar();
@@ -43,6 +46,8 @@ public abstract class Application {
 	abstract public JFrame getFrame();
 
 	abstract public SeqMapView getMapView();
+
+	abstract public void changeMainView(int main_view_id);
 
 	public final void updatePopup(){
 		status_bar.setCancelPopup(CSwingWorker.getWorkers());
