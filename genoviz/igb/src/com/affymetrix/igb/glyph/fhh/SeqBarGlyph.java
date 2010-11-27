@@ -23,7 +23,7 @@ import java.awt.geom.Rectangle2D.Double;
  *
  * @author Burim
  */
-public class LabelledRectGlyph extends SolidGlyph{
+public class SeqBarGlyph extends SolidGlyph{
 
 
 	/**
@@ -36,8 +36,6 @@ public class LabelledRectGlyph extends SolidGlyph{
 	private int _yOffset = -10;
 
 	private int _pixelOffset = 0;
-
-
 
 	@Override
 	public void draw(ViewI view) {

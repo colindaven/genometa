@@ -942,4 +942,11 @@ public final class IGB extends Application
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void changeMainView(int main_view_id) {
+		neoMapPane.setSelectedIndex(main_view_id);
+	}
+
+
 }
