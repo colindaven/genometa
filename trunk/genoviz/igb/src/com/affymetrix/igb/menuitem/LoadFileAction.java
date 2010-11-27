@@ -74,6 +74,10 @@ public final class LoadFileAction extends AbstractAction {
 	private static final String MERGE_MESSAGE = 
 			"Must select a genome before loading a graph.  "
 			+ "Graph data must be merged with already loaded genomic data.";
+
+	public static final String PREF_HEADER_CORRECTION = "Enable Header-Correction on SAM/BAM-Files";
+	public static final boolean default_pref_header_correction = true;
+
 	private final TransferHandler fdh = new FileDropHandler(){
 
 		@Override
@@ -256,7 +260,8 @@ public final class LoadFileAction extends AbstractAction {
 							public Void doInBackground() {
 								Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 
-								SAMFileHeader newHeader = SAMFileHeaderCorrection.getCorrectedHeader(reader.getFileHeader());
+								SAMFileHeader newHeader = correctHeader(reader.getFileHeader());
+								
 								newHeader.setSortOrder(SortOrder.coordinate);
 								SAMFileWriter writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(newHeader, false, newBamFile);
 
@@ -270,7 +275,7 @@ public final class LoadFileAction extends AbstractAction {
 									}
 								}
 
-								// todo: print "writing to disc" to user
+								// TODO print "writing to disc" to user
 								reader.close();
 								writer.close();
 
@@ -354,7 +359,7 @@ public final class LoadFileAction extends AbstractAction {
 					SAMFileReader.setDefaultValidationStringency(SAMFileReader.ValidationStringency.LENIENT);
 					SAMFileReader reader = new SAMFileReader(inputFile);
 
-					SAMFileHeader newHeader = SAMFileHeaderCorrection.getCorrectedHeader(reader.getFileHeader());
+					SAMFileHeader newHeader = correctHeader(reader.getFileHeader());
 
 					SAMFileWriter writer;
 					if(newHeader.getSortOrder() == SortOrder.coordinate) {	// SAM is already sorted!
@@ -374,7 +379,7 @@ public final class LoadFileAction extends AbstractAction {
 						}
 					}
 
-					// todo: print "writing to disc" to user
+					// TODO print "writing to disc" to user
 					reader.close();
 					writer.close();
 
@@ -388,6 +393,24 @@ public final class LoadFileAction extends AbstractAction {
 				}
 			};
 			ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
+		}
+	}
+
+	/**
+	 * Little helper method to return the corrected Header (if the user enabled
+	 * it in the prefs) of a SAM/BAM-File. If the user didnt enabled it in the
+	 * prefs, this method will just return the given Header.
+	 *
+	 * @param header to correct.
+	 * @return the corrected Header or just the param header.
+	 */
+	private static SAMFileHeader correctHeader(final SAMFileHeader header) {
+		final boolean header_correction = PreferenceUtils.getBooleanParam(LoadFileAction.PREF_HEADER_CORRECTION,
+																	LoadFileAction.default_pref_header_correction);
+		if(header_correction == true) {
+			return SAMFileHeaderCorrection.getCorrectedHeader(header);
+		}else {
+			return header;
 		}
 	}
 
