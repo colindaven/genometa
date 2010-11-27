@@ -15,6 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 
@@ -113,10 +114,16 @@ public class LabelledRectGlyph extends SolidGlyph{
 		}
 	}
 
+	
+
 	@Override
 	public boolean withinView(ViewI view)
 	{
-		Rectangle2D.Double rect = getPositiveCoordBox();
+		Rectangle2D.Double rect = new Rectangle2D.Double(
+				getPositiveCoordBox().x + getCoordOffset(view),
+				getPositiveCoordBox().y,
+				getPositiveCoordBox().getWidth(),
+				getPositiveCoordBox().getHeight());
 
 
 		if( rect.height == 0.0 ){
@@ -128,7 +135,7 @@ public class LabelledRectGlyph extends SolidGlyph{
 					new Line2D.Double(0.0, rect.y, 0.0, rect.y + rect.height) );
 		}
 
-		return getPositiveCoordBox().intersects(view.getCoordBox());
+		return rect.intersects(view.getCoordBox());
 	}
 
 
@@ -162,19 +169,35 @@ public class LabelledRectGlyph extends SolidGlyph{
 
 	@Override
 	public boolean hit(Double coord_hitbox, ViewI view) {
+		Rectangle2D.Double rect = new Rectangle2D.Double(
+				getPositiveCoordBox().x + getCoordOffset(view),
+				getPositiveCoordBox().y,
+				getPositiveCoordBox().getWidth(),
+				getPositiveCoordBox().getHeight());
 
-		Rectangle pixelb = new Rectangle();
+		return isHitable() && isVisible() && coord_hitbox.intersects(rect);
+		/*Rectangle pixelb = new Rectangle();
 		view.transformToPixels(coord_hitbox, pixelb);
 		//pixelb.x += _pixelOffset;
 		//return super.hit(coord_hitbox, view);
-		return isHitable() && isVisible() && pixelb.intersects(getPixelBox());
+		return isHitable() && isVisible() && pixelb.intersects(getPixelBox());*/
 	}
 
 	@Override
 	public boolean intersects(Double rect, ViewI view) {
-		Rectangle pixelb = new Rectangle();
+		/*Rectangle pixelb = new Rectangle();
 		view.transformToPixels(rect, pixelb);
-		return isVisible && pixelb.intersects(getPixelBox());
+		return isVisible && pixelb.intersects(getPixelBox());*/
+		Rectangle2D.Double posCordB = getPositiveCoordBox();
+		boolean var = isVisible && rect.intersects(
+				new Rectangle2D.Double(
+					posCordB.x + getCoordOffset(view),
+					posCordB.y,
+					posCordB.getWidth(),
+					posCordB.getHeight()
+				)
+		);
+		return var;
 	}
 
 	@Override
@@ -226,6 +249,17 @@ public class LabelledRectGlyph extends SolidGlyph{
 	 */
 	public int getPixelOffset() {
 		return _pixelOffset;
+	}
+
+	/**
+	 * @return the _pixelOffset
+	 */
+	public double getCoordOffset(ViewI view) {
+		//Point2D.Double coordOffset = new Point2D.Double();
+		double scaleX = view.getTransform().getScaleX();
+		return _pixelOffset / scaleX;
+		//view.transformToCoords(new Point2D.Double(_pixelOffset, 0.0), coordOffset);
+		//return coordOffset.x;
 	}
 
 	/**

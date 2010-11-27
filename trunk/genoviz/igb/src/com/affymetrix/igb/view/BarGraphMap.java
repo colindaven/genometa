@@ -47,7 +47,7 @@ public class BarGraphMap extends JPanel {
 	Vector<LabelledRectGlyph> selected = new Vector<LabelledRectGlyph>();
 	Vector<GlyphI> glyphs = new Vector<GlyphI>();
 	// Hairline
-	private UnibrowHairline hairline = null;
+	private com.affymetrix.igb.glyph.fhh.UnibrowHairline hairline = null;
 	//
 	private int _maxValue = 10;
 	private int _seqCount = 0;
@@ -77,7 +77,7 @@ public class BarGraphMap extends JPanel {
 	 * the BarGraph
 	 */
 	public void init(AnnotatedSeqGroup seqGroup) {
-		if (_currentSeqGroup == seqGroup) {
+		if (_currentSeqGroup == seqGroup && seqGroup != null) {
 			return;
 		}
 
@@ -118,9 +118,11 @@ public class BarGraphMap extends JPanel {
 				map.addAxis(axis);
 
 				// dreates hairline, to mark selection
-				hairline = new UnibrowHairline(map);
+				hairline = new com.affymetrix.igb.glyph.fhh.UnibrowHairline(map);
 				// scroll by default in at the minimum coordinate of Y-Achsis
 				map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
+				hairline.setKeepHairlineInView(false);
+				hairline.setPixelOffset(_barOffset);
 
 				map.stretchToFit();
 
@@ -194,20 +196,16 @@ public class BarGraphMap extends JPanel {
 	private void mouseSelection(NeoMouseEvent nevt) {
 		Point2D.Double zoom_point = new Point2D.Double(nevt.getCoordX(), nevt.getCoordY());
 
-		Point pixZoomPoint = new Point();
-		map.getView().transformToPixels(zoom_point, pixZoomPoint);
+		//Point pixZoomPoint = new Point();
+		/*double coordBarOffset = _barOffset / map.getView().getTransform().getScaleX();
+		//map.getView().transformToPixels(zoom_point, pixZoomPoint);
 
-		
-		//pixZoomPoint.x -= _barOffset;
-
-		if (pixZoomPoint.x < _barOffset) {
-			pixZoomPoint.x = 0;
+		if (zoom_point.x < coordBarOffset) {
+			zoom_point.x = 0;
 		} else{
-			pixZoomPoint.x -= _barOffset;
-		}
-
-
-		map.getView().transformToCoords(pixZoomPoint, zoom_point);
+			zoom_point.x -= coordBarOffset;
+		}*/
+		//map.getView().transformToCoords(pixZoomPoint, zoom_point);
 
 		List<GlyphI> hits = nevt.getItems();
 
@@ -233,10 +231,10 @@ public class BarGraphMap extends JPanel {
 
 
 		if (hairline != null) {
-			hairline.setSpot((int) zoom_point.getX());
+			hairline.setSpot((int) zoom_point.x );
 		}
 
-		//map.setZoomBehavior(NeoMap.X, NeoMap.CONSTRAIN_COORD, (int)zoom_point.getX());
+		//map.setZoomBehavior(NeoMap.X, NeoMap.CONSTRAIN_COORD, (int)zoom_point.x);
 
 		map.updateWidget();
 	}
@@ -266,11 +264,11 @@ public class BarGraphMap extends JPanel {
 			//_currentStatistics = new TreeSet<SeqReads>(new SeqReadsComparator());
 			_currentStatistics = new LinkedList<SeqReads>();
 
-			int c  = 0;
+			//int c  = 0;
 			for (BioSeq bs : _currentSeqGroup.getSeqList()) {
 				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesforSeq(bs));
 				_currentStatistics.add(tmpSeqRead);
-				if( ++c == 300) break;
+				//if( ++c == 300) break;
 			}
 
 
@@ -299,8 +297,8 @@ public class BarGraphMap extends JPanel {
 	}
 
 	private void loadTestData() {
-		_maxValue = 100000;
-		_seqCount = 1000;
+		_maxValue = 10000;
+		_seqCount = 100;
 		int divid = (int) (_maxValue / (float) _seqCount);
 
 		Random rand = new Random();
@@ -323,8 +321,7 @@ public class BarGraphMap extends JPanel {
 
 	public class SeqReadsComparator implements Comparator<SeqReads> {
 		public int compare(SeqReads o1, SeqReads o2) {
-			return GeneralLoadUtils.getNumberOfSymmetriesforSeq(o2.getSeq())
-					- GeneralLoadUtils.getNumberOfSymmetriesforSeq(o1.getSeq());
+			return o2.getReads().intValue() - o1.getReads().intValue();
 		}
 	}
 
