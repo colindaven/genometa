@@ -25,6 +25,8 @@ import java.io.File;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public final class PreferencesPanel extends JPanel {
 
@@ -59,6 +61,16 @@ public final class PreferencesPanel extends JPanel {
 
     this.add(tab_pane, BorderLayout.CENTER);
 
+	tab_pane.addChangeListener(new ChangeListener() {
+		public void stateChanged(ChangeEvent evt) {
+			JTabbedPane pane = (JTabbedPane)evt.getSource();
+			if(pane.getSelectedComponent() instanceof TooltipEditorView) {
+				((TooltipEditorView)pane.getSelectedComponent()).updateGlobalTooltipSettings();
+			}
+		}
+	});
+
+
     // using SCROLL_TAB_LAYOUT would disable the tool-tips, due to a Swing bug.
     //tab_pane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
   }
@@ -86,7 +98,8 @@ public final class PreferencesPanel extends JPanel {
 		singleton.addPrefEditorComponent(new KeyStrokesView());
 		singleton.addPrefEditorComponent(new GraphsView());
 		singleton.addPrefEditorComponent(new OptionsView());
-		singleton.addPrefEditorComponent(new TooltipEditorView());
+		singleton.addPrefEditorComponent(new TooltipEditorView(true));
+		singleton.addPrefEditorComponent(new TooltipEditorView(false));
 
 		return singleton;
 	}
