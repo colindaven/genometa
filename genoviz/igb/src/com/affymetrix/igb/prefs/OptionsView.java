@@ -21,6 +21,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
+import com.affymetrix.igb.menuitem.LoadFileAction;
 import com.affymetrix.igb.tiers.AxisStyle;
 import com.affymetrix.igb.view.OrfAnalyzer;
 import com.affymetrix.igb.view.SeqMapView;
@@ -57,7 +58,8 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
       PreferenceUtils.ASK_BEFORE_EXITING, PreferenceUtils.default_ask_before_exiting));
     misc_box.add(PreferenceUtils.createCheckBox("Keep zoom stripe in view", PreferenceUtils.getTopNode(),
       UnibrowHairline.PREF_KEEP_HAIRLINE_IN_VIEW, UnibrowHairline.default_keep_hairline_in_view));
-
+	misc_box.add(PreferenceUtils.createCheckBox("Enable Header-Correction on SAM/BAM-Files", PreferenceUtils.getTopNode(),
+      LoadFileAction.PREF_HEADER_CORRECTION, LoadFileAction.default_pref_header_correction));
     
 
     misc_box.add(Box.createRigidArea(new Dimension(0,5)));
