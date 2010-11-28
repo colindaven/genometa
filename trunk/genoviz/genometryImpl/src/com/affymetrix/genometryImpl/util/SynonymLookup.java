@@ -1,15 +1,20 @@
 package com.affymetrix.genometryImpl.util;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -48,6 +53,8 @@ public final class SynonymLookup {
 	private final LinkedHashMap<String, Set<String>> lookupHash = new LinkedHashMap<String, Set<String>>();
 
 	private final Set<String> preferredNames = new HashSet<String>();
+
+	private Map<String, String> _lookupFastalinesHashMap = new HashMap<String, String>();
 
 	/**
 	 * Returns the default instance of SynonymLookup.  This is used to share
@@ -381,5 +388,60 @@ public final class SynonymLookup {
 			throw new IllegalArgumentException("synonym must end with '_random'");
 		}
 		return synonym.substring(0, synonym.length() - 7);
+	}
+
+
+	/**
+	 * Function to load metatie fastalines to map RefSeq to genome name
+	 * 
+	 * @param filePath the path to metatie_fastalines file
+	 * @return true if the file is correctly loaded otherwise false
+	 */
+	public boolean loadMetatieFastalines(URL filePath) {
+		try {
+			FileReader fileReader = new FileReader(filePath.getFile());
+			BufferedReader bufReader = new BufferedReader(fileReader);
+			String currentLine;
+
+			while ((currentLine = bufReader.readLine()) != null) {
+
+				//Get necessary informations from the current line (RefSeq id and genome name)
+				String workingString = currentLine.substring(currentLine.indexOf("|NC_") + 1);
+
+				//safe the refseq index and the corresponding chromesome name
+				String refSeq = workingString.substring(0, workingString.indexOf("|"));
+				String genomeName = workingString.substring(workingString.indexOf("|") + 1, workingString.length());
+				
+				_lookupFastalinesHashMap.put(refSeq, genomeName);
+			}
+		}
+		catch (FileNotFoundException ffe) {
+			System.out.println(ffe.getMessage());
+			return false;
+		}
+		catch (IOException ioe) {
+			System.out.println(ioe.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get the genome name to a given RefSeq id
+	 * @param refSeq the RefSeq id to look for
+	 * @return the corresponding genome name
+	 */
+	public String getGenomeNameFromRefSeq(String refSeq){
+
+		if(_lookupFastalinesHashMap.isEmpty())
+			return "no lookup table set";
+
+		String genomeName;
+		
+		if((genomeName = _lookupFastalinesHashMap.get(refSeq)) == null)
+			return "unknown genome";
+		else
+			return genomeName;
 	}
 }
