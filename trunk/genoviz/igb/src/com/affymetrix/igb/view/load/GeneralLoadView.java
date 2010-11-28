@@ -911,11 +911,11 @@ public final class GeneralLoadView extends JComponent
 				continue;
 			}
 
-//			if (gFeature.gVersion.gServer.serverType == ServerType.QuickLoad ||
-//					gFeature.gVersion.gServer.serverType == ServerType.LocalFiles) {
-//				// These have already been loaded(currently loaded for the entire genome at once)
-//				continue;
-//			}
+			if (gFeature.gVersion.gServer.serverType == ServerType.QuickLoad ||
+					gFeature.gVersion.gServer.serverType == ServerType.LocalFiles) {
+				// These have already been loaded(currently loaded for the entire genome at once)
+				continue;
+			}
 
 			if (DEBUG_EVENTS) {
 				System.out.println("Selected : " + gFeature.featureName);
