@@ -46,6 +46,7 @@ import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.genometryImpl.util.UniFileFilter;
 import com.affymetrix.genometryImpl.util.LoadUtils.LoadStrategy;
 import com.affymetrix.genometryImpl.symloader.SymLoaderInstNC;
+import com.affymetrix.genometryImpl.symloader.GFF;
 import com.affymetrix.genoviz.util.FileDropHandler;
 import com.affymetrix.genoviz.util.ErrorHandler;
 import com.affymetrix.igb.Application;
@@ -55,8 +56,6 @@ import com.affymetrix.igb.util.MergeOptionChooser;
 import com.affymetrix.igb.util.ScriptFileLoader;
 import com.affymetrix.igb.util.SAMFileHeaderCorrection;
 import com.affymetrix.igb.view.load.GeneralLoadUtils;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import static com.affymetrix.igb.IGBConstants.BUNDLE;
 
 /**
@@ -449,8 +448,13 @@ public final class LoadFileAction extends AbstractAction {
 
 		if(gFeature == null)
 			return;
-		
-		if (((QuickLoad)gFeature.symL).getSymLoader() instanceof SymLoaderInstNC) {
+
+		if(((QuickLoad)gFeature.symL).getSymLoader() instanceof GFF) {
+			addChromosomesForUnknownGroup(fileName, gFeature, loadGroup);
+		} else if (((QuickLoad)gFeature.symL).getSymLoader() instanceof SymLoaderInstNC) {
+			if(loadGroup == null || loadGroup.getSeqList().isEmpty()){
+				addChromosomesForUnknownGroup(fileName, gFeature, loadGroup);
+			}
 			loadAllFeatures(gFeature, loadGroup);
 		} else if (gFeature.symL != null){
 			addChromosomesForUnknownGroup(fileName, gFeature, loadGroup);
