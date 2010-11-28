@@ -27,6 +27,7 @@ import com.affymetrix.genometryImpl.parsers.VarParser;
 import com.affymetrix.genometryImpl.parsers.das.DASFeatureParser;
 import com.affymetrix.genometryImpl.parsers.gchp.AffyCnChpParser;
 import com.affymetrix.genometryImpl.parsers.graph.BarParser;
+import com.affymetrix.genometryImpl.parsers.graph.BgrParser;
 import com.affymetrix.genometryImpl.parsers.graph.CntParser;
 import com.affymetrix.genometryImpl.parsers.graph.ScoredIntervalParser;
 import com.affymetrix.genometryImpl.parsers.useq.ArchiveInfo;
@@ -468,7 +469,9 @@ public abstract class SymLoader {
 		if (extension.equals("var")) {
 			return VarParser.parse(bis, group);
 		}
-
+		if (extension.equals("bgr")) {
+			return BgrParser.parse(bis, featureName, group);
+		}
 		if (extension.equalsIgnoreCase("bam")) {
 			File bamfile = GeneralUtils.convertStreamToFile(istr, featureName);
 			bamfile.deleteOnExit();

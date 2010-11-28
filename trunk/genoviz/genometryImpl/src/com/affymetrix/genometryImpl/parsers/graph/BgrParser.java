@@ -86,6 +86,12 @@ public final class BgrParser {
 		return true;
 	}
 
+	public static List<GraphSym> parse(InputStream istr, String stream_name, AnnotatedSeqGroup seq_group) throws IOException{
+		List<GraphSym> results = new ArrayList<GraphSym>();
+		results.add(parse(istr,stream_name,seq_group, true));
+		return results;
+	}
+
 	public static GraphSym parse(InputStream istr, String stream_name, AnnotatedSeqGroup seq_group, boolean ensure_unique_id)
 		throws IOException  {
 		Timer tim = new Timer();
