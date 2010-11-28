@@ -39,7 +39,11 @@ import com.affymetrix.igb.tiers.TrackStyle;
 import com.affymetrix.igb.view.SeqMapView;
 
 import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+import javax.imageio.ImageIO;
 //MPTAG Added for changes
 
 /**
@@ -65,7 +69,18 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	private Class child_glyph_class;
 	private final Class parent_labelled_glyph_class;
 
+	//MPTAG added
+	private static Image texture;
+	
 	public GenericAnnotGlyphFactory() {
+		//MPTAG added
+		try{
+			texture = ImageIO.read(new File(
+				"f:\\Schattierung.png"));
+	//			System.getProperty("user.dir")+System.getProperty("path.seperator")+"testimage.jpg");
+		}catch (IOException e){
+			System.out.println(e);
+		}
 		parent_glyph_class = default_eparent_class;
 		child_glyph_class = default_echild_class;
 		parent_labelled_glyph_class = default_elabelled_parent_class;
@@ -111,7 +126,6 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			TierGlyph[] tiers = smv.getTiers(false, style);
 			tiers[0].setInfo(sym);
 			tiers[1].setInfo(sym);
-//			com.affymetrix.igb.IGB.MPTAGprintClass("GenericAnnotGlyphFactory.createGlyph()", sym);
 			if (style.getSeparate()) {
 				addLeafsToTier(sym, tiers[0], tiers[1], glyph_depth);
 			} else {
@@ -222,16 +236,6 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		String label_field = the_style.getLabelField();
 		boolean use_label = label_field != null && (label_field.trim().length() > 0);
 		if (use_label) {
-//			//MPTAG Hier Arrow in abhängigkeit von Direction erzeugen
-//			EfficientLabelledGlyph lglyph;
-//			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
-//				//Pfeil nach links
-//				lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
-//			}else{
-//				//Pfeil nach rechts
-//				lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
-//			}
-//			//MPTAG Ende
 			EfficientLabelledGlyph lglyph = (EfficientLabelledGlyph) labelledGlyphClass.newInstance();
 			Object property = getTheProperty(insym, label_field);
 			String label = (property == null) ? "" : property.toString();
@@ -244,16 +248,6 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			pheight = 2 * pheight;
 			pglyph = lglyph;
 		} else {
-			/*//MPTAG
-			if(the_tier.getDirection() == TierGlyph.Direction.REVERSE){
-				pglyph = new ArrowGlyph();
-				((ArrowGlyph)pglyph).setOrientation(NeoConstants.HORIZONTAL);
-				((ArrowGlyph)pglyph).setForward(false);
-//				System.out.println("reverse Arrow added");
-			}else{
-				pglyph = new ArrowGlyph();
-			}
-			*///MPTAG End
 			pglyph = (GlyphI) glyphClass.newInstance();
 		}
 		pglyph.setCoords(pspan.getMin(), 0, pspan.getLength(), pheight);
@@ -321,17 +315,17 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 
 				Color child_color = getSymColor(child, the_style);
 				//MPTAG added versuchen aus der Elternglyphe herauszubekommen ob diese schon eine Richtung hat
-				try{
-				if(getDirectionOfGlyph(insym) > 0){
-					if(getDirectionOfGlyph(insym) == 1){
-						child_color = ((TrackStyle)the_style).getForwardColor();
-					}else if(getDirectionOfGlyph(insym) == 2){
-						child_color = ((TrackStyle)the_style).getReverseColor();
-					}
-				}
-				}catch (Exception e){
-					System.out.println("Exception bei Zuweisung der Kindfarbe in GenericAnnotationGlyphFactory.addChildren()");
-				}
+//				try{
+//				if(getDirectionOfGlyph(insym) > 0){
+//					if(getDirectionOfGlyph(insym) == 1){
+//						child_color = ((TrackStyle)the_style).getForwardColor();
+//					}else if(getDirectionOfGlyph(insym) == 2){
+//						child_color = ((TrackStyle)the_style).getReverseColor();
+//					}
+//				}
+//				}catch (Exception e){
+//					System.out.println("Exception bei Zuweisung der Kindfarbe in GenericAnnotationGlyphFactory.addChildren()");
+//				}
 				double cheight = handleCDSSpan(cdsSpan, cspan, cds_sym, child, annotseq, same_seq, child_color, pglyph, map);
 				cglyph.setCoords(cspan.getMin(), 0, cspan.getLength(), cheight);
 				cglyph.setColor(child_color);
@@ -344,10 +338,13 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		DeletionGlyph.handleEdgeRendering(outside_children, pglyph, annotseq, coordseq, 0.0, DEFAULT_THIN_HEIGHT);
 	}
 
+	/*
+	 * Wird mehrfach aufgerufen. Für jeweis die unterscheidlichen Zoomstufen
+	 */
 	private static Color getSymColor(SeqSymmetry insym, ITrackStyleExtended style) {//MPTAG heir ggf farbe für Richtung setzten
 		boolean use_score_colors = style.getColorByScore();
 		boolean use_item_rgb = "on".equalsIgnoreCase((String) style.getTransientPropertyMap().get(TrackLineParser.ITEM_RGB));
-
+		
 		if (!(use_score_colors || use_item_rgb)) {
 			//return style.getColor();
 			if(getDirectionOfGlyph(insym)>0){
@@ -453,7 +450,6 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	 * @param pglyph
 	 * @param startPos - starting position of the current child in the residues string
 	 * @param handleCigar - indicates whether we need to process the cigar element.
-	 * @param isForward Die richtung des darüberliegenden Tiers
 	 * @return
 	 *///MPTAG Hier wird aufgerufen das der Text auf die Glyphe gesetzt werden soll
 	//MPTAG changed ITrackstyle hinzugefügt
@@ -549,5 +545,10 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			}
 		}
 		return 0;
+	}
+
+	//MPTAG added
+	public static Image getTexture(){
+		return texture;
 	}
 }

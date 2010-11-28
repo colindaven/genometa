@@ -18,6 +18,7 @@ import com.affymetrix.genoviz.bioviews.ViewI;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
@@ -46,7 +47,7 @@ public final class EfficientLineContGlyph extends EfficientSolidGlyph  {
 		Rectangle pixelbox = view.getScratchPixBox();
 		view.transformToPixels(this.getCoordBox(), pixelbox);
 		if (withinView(view) && isVisible) {
-			if (pixelbox.width <= 3 || pixelbox.height <= 3) {
+			if (pixelbox.width <= 3 || pixelbox.height <= 3) {//MPTAG hier wird entschieden wieviel gezeichnet wird.// orig 3
 				// still ends up drawing children for selected, but in general
 				//    only a few glyphs are ever selected at the same time, so should be fine
 				if (selected) {
@@ -77,7 +78,14 @@ public final class EfficientLineContGlyph extends EfficientSolidGlyph  {
     if (pixelbox.height < 1) { pixelbox.height = 1; }
     // draw the box
 
+	//MPTAG hier ggf statt dem Rechteck ein Bild zeichnen. Wird die an
     g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width, pixelbox.height);
+/*	Image i = null;
+	if(pixelbox.width > 0 && pixelbox.height > 0){
+		i = GenericAnnotGlyphFactory.getTexture();
+		i = i.getScaledInstance(pixelbox.width, pixelbox.height, Image.SCALE_FAST);
+	}
+	g.drawImage(i, pixelbox.x, pixelbox.y, null);*/
 
     super.draw(view);
   }

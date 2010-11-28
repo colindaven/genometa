@@ -238,7 +238,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		drawResidueRectangles(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelbox.x, pixelbox.y, pixelbox.height);
 		drawResidueStrings(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelStart);
 		//MPTAG Prüft für jeden Buchstaben ob er passt. Reicht da nicht einmaliges Prüfen ?
-		drawDirectionBar(true, g);
+		//drawDirectionBar(true, g);
 		//drawDirectionTriangle(false, g);
 	}
 
