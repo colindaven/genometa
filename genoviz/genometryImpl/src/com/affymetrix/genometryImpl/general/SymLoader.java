@@ -269,7 +269,7 @@ public abstract class SymLoader {
 		List<SeqSymmetry> resultList = null;
 		String method = null;
 		for (SeqSymmetry result : results) {
-			method = (result instanceof SymWithProps) ? (String) ((SymWithProps) result).getProperty("method") : null;
+			method = BioSeq.determineMethod(result);
 			if (track2Results.containsKey(method)) {
 				resultList = track2Results.get(method);
 			} else {
