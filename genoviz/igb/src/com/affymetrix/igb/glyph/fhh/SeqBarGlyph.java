@@ -46,7 +46,14 @@ public class SeqBarGlyph extends SolidGlyph{
 		g.setColor(getBackgroundColor());
 
 		// temp fix for AWT drawing bug when rect gets too big -- GAH 2/6/98
-		Rectangle compbox = view.getComponentSizeRect();
+		Rectangle compbox = new Rectangle(
+				view.getComponentSizeRect().x,
+				view.getComponentSizeRect().y,
+				view.getComponentSizeRect().width,
+				view.getComponentSizeRect().height
+				);
+		compbox.x += _pixelOffset;
+		compbox.width -= _pixelOffset;
 		pixelbox = pixelbox.intersection(compbox);
 
 		// If the coordbox was specified with negative width or height,

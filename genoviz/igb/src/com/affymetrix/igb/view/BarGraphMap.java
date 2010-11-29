@@ -31,6 +31,7 @@ import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -60,14 +61,19 @@ public class BarGraphMap extends JPanel {
 	private int _barOffset = _achsisOffset + 1;
 	private boolean _initialized = false;
 	private AnnotatedSeqGroup _currentSeqGroup = null;
-	private LinkedList<SeqReads>  _currentStatistics = null;
-	private HashMap<AnnotatedSeqGroup, LinkedList<SeqReads>> _groups = null;
+	private ArrayList<SeqReads>  _currentStatistics = null;
+	private HashMap<AnnotatedSeqGroup, ArrayList<SeqReads>> _groups = null;
 	private final static GenometryModel gmodel = GenometryModel.getGenometryModel();
+	private final Color _barBGColor = new Color(0x66, 0x99, 0xff);
+	private final Color _barSelectedBGColor = new Color(0x66, 0x00, 0xff);
+	private final Color _graphBGColor = new Color(0xcc, 0xcc, 0xc8);
+
+
 
 	private final SeqReads TEST_SEQ = new SeqReads(null, 0);
 
 	public BarGraphMap() {
-		_groups = new HashMap<AnnotatedSeqGroup, LinkedList<SeqReads>>();
+		_groups = new HashMap<AnnotatedSeqGroup, ArrayList<SeqReads>>();
 
 		// init NeoMap
 		initNeoMap();
@@ -84,6 +90,9 @@ public class BarGraphMap extends JPanel {
 		if (_currentSeqGroup == seqGroup && seqGroup != null) {
 			return;
 		}
+
+
+
 
 		map.clearWidget();
 		_bars.clear();
@@ -147,6 +156,7 @@ public class BarGraphMap extends JPanel {
 		map = new NeoMap(true, true, NeoConstants.VERTICAL, new LinearTransform());
 		// double buffered canvas (no flicker)
 		map.getNeoCanvas().setDoubleBuffered(false);
+		map.setBackground(NeoMap.MAP, _graphBGColor);
 		// add and init zoom abilities
 		xzoomer = new AdjustableJSlider(Adjustable.HORIZONTAL);
 		yzoomer = new AdjustableJSlider(Adjustable.VERTICAL);
@@ -204,7 +214,7 @@ public class BarGraphMap extends JPanel {
 		// DESELECT THE OLD GLYPHS
 		Iterator<SeqBarGlyph> it = selected.iterator();
 		while (it.hasNext()) {
-			it.next().setBackgroundColor(Color.RED);
+			it.next().setBackgroundColor(_barBGColor);
 		}
 		selected.clear();
 
@@ -216,7 +226,7 @@ public class BarGraphMap extends JPanel {
 			System.out.println(g.getCoordBox().getY());
 			if (g instanceof SeqBarGlyph) {
 				selected.add((SeqBarGlyph) g);
-				((SeqBarGlyph) g).setBackgroundColor(Color.MAGENTA);
+				((SeqBarGlyph) g).setBackgroundColor(_barSelectedBGColor);
 				break;// no multiselection
 			}
 		}
@@ -243,8 +253,9 @@ public class BarGraphMap extends JPanel {
 
 	private void addBar(int reads, String name, SeqReads readsAnalysis) {
 		SeqBarGlyph g = new SeqBarGlyph();
-		g.setColor(Color.RED);
+		g.setColor(_barBGColor);
 		g.setText(name);
+		
 		g.setRotPitch(Math.toRadians(-90.0));
 		g.setPixelOffset( /*_bars.size()*5 +*/_barOffset);
 		g.setCoords(_bars.size() * (_barWidth + _barMargin), 0, 10, -reads);
@@ -264,7 +275,7 @@ public class BarGraphMap extends JPanel {
 		} else {
 			// create new read statistics list
 			//_currentStatistics = new TreeSet<SeqReads>(new SeqReadsComparator());
-			_currentStatistics = new LinkedList<SeqReads>();
+			_currentStatistics = new ArrayList<SeqReads>();
 
 			//int c  = 0;
 			for (BioSeq bs : _currentSeqGroup.getSeqList()) {
@@ -272,7 +283,6 @@ public class BarGraphMap extends JPanel {
 				_currentStatistics.add(tmpSeqRead);
 				//if( ++c == 300) break;
 			}
-
 
 			Collections.sort(_currentStatistics, new SeqReadsComparator());
 
