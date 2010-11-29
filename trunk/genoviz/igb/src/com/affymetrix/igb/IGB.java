@@ -295,13 +295,8 @@ public final class IGB extends Application
 	}
 
 	private void init(String[] args) {
-		final String fastaLinesFilePath = "/metatie_fastalines.txt";
 		loadSynonyms("/synonyms.txt", SynonymLookup.getDefaultLookup());
 		loadSynonyms("/chromosomes.txt", SynonymLookup.getChromosomeLookup());
-
-		if (!SynonymLookup.getDefaultLookup().loadMetatieFastalines(IGB.class.getResource(fastaLinesFilePath))) {
-			ErrorHandler.errorPanel("Unable to load Metatie Fastalines");
-		}
 
 		if ("Mac OS X".equals(System.getProperty("os.name"))) {
 			MacIntegration mi = MacIntegration.getInstance();

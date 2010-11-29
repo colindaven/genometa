@@ -397,9 +397,9 @@ public final class SynonymLookup {
 	 * @param filePath the path to metatie_fastalines file
 	 * @return true if the file is correctly loaded otherwise false
 	 */
-	public boolean loadMetatieFastalines(URL filePath) {
+	public boolean loadMetatieFastalines(String filePath) {
 		try {
-			FileReader fileReader = new FileReader(filePath.getFile());
+			FileReader fileReader = new FileReader(filePath);
 			BufferedReader bufReader = new BufferedReader(fileReader);
 			String currentLine;
 
@@ -411,7 +411,6 @@ public final class SynonymLookup {
 				//safe the refseq index and the corresponding chromesome name
 				String refSeq = workingString.substring(0, workingString.indexOf("|"));
 				String genomeName = workingString.substring(workingString.indexOf("|") + 1, workingString.length());
-				
 				_lookupFastalinesHashMap.put(refSeq, genomeName);
 			}
 		}
