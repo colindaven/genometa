@@ -69,6 +69,7 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 	private static final long serialVersionUID = 2l;
 
 	private static final String PREF_SYN_FILE_URL = "Synonyms File URL";
+	private static final String PREF_METATIE_FILE_URL = "Metatue File URL";
 
 	private static final String[] OPTIONS = new String[]{"Add Server", "Cancel"};
 
@@ -76,6 +77,7 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 		final GroupLayout layout = new GroupLayout(this);
 		final JPanel sourcePanel = initSourcePanel();
 		final JPanel synonymsPanel = initSynonymsPanel(this);
+		final JPanel metatieFastaLinesPanel = initMetatieFastalinesPanel(this);
 		final JPanel cachePanel = initCachePanel();
 	
 		this.setName("Data Sources");
@@ -88,11 +90,13 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(sourcePanel)
 				.addComponent(synonymsPanel)
+				.addComponent(metatieFastaLinesPanel)
 				.addComponent(cachePanel));
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(sourcePanel)
 				.addComponent(synonymsPanel)
+				.addComponent(metatieFastaLinesPanel)
 				.addComponent(cachePanel));
 	}
 
@@ -213,7 +217,6 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 		openFile.setToolTipText("Open Local Directory");
 		openFile.addActionListener(listener);
 		synonymFile.addActionListener(listener);
-
 		
 
 		synonymsPanel.setLayout(layout);
@@ -231,10 +234,67 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 				.addComponent(synonymFile)
 				.addComponent(openFile));
 
+
+
 		/* Load the synonym file from preferences on startup */
 		loadSynonymFile(synonymFile);
 
 		return synonymsPanel;
+	}
+
+	private static JPanel initMetatieFastalinesPanel(final JPanel parent) {
+		final JPanel metaiePanel = new JPanel();
+		final GroupLayout metatieLayout = new GroupLayout(metaiePanel);
+		final JLabel metatieLabel = new JLabel("Metatie-Fastalines File");
+		final JTextField metatieFile = new JTextField(PreferenceUtils.getLocationsNode().get(PREF_METATIE_FILE_URL, ""));
+		final JButton openFile = new JButton("\u2026");
+		final ActionListener listener = new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == openFile) {
+					File file = fileChooser(FILES_AND_DIRECTORIES, parent);
+					try {
+						if (file != null) {
+							metatieFile.setText(file.getCanonicalPath());
+						}
+					} catch (IOException ex) {
+						Logger.getLogger(DataLoadPrefsView.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				}
+
+				if (!metatieFile.getText().isEmpty()) {
+					PreferenceUtils.getLocationsNode().put(PREF_METATIE_FILE_URL, metatieFile.getText());
+				} else {
+					ErrorHandler.errorPanel(
+							"Unable to Load Metatie-Fastlines",
+							"Unable to load metatie fastalines from " + metatieFile.getText() + ".");
+				}
+			}
+		};
+
+		//If there is a file available load it
+		if(!metatieFile.getText().isEmpty()){
+			if (!SynonymLookup.getDefaultLookup().loadMetatieFastalines(metatieFile.getText())) {
+				ErrorHandler.errorPanel("Unable to load Metatie Fastalines ");
+			}
+		}
+
+
+		openFile.setToolTipText("Open Local Directory");
+		openFile.addActionListener(listener);
+		metatieFile.addActionListener(listener);
+
+
+		metaiePanel.setLayout(metatieLayout);
+		metaiePanel.setBorder(new TitledBorder("Metatie-Fastalines"));
+		metatieLayout.setAutoCreateGaps(true);
+		metatieLayout.setAutoCreateContainerGaps(true);
+
+		metatieLayout.setHorizontalGroup(metatieLayout.createSequentialGroup().addComponent(metatieLabel).addComponent(metatieFile).addComponent(openFile));
+
+		metatieLayout.setVerticalGroup(metatieLayout.createParallelGroup(BASELINE).addComponent(metatieLabel).addComponent(metatieFile).addComponent(openFile));
+
+		return metaiePanel;
 	}
 
 	private static JPanel initCachePanel() {
@@ -475,7 +535,10 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 			fis = new FileInputStream(file);
 			SynonymLookup.getDefaultLookup().loadSynonyms(fis);
 		} catch (IOException ex) {
+
+			System.out.println("EXCEPTION");
 			return false;
+
 		} finally {
 			GeneralUtils.safeClose(fis);
 		}
