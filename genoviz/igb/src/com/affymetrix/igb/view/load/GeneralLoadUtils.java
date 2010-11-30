@@ -864,15 +864,18 @@ public final class GeneralLoadUtils {
 	 * @return number of Symmetries
 	 */
 	public static int getNumberOfSymmetriesforSeq(BioSeq seq) {
-		GenericFeature genf = GeneralLoadUtils.getSelectedVersionFeatures().get(0);
-
-		if (genf.symL == null) {
+//		 GenericFeature genf = GeneralLoadUtils.getSelectedVersionFeatures().get(0);
+//
+//		if (genf.symL == null) {
+//			return -1;
+//		}
+//		@SuppressWarnings("unchecked")
+//		List<SeqSymmetry> los = (List<SeqSymmetry>) genf.symL.getRegion(new SimpleSeqSpan(seq.getMin(), seq.getMax() - 1, seq));
+//		List<SeqSymmetry> l = seq.getAnnotations();
+//		if (l != null && l.size() > 0) {
+//			return seq.getAnnotations().get(0).getChildCount();
+//		}
+//		else
 			return -1;
-		}
-		@SuppressWarnings("unchecked")
-		List<SeqSymmetry> los = (List<SeqSymmetry>) genf.symL.getRegion(new SimpleSeqSpan(seq.getMin(), seq.getMax() - 1, seq));
-
-		return los.size();
 	}
-
 }
