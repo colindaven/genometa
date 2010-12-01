@@ -71,8 +71,8 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 			this.setToolTipText("Edit Tooltip BAM display");
 		}
 		else {
-			this.setName("Tooltip Editor GGF");
-			this.setToolTipText("Edit Tooltip GGF display");
+			this.setName("Tooltip Editor GFF");
+			this.setToolTipText("Edit Tooltip GFF display");
 		}
 		this.setLayout(new BorderLayout());
 

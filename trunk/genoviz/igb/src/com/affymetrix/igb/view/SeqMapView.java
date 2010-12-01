@@ -1698,7 +1698,24 @@ public class SeqMapView extends JPanel
 		if (!sym.isEmpty()) {
 			String[][] properties = PropertyView.getPropertiesRow(sym.get(0), this);
 			String tooltip = "";
-			if(properties[4][0].equals("type") && properties[4][1].equals("gene")) {
+			boolean gff = false;
+			for(int i = 0; i < properties.length; i++) {
+				//System.out.print(properties[i][0] + ": " + properties[i][1] + "\t");
+				if(properties[i][0].equals("source") && properties[i][1].equals("RefSeq")) {
+					if(gff) {
+						break;
+					}
+					gff = true;
+				}
+				else if(properties[i][0].equals("method") && properties[i][1].equals("RefSeq")) {
+					if(gff) {
+						break;
+					}
+					gff = true;
+				}
+			}
+			//System.out.println();
+			if(gff) {
 				tooltip = convertPropsToEditorTooltip(properties, false);
 			}
 			else {
@@ -1799,14 +1816,6 @@ public class SeqMapView extends JPanel
 					props.append("<br>");
 				}
 				else if ( item.equals("dummy") ) {
-					props.append("<font color=\"#FF0000\">");
-					value = property_map.get(item);
-					props.append("<b>");
-					props.append(item);
-					props.append(": </b>");
-					props.append(value);
-					props.append("<br>");
-					props.append("</font>");
 				}
 				else {
 					value = property_map.get(item);
