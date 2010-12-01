@@ -106,7 +106,7 @@ public abstract class PreferenceUtils {
 	}
 
 	public static Preferences getTooltipEditorGFFPrefsNode() {
-		return PreferenceUtils.getTopNode().node("tooltip_editor_ggf");
+		return PreferenceUtils.getTopNode().node("tooltip_editor_gff");
 	}
 
 	public static void saveIntParam(String param_name, int param) {
