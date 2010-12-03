@@ -17,7 +17,9 @@ import com.affymetrix.genoviz.bioviews.GlyphI;
 import com.affymetrix.genoviz.bioviews.ViewI;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -42,9 +44,16 @@ public final class EfficientLineContGlyph extends EfficientSolidGlyph  {
   private static final boolean DEBUG_OPTIMIZED_FILL = false;
   private boolean move_children = true;
 
+  private boolean isStackedGlyph = false;
+
   @Override
   public void drawTraversal(ViewI view) {
 		Rectangle pixelbox = view.getScratchPixBox();
+
+//			if(coordbox.height > GenericAnnotGlyphFactory.GLYPH_HEIGHT){
+//				coordbox.height = GenericAnnotGlyphFactory.GLYPH_HEIGHT;
+//				this.adjustChildren();//MPTAG added
+//			}
 		view.transformToPixels(this.getCoordBox(), pixelbox);
 		if (withinView(view) && isVisible) {
 			if (pixelbox.width <= 3 || pixelbox.height <= 3) {//MPTAG hier wird entschieden wieviel gezeichnet wird.// orig 3
@@ -64,7 +73,7 @@ public final class EfficientLineContGlyph extends EfficientSolidGlyph  {
   public void fillDraw(ViewI view) {
     Rectangle pixelbox = view.getScratchPixBox();
     view.transformToPixels(this.getCoordBox(), pixelbox);
-    Graphics g = view.getGraphics();
+    Graphics2D g = view.getGraphics();
     if (DEBUG_OPTIMIZED_FILL) {
       g.setColor(Color.white);
     }
@@ -78,14 +87,12 @@ public final class EfficientLineContGlyph extends EfficientSolidGlyph  {
     if (pixelbox.height < 1) { pixelbox.height = 1; }
     // draw the box
 
-	//MPTAG hier ggf statt dem Rechteck ein Bild zeichnen. Wird die an
-    g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width, pixelbox.height);
-/*	Image i = null;
-	if(pixelbox.width > 0 && pixelbox.height > 0){
-		i = GenericAnnotGlyphFactory.getTexture();
-		i = i.getScaledInstance(pixelbox.width, pixelbox.height, Image.SCALE_FAST);
-	}
-	g.drawImage(i, pixelbox.x, pixelbox.y, null);*/
+	//MPTAG hier ggf statt dem Rechteck ein Bild zeichnen
+	/*g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width, pixelbox.height);*/
+	if(!isStackedGlyph)
+		g.drawImage(TextureCache.getInstance().getImage(pixelbox.width, pixelbox.height),
+				pixelbox.x, pixelbox.y, null);
+
 
     super.draw(view);
   }
@@ -186,4 +193,10 @@ public final class EfficientLineContGlyph extends EfficientSolidGlyph  {
       super.pack(view);
     }
   }
+
+
+	public void setIsStackedGlyph(boolean b){
+		isStackedGlyph = b;
+	}
+
 }

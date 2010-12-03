@@ -32,6 +32,7 @@ import com.affymetrix.genometryImpl.style.ITrackStyleExtended;
 import com.affymetrix.genometryImpl.span.SimpleMutableSeqSpan;
 import com.affymetrix.genometryImpl.symmetry.SimpleMutableSeqSymmetry;
 import com.affymetrix.genometryImpl.parsers.TrackLineParser;
+import com.affymetrix.genoviz.glyph.ArrowGlyph;
 
 import com.affymetrix.igb.tiers.AffyTieredMap;
 import com.affymetrix.igb.tiers.TierGlyph;
@@ -71,12 +72,15 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 
 	//MPTAG added
 	private static Image texture;
+	public static final double GLYPH_HEIGHT = 2.;
 	
 	public GenericAnnotGlyphFactory() {
 		//MPTAG added
 		try{
-			texture = ImageIO.read(new File(
-				"f:\\Schattierung.png"));
+			File f = new File("./igb/resources/Schattierung.png");
+			if(!f.exists())
+				throw new RuntimeException("Failed loading Image"+ f.getAbsolutePath());
+			texture = ImageIO.read(f);
 	//			System.getProperty("user.dir")+System.getProperty("path.seperator")+"testimage.jpg");
 		}catch (IOException e){
 			System.out.println(e);
@@ -232,7 +236,8 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		// allows the user to select both the parent and the child as separate entities
 		// in order to look at the properties associated with them.  Otherwise, the method
 		// EfficientGlyph.pickTraversal() will only allow one to be chosen.
-		double pheight = DEFAULT_THICK_HEIGHT + 0.0001;
+//		double pheight = DEFAULT_THICK_HEIGHT + 0.0001;
+		double pheight = GLYPH_HEIGHT;//MPTAG
 		String label_field = the_style.getLabelField();
 		boolean use_label = label_field != null && (label_field.trim().length() > 0);
 		if (use_label) {
@@ -335,7 +340,8 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		}
 		// call out to handle rendering to indicate if any of the children of the
 		//    orginal annotation are completely outside the view
-		DeletionGlyph.handleEdgeRendering(outside_children, pglyph, annotseq, coordseq, 0.0, DEFAULT_THIN_HEIGHT);
+//		DeletionGlyph.handleEdgeRendering(outside_children, pglyph, annotseq, coordseq, 0.0, DEFAULT_THIN_HEIGHT);//MPTAG
+		DeletionGlyph.handleEdgeRendering(outside_children, pglyph, annotseq, coordseq, 0.0, GLYPH_HEIGHT);
 	}
 
 	/*
@@ -393,7 +399,8 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			Color child_color, GlyphI pglyph, AffyTieredMap map)
 			throws IllegalAccessException, InstantiationException {
 		if (cdsSpan == null || SeqUtils.contains(cdsSpan, cspan)) {
-			return DEFAULT_THICK_HEIGHT;
+//			return DEFAULT_THICK_HEIGHT;//MPTAG
+			return GLYPH_HEIGHT;
 		}
 		if (SeqUtils.overlap(cdsSpan, cspan)) {
 			SeqSymmetry cds_sym_2 = SeqUtils.intersection(cds_sym, child, annotseq);
@@ -406,15 +413,18 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 				if (cspan.getLength() == 0) {
 					cds_glyph = new DeletionGlyph();
 				} else {
+					System.out.println("Added glyph: "+ child_glyph_class.getCanonicalName());
 					cds_glyph = (GlyphI) child_glyph_class.newInstance();
 				}
-				cds_glyph.setCoords(cds_span.getMin(), 0, cds_span.getLength(), DEFAULT_THICK_HEIGHT);
+//				cds_glyph.setCoords(cds_span.getMin(), 0, cds_span.getLength(), DEFAULT_THICK_HEIGHT);
+				cds_glyph.setCoords(cds_span.getMin(), 0, cds_span.getLength(), GLYPH_HEIGHT);
 				cds_glyph.setColor(child_color); // CDS same color as exon
 				pglyph.addChild(cds_glyph);
 				map.setDataModelFromOriginalSym(cds_glyph, cds_sym_2);
 			}
 		}
-		return DEFAULT_THIN_HEIGHT;
+//		return DEFAULT_THIN_HEIGHT;
+		return GLYPH_HEIGHT;
 	}
 
 	/**

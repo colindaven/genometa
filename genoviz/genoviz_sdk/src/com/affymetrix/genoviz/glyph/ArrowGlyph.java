@@ -58,11 +58,18 @@ public class ArrowGlyph extends DirectedGlyph  {
 	public void draw(ViewI view) {
 		double hold_y = coordbox.y;
 
+
 		coordbox.y = coordbox.y + (coordbox.height / 2);
 		view.transformToPixels(coordbox, pixelbox);
 		int offset_center = pixelbox.y;
 		coordbox.y = hold_y;
 		view.transformToPixels(coordbox, pixelbox);
+
+		//MPTAG added
+		if(pixelbox.height > view.getPixelBox().height * 0.15){
+		pixelbox.height = (int)(view.getPixelBox().height * 0.15);
+		}
+		//MPTAG end
 
 		Graphics g = view.getGraphics();
 		g.setColor(getBackgroundColor());

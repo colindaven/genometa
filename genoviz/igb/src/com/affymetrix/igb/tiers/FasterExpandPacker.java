@@ -5,6 +5,8 @@ import com.affymetrix.genoviz.util.NeoConstants;
 import com.affymetrix.genoviz.bioviews.GlyphI;
 import com.affymetrix.genoviz.bioviews.ViewI;
 import com.affymetrix.igb.glyph.AlignedResidueGlyph;
+import com.affymetrix.igb.glyph.DirectionFillRectGlyph;
+import com.affymetrix.igb.glyph.EfficientLineContGlyph;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -202,7 +204,7 @@ public final class FasterExpandPacker extends ExpandPacker {
 						recurseSetPackerClipping(child);	// don't draw everything in the overlapped glyphs (for performance)
 						if (layeredChild.getColor() != child.getColor()) {
 							// first time through -- we haven't set the previous child's color yet.
-							//MPTAG Hinzugefügt um konstante evrdukelung zu erhalten wenn die Koordinatenacse verschoben wird
+							//MPTAG Hinzugefügt um konstante verdunkelung zu erhalten wenn die Koordinatenachse verschoben wird
 							if(makeGlyphsDarker)
 								recurseSetColor(layeredChild.getColor().darker(), layeredChild);
 							recurseSetPackerClipping(layeredChild);	// don't draw everything in the overlapped glyphs (for performance)
@@ -266,6 +268,10 @@ public final class FasterExpandPacker extends ExpandPacker {
 	private static void recurseSetPackerClipping(GlyphI glyph) {
 		if (glyph instanceof AlignedResidueGlyph) {
 			((AlignedResidueGlyph)glyph).packerClip = true;
+		}if (glyph instanceof DirectionFillRectGlyph) {
+			((DirectionFillRectGlyph)glyph).setIsStackedGlyph(true);
+		}if (glyph instanceof EfficientLineContGlyph) {
+			((EfficientLineContGlyph)glyph).setIsStackedGlyph(true);
 		}
 		int count = glyph.getChildCount();
 		for (int i=0;i<count;i++) {

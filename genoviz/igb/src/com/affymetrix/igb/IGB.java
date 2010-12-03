@@ -12,7 +12,6 @@
  */
 package com.affymetrix.igb;
 
-import com.affymetrix.genoviz.swing.ButtonTabComponent;
 import com.affymetrix.genometryImpl.util.ConsoleView;
 import com.affymetrix.genometryImpl.util.MenuUtil;
 import java.awt.BorderLayout;
@@ -20,14 +19,16 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.*;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import java.io.*;
 import java.net.*;
@@ -62,6 +63,7 @@ import com.affymetrix.igb.tiers.IGBStateProvider;
 import com.affymetrix.igb.util.IGBAuthenticator;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.igb.action.*;
+import com.affymetrix.igb.util.CommandLineWindow;
 import com.affymetrix.igb.util.ScriptFileLoader;
 import com.affymetrix.igb.util.ThreadUtils;
 import com.affymetrix.igb.view.external.ExternalViewer;
@@ -117,6 +119,8 @@ public final class IGB extends Application
 	public static volatile String commandLineBatchFileStr = null;	// Used to run batch file actions if passed via command-line
 	private JTabbedPane neoMapPane;
 	private BarGraphMap barGraph;
+	private JToggleButton fast_dir_swap_menu;//MPTAG added
+	public static boolean dir_swap_state = false;
 	
 	/**
 	 * Start the program.
@@ -372,6 +376,23 @@ public final class IGB extends Application
 		move_tab_to_window_item = new JMenuItem(BUNDLE.getString("openCurrentTabInNewWindow"), KeyEvent.VK_O);
 		move_tabbed_panel_to_window_item = new JMenuItem(BUNDLE.getString("openTabbedPanesInNewWindow"), KeyEvent.VK_P);
 
+		//MPTAG added
+		mbar.add(new JLabel("                   "));
+		int iconWidth = 70; int iconHeight = 30;
+		ImageIcon io = new ImageIcon("./igb/resources/direction_not_selected.gif");
+		io.setImage(io.getImage().getScaledInstance(iconWidth,iconHeight , Image.SCALE_SMOOTH));
+		fast_dir_swap_menu = new JToggleButton(io, dir_swap_state);
+		io = new ImageIcon("./igb/resources/direction_selected.gif");
+		io.setImage(io.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH));
+		fast_dir_swap_menu.setSelectedIcon(io);
+		mbar.add(fast_dir_swap_menu);
+		fast_dir_swap_menu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				dir_swap_state = !dir_swap_state;
+				fast_dir_swap_menu.setSelected(dir_swap_state);
+			}
+		});//MPTAG end
+
 		fileMenu();
 
 		editMenu();
@@ -558,6 +579,15 @@ public final class IGB extends Application
 		MenuUtil.addToMenu(file_menu, new JMenuItem(new PreferencesAction()));
 		file_menu.addSeparator();
 		MenuUtil.addToMenu(file_menu, new JMenuItem(new ExitAction()));
+		//MPTAG added
+		file_menu.addSeparator();
+		MenuUtil.addToMenu(file_menu, new JMenuItem(new AbstractAction("Command Line") {
+
+			public void actionPerformed(ActionEvent ae) {
+				new CommandLineWindow();
+			}
+		}));
+		//MPTAF end
 	}
 
 	private void editMenu() {

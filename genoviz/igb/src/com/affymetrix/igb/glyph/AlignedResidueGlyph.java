@@ -7,6 +7,8 @@ import com.affymetrix.genometryImpl.util.ImprovedStringCharIter;
 import com.affymetrix.genometryImpl.util.SearchableCharIterator;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.genoviz.glyph.AbstractResiduesGlyph;
+import com.affymetrix.igb.IGB;
+import java.awt.geom.Rectangle2D.Double;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -234,12 +236,14 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			int pixelStart) {
 		char[] charArray = residueStr.toCharArray();
 		//BFTAG sorgt dafür, dass die Rechtecke mit den Dreicken nicht größer als View-Höhe*glyphScaleingFactor-Pixel werden
-		checkPixelBoxHeight((int)(view.getPixelBox().height * glyphScaleingFactor));
+//		checkPixelBoxHeight((int)(view.getPixelBox().height * glyphScaleingFactor), view);
 		drawResidueRectangles(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelbox.x, pixelbox.y, pixelbox.height);
 		drawResidueStrings(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelStart);
 		//MPTAG Prüft für jeden Buchstaben ob er passt. Reicht da nicht einmaliges Prüfen ?
-		//drawDirectionBar(true, g);
-		//drawDirectionTriangle(false, g);
+		if(IGB.dir_swap_state && !packerClip){
+			drawDirectionBar(true, g);
+			drawDirectionTriangle(false, g);
+		}
 	}
 
 	private static void drawResidueRectangles(
@@ -259,9 +263,17 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		}
 	}
 	
-	private void checkPixelBoxHeight(int maxHeight){
-		if(pixelbox.height > maxHeight){
-			pixelbox.height = maxHeight;
+	private void checkPixelBoxHeight(int maxHeight, ViewI view){
+		if(coordbox.height > maxHeight){
+			coordbox.height = maxHeight;
+			if(this.getParent() instanceof EfficientSolidGlyph){
+				for(int i = 0; i < this.getParent().getChildCount(); i++){
+					if(this.getParent().getChild(i).getCoordBox().height != maxHeight){
+						this.getParent().getChild(i).getCoordBox().height = maxHeight;
+						System.out.println("MPTAG -- Höhe von "+ this.getParent().getChild(i) + " gesetzt");
+					}
+				}
+			}
 		}
 	}
 
@@ -462,4 +474,21 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			g.setColor(tmpCol);
 		}
 	}
+	//MPTAG added
+	@Override
+	public Double getCoordBox() {
+//		if(super.getCoordBox().height > GenericAnnotGlyphFactory.GLYPH_HEIGHT)
+//			super.getCoordBox().height = GenericAnnotGlyphFactory.GLYPH_HEIGHT;
+		return super.getCoordBox();
+	}
+
+		//MPTAG added
+	@Override
+	public void setCoords(double x, double y, double width, double height) {
+		double h = height;
+//		if(h > GenericAnnotGlyphFactory.GLYPH_HEIGHT)
+//			h = GenericAnnotGlyphFactory.GLYPH_HEIGHT;
+		super.setCoords(x, y, width, h);
+	}
+
 }
