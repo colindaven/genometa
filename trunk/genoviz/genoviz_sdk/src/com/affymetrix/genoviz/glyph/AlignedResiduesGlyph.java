@@ -391,7 +391,7 @@ public class AlignedResiduesGlyph extends Glyph implements ResiduesGlyphI  {
 
 		// ***** draw a normal rect if scale is < 1 pixel per residue ******
 		// ****  or if sequence has not been set ****
-		if ( pixels_per_residue < 1 || !setSequence ) {
+		if ( pixels_per_residue < 3 || !setSequence ) {//MPTAG Changed ppr from 1
 			full_rect.setCoordBox ( this.getCoordBox() );
 			full_rect.draw(view);
 		}
