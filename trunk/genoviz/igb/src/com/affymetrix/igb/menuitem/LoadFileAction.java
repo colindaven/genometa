@@ -22,6 +22,7 @@ import com.affymetrix.genometryImpl.util.MenuUtil;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.zip.ZipInputStream;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -47,6 +48,9 @@ import com.affymetrix.genometryImpl.util.UniFileFilter;
 import com.affymetrix.genometryImpl.util.LoadUtils.LoadStrategy;
 import com.affymetrix.genometryImpl.symloader.SymLoaderInstNC;
 import com.affymetrix.genometryImpl.symloader.GFF;
+import com.affymetrix.genometryImpl.util.ParserController;
+import com.affymetrix.genometryImpl.parsers.useq.ArchiveInfo;
+import com.affymetrix.genometryImpl.util.LocalUrlCacher;
 import com.affymetrix.genoviz.util.FileDropHandler;
 import com.affymetrix.genoviz.util.ErrorHandler;
 import com.affymetrix.igb.Application;
@@ -439,7 +443,7 @@ public final class LoadFileAction extends AbstractAction {
 		openURI(uri, fileName, true, group, group.getOrganism());
 	}
 	
-	public static void openURI(URI uri, final String fileName, final boolean mergeSelected, final AnnotatedSeqGroup loadGroup, String speciesName) {
+	public static void openURI(URI uri, final String fileName, final boolean mergeSelected, AnnotatedSeqGroup loadGroup, String speciesName) {
 		if (uri.toString().toLowerCase().endsWith(".igb")) {
 			// response file.  Do its actions and return.
 			// Potential for an infinite loop here, of course.
@@ -449,6 +453,9 @@ public final class LoadFileAction extends AbstractAction {
 
 		GenericFeature gFeature = getFeature(uri, fileName, speciesName, loadGroup);
 
+		//Load group might have changed in case of useq file.
+		loadGroup = GenometryModel.getGenometryModel().getSelectedSeqGroup();
+		
 		if(gFeature == null)
 			return;
 
@@ -498,6 +505,14 @@ public final class LoadFileAction extends AbstractAction {
 
 		GenericVersion version = GeneralLoadUtils.getLocalFilesVersion(loadGroup, speciesName);
 
+		String unzippedStreamName = GeneralUtils.stripEndings(uri.toString());
+		String extension = ParserController.getExtension(unzippedStreamName);
+
+		if(extension.equals(".useq")){
+			loadGroup =handleUseq(uri, loadGroup);
+			version = GeneralLoadUtils.getLocalFilesVersion(loadGroup, loadGroup.getOrganism());
+		}
+
 		// handle URL case.
 		String uriString = uri.toString();
 		int httpIndex = uriString.toLowerCase().indexOf("http:");
@@ -514,6 +529,26 @@ public final class LoadFileAction extends AbstractAction {
 		gFeature.setVisible(); // this should be automatically checked in the feature tree
 
 		return gFeature;
+	}
+
+	private static AnnotatedSeqGroup handleUseq(URI uri, AnnotatedSeqGroup group){
+		InputStream istr = null;
+		ZipInputStream zis = null;
+		try {
+			istr = LocalUrlCacher.getInputStream(uri.toURL());
+			zis = new ZipInputStream(istr);
+			zis.getNextEntry();
+			ArchiveInfo archiveInfo = new ArchiveInfo(zis, false);
+			AnnotatedSeqGroup gr = GenometryModel.getGenometryModel().getSeqGroup(archiveInfo.getVersionedGenome());
+			if (gr != null) {
+				GenometryModel.getGenometryModel().setSelectedSeqGroup(gr);
+				return gr;
+			}
+		} catch (Exception ex) {
+			GeneralUtils.safeClose(istr);
+			GeneralUtils.safeClose(zis);
+		}
+		return group;
 	}
 
 	private static void loadAllFeatures(final GenericFeature gFeature, final AnnotatedSeqGroup loadGroup){
