@@ -211,6 +211,10 @@
     name="PlantGDB: AtGDB"
     url="http://www.plantgdb.org/AtGDB/cgi-bin/findRecord.pl?gi=$$"
   />
+  
+  <annotation_url annot_id_regex="^.*$" id_field="FLYBASE" name="Flybase"
+    url="http://flybase.org/.bin/fbidq.html?$$"
+  />
 
 </prefs>
 
