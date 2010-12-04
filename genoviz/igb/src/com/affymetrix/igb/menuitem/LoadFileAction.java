@@ -47,7 +47,6 @@ import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.genometryImpl.util.UniFileFilter;
 import com.affymetrix.genometryImpl.util.LoadUtils.LoadStrategy;
 import com.affymetrix.genometryImpl.symloader.SymLoaderInstNC;
-import com.affymetrix.genometryImpl.symloader.GFF;
 import com.affymetrix.genometryImpl.util.ParserController;
 import com.affymetrix.genometryImpl.parsers.useq.ArchiveInfo;
 import com.affymetrix.genometryImpl.util.LocalUrlCacher;
@@ -132,7 +131,9 @@ public final class LoadFileAction extends AbstractAction {
 		chooser.addChoosableFileFilter(new UniFileFilter(
 						new String[]{"bps", "bgn", "brs", "bsnp", "brpt", "bnib", "bp1", "bp2", "ead","useq"},
 						"Binary Files"));
-		chooser.addChoosableFileFilter(new UniFileFilter("cyt", "Cytobands"));
+		chooser.addChoosableFileFilter(new UniFileFilter(
+						"cyt",
+						"Cytobands"));
 		chooser.addChoosableFileFilter(new UniFileFilter(
 						new String[]{"gb", "gen"},
 						"Genbank Files"));
@@ -157,19 +158,23 @@ public final class LoadFileAction extends AbstractAction {
 		chooser.addChoosableFileFilter(new UniFileFilter(
 						"cnt", "Copy Number Files")); // ".cnt" files from CNAT
 		chooser.addChoosableFileFilter(new UniFileFilter(
-						new String[]{"cnchp", "lohchp"}, "Copy Number CHP Files"));
-
+						new String[]{"cnchp", "lohchp"},
+						"Copy Number CHP Files"));
 		chooser.addChoosableFileFilter(new UniFileFilter(
-						"var", "Genomic Variation Files")); // ".var" files (Toronto DB of genomic variations)
+						"var",
+						"Genomic Variation Files")); // ".var" files (Toronto DB of genomic variations)
 		chooser.addChoosableFileFilter(new UniFileFilter(
 						new String[]{SegmenterRptParser.CN_REGION_FILE_EXT, SegmenterRptParser.LOH_REGION_FILE_EXT},
 						"Regions Files")); // Genotype Console Segmenter
 		chooser.addChoosableFileFilter(new UniFileFilter(
-						FishClonesParser.FILE_EXT, "FishClones")); // ".fsh" files (fishClones.txt from UCSC)
+						FishClonesParser.FILE_EXT,
+						"FishClones")); // ".fsh" files (fishClones.txt from UCSC)
 		chooser.addChoosableFileFilter(new UniFileFilter(
-						new String[]{"map"}, "Scored Map Files"));
+						new String[]{"map"},
+						"Scored Map Files"));
 		chooser.addChoosableFileFilter(new UniFileFilter(
-						new String[]{"igb"}, "IGB Script File"));
+						new String[]{"igb"},
+						"IGB Script File"));
 
 		Set<String> all_known_endings = new HashSet<String>();
 		for (javax.swing.filechooser.FileFilter filter : chooser.getChoosableFileFilters()) {
@@ -443,7 +448,7 @@ public final class LoadFileAction extends AbstractAction {
 		openURI(uri, fileName, true, group, group.getOrganism());
 	}
 	
-	public static void openURI(URI uri, final String fileName, final boolean mergeSelected, AnnotatedSeqGroup loadGroup, String speciesName) {
+	public static void openURI(URI uri, final String fileName, final boolean mergeSelected, final AnnotatedSeqGroup loadGroup, final String speciesName) {
 		if (uri.toString().toLowerCase().endsWith(".igb")) {
 			// response file.  Do its actions and return.
 			// Potential for an infinite loop here, of course.
@@ -452,29 +457,21 @@ public final class LoadFileAction extends AbstractAction {
 		}
 
 		GenericFeature gFeature = getFeature(uri, fileName, speciesName, loadGroup);
-
-		//Load group might have changed in case of useq file.
-		loadGroup = GenometryModel.getGenometryModel().getSelectedSeqGroup();
-		
+	
 		if(gFeature == null)
 			return;
 
-		if(((QuickLoad)gFeature.symL).getSymLoader() instanceof GFF) {
-			addChromosomesForUnknownGroup(fileName, gFeature, loadGroup);
-		} else if (((QuickLoad)gFeature.symL).getSymLoader() instanceof SymLoaderInstNC) {
-			if(loadGroup == null || loadGroup.getSeqList().isEmpty()){
-				addChromosomesForUnknownGroup(fileName, gFeature, loadGroup);
-			}
-			loadAllFeatures(gFeature, loadGroup);
-		} else if (gFeature.symL != null){
-			addChromosomesForUnknownGroup(fileName, gFeature, loadGroup);
+		GeneralLoadView.initVersion(gFeature.gVersion.group.getID());
+
+		if (gFeature.symL != null){
+			addChromosomesForUnknownGroup(fileName, gFeature);
 		}
 
 		// force a refresh of this server
 		ServerList.fireServerInitEvent(ServerList.getLocalFilesServer(), ServerStatus.Initialized, true, true);
 
 		//Annotated Seq Group must be selected before feature table change call.
-		GenometryModel.getGenometryModel().setSelectedSeqGroup(loadGroup);
+		GenometryModel.getGenometryModel().setSelectedSeqGroup(gFeature.gVersion.group);
 
 		GeneralLoadView.getLoadView().createFeaturesTable();
 
@@ -484,20 +481,7 @@ public final class LoadFileAction extends AbstractAction {
 	}
 
 	public static GenericFeature getFeature(URI uri, String fileName, String speciesName, AnnotatedSeqGroup loadGroup){
-		// Make sure this URI is not already used within the selectedGroup.  Otherwise there could be collisions in BioSeq.addAnnotations(type)
-		boolean uniqueURI = true;
-		for (GenericVersion version : loadGroup.getAllVersions()) {
-			// See if symloader feature was created with the same uri.
-			for (GenericFeature feature : version.getFeatures()) {
-				if (feature.symL != null) {
-					if (feature.symL.uri.equals(uri)) {
-						uniqueURI = false;
-						break;
-					}
-				}
-			}
-		}
-		if (!uniqueURI) {
+		if (!isUniqueURI(loadGroup, uri)) {
 			ErrorHandler.errorPanel("Cannot add same feature",
 					"The feature " + uri + " has already been added.");
 			return null;
@@ -509,7 +493,7 @@ public final class LoadFileAction extends AbstractAction {
 		String extension = ParserController.getExtension(unzippedStreamName);
 
 		if(extension.equals(".useq")){
-			loadGroup =handleUseq(uri, loadGroup);
+			loadGroup = handleUseq(uri, loadGroup);
 			version = GeneralLoadUtils.getLocalFilesVersion(loadGroup, loadGroup.getOrganism());
 		}
 
@@ -531,6 +515,25 @@ public final class LoadFileAction extends AbstractAction {
 		return gFeature;
 	}
 
+	/**
+	 * Make sure this URI is not already used within the selectedGroup.  
+	 * Otherwise there could be collisions in BioSeq.addAnnotations(type)
+	 * @param loadGroup
+	 * @param uri
+	 * @return
+	 */
+	private static boolean isUniqueURI(AnnotatedSeqGroup loadGroup, URI uri) {
+		for (GenericVersion version : loadGroup.getAllVersions()) {
+			// See if symloader feature was created with the same uri.
+			for (GenericFeature feature : version.getFeatures()) {
+				if (feature.symL != null && feature.symL.uri.equals(uri)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	private static AnnotatedSeqGroup handleUseq(URI uri, AnnotatedSeqGroup group){
 		InputStream istr = null;
 		ZipInputStream zis = null;
@@ -545,36 +548,16 @@ public final class LoadFileAction extends AbstractAction {
 				return gr;
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
 			GeneralUtils.safeClose(istr);
 			GeneralUtils.safeClose(zis);
 		}
 		return group;
 	}
 
-	private static void loadAllFeatures(final GenericFeature gFeature, final AnnotatedSeqGroup loadGroup){
-		final String notLockedUpMsg = "Loading whole genome for " + gFeature.featureName;
-		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-
-			@Override
-			public Void doInBackground() {
-				Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
-
-				gFeature.loadStrategy = LoadStrategy.GENOME;
-				GeneralLoadUtils.loadAndDisplayAnnotations(gFeature);
-
-				return null;
-			}
-
-			@Override
-			public void done() {
-				Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
-			}
-		};
-
-		ThreadUtils.getPrimaryExecutor(gFeature).execute(worker);
-	}
-
-	private static void addChromosomesForUnknownGroup(final String fileName, final GenericFeature gFeature, final AnnotatedSeqGroup loadGroup) {
+	private static void addChromosomesForUnknownGroup(final String fileName, final GenericFeature gFeature) {
+		final AnnotatedSeqGroup loadGroup = gFeature.gVersion.group;
 		final String notLockedUpMsg = "Retrieving chromosomes for " + fileName;
 		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
@@ -595,6 +578,12 @@ public final class LoadFileAction extends AbstractAction {
 					// select a chromosomes
 					GenometryModel.getGenometryModel().setSelectedSeq(loadGroup.getSeq(0));
 				}
+
+				if(GenometryModel.getGenometryModel().getSelectedSeq() != null &&
+						((QuickLoad)gFeature.symL).getSymLoader() instanceof SymLoaderInstNC) {
+					GeneralLoadUtils.loadAndDisplayAnnotations(gFeature);
+				}
+				
 				Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
 			}
 		};
@@ -605,12 +594,11 @@ public final class LoadFileAction extends AbstractAction {
 	private static void openURLAction(JFrame gviewerFrame,String url){
 		try {
 			URI uri = new URI(url.trim());
-		
 			if(!openURI(uri)){
 				ErrorHandler.errorPanel(gviewerFrame, "FORMAT NOT RECOGNIZED", "Format not recognized for file: " + url, null);
 			}
-			
-		} catch (URISyntaxException ex) {
+		}
+		catch (URISyntaxException ex) {
 			ex.printStackTrace();
 			ErrorHandler.errorPanel(gviewerFrame, "INVALID URL", url + "\n Url provided is not valid: ", null);
 		}
