@@ -1115,7 +1115,7 @@ public abstract class ServerUtils {
 			return new SymLoaderInst(uri, featureName, group);
 		}
 		if((extension.equals("sin") || extension.equals("egr")) ||
-				extension.equals("bgr")){
+				extension.equals("bgr") || extension.equals("useq")){
 			return new SymLoaderInstNC(uri, featureName, group);
 		}if((extension.equals("gff3")) || extension.endsWith("gff")){
 			//Determine if a file with extension gff is actually gff3
