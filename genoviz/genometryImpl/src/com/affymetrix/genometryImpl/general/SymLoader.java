@@ -438,8 +438,7 @@ public abstract class SymLoader {
 		}
 		if (extension.equals("gff") || extension.equals("gtf")) {
 			GFFParser parser = new GFFParser();
-			parser.parse(bis, featureName, group, false, true);
-			return null;	// hack -- cannot currently annotate with FRS!
+			return parser.parse(bis, featureName, group, false, false);
 		}
 		if (extension.equals("gff3")) {
 			/* Force parsing as GFF3 */

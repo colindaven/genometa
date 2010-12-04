@@ -1120,12 +1120,13 @@ public abstract class ServerUtils {
 		if((extension.equals("sin") || extension.equals("egr")) ||
 				extension.equals("bgr") || extension.equals("useq")){
 			return new SymLoaderInstNC(uri, featureName, group);
-		}if((extension.equals("gff3")) || extension.endsWith("gff")){
+		}if((extension.equals("gff3")) || extension.endsWith("gff") ||
+				extension.equals("gtf")){
 			//Determine if a file with extension gff is actually gff3
 			if(GFF3.isGFF3(uri))
 				return new GFF3(uri, featureName, group);
 			
-			return new GFF(uri, featureName, group);
+			return new SymLoaderInstNC(uri, featureName, group);
 		}
 
 		return null;

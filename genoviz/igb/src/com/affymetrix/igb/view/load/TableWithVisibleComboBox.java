@@ -72,7 +72,6 @@ public final class TableWithVisibleComboBox {
 
 			ButtonTableCellEditor buttonEditor = new ButtonTableCellEditor(gFeature);
 			action.addEditorForRow(row, buttonEditor);
-			buttonEditor.addActionListener(ftm);
 		}
 
 		TableColumn c = table.getColumnModel().getColumn(FeaturesTableModel.LOAD_STRATEGY_COLUMN);
