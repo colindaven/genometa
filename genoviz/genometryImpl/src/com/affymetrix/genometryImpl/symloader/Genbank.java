@@ -300,8 +300,6 @@ public final class Genbank extends SymLoader {
 			return Collections.<GenbankSym>emptyList();
 		}
 		
-		Logger.getLogger(Genbank.class.getName()).log(
-				Level.FINE, "Initial read was successful, parsing now");
 		//if (beginEntry() != null) {
 		readFeature(input, id2sym, seq, min, max);
 		//}

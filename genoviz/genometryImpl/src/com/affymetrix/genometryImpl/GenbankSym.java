@@ -36,11 +36,11 @@ public final class GenbankSym implements SeqSpan, SupportsCdsSpan, SymWithProps 
 		this.ID = ID;
 		this.forward = min < max;
 		if (forward) {
-			this.txMin = min;
+			this.txMin = min-1;	// interbase
 			this.txMax = max;
 		} else {
 			this.txMax = min;
-			this.txMin = max;
+			this.txMin = max-1;	// interbase
 		}
 	}
 
@@ -112,13 +112,14 @@ public final class GenbankSym implements SeqSpan, SupportsCdsSpan, SymWithProps 
 
 	public SeqSymmetry getChild(int index) {
 		if (blockMins == null || (blockMins.size() <= index)) { return null; }
+		// convert to interbase
 		if (forward) {
 			// blockMins are in seq coordinates, NOT relative to txMin
-			return new GenbankChildSingletonSeqSym(blockMins.get(index), blockMaxs.get(index), seq);
+			// convert to interbase
+			return new GenbankChildSingletonSeqSym(blockMins.get(index)-1, blockMaxs.get(index), seq);
 		}
-		else {
-			return new GenbankChildSingletonSeqSym(blockMaxs.get(index), blockMins.get(index), seq);
-		}
+		// convert to interbase
+		return new GenbankChildSingletonSeqSym(blockMaxs.get(index)-1, blockMins.get(index), seq);
 	}
 
 	public void addBlock(int start, int end) {
@@ -140,23 +141,23 @@ public final class GenbankSym implements SeqSpan, SupportsCdsSpan, SymWithProps 
 		if (forward) {
 			//if (CDSblockMins.isEmpty()) {
 			if (cdsMin == Integer.MIN_VALUE) {
-				cdsMin = start;
+				cdsMin = start-1;	//interbase
 				cdsMax = end;
 			}
-			//CDSblockMins.add(start);
+			//CDSblockMins.add(start-1);	//interbase
 			//CDSblockMaxs.add(end);
-			cdsMin = Math.min(cdsMin, start);
+			cdsMin = Math.min(cdsMin, start-1);	//interbase
 			cdsMax = Math.max(cdsMax, end);
 
 		} else {
 			//if (CDSblockMins.isEmpty()) {
 			if (cdsMin == Integer.MIN_VALUE) {
-				cdsMin = end;
+				cdsMin = end-1;	//interbase
 				cdsMax = start;
 			}
 			//CDSblockMaxs.add(start);
-			//CDSblockMins.add(end);
-			cdsMin = Math.min(cdsMin, end);
+			//CDSblockMins.add(end);	// interbase
+			cdsMin = Math.min(cdsMin, end-1);	//interbase
 			cdsMax = Math.max(cdsMax, start);
 		}
 	}
