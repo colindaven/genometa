@@ -9,7 +9,6 @@ import com.affymetrix.genometryImpl.AnnotatedSeqGroup;
 import com.affymetrix.genometryImpl.BioSeq;
 import com.affymetrix.genometryImpl.GenbankSym;
 import com.affymetrix.genometryImpl.SeqSpan;
-import com.affymetrix.genometryImpl.SeqSymmetry;
 import com.affymetrix.genometryImpl.comparator.BioSeqComparator;
 import com.affymetrix.genometryImpl.general.SymLoader;
 import com.affymetrix.genometryImpl.util.GeneralUtils;
@@ -182,6 +181,8 @@ public final class Genbank extends SymLoader {
 	private BioSeq currentSeq = null;
 
 
+
+
 	public Genbank(URI uri, String featureName, AnnotatedSeqGroup seq_group) {
 		super(uri, featureName, seq_group);
 	}
@@ -190,6 +191,8 @@ public final class Genbank extends SymLoader {
 	private static final List<LoadStrategy> strategyList = new ArrayList<LoadStrategy>();
 	static {
 		strategyList.add(LoadStrategy.NO_LOAD);
+		strategyList.add(LoadStrategy.VISIBLE);
+		strategyList.add(LoadStrategy.CHROMOSOME);
 		strategyList.add(LoadStrategy.GENOME);
 	}
 
@@ -203,51 +206,23 @@ public final class Genbank extends SymLoader {
 	}
 
 
-	/*@Override
+	@Override
 	public void init() {
 		if (this.isInitialized) {
 			return;
 		}
-		// TODO: Split this file by chromosome.
-		BufferedInputStream bis = null;
-		BufferedReader br = null;
-		try {
-			bis = LocalUrlCacher.convertURIToBufferedUnzippedStream(uri);
-			br = new BufferedReader(new InputStreamReader(bis));
-			parseChromosomes(br);
-		}catch (Exception ex) {
-			Logger.getLogger(Genbank.class.getName()).log(Level.SEVERE, null, ex);
-			this.chrList.clear();
-		} finally {
-			GeneralUtils.safeClose(bis);
-			GeneralUtils.safeClose(br);
-		}
 		super.init();
-	}*/
 
-	/*private void parseChromosomes(BufferedReader br) {
-		try {
-			String line = null;
-			String CHROM = "/chromosome";
-			while ((line = br.readLine()) != null) {
-				line = getCurrentLine(br, 0);
-				int index = line.indexOf(CHROM);
-				if (index >= 0) {
-					index = line.indexOf("=");
-					if (index >= 0) {
-						String value = line.substring(index + 1);
-						value = GenbankFeature.stripQuotes(value);
-						BioSeq seq = this.group.getSeq(value);
-						if (seq == null) {
-							seq = new BioSeq(value, "", 1000);
-						}
-						chrList.put(seq, new File(uri));	// TODO
-					}
-					System.out.println("chr: " + line);
-				}
+		// TODO: Hack to get chromosomes, which is currently done by parsing the entire file.
+		List<GenbankSym> results = parse(null, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		for (GenbankSym sym : results) {
+			BioSeq seq = sym.getBioSeq();
+			if (sym.getMax() > seq.getMax()) {
+				seq.setLength(sym.getMax());
 			}
-		} catch (IOException ex) {
-			Logger.getLogger(Genbank.class.getName()).log(Level.SEVERE, null, ex);
+			if (!chrList.containsKey(seq)) {
+				chrList.put(seq, new File(uri));	// Doesn't matter if the file exists or not.
+			}
 		}
 	}
 
@@ -257,19 +232,14 @@ public final class Genbank extends SymLoader {
 		List<BioSeq> chromosomeList = new ArrayList<BioSeq>(chrList.keySet());
 		Collections.sort(chromosomeList,new BioSeqComparator());
 		return chromosomeList;
-	}*/
+	}
 
 	@Override
 	public List<GenbankSym> getGenome() {
 		return parse(null, Integer.MIN_VALUE, Integer.MAX_VALUE);
-		/*List<GenbankSym> results = new ArrayList<GenbankSym>();
-		for (BioSeq seq : this.getChromosomeList()) {
-			results.addAll(getChromosome(seq));
-		}
-		return results;*/
 	}
 
-	/*@Override
+	@Override
 	public List<GenbankSym> getChromosome(BioSeq seq) {
 		return parse(seq, Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
@@ -277,7 +247,7 @@ public final class Genbank extends SymLoader {
 	@Override
 	public List<GenbankSym> getRegion(SeqSpan span) {
 		return parse(span.getBioSeq(), span.getMin(), span.getMax());
-	}*/
+	}
 	
 	/**
 	 * Return a list of symmetries for the given chromosome range
@@ -290,7 +260,7 @@ public final class Genbank extends SymLoader {
 		try {
 			bis = LocalUrlCacher.convertURIToBufferedUnzippedStream(uri);
 			br = new BufferedReader(new InputStreamReader(bis));
-			return parse(br);
+			return parse(br, seq, min, max);
 		}catch (Exception ex) {
 			Logger.getLogger(Genbank.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
@@ -300,7 +270,7 @@ public final class Genbank extends SymLoader {
 		return Collections.<GenbankSym>emptyList();
 	}
 
-	public List<GenbankSym> parse(BufferedReader input) {
+	public List<GenbankSym> parse(BufferedReader input, BioSeq seq, int min, int max) {
 		line_number = 0;
 		current_line_type = -1;
 		
@@ -333,14 +303,14 @@ public final class Genbank extends SymLoader {
 		Logger.getLogger(Genbank.class.getName()).log(
 				Level.FINE, "Initial read was successful, parsing now");
 		//if (beginEntry() != null) {
-		readFeature(input, id2sym);
+		readFeature(input, id2sym, seq, min, max);
 		//}
 		return new ArrayList<GenbankSym>(id2sym.values());
 	}
 
 	// loop until there are no more lines in the file or we hit the start of
 	// the next feature or the start of the next line group
-	private void readFeature(BufferedReader input, Map<String,GenbankSym> id2sym) {
+	private void readFeature(BufferedReader input, Map<String,GenbankSym> id2sym, BioSeq seq, int min, int max) {
 		boolean done = false;
 		//GenbankSequence seq = (GenbankSequence) curation.getRefSequence();
 		getCurrentInput(input);
@@ -355,7 +325,7 @@ public final class Genbank extends SymLoader {
 					break;
 				case FEATURE_HEADER:
 				case FEATURE:
-					readSingleFeature(input, id2sym);
+					readSingleFeature(input, id2sym, seq, min, max);
 					break;
 				case DEFINITION:
 					getCurrentInput(input);
@@ -534,9 +504,7 @@ public final class Genbank extends SymLoader {
 		return "";
 	}
 
-	private List<GenbankSym> readSingleFeature(BufferedReader input, Map<String,GenbankSym> id2sym) {
-		List<GenbankSym> results = new ArrayList<GenbankSym>();
-
+	private void readSingleFeature(BufferedReader input, Map<String,GenbankSym> id2sym, BioSeq seq, int min, int max) {
 		// first get past the header
 		while (current_line != null && current_line_type != FEATURE) {
 			getCurrentInput(input);
@@ -547,7 +515,7 @@ public final class Genbank extends SymLoader {
 		while (current_line != null && current_line_type == FEATURE) {
 			GenbankFeature current_feature = new GenbankFeature();
 			String key = current_feature.getFeatureType(current_line);
-			//getCurrentInput(input);
+			getCurrentInput(input);
 			while (current_line != null
 					&& current_line_type == FEATURE
 					&& current_feature.addToFeature(current_line)) {
@@ -568,6 +536,7 @@ public final class Genbank extends SymLoader {
 							BioSeq newSeq = this.group.getSeq(value);
 							if (newSeq == null) {
 								newSeq = new BioSeq(value, "", 1000);
+								this.group.addSeq(newSeq);
 							}
 							currentSeq = newSeq;
 						} else if (tag.equals("organism")) {
@@ -578,11 +547,20 @@ public final class Genbank extends SymLoader {
 				continue;
 			}
 
+			if (seq != null && currentSeq != seq) {
+				// only parse elements on the specified seq
+				continue;
+			}
+
 			if (key.equals("gene")
 					|| // Some GenBank records seem to use locus_tag instead of gene
 					// for the gene name/id
 					key.equals("locus_tag")) {
-				annotation = buildAnnotation(currentSeq, current_locus, current_feature, id2sym);
+				annotation = buildAnnotation(currentSeq, current_locus, current_feature, id2sym, min, max);
+				continue;
+			}
+			if (annotation == null) {
+				// skipping this annotation, which is outside the min/max range
 				continue;
 			}
 			if (key.equals("mRNA")
@@ -620,27 +598,6 @@ public final class Genbank extends SymLoader {
 						annotation.addCDSBlock(loc[0], loc[1]);
 					}
 				}
-				//setDescription(fs, current_feature);
-/*
-			if (key.equals("source")) {
-					setLocation(curation, current_feature.getLocation());
-					setDescription(curation, seq, current_feature);
-			
-			} else if (key.equals("CDS")) {
-				setTranscriptCDS(current_feature);
-			} else if (key.equals("repeat_region")
-					|| key.equals("repeat_unit")
-					|| key.equals("LTR")
-					|| key.equals("satellite")) {
-				setTransposon(current_feature, key);
-			} else if (key.equals("misc_feature")) {
-				setGeneric(current_feature, "miscellaneous curator's observation");
-			} else if (!key.equals("variation")
-					&& !key.equals("intron")
-					&& !key.equals("exon")
-					&& !key.equals("polyA_site")) {
-				setGeneric(current_feature, key);
- */
 			} else {
 				Logger.getLogger(Genbank.class.getName()).log(
 						Level.WARNING,
@@ -648,7 +605,6 @@ public final class Genbank extends SymLoader {
 						new Object[]{key, line_number});
 			}
 		}
-		return results;
 	}
 
 	/**
@@ -661,11 +617,7 @@ public final class Genbank extends SymLoader {
 		}
 	}
 
-	private boolean isEMBL() {
-		return content_offset == EMBL_CONTENT_OFFSET;
-	}
-
-	private static GenbankSym buildAnnotation(BioSeq seq, String type, GenbankFeature pub_feat, Map<String,GenbankSym> id2sym) {
+	private static GenbankSym buildAnnotation(BioSeq seq, String type, GenbankFeature pub_feat, Map<String,GenbankSym> id2sym, int min, int max) {
 		String id = getAnnotationId(pub_feat);
 		if (id == null || id.equals("")) {
 			id = pub_feat.getValue("protein_id");
@@ -691,6 +643,21 @@ public final class Genbank extends SymLoader {
 						Level.WARNING, "no location for {0}", pub_feat.toString());
 				annotation = new GenbankSym(type, seq, 0, 0, name);
 			}
+			int loc0 = locs.get(0)[0];
+			int loc1 = locs.get(0)[1];
+			if (loc0 >= loc1) {
+				// forward
+				if (min >= loc1 || max <= loc0) {
+					return null;
+				}
+			}
+			if (loc1 < loc0) {
+				// reverse
+				if (min >= loc0 || max <= loc1) {
+					return null;
+				}
+			}
+
 			annotation = new GenbankSym(type, seq, locs.get(0)[0], locs.get(0)[1], name);
 			id2sym.put(id, annotation);
 		}
@@ -722,20 +689,6 @@ public final class Genbank extends SymLoader {
 		return getFeatureId(pub_feat, annot_name_tags);
 	}
 
-
-	/*private void setGeneric(GenbankFeature pub_feat, String type) {
-		SimpleSymWithProps trial_fs = new SimpleSymWithProps();
-		setLocation(trial_fs, pub_feat.getLocation());
-		SimpleSymWithProps fs = findSame(trial_fs, trans_hash);
-		if (fs == null) {
-			fs = getTranscript(pub_feat, trial_fs);
-		}
-		SimpleSymWithProps af = (SimpleSymWithProps) fs.getRefFeature();
-		af.setProperty("type",type);
-		fs.setProperty("name",af.getProperty("name"));
-		setDescription(fs, pub_feat);
-	}*/
-
 	private static void setDescription(
                               GenbankSym seq,
                               GenbankFeature pub_feat) {
@@ -763,7 +716,7 @@ public final class Genbank extends SymLoader {
 
 
 /** A value class for the different types of Data input */
-class GenbankFeature {
+final class GenbankFeature {
 
   // -----------------------------------------------------------------------
   // Class/static variables
@@ -784,7 +737,7 @@ class GenbankFeature {
   private List<int[]> locs = null;
 
   private boolean initialized = false;
-  private boolean missing5prime = false;
+  //private boolean missing5prime = false;
   private boolean extend3prime = false;
   private boolean extend5prime = false;
 
@@ -801,14 +754,6 @@ class GenbankFeature {
       this.location.append(str.substring(index).trim());
     }
     return this.type;
-  }
-
-  protected String getFeatureType() {
-    return this.type;
-  }
-
-  protected boolean forSameFeature(String current_line) {
-    return (current_line.charAt(key_offset) == ' ');
   }
 
   protected boolean addToFeature(String current_line) {
@@ -828,7 +773,11 @@ class GenbankFeature {
     }
   }
 
-  protected List<String> getValues(String tag) {
+  private static boolean forSameFeature(String current_line) {
+    return (current_line.charAt(key_offset) == ' ');
+  }
+
+  private List<String> getValues(String tag) {
     if (!initialized) {
       initialized = true;
       initSynonyms();
@@ -858,48 +807,22 @@ class GenbankFeature {
     return val.toString();
   }
 
-  /*protected HashMap getDbXrefs() {
-    return (HashMap) tagValues.get("db_xref");
-  }*/
-
-  protected List<String> getSynonyms() {
-    return getValues("synonyms");
-  }
-
-  protected boolean missing5prime() {
-    return this.missing5prime;
-  }
-
-  protected int getCodonStart() {
-    int offset = 0;
-    String offset_str = getValue("codon_start");
-    if (offset_str != null && !offset_str.equals("")) {
-      try {
-        offset = Integer.parseInt(offset_str);
-        offset--;
-      } catch (Exception e) {
-        offset = 0;
-      }
-    }
-    return offset;
-  }
-
-  protected void initSynonyms() {
+  private void initSynonyms() {
     List<String> syns = null;
     String note = getValue("note");
     int index = (note != null ? note.indexOf("synonyms:") : -1);
     if (index >= 0) {
       syns = new ArrayList<String>(1);
-      String prefix = note.substring(0, index);
+      //String prefix = note.substring(0, index);
       String syns_str = note.substring(index + "synonyms:".length()).trim();
       String syn;
-      String suffix = "";
+      //String suffix = "";
       int end = syns_str.indexOf(';');
       if (end > 0) {
         syns_str = syns_str.substring(0, end);
         index = note.indexOf(';', index) + 1;
-        if (index < note.length())
-          suffix = note.substring(index);
+        //if (index < note.length())
+        //  suffix = note.substring(index);
       }
       while (syns_str.length() > 0) {
         end = syns_str.indexOf(',');
@@ -924,9 +847,9 @@ class GenbankFeature {
   private void setTagValue(String content) {
     String tag;
     String value;
-    String db_tag = null;
-    String db_value = null;
-    String synonyms = null;
+    //String db_tag = null;
+    //String db_value = null;
+    //String synonyms = null;
 
     if (content.charAt(0) == '/') {
       int index = content.indexOf("=");
@@ -944,16 +867,16 @@ class GenbankFeature {
             !tag.endsWith("synonym") &&
             !tag.equals("product") &&
             !tag.equals("prot_desc")) {
-          if (!tag.equals("db_xref")) {
+         // if (!tag.equals("db_xref")) {
             // Why do we want to do this?  I see lots of cases where we *don't*
             // want to, but I don't see when we'd ever want to.  --NH
             tag = value.substring(0, index);
             String tmp = value.substring(index + ":".length());
             value = tmp;
-          } else {  // db_xref
+         /* } else {  // db_xref
             db_tag = value.substring(0, index);
             db_value = value.substring(index + ":".length());
-          }
+          }*/
         }
         active_tag = tag;
       } else if (content.charAt(0) == '/') {
@@ -995,23 +918,24 @@ class GenbankFeature {
 	for (String tag : tagValues.keySet()) {
       if (!tag.equals("translation") &&
           !tag.equals("method") &&
-          !tag.equals("db_xref"))
-        	buf.append("\t").append(tag).append(" = ").append(getValue(tag)).append("\n");
+          !tag.equals("db_xref")) {
+		  buf.append("\t").append(tag).append(" = ").append(getValue(tag)).append("\n");
+	  }
     }
     return buf.toString();
   }
 
-  static String stripQuotes(String value) {
-    if (value.equals(""))
-      return "";
+	static String stripQuotes(String value) {
+    if (value.length() == 0)
+      return value;
 
     if (value.charAt(0) == '\"')
       value = value.substring(1);
 
     if (value.length() >= 1 && value.charAt(value.length() - 1) == '\"')
       return value.substring(0, value.length() - 1);
-    else
-      return value;
+
+	return value;
   }
 
   protected List<int[]> getLocation() {
@@ -1026,8 +950,6 @@ class GenbankFeature {
   protected void initLocations() {
     locs = new ArrayList<int[]>();
     parseLocations(this.location.toString(), locs);
-    if (extend5prime)
-      missing5prime = true;
   }
 
   /**

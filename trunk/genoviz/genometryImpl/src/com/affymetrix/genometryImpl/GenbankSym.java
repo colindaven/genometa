@@ -198,11 +198,6 @@ public final class GenbankSym implements SeqSpan, SupportsCdsSpan, SymWithProps 
 		HashMap<String,Object> tprops = new HashMap<String,Object>();
 		tprops.put("id", ID);
 		tprops.put("type", type);
-		tprops.put("seq id", seq.getID());
-		if (cdsMin != Integer.MIN_VALUE) {
-			tprops.put("cds min", Integer.valueOf(cdsMin));
-			tprops.put("cds max", Integer.valueOf(cdsMax));
-		}
 		if (props != null) {
 			tprops.putAll(props);
 		}
@@ -213,9 +208,6 @@ public final class GenbankSym implements SeqSpan, SupportsCdsSpan, SymWithProps 
 		// test for standard gene sym  props
 		if (key.equals("id")) { return ID; }
 		else if (key.equals("type")) { return type; }
-		else if (key.equals("seq id")) { return seq.getID(); }
-		else if (cdsMin != Integer.MIN_VALUE && key.equals("cds min")) { return Integer.valueOf(cdsMin); }
-		else if (cdsMin != Integer.MIN_VALUE && key.equals("cds max")) { return Integer.valueOf(cdsMax); }
 		else if (props != null)  {
 			return props.get(key);
 		}
