@@ -550,7 +550,7 @@ public final class LoadFileAction extends AbstractAction {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		} finally {
+			// Note these are *not* closed in the finally block.  They are hopefully closed later by USeq
 			GeneralUtils.safeClose(istr);
 			GeneralUtils.safeClose(zis);
 		}
