@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.util.*;
 
 import com.affymetrix.genometryImpl.SeqSymmetry;
-import com.affymetrix.genometryImpl.BioSeq;
 import com.affymetrix.genometryImpl.SymWithProps;
 import com.affymetrix.genometryImpl.util.GeneralUtils;
 import com.affymetrix.genometryImpl.util.MenuUtil;
@@ -68,11 +67,8 @@ final class LinkControl implements ContextualPopupListener {
 	}
 
 	private void generateMenuItemsFromWebLinks(SeqSymmetry primary_sym, Map<String, String> menu_items) {
-		// Most links come from matching the tier name (i.e. method)
-		// to a regular expression.
-		String method = BioSeq.determineMethod(primary_sym);
 		// by using a Map to hold the urls, any duplicated urls will be filtered-out.
-		for (WebLink webLink : WebLink.getWebLinks(method, primary_sym.getID())) {
+		for (WebLink webLink : WebLink.getWebLinks(primary_sym)) {
 			// Generally, just let any link replace an existing link that has the same URL.
 			// But, if the new one has no name, and the old one does, then keep the old one.
 			String new_name = webLink.getName();

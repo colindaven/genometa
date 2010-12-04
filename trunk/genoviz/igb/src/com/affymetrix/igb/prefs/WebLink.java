@@ -1,8 +1,7 @@
 package com.affymetrix.igb.prefs;
 
+import com.affymetrix.genometryImpl.BioSeq;
 import com.affymetrix.genometryImpl.util.SpeciesLookup;
-import com.affymetrix.genometryImpl.util.SynonymLookup;
-import com.affymetrix.igb.view.load.GeneralLoadUtils;
 import com.affymetrix.genometryImpl.SeqSymmetry;
 import com.affymetrix.genometryImpl.AnnotatedSeqGroup;
 import com.affymetrix.genometryImpl.GenometryModel;
@@ -35,7 +34,7 @@ public final class WebLink {
 	private String url = null;
 	private String name = "";
 	private String species = "";
-	private static final String id_field_name = null; // null implies use getId(); "xxx" means use getProperty("xxx");
+	private String id_field_name = null; // null implies use getId(); "xxx" means use getProperty("xxx");
 	private String original_regex = null;
 	private RegexType regexType = RegexType.TYPE;	// matching on type or id
 	private static final String separator = System.getProperty("line.separator");
@@ -106,7 +105,7 @@ public final class WebLink {
 	private static Comparator<WebLink> webLinkComp = new Comparator<WebLink>() {
 
 		private String sortString(WebLink wl) {
-			return wl.name + ", " + wl.original_regex + ", " + wl.url.toString() + ", " + WebLink.id_field_name;
+			return wl.name + ", " + wl.original_regex + ", " + wl.url.toString() + ", " + wl.id_field_name;
 		}
 
 		public int compare(WebLink o1, WebLink o2) {
@@ -132,7 +131,10 @@ public final class WebLink {
 	 *  array will have the same regular expression or point to the same URL.
 	 *  You may want to filter-out such duplicate results.
 	 */
-	public static List<WebLink> getWebLinks(String method, String ID) {
+	public static List<WebLink> getWebLinks(SeqSymmetry sym) {
+		// Most links come from matching the tier name (i.e. method)
+		// to a regular expression.
+		String method = BioSeq.determineMethod(sym);
 		if (method == null) { // rarely happens, but can
 			return Collections.<WebLink>emptyList();
 		}
@@ -149,18 +151,33 @@ public final class WebLink {
 
 		if (DEBUG) {
 			System.out.println("method is : " + method);
-			System.out.println("ID is : " + ID);
+			System.out.println("ID is : " + sym.getID());
 		}
 		for (WebLink link : weblink_list) {
 			if (link.url == null) {
 				continue;
 			}
-			if(!link.getSpeciesName().equals("")){
+			if(link.getSpeciesName().length() > 0){
 				String current_version = GenometryModel.getGenometryModel().getSelectedSeqGroup().getID();
 				String current_species = SpeciesLookup.getSpeciesName(current_version);
 				boolean isSynonym = SpeciesLookup.isSynonym(current_species,link.getSpeciesName());
 				if(!isSynonym)
 					continue;
+			}
+			if (link.getIDField() != null) {
+				// Allow matching of arbitrary id_field
+
+				if (!(sym instanceof SymWithProps)) {
+					continue;
+				}
+				String property = (String)((SymWithProps)sym).getProperty(link.getIDField());
+				if (property != null && link.matches(property)) {
+					if (DEBUG) {
+						System.out.println("link " + link + " matches property:" + property);
+					}
+					results.add(link);
+				}
+				continue;
 			}
 
 			if (link.regexType == RegexType.TYPE && link.matches(method)) {
@@ -168,7 +185,7 @@ public final class WebLink {
 					System.out.println("link " + link + " matches method.");
 				}
 				results.add(link);
-			} else if (link.regexType == RegexType.ID && link.matches(ID)) {
+			} else if (link.regexType == RegexType.ID && link.matches(sym.getID())) {
 				if (DEBUG) {
 					System.out.println("link " + link + " matches ID.");
 				}
@@ -194,6 +211,13 @@ public final class WebLink {
 		} else {
 			this.name = name;
 		}
+	}
+
+	public void setIDField(String IDField) {
+		this.id_field_name = IDField;
+	}
+	public String getIDField() {
+		return this.id_field_name;
 	}
 
 	public String getSpeciesName(){
@@ -329,9 +353,8 @@ public final class WebLink {
 		}
 
 		if (field_value == null) {
-			Logger.getLogger(WebLink.class.getName()).log(Level.WARNING,
-				"Selected item has no value for property '" + id_field_name +
-							"' which is needed to construct the web link.");
+			Logger.getLogger(WebLink.class.getName()).log(Level.WARNING, 
+					"Selected item has no value for property ''{0}'' which is needed to construct the web link.", id_field_name);
 			return replacePlaceholderWithId(getUrl(), "");
 		}
 		return replacePlaceholderWithId(getUrl(), field_value.toString());
@@ -403,10 +426,18 @@ public final class WebLink {
 	private String toXML() {
 		String annotRegexString = (this.regexType == RegexType.TYPE) ?  "annot_type_regex" : "annot_id_regex";
 
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("<annotation_url ").append(separator);
-		sb.append(" " + annotRegexString+"=\"").append(escapeXML(getRegex() == null ? ".*" : getRegex())).append("\"").append(separator);
-		sb.append(" name=\"").append(escapeXML(name)).append("\"").append(separator).append(" species=\"").append(escapeXML(species)).append("\"").append(separator).append(" url=\"").append(escapeXML(url)).append("\"").append(separator).append("/>");
+		sb.append(" ").append(annotRegexString).append("=\"").
+				append(escapeXML(getRegex() == null ? ".*" : getRegex())).append("\"").append(separator);
+		sb.append(" name=\"").append(escapeXML(name)).
+				append("\"").append(separator).append(" species=\"").
+				append(escapeXML(species)).append("\"").append(separator);
+		if (this.id_field_name != null) {
+			sb.append(" id_field=\"").append(escapeXML(id_field_name)).
+					append("\"").append(separator);
+		}
+		sb.append(" url=\"").append(escapeXML(url)).append("\"").append(separator).append("/>");
 		return sb.toString();
 	}
 
@@ -428,12 +459,12 @@ public final class WebLink {
 		String filename = f.getAbsolutePath();
 		try {
 			Logger.getLogger(WebLink.class.getName()).log(Level.INFO,
-					"Loading web links from file \"" + filename + "\"");
+					"Loading web links from file \"{0}\"", filename);
 
 			WebLink.importWebLinks(f);
 		} catch (Exception ioe) {
 			Logger.getLogger(WebLink.class.getName()).log(Level.SEVERE,
-				"Could not load web links from file \"" + filename + "\"");
+					"Could not load web links from file \"{0}\"", filename);
 		}
 	}
 
@@ -446,7 +477,7 @@ public final class WebLink {
 		String filename = f.getAbsolutePath();
 		try {
 			Logger.getLogger(WebLink.class.getName()).log(Level.INFO,
-					"Saving web links to file \"" + filename + "\"");
+					"Saving web links to file \"{0}\"", filename);
 			File parent_dir = f.getParentFile();
 			if (parent_dir != null) {
 				parent_dir.mkdirs();
@@ -455,7 +486,7 @@ public final class WebLink {
 			return true;
 		} catch (IOException ioe) {
 			Logger.getLogger(WebLink.class.getName()).log(Level.SEVERE,
-					"Error while saving web links to \"" + filename + "\"");
+					"Error while saving web links to \"{0}\"", filename);
 		}
 		return false;
 	}
