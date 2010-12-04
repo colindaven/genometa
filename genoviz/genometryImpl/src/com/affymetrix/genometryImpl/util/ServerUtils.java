@@ -1086,6 +1086,9 @@ public abstract class ServerUtils {
 		if (extension.equals("gr")) {
 			return new Gr(uri, featureName, group);
 		}
+		if (extension.equals("sam")) {
+			return new SAM(uri, featureName, group);
+		}
 		if (extension.equals("sgr")) {
 			return new Sgr(uri, featureName, group);
 		}
