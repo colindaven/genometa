@@ -1080,6 +1080,9 @@ public abstract class ServerUtils {
 		if (extension.equals("bed")) {
 			return new BED(uri, featureName, group);
 		}
+		if (extension.equals("gb")) {
+			return new Genbank(uri, featureName, group);
+		}
 		if (extension.equals("gr")) {
 			return new Gr(uri, featureName, group);
 		}
