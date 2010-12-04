@@ -50,6 +50,7 @@ import com.affymetrix.igb.tiers.TierLabelManager;
 import com.affymetrix.igb.tiers.TransformTierGlyph;
 import com.affymetrix.igb.util.GraphGlyphUtils;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
+import com.affymetrix.genometryImpl.util.SynonymLookup;
 import com.affymetrix.genoviz.util.ErrorHandler;
 import com.affymetrix.igb.action.NeoSeqDemo;
 import com.affymetrix.igb.action.RefreshDataAction;
@@ -1815,50 +1816,77 @@ public class SeqMapView extends JPanel
 		// convert String array to Map
 		for(int i = 0; i < properties.length; i++) {
 			property_map.put(properties[i][0], properties[i][1]);
+			if(properties[i][0].equals("chromosome")) {
+				String lookup = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(properties[i][1]);
+				property_map.put("genom_name", lookup);
+			}
 		}
 
 		props.append("<html>");
-		for(int i = 0; i < 20; i++) {
-				String index = String.valueOf(i);
-				String item = "";
-				if(isGFF) {
-					item = PreferenceUtils.getTooltipEditorGFFPrefsNode().get(index, "dummy");
-				}
-				else {
-					item = PreferenceUtils.getTooltipEditorBAMPrefsNode().get(index, "dummy");
-				}
-				Boolean available = true;
+		for(int i = 0; i < TooltipEditorView.MAX_COUNT_OF_TOOLTIP_TAGS; i++) {
+			String index = String.valueOf(i);
+			String item = "";
+			if(isGFF) {
+				item = PreferenceUtils.getTooltipEditorGFFPrefsNode().get(index, "dummy");
+			}
+			else {
+				item = PreferenceUtils.getTooltipEditorBAMPrefsNode().get(index, "dummy");
+			}
+			Boolean available = true;
 
-				if ( item.equals("[----------]") ) {
-					props.append("<br>");
-				}
-				else if ( item.equals("dummy") ) {
-				}
-				else {
-					value = property_map.get(item);
+			if ( item.equals("[----------]") ) {
+				props.append("<br>");
+			}
+			else if ( item.equals("dummy") ) {
+			}
+			else {
+				value = property_map.get(item);
 
-					if ( value == null ) {
-						value = "tag not available";
-						available = false;
-					}
-
-					if(value.length() > max_length) {
-						value = value.substring(0, max_length) + " ...";
-					}
-
-					if (!available) props.append("<font color=\"#555555\">");
-
-					props.append("<b>");
-					props.append(item);
-					props.append(": </b>");
-					props.append(value);
-					props.append("<br>");
-
-					if (!available) props.append("</font>");
+				if ( value == null ) {
+					value = "tag not available";
+					available = false;
 				}
 
+				if(value.length() > max_length) {
+					value = value.substring(0, max_length) + " ...";
+				}
+
+				if (!available)
+					props.append("<font color=\"#555555\">");
+
+				props.append("<b>");
+				props.append(item);
+				props.append(": </b>");
+				props.append(value);
+				props.append("<br>");
+
+
+				if (!available)
+					props.append("</font>");
+
+				property_map.remove(item);
+			}
 		}
+//		if(!property_map.isEmpty()) {
+//			for(int i = 0; i < properties.length; i++) {
+//				value = property_map.get(properties[i][0]);
+//				if(value != null) {
+//					props.append("<font color=\"#FF0000\">");
+//					props.append("<b>");
+//					props.append(properties[i][0]);
+//					props.append(": </b>");
+//					props.append(value);
+//					props.append("<br>");
+//					props.append("</font>");
+//					property_map.remove(properties[i][0]);
+//					if(property_map.isEmpty()) {
+//						break;
+//					}
+//				}
+//			}
+//		}
 		props.append("</html>");
+
 
 		return props.toString();
 	}
