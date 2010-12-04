@@ -1091,8 +1091,17 @@ public static String determineSelectedResidues(SeqSymmetry residues_sym, BioSeq 
 			}
 			residues_sym = sorted_sym;
 		}
+		
 		return SeqUtils.getResidues(residues_sym, seq);
 	}
+
+public static String selectedAllResidues(SeqSymmetry residues_sym, BioSeq seq)	{
+			SeqSpan span = residues_sym.getSpan(seq);
+		if ( (span != null) )
+			return seq.getResidues(span.getStart(), span.getEnd());
+		else
+			return null;
+}
 
 public static boolean areResiduesComplete(String residues) {
 		int rescount = residues.length();
