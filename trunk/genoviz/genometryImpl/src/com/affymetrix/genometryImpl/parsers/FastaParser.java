@@ -49,9 +49,10 @@ public final class FastaParser {
 		try {
 			br = new BufferedReader(new InputStreamReader(istr));
 			String header = br.readLine();
+
 			while (br.ready() && (!Thread.currentThread().isInterrupted())) {  // loop through lines till find a header line
 				if (header == null) {
-					continue;
+					break;
 				}  // skip null lines
 				matcher.reset(header);
 				boolean matched = matcher.matches();
@@ -62,18 +63,26 @@ public final class FastaParser {
 				String seqid = matcher.group(1);
 
 				StringBuffer buf = new StringBuffer();
+				String line = null;
+				char ch;
 				while (br.ready() && (!Thread.currentThread().isInterrupted())) {
-					String line = br.readLine();
-					if (line == null || line.length() == 0) {
+					line = br.readLine();
+					if (line == null ){
+						break;
+					}
+					
+					if(line.length() == 0) {
 						continue;
-					}  // skip null and empty lines
+					}  // skip empty and comment lines
 
-					if (line.charAt(0) == ';') {
+					ch = line.charAt(0);
+
+					if(ch == ';') {
 						continue;
-					} // skip comment lines
+					}  // skip comment lines
 
 					// break if hit header for another sequence --
-					if (line.startsWith(">")) {
+					if (ch == '>') {
 						header = line;
 						break;
 					}
@@ -129,7 +138,7 @@ public final class FastaParser {
 			String header = br.readLine();
 			while (br.ready()) {  // loop through lines till find a header line
 				if (header == null) {
-					continue;
+					break;
 				}  // skip null lines
 				matcher.reset(header);
 				boolean matched = matcher.matches();
@@ -138,23 +147,32 @@ public final class FastaParser {
 					continue;
 				}
 				StringBuffer buf = new StringBuffer();
+				String line = null;
+				char ch;
 				while (br.ready()) {
-					String line = br.readLine();
-					if (line == null || line.length() == 0) {
-						continue;
-					}  // skip null and empty lines
+					line = br.readLine();
+					if (line == null) {
+						break;
+					}  
 
-					if (line.charAt(0) == ';') {
+					if (line.length() == 0) {
 						continue;
-					} // skip comment lines
+					}  // skip empty lines
+
+					ch = line.charAt(0);
+
+					if(ch == ';') {
+						continue;
+					}  // skip comment lines
 
 					// break if hit header for another sequence --
-					if (line.startsWith(">")) {
+					if (ch == '>') {
 						header = line;
 						break;
 					}
 
 					buf.append(line);
+
 				}
 
 				// Didn't use .toString() here because of a memory bug in Java
@@ -238,7 +256,7 @@ public final class FastaParser {
 			br = new BufferedReader(new InputStreamReader(istr));
 			while (br.ready() && (!Thread.currentThread().isInterrupted())) {  // loop through lines till find a header line
 				String header = br.readLine();
-				if (header == null) { continue; }  // skip null lines
+				if (header == null) { break; }  // skip null lines
 				matcher.reset(header);
 				boolean matched = matcher.matches();
 				if (matched) {
@@ -246,16 +264,19 @@ public final class FastaParser {
 					break;
 				}
 			}
+			String line = null;
+			char ch;
 			while (br.ready() && (!Thread.currentThread().isInterrupted())) {
-				String line = br.readLine();
+				line = br.readLine();
 				if (line == null || line.length()==0) { continue; }  // skip null and empty lines
 
-				if (line.startsWith(";")) { continue; } // lines beginning with ";" are comments
+				ch = line.charAt(0);
+				if (ch == ';') { continue; } // lines beginning with ";" are comments
 				// see http://en.wikipedia.org/wiki/Fasta_format
 
 				// end loop if hit header for another sequence --
 				//   currently only parsing first sequence in fasta file
-				if (line.startsWith(">")) {
+				if (ch == '>') {
 					break;
 				}
 

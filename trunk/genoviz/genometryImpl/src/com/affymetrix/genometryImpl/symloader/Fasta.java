@@ -74,14 +74,11 @@ public class Fasta extends SymLoader {
 		try {
 			bis = LocalUrlCacher.convertURIToBufferedUnzippedStream(uri);
 			br = new BufferedReader(new InputStreamReader(bis));
-			String header = null;
+			String header = br.readLine();;
 			while (br.ready() && (!Thread.currentThread().isInterrupted())) {  // loop through lines till find a header line
 				if (header == null) {
-					header = br.readLine();
-					if (header == null) {
-						continue;
-					}
-				}  // skip null lines
+					continue;
+				}  
 				matcher.reset(header);
 
 				if (!matcher.matches()) {
@@ -91,13 +88,18 @@ public class Fasta extends SymLoader {
 				BioSeq seq = group.getSeq(seqid);
 				int count = 0;
 				header = null;	// reset for next header
+				String line = null;
+				char firstChar;
 				while (br.ready() && (!Thread.currentThread().isInterrupted())) {
-					String line = br.readLine();
-					if (line == null || line.length() == 0) {
+					line = br.readLine();
+					if (line == null){
+						break;
+					}
+					if(line.length() == 0) {
 						continue;
 					}  // skip null and empty lines
 
-					char firstChar = line.charAt(0);
+					firstChar = line.charAt(0);
 					if (firstChar == ';') {
 						continue;
 					} // skip comment lines
@@ -139,14 +141,11 @@ public class Fasta extends SymLoader {
 		try {
 			bis = LocalUrlCacher.convertURIToBufferedUnzippedStream(uri);
 			br = new BufferedReader(new InputStreamReader(bis));
-			String header = null;
+			String header = br.readLine();
 			while (br.ready() && (!Thread.currentThread().isInterrupted())) {  // loop through lines till find a header line
 				if (header == null) {
-					header = br.readLine();
-					if (header == null) {
-						continue;
-					}
-				}  // skip null lines
+					break;
+				}  
 				matcher.reset(header);
 
 				if (!matcher.matches()) {
@@ -158,13 +157,19 @@ public class Fasta extends SymLoader {
 				header = null;	// reset for next header
 
 				StringBuffer buf = new StringBuffer();
+				String line = null;
+				char firstChar;
 				while (br.ready() && (!Thread.currentThread().isInterrupted())) {
-					String line = br.readLine();
-					if (line == null || line.length() == 0) {
+					line = br.readLine();
+					if (line == null){
+						break;
+					}
+					
+					if(line.length() == 0) {
 						continue;
 					}  // skip null and empty lines
 
-					char firstChar = line.charAt(0);
+					firstChar = line.charAt(0);
 					if (firstChar == ';') {
 						continue;
 					} // skip comment lines
