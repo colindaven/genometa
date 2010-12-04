@@ -55,10 +55,12 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 	public static final int DEFAULT_MAX_TOOLTIP_LENGTH = 25;
 	public static final boolean DEFAULT_ENABLE_TOOLTIPS = true;
+	public static final int MAX_COUNT_OF_TOOLTIP_TAGS = 30;
 
 
 	private String gff_tooltip_items[] = {
 											"chromosome",
+											"genom_name",
 											"db_xref",
 											"end",
 											"exon_number",
@@ -79,6 +81,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	private String bam_tooltip_items[] = {
 											"baseQuality",
 											"chromosome",
+											"genom_name",
 											"cigar",
 											"CL",
 											"end",
@@ -235,7 +238,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		}
 		else {
 			model.clear();
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < MAX_COUNT_OF_TOOLTIP_TAGS; i++) {
 				num = new String().valueOf(i);
 				if (!(tooltip_editor_node.get(num, "dummy").equals("dummy"))) {
 					model.addElement(tooltip_editor_node.get(num, "no value"));
@@ -270,7 +273,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	}
 
 	public void addAction() {
-		if (model.size() < 20) {
+		if (model.size() < MAX_COUNT_OF_TOOLTIP_TAGS) {
 			model.addElement(element_cb.getSelectedItem());
 			writeElement(model.size() - 1);
 		} else {
@@ -279,7 +282,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	}
 
 	public void addBlankLineAction() {
-		if (model.size() < 20) {
+		if (model.size() < MAX_COUNT_OF_TOOLTIP_TAGS) {
 			model.addElement("[----------]");
 			writeElement(model.size() - 1);
 		} else {
@@ -354,6 +357,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 				element_cb.addItem(gff_tooltip_items[i]);
 			}
 		}
+		element_cb.addItem("[----------]");
 	}
 
 	synchronized void writeAllElements() {
@@ -366,7 +370,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 			tooltip_editor_node = PreferenceUtils.getTooltipEditorGFFPrefsNode();
 		}
 		tooltip_editor_node.putBoolean("refresh", false);
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < MAX_COUNT_OF_TOOLTIP_TAGS; i++) {
 			String num = new String().valueOf(i);
 			String item = new String();
 			if (i < model.size()) {
