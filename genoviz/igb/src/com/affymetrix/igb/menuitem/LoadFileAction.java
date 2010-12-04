@@ -174,8 +174,6 @@ public final class LoadFileAction extends AbstractAction {
 		chooser.addChoosableFileFilter(new UniFileFilter(
 						new String[]{"igb"},
 						"IGB Script File"));
-		chooser.addChoosableFileFilter(new UniFileFilter(
-						new String[]{"sam"}, "SAM Files"));
 
 		Set<String> all_known_endings = new HashSet<String>();
 		for (javax.swing.filechooser.FileFilter filter : chooser.getChoosableFileFilters()) {
