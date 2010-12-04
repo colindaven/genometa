@@ -256,15 +256,17 @@ public final class GenericFeature {
 		return this.featureName.substring(lastSlash + 1,featureName.length());
 	}
 
-	public static void setPreferredLoadStrategy(GenericFeature feature, LoadStrategy s){
+	public static boolean setPreferredLoadStrategy(GenericFeature feature, LoadStrategy s){
 		if (feature.getLoadChoices().contains(s)){
 			feature.loadStrategy = s;
+			return true;
 		}else{
 			feature.loadStrategy = feature.getLoadChoices().get(1);
 			Logger.getLogger(GenericFeature.class.getName()).log(Level.WARNING,
 					"Given {0} strategy is not permitted instead using {1} "
 					+ "strategy.", new Object[]{s, feature.loadStrategy});
 		}
+		return false;
 	}
 
 	public URI getURI(){

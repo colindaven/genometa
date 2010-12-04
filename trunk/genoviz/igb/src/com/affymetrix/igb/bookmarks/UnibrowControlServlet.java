@@ -432,8 +432,10 @@ public final class UnibrowControlServlet {
 
 		if (feature != null) {
 			feature.setVisible();
-			GenericFeature.setPreferredLoadStrategy(feature, LoadStrategy.VISIBLE);
 			SeqSpan overlap = new SimpleSeqSpan(start, end, seq);
+			if(!GenericFeature.setPreferredLoadStrategy(feature, LoadStrategy.VISIBLE)){
+				overlap = new SimpleSeqSpan(seq.getMin(), seq.getMax(), seq);
+			}
 			GeneralLoadUtils.loadAndDisplaySpan(overlap, feature);
 		} else {
 			Logger.getLogger(GeneralUtils.class.getName()).log(
