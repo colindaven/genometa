@@ -40,7 +40,7 @@ public class BAMParserTest {
 
 			List<? extends SeqSymmetry> result = symL.getChromosome(seq);
 			assertNotNull(result);
-			assertEquals(189, result.size());	// 189 alignments in sample file
+			assertEquals(190, result.size());	// 190 alignments in sample file
 
 			SeqSymmetry sym = result.get(0);	// first (positive) strand
 			assertEquals("0", sym.getID());
@@ -62,10 +62,10 @@ public class BAMParserTest {
 
 			// Strange, considering the span length is only 36
 			result = symL.getRegion(new SimpleSeqSpan(51120000, 51120038, seq));
-			assertEquals(2, result.size());
+			assertEquals(3, result.size());
 
 			result = symL.getRegion(new SimpleSeqSpan(51120000, 51120039, seq));
-			assertEquals(2, result.size());
+			assertEquals(3, result.size());
 			sym = result.get(0);	// first (positive) strand
 			assertEquals("0", sym.getID());
 			assertEquals(51119999, sym.getSpan(seq).getMin());
