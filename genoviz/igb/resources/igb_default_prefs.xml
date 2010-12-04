@@ -211,9 +211,20 @@
     name="PlantGDB: AtGDB"
     url="http://www.plantgdb.org/AtGDB/cgi-bin/findRecord.pl?gi=$$"
   />
-  
-  <annotation_url annot_id_regex="^.*$" id_field="FLYBASE" name="Flybase"
+ 
+  <!-- db_xref linkouts -->
+  <!-- see http://www.ncbi.nlm.nih.gov/projects/collab/db_xref.html to support more --> 
+  <annotation_url annot_id_regex="^FLYBASE:.*$" id_field="db_xref" 
+    name="Flybase db_xref"
     url="http://flybase.org/.bin/fbidq.html?$$"
+  />
+  <annotation_url annot_id_regex="^dictyBase:.*$" id_field="db_xref" 
+    name="DictyBase db_xref"
+    url="http://dictybase.org/db/cgi-bin/search/search.pl?query=$$"
+  />
+  <annotation_url annot_id_regex="^GeneID:.*$" id_field="db_xref" 
+    name="Entrez db_xref"
+    url="http://www.ncbi.nlm.nih.gov/gene/$$"
   />
 
 </prefs>
