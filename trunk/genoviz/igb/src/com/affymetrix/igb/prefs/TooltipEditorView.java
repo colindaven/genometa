@@ -55,6 +55,48 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 	public static final int DEFAULT_MAX_TOOLTIP_LENGTH = 25;
 	public static final boolean DEFAULT_ENABLE_TOOLTIPS = true;
+
+
+	private String gff_tooltip_items[] = {
+											"chromosome",
+											"db_xref",
+											"end",
+											"exon_number",
+											"feature_type",
+											"frame",
+											"gbkey",
+											"ID",
+											"insertion_seq",
+											"length",
+											"locus_tag",
+											"method",
+											"product",
+											"protein_id",
+											"source",
+											"start",
+											"transl_table",
+											"type"};
+	private String bam_tooltip_items[] = {
+											"baseQuality",
+											"chromosome",
+											"cigar",
+											"CL",
+											"end",
+											"forward",
+											"id",
+											"length",
+											"MD",
+											"method",
+											"name",
+											"NM",
+											"residues",
+											"score",
+											"SEQ",
+											"SM",
+											"start",
+											"type",
+											"VN",
+											"XA"};
 	
 
 	public TooltipEditorView(boolean isBAM) {
@@ -303,40 +345,14 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 	public void fillCombobox() {
 		if(_isBAM) {
-			element_cb.addItem("name");
-			element_cb.addItem("id");
-			element_cb.addItem("chromosome");
-			element_cb.addItem("start");
-			element_cb.addItem("end");
-			element_cb.addItem("length");
-			element_cb.addItem("type");
-			element_cb.addItem("residues");
-			element_cb.addItem("VN");
-			element_cb.addItem("score");
-			element_cb.addItem("SEQ");
-			element_cb.addItem("SM");
-			element_cb.addItem("baseQuality");
-			element_cb.addItem("cigar");
-			element_cb.addItem("XA");
-			element_cb.addItem("forward");
-			element_cb.addItem("NM");
-			element_cb.addItem("method");
-			element_cb.addItem("MD");
-			element_cb.addItem("CL");
-			element_cb.addItem("miep");
+			for(int i = 0; i < bam_tooltip_items.length; i++) {
+				element_cb.addItem(bam_tooltip_items[i]);
+			}
 		}
 		else {
-			element_cb.addItem("chromosome");
-			element_cb.addItem("start");
-			element_cb.addItem("end");
-			element_cb.addItem("length");
-			element_cb.addItem("type");
-			element_cb.addItem("feature_type");
-			element_cb.addItem("source");
-			element_cb.addItem("locus_tag");
-			element_cb.addItem("db_xref");
-			element_cb.addItem("ID");
-			element_cb.addItem("method");
+			for(int i = 0; i < gff_tooltip_items.length; i++) {
+				element_cb.addItem(gff_tooltip_items[i]);
+			}
 		}
 	}
 
@@ -381,39 +397,14 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	void setDefaults() {
 		model.clear();
 		if(_isBAM) {
-			model.addElement("name");
-			model.addElement("id");
-			model.addElement("chromosome");
-			model.addElement("start");
-			model.addElement("end");
-			model.addElement("length");
-			model.addElement("type");
-			model.addElement("residues");
-			model.addElement("VN");
-			model.addElement("score");
-			model.addElement("SEQ");
-			model.addElement("SM");
-			model.addElement("baseQuality");
-			model.addElement("cigar");
-			model.addElement("XA");
-			model.addElement("forward");
-			model.addElement("NM");
-			model.addElement("method");
-			model.addElement("MD");
-			model.addElement("CL");
+			for(int i = 0; i < bam_tooltip_items.length; i++) {
+				model.addElement(bam_tooltip_items[i]);
+			}
 		}
 		else {
-			model.addElement("chromosome");
-			model.addElement("start");
-			model.addElement("end");
-			model.addElement("length");
-			model.addElement("type");
-			model.addElement("feature_type");
-			model.addElement("source");
-			model.addElement("locus_tag");
-			model.addElement("db_xref");
-			model.addElement("ID");
-			model.addElement("method");
+			for(int i = 0; i < gff_tooltip_items.length; i++) {
+				model.addElement(gff_tooltip_items[i]);
+			}
 		}
 		writeAllElements();
 

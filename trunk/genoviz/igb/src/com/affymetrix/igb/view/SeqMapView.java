@@ -1698,29 +1698,22 @@ public class SeqMapView extends JPanel
 		if (!sym.isEmpty()) {
 			String[][] properties = PropertyView.getPropertiesRow(sym.get(0), this);
 			String tooltip = "";
-			boolean gff = false;
+			boolean isGFF = false;
 			for(int i = 0; i < properties.length; i++) {
-				//System.out.print(properties[i][0] + ": " + properties[i][1] + "\t");
 				if(properties[i][0].equals("source") && properties[i][1].equals("RefSeq")) {
-					if(gff) {
+					if(isGFF) {
 						break;
 					}
-					gff = true;
+					isGFF = true;
 				}
 				else if(properties[i][0].equals("method") && properties[i][1].equals("RefSeq")) {
-					if(gff) {
+					if(isGFF) {
 						break;
 					}
-					gff = true;
+					isGFF = true;
 				}
 			}
-			//System.out.println();
-			if(gff) {
-				tooltip = convertPropsToEditorTooltip(properties, false);
-			}
-			else {
-				tooltip = convertPropsToEditorTooltip(properties, true);
-			}
+			tooltip = convertPropsToEditorTooltip(properties, isGFF);
 			// String tooltip = convertPropsToString(properties);
 			((AffyLabelledTierMap) seqmap).setToolTip(tooltip);
 		} else if(glyphs.get(0) instanceof TierLabelGlyph){
@@ -1786,7 +1779,7 @@ public class SeqMapView extends JPanel
 	 * @param properties
 	 * @return
 	 */
-	private static String convertPropsToEditorTooltip(String[][] properties, boolean isBAM){
+	private static String convertPropsToEditorTooltip(String[][] properties, boolean isGFF){
 		// JOptionPane.showMessageDialog(null, "convertPropsToEditorTooltip()");
 		StringBuilder props = new StringBuilder();
 		String value;
@@ -1804,11 +1797,11 @@ public class SeqMapView extends JPanel
 		for(int i = 0; i < 20; i++) {
 				String index = String.valueOf(i);
 				String item = "";
-				if(isBAM) {
-					item = PreferenceUtils.getTooltipEditorBAMPrefsNode().get(index, "dummy");
+				if(isGFF) {
+					item = PreferenceUtils.getTooltipEditorGFFPrefsNode().get(index, "dummy");
 				}
 				else {
-					item = PreferenceUtils.getTooltipEditorGFFPrefsNode().get(index, "dummy");
+					item = PreferenceUtils.getTooltipEditorBAMPrefsNode().get(index, "dummy");
 				}
 				Boolean available = true;
 
