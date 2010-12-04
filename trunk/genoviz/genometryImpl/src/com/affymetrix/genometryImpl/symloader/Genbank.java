@@ -757,7 +757,6 @@ final class GenbankFeature {
   protected boolean addToFeature(String current_line) {
     if (forSameFeature(current_line)) {
       String str = current_line.substring(key_offset).trim();
-      // if (str.indexOf('/') < 0 && active_tag == null){
       if (str.charAt(0) != '/' && active_tag == null) {
         this.location.append(str);
       }
@@ -857,25 +856,19 @@ final class GenbankFeature {
         value = stripQuotes(value);
 
         index = value.indexOf(':');
-        if (index > 0 &&
-            !tag.equals("note") && !value.substring(0, index).contains(" ") &&
-            !tag.equals("gene") &&
-            !tag.equals("method") &&
-            !tag.equals("date") &&
-            !tag.endsWith("synonym") &&
-            !tag.equals("product") &&
-            !tag.equals("prot_desc")) {
-         // if (!tag.equals("db_xref")) {
-            // Why do we want to do this?  I see lots of cases where we *don't*
-            // want to, but I don't see when we'd ever want to.  --NH
-            tag = value.substring(0, index);
-            String tmp = value.substring(index + ":".length());
-            value = tmp;
-         /* } else {  // db_xref
-            db_tag = value.substring(0, index);
-            db_value = value.substring(index + ":".length());
-          }*/
-        }
+        if (index > 0
+				  && !tag.equals("note") && !value.substring(0, index).contains(" ")
+				  && !tag.equals("gene")
+				  && !tag.equals("method")
+				  && !tag.equals("date")
+				  && !tag.endsWith("synonym")
+				  && !tag.equals("product")
+				  && !tag.equals("prot_desc")
+				  && !tag.equals("db_xref")) {
+			  tag = value.substring(0, index);
+			  String tmp = value.substring(index + ":".length());
+			  value = tmp;
+		  }
         active_tag = tag;
       } else if (content.charAt(0) == '/') {
         tag = content.substring(1);
@@ -896,13 +889,6 @@ final class GenbankFeature {
 			  current_vec = new ArrayList<String>();
 			  tagValues.put(tag, current_vec);
 		  }
-		  /* else if (content.charAt(0) != '/' || tag.equals("note")) {
-		  // This is an extension, not a second occurrence, of a tag
-		  int i = current_vec.size() - 1;
-		  String current_value = (String) current_vec.get(i);
-		  current_vec.removeElementAt(i);
-		  value = current_value + " " + value;
-		  }*/
 		  if (!value.equals("") && !value.equals(".")) {
 			  current_vec.add(value);
 		  }
@@ -914,11 +900,7 @@ final class GenbankFeature {
     StringBuilder buf = new StringBuilder();
     buf.append(type).append(" at ").append(location.toString()).append("\n");
 	for (String tag : tagValues.keySet()) {
-      if (!tag.equals("translation") &&
-          !tag.equals("method") &&
-          !tag.equals("db_xref")) {
-		  buf.append("\t").append(tag).append(" = ").append(getValue(tag)).append("\n");
-	  }
+      buf.append("\t").append(tag).append(" = ").append(getValue(tag)).append("\n");
     }
     return buf.toString();
   }
@@ -1011,10 +993,6 @@ final class GenbankFeature {
           parseLocations(location_str.substring(1), locs);
         }
         else if (location_str.indexOf(':') > 0) {
-          // 6/21/04: Sometimes the EMBL file has a source like
-          // FT   source          AJ009736:1..7411
-          // Why should this make us refuse to parse the file?  Let's just
-          // strip off the part before the : (and hope for the best).
           parseLocations(location_str.substring(location_str.indexOf(':')+1), locs);
         }
         else
