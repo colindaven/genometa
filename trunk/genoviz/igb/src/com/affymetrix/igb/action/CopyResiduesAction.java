@@ -1,5 +1,6 @@
 package com.affymetrix.igb.action;
 
+import com.affymetrix.genometryImpl.SeqSpan;
 import com.affymetrix.igb.IGB;
 import com.affymetrix.genometryImpl.util.MenuUtil;
 import java.awt.event.ActionEvent;
@@ -23,7 +24,9 @@ public class CopyResiduesAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		IGB.getSingleton().getMapView().copySelectedResidues();
+		SeqSpan[] seqSpans = IGB.getSingleton().getMapView().copySelectedResidues(true);
+		NeoSeqDemo neoSeqDemo = new NeoSeqDemo();
+		neoSeqDemo.tempChange(seqSpans);
 	}
 
 }

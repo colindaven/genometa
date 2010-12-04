@@ -29,6 +29,9 @@ public class WrapFontColors extends AnnotationGlyph {
 		annot_start = start;
 		annot_end = end;
 	}
+	public int getColorStart(){
+		return annot_start;
+	}
 
 	/**
 	 *  Draw relies on WrapSequence.drawResidues() to do the work.

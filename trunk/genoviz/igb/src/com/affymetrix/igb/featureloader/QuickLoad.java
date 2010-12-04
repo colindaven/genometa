@@ -139,6 +139,11 @@ public final class QuickLoad extends SymLoader {
 
 	public boolean loadFeatures(final SeqSpan overlapSpan, final GenericFeature feature)
 			throws OutOfMemoryError {
+		if(!feature.symL.getChromosomeList().isEmpty() &&
+				!feature.symL.getChromosomeList().contains(overlapSpan.getBioSeq())){
+			return true;
+		}
+
 		final SeqMapView gviewer = Application.getSingleton().getMapView();
 		if (this.symL != null && this.symL.isResidueLoader) {
 			return loadResiduesThread(feature, overlapSpan, gviewer);
