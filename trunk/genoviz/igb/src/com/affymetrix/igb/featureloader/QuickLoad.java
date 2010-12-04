@@ -246,12 +246,19 @@ public final class QuickLoad extends SymLoader {
 	}
 
 
-	public boolean loadResiduesThread(final GenericFeature feature, final SeqSpan span, final SeqMapView gviewer) {
+	private boolean loadResiduesThread(final GenericFeature feature, final SeqSpan span, final SeqMapView gviewer) {
 		SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
 
 			public String doInBackground() {
 				try {
 					String results = QuickLoad.this.getRegionResidues(span);
+					if (results != null && !results.isEmpty()) {
+						// TODO: make this more general.  Since we can't currently optimize all residue requests,
+						// we are simply considering the span loaded if it loads the entire chromosome
+						if (span.getMin() <= span.getBioSeq().getMin() && span.getMax() >= span.getBioSeq().getMax()) {
+							feature.addLoadedSpanRequest(span);	// this span is now considered loaded.
+						}
+					}
 					return results;
 				} catch (Exception ex) {
 					ex.printStackTrace();

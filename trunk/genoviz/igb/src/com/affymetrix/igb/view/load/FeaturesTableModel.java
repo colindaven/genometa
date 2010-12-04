@@ -5,8 +5,6 @@ import com.affymetrix.genometryImpl.util.LoadUtils.LoadStrategy;
 import com.affymetrix.genometryImpl.util.LoadUtils.ServerType;
 import com.affymetrix.genometryImpl.general.GenericFeature;
 import com.affymetrix.igb.IGB;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,7 +19,7 @@ import javax.swing.table.AbstractTableModel;
 /**
  * Model for table of features.
  */
-public final class FeaturesTableModel extends AbstractTableModel implements ChangeListener, ActionListener {
+public final class FeaturesTableModel extends AbstractTableModel implements ChangeListener{
 	private static final String[] columnNames = {"","Choose Load Mode", "Data Set","Data Source", "x"};
 	private final Map<String, LoadStrategy> reverseLoadStrategyMap;  // from friendly string to enum
 	static final int REFRESH_FEATURE_COLUMN = 0;
@@ -179,14 +177,30 @@ public final class FeaturesTableModel extends AbstractTableModel implements Chan
 
 	@Override
 	public void setValueAt(Object value, int row, int col) {
-		if (value == null || col != LOAD_STRATEGY_COLUMN) {
+
+		if(value == null || (col != LOAD_STRATEGY_COLUMN &&
+				col != DELETE_FEATURE_COLUMN && col != REFRESH_FEATURE_COLUMN)){
 			return;
 		}
 
-		if(getFeature(row) == null){
+		GenericFeature gFeature = getFeature(row);
+
+		if(gFeature == null){
 			return;
 		}
-		GenericFeature gFeature = getFeature(row);
+
+		if (col == DELETE_FEATURE_COLUMN){
+			if(IGB.confirmPanel("Really remove entire " + gFeature.featureName + " feature ?")){
+				GeneralLoadView.removeFeature(gFeature);
+			}
+			return;
+		}
+
+		if (col == REFRESH_FEATURE_COLUMN) {
+			if(gFeature.loadStrategy != LoadStrategy.NO_LOAD && gFeature.loadStrategy != LoadStrategy.GENOME)
+				GeneralLoadUtils.loadAndDisplayAnnotations(gFeature);
+			return;
+		}
 
 		if (gFeature.loadStrategy == LoadStrategy.GENOME) {
 			return;	// We can't change strategies once we've loaded the entire genome.
@@ -227,17 +241,4 @@ public final class FeaturesTableModel extends AbstractTableModel implements Chan
 		}
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		Object src = e.getSource();
-		if(src instanceof GenericFeature){
-			GenericFeature feature = (GenericFeature)src;
-			if(FeaturesTableModel.DELETE_COMMAND.equals(e.getActionCommand()) &&
-					IGB.confirmPanel("Really remove entire " + ((GenericFeature)src).featureName + " feature ?")){
-				GeneralLoadView.removeFeature(feature);
-			}else if(FeaturesTableModel.REFRESH_COMMAND.equals(e.getActionCommand())){
-				if(feature.loadStrategy != LoadStrategy.NO_LOAD && feature.loadStrategy != LoadStrategy.GENOME)
-					GeneralLoadUtils.loadAndDisplayAnnotations(feature);
-			}
-		}
-	}
 }

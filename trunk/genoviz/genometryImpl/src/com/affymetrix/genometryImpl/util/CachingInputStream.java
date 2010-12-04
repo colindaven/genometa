@@ -91,7 +91,7 @@ public class CachingInputStream extends FilterInputStream {
 				bytesRemaining = n - bytesSkipped;
 				bytesRead = read(b, 0, (bytesRemaining < b.length) ? (int) (bytesRemaining) : b.length);
 				if (bytesRead > 0) {
-					bytesSkipped -= bytesRead;
+					bytesSkipped += bytesRead;
 				} else {
 					return bytesSkipped;
 				}

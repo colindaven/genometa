@@ -905,14 +905,13 @@ public final class GeneralLoadView extends JComponent
 	 * Load any features that have a whole strategy and haven't already been loaded.
 	 * @param versionName
 	 */
-	private static void loadWholeRangeFeatures() {
+	static void loadWholeRangeFeatures() {
 		for (GenericFeature gFeature : GeneralLoadUtils.getSelectedVersionFeatures()) {
 			if (gFeature.loadStrategy != LoadStrategy.GENOME) {
 				continue;
 			}
 
-			if (gFeature.gVersion.gServer.serverType == ServerType.QuickLoad ||
-					gFeature.gVersion.gServer.serverType == ServerType.LocalFiles) {
+			if (gFeature.gVersion.gServer.serverType == ServerType.LocalFiles) {
 				// These have already been loaded(currently loaded for the entire genome at once)
 				continue;
 			}
