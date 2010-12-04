@@ -130,6 +130,9 @@ public final class LoadFileAction extends AbstractAction {
 						"Binary Files"));
 		chooser.addChoosableFileFilter(new UniFileFilter("cyt", "Cytobands"));
 		chooser.addChoosableFileFilter(new UniFileFilter(
+						new String[]{"gb", "gen"},
+						"Genbank Files"));
+		chooser.addChoosableFileFilter(new UniFileFilter(
 						new String[]{"gff", "gtf", "gff3"},
 						"GFF Files"));
 		chooser.addChoosableFileFilter(new UniFileFilter(
