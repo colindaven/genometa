@@ -168,10 +168,20 @@ public final class QuickLoad extends SymLoader {
 						return null;
 					}
 
+					// MRW
+					/*
+					 * I may have broken this after GenoViz merging. loadAndAddSymmetries doesn't
+					 * return a list anymore. Please get back to me on this. I manually use
+					 * their version here for now...
+					 */
+
+					/* ours
 					List<SeqSymmetry> tmp_list = loadAndAddSymmetries(feature, overlapSpan);
 					if(tmp_list.size() < overlapSpan.getEnd())
-						gviewer.zoomTo(0, (tmp_list.size() / 2));					
-
+						gviewer.zoomTo(0, (tmp_list.size() / 2));
+					 */
+					
+					loadAndAddSymmetries(feature, overlapSpan);
 					TrackView.updateDependentData();
 				} catch (Exception ex) {
 					ex.printStackTrace();
