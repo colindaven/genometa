@@ -190,7 +190,7 @@ public final class FeaturesTableModel extends AbstractTableModel implements Chan
 		}
 
 		if (col == DELETE_FEATURE_COLUMN){
-			if(IGB.confirmPanel("Really remove entire " + gFeature.featureName + " feature ?")){
+			if(IGB.confirmPanel("Really remove entire " + gFeature.featureName + " data set ?")){
 				GeneralLoadView.removeFeature(gFeature);
 			}
 			return;
