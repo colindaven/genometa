@@ -52,7 +52,6 @@ import com.affymetrix.igb.util.GraphGlyphUtils;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.genometryImpl.util.SynonymLookup;
 import com.affymetrix.genoviz.util.ErrorHandler;
-import com.affymetrix.igb.action.NeoSeqDemo;
 import com.affymetrix.igb.action.RefreshDataAction;
 import com.affymetrix.igb.action.ShrinkWrapAction;
 import com.affymetrix.igb.action.ToggleHairlineLabelAction;
