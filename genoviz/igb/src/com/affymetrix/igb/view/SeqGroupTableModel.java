@@ -38,7 +38,7 @@ final class SeqGroupTableModel extends AbstractTableModel {
 				}
 				return Long.toString((long) seq.getLengthDouble());
 			} else if (col == 2) {
-				return GeneralLoadUtils.getNumberOfSymmetriesforSeq(seq);
+				return GeneralLoadUtils.getNumberOfSymmetriesForSeq(seq);
 			}
 		}
 		return null;

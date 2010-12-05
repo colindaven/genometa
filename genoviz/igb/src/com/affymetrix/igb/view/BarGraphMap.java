@@ -31,7 +31,6 @@ import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -279,7 +278,7 @@ public class BarGraphMap extends JPanel {
 
 			//int c  = 0;
 			for (BioSeq bs : _currentSeqGroup.getSeqList()) {
-				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesforSeq(bs));
+				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesForSeq(bs));
 				_currentStatistics.add(tmpSeqRead);
 				//if( ++c == 300) break;
 			}
