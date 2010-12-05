@@ -41,9 +41,9 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
 
   private final JTable table = new JTable();
 
-  private static final String TIER_NAME = "Tier ID";
+  private static final String TIER_NAME = "Track ID";
   private static final String COLOR = "Color";
-  private static final String SEPARATE = "2 Tiers";
+  private static final String SEPARATE = "2 Track";
   private static final String COLLAPSED = "Collapsed";
   private static final String MAX_DEPTH = "Max Depth";
   private static final String BACKGROUND = "Background";
@@ -77,7 +77,7 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
   private final TierPrefsTableModel model;
   private final ListSelectionModel lsm;
 
-  private static final String PREF_AUTO_REFRESH = "Auto-Apply Tier Customizer Changes";
+  private static final String PREF_AUTO_REFRESH = "Auto-Apply Track Customizer Changes";
   private static final boolean default_auto_refresh = true;
   private JCheckBox auto_refresh_CB;
 
@@ -101,8 +101,8 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
   public TierPrefsView(boolean add_refresh_list_button, boolean add_refresh_map_button) {
     super();
 
-	this.setName("Tiers");
-	this.setToolTipText("Set Tier Colors and Properties");
+	this.setName("Tracks");
+	this.setToolTipText("Set Track Colors and Properties");
     this.setLayout(new BorderLayout());
 
     JScrollPane table_scroll_pane = new JScrollPane(table);
@@ -188,7 +188,7 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
     table.setEnabled( true ); // doesn't do anything ?
 
     table.setDefaultRenderer(Color.class, new ColorTableCellRenderer());
-    table.setDefaultEditor(Color.class, new ColorTableCellEditor());//MPTAG der hier Ã¼bertrÃ¤gt meine Ã¤nderungen nicht!!
+    table.setDefaultEditor(Color.class, new ColorTableCellEditor());//MPTAG der hier überträgt meine änderungen nicht!!
     table.setDefaultRenderer(Boolean.class, new BooleanTableCellRenderer());
 
     validate();
@@ -419,7 +419,7 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
           style.setCollapsed(((Boolean) value).booleanValue());
           break;
         case COL_TIER_NAME:
-          System.out.println("Tier name is not changeable!");
+          System.out.println("Track name is not changeable!");
           break;
         case COL_MAX_DEPTH:
           {
@@ -495,7 +495,7 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
   static JFrame static_frame;
   static TierPrefsView static_instance;
 
-  static final String WINDOW_NAME = "Tier Customizer";
+  static final String WINDOW_NAME = "Track Customizer";
 
   /**
    *  Gets an instance of TierPrefsView wrapped in a JFrame, useful
