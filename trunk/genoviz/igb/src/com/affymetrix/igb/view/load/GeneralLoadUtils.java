@@ -33,6 +33,8 @@ import com.affymetrix.igb.general.ResidueLoading;
 import com.affymetrix.igb.general.ServerList;
 import com.affymetrix.igb.featureloader.QuickLoad;
 import com.affymetrix.genometryImpl.quickload.QuickLoadServerModel;
+import com.affymetrix.genometryImpl.symloader.SymLoaderInst;
+import com.affymetrix.genometryImpl.symloader.SymLoaderInstNC;
 import com.affymetrix.igb.featureloader.Das;
 import com.affymetrix.igb.featureloader.Das2;
 import com.affymetrix.igb.view.SeqMapView;
@@ -609,6 +611,13 @@ public final class GeneralLoadUtils {
 				return loadFeaturesForSym(feature, optimized_sym);
 			}
 		} else {
+
+			// For for formats that are not optimized do not iterate through BioSeq
+			// instead add them all at one.
+			if(((QuickLoad)feature.symL).getSymLoader() instanceof SymLoaderInst) {
+				return ((QuickLoad) feature.symL).loadAllSymmetriesThread(feature);
+			}
+			
 			// At this point, we know all of the chromosomes in the file, so just iterate.
 			boolean result = true;
 			for (BioSeq seq : span.getBioSeq().getSeqGroup().getSeqList()) {
