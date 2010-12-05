@@ -7,7 +7,6 @@ import com.affymetrix.genometryImpl.GraphSym;
 import com.affymetrix.genometryImpl.MutableSeqSymmetry;
 import com.affymetrix.genometryImpl.SeqSpan;
 import com.affymetrix.genometryImpl.SeqSymmetry;
-import com.affymetrix.genometryImpl.SymWithProps;
 import com.affymetrix.genometryImpl.UcscPslSym;
 import com.affymetrix.genometryImpl.parsers.BedParser;
 import com.affymetrix.genometryImpl.parsers.BgnParser;
@@ -282,13 +281,36 @@ public abstract class SymLoader {
 	  return track2Results;
   }
 
+  public static Map<BioSeq, List<SeqSymmetry>> splitResultsBySeqs(List<? extends SeqSymmetry> results){
+	  Map<BioSeq, List<SeqSymmetry>> seq2Results = new HashMap<BioSeq, List<SeqSymmetry>>();
+	  List<SeqSymmetry> resultList = null;
+	  BioSeq seq = null;
+		for (SeqSymmetry result : results) {
+
+			for(int i=0; i<result.getSpanCount(); i++){
+				seq = result.getSpan(i).getBioSeq();
+
+				if (seq2Results.containsKey(seq)) {
+					resultList = seq2Results.get(seq);
+				} else {
+					resultList = new ArrayList<SeqSymmetry>();
+					seq2Results.put(seq, resultList);
+				}
+				resultList.add(result);
+			}
+
+		}
+
+	  return seq2Results;
+  }
+
 	public static void filterAndAddAnnotations(
 			List<? extends SeqSymmetry> feats, SeqSpan span, URI uri, GenericFeature feature) {
 		if (feats == null || feats.isEmpty()) {
 			return;
 		}
 		SeqSymmetry originalRequestSym = feature.getRequestSym();
-		List<? extends SeqSymmetry> filteredFeats = filterOutExistingSymmetries(originalRequestSym, feats, span.getBioSeq());
+		List<? extends SeqSymmetry> filteredFeats = filterOutExistingSymmetries(originalRequestSym, feats, span.getBioSeq());	
 		if (filteredFeats.isEmpty()) {
 			return;
 		}
@@ -335,6 +357,22 @@ public abstract class SymLoader {
 			newSyms.add(sym);
 		}
 		return newSyms;
+	}
+
+	public static List<BioSeq> getChromosomes(URI uri, String extension, String featureName){
+		AnnotatedSeqGroup temp_group = new AnnotatedSeqGroup("temp_group");
+		SymLoader temp = new SymLoader(uri, featureName, temp_group) {};
+		List syms = temp.getGenome();
+		List<BioSeq> seqs = new ArrayList<BioSeq>();
+		seqs.addAll(temp_group.getSeqList());
+		
+		// Force GC
+		syms.clear();
+		syms = null;
+		temp = null;
+		temp_group = null;
+
+		return seqs;
 	}
 
 	/**

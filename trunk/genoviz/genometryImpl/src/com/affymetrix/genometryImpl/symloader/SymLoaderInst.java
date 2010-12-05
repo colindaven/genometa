@@ -29,41 +29,32 @@ public class SymLoaderInst extends SymLoader{
 			return;
 		}
 		super.init();
-		addChromosomeToList();
-	}
-
-	private void addChromosomeToList(){
-		chromosomeList.addAll(group.getSeqList());
+		
+		chromosomeList.addAll(SymLoader.getChromosomes(uri, extension, featureName));
 		Collections.sort(chromosomeList,new BioSeqComparator());
 	}
 
 	@Override
-	public List<BioSeq> getChromosomeList(){
-		if(!this.isInitialized)
-			getGenome();
-		
+	public List<BioSeq> getChromosomeList(){		
 		init();
 		return chromosomeList;
 	}
 
 	@Override
 	 public List<? extends SeqSymmetry> getGenome() {
-		List<? extends SeqSymmetry> syms = super.getGenome();
 		init();
-		return syms;
+		return super.getGenome();
 	 }
 
 	@Override
 	public List<? extends SeqSymmetry> getChromosome(BioSeq seq) {
-		List<? extends SeqSymmetry> syms = super.getChromosome(seq);
 		init();
-		return syms;
+		return super.getChromosome(seq);
 	}
 
 	@Override
 	public List<? extends SeqSymmetry> getRegion(SeqSpan overlapSpan) {
-		List<? extends SeqSymmetry> syms = super.getRegion(overlapSpan);
 		init();
-		return syms;
+		return super.getRegion(overlapSpan);
     }
 }
