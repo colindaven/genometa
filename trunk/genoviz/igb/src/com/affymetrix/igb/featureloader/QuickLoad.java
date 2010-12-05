@@ -142,10 +142,10 @@ public final class QuickLoad extends SymLoader {
 	public boolean loadFeatures(final SeqSpan overlapSpan, final GenericFeature feature)
 			throws OutOfMemoryError {
 		if (this.symL != null && !this.symL.getChromosomeList().contains(overlapSpan.getBioSeq())) {
-			Application.getSingleton().removeNotLockedUpMsg("Loading feature " + feature.featureName);
 			return true;
 		}
 
+		Application.getSingleton().addNotLockedUpMsg("Loading feature " + feature.featureName + " on sequence " + overlapSpan.getBioSeq().getID());
 		final SeqMapView gviewer = Application.getSingleton().getMapView();
 		if (this.symL != null && this.symL.isResidueLoader) {
 			return loadResiduesThread(feature, overlapSpan, gviewer);
@@ -194,7 +194,7 @@ public final class QuickLoad extends SymLoader {
 				} catch (Exception ex) {
 					Logger.getLogger(QuickLoad.class.getName()).log(Level.SEVERE, null, ex);
 				} finally {
-					Application.getSingleton().removeNotLockedUpMsg("Loading feature " + feature.featureName);
+					Application.getSingleton().removeNotLockedUpMsg("Loading feature " + feature.featureName + " on sequence " + overlapSpan.getBioSeq().getID());
 				}
 			}
 		};
@@ -209,6 +209,7 @@ public final class QuickLoad extends SymLoader {
 	 * @return
 	 */
 	public boolean loadAllSymmetriesThread(final GenericFeature feature){
+		Application.getSingleton().addNotLockedUpMsg("Loading feature " + feature.featureName);
 		final SeqMapView gviewer = Application.getSingleton().getMapView();
 
 		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {

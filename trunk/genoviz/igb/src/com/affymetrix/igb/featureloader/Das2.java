@@ -51,7 +51,8 @@ public class Das2 {
 		if (dtype == null || region == null) {
 			return true;
 		}
-
+		Application.getSingleton().addNotLockedUpMsg("Loading feature " + feature.featureName + " on sequence " + span.getBioSeq().getID());
+		
 		final SeqMapView gviewer = Application.getSingleton().getMapView();
 	
 		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -73,7 +74,7 @@ public class Das2 {
 				} catch (Exception ex) {
 					Logger.getLogger(Das2.class.getName()).log(Level.SEVERE, null, ex);
 				} finally {
-					Application.getSingleton().removeNotLockedUpMsg("Loading feature " + feature.featureName);
+					Application.getSingleton().removeNotLockedUpMsg("Loading feature " + feature.featureName + " on sequence " + span.getBioSeq().getID());
 				}
 			}
 		};
