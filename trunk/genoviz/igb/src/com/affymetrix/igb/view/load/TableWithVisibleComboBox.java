@@ -250,7 +250,7 @@ class JTableX extends JTable implements MouseListener {
 			FeaturesTableModel ftm = (FeaturesTableModel) getModel();
 			int featureSize = ftm.getRowCount();
 			
-			if (featureSize > 0 && IGB.confirmPanel("Really remove all features ?")) {
+			if (featureSize > 0 && IGB.confirmPanel("Really remove all data sets ?")) {
 				for (int row = 0; row < featureSize; row++) {
 					GeneralLoadView.removeFeature(ftm.getFeature(row));
 				}
