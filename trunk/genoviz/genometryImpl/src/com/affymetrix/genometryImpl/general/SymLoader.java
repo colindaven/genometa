@@ -424,7 +424,7 @@ public abstract class SymLoader {
 		if (extension.equals("bp1") || extension.equals("bp2")) {
 			Bprobe1Parser bp1_reader = new Bprobe1Parser();
 			// parsing probesets in bp2 format, also adding probeset ids
-			return bp1_reader.parse(bis, group, false, featureName, false);
+			return bp1_reader.parse(bis, group, false, featureName, true);
 		}
 		if (extension.equals("brpt")) {
 			List<SeqSymmetry> alist = BrptParser.parse(bis, featureName, group, false);

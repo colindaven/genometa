@@ -109,6 +109,10 @@ public final class CytobandParser implements AnnotationWriter  {
 				seq.setLength(end);
 			}
 
+			if (annot_name == null || annot_name.length() == 0) {
+				annot_name = seq_group.getID();
+			}
+			
 			CytobandSym sym = new CytobandSym(beg, end, seq, annot_name, band);
 			if (annotate_seq) {
 				SimpleSymWithProps parent_sym = (SimpleSymWithProps) seq2csym.get(seq);
@@ -122,7 +126,7 @@ public final class CytobandParser implements AnnotationWriter  {
 					seq.addAnnotation(parent_sym);
 				}
 				parent_sym.addChild(sym);
-				if (annot_name != null) {
+				if (annot_name != null && annot_name.length() != 0) {
 					seq_group.addToIndex(annot_name, sym);
 				}
 			}

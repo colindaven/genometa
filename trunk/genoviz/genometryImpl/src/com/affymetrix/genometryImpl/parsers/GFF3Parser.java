@@ -245,9 +245,14 @@ public final class GFF3Parser {
 		for (GFF3Sym sym : all_syms) {
 			String[] parent_ids = GFF3Sym.getGFF3PropertyFromAttributes(GFF3_PARENT, sym.getAttributes());
 			String id = sym.getID();
-			if (id != null && !"-".equals(id)) {
+			if (id != null && !"-".equals(id) && id.length() != 0) {
 				seq_group.addToIndex(id, sym);
-			} // gff3 display bug. hiralv 08-16-10
+			} else{
+				id = seq_group.getUniqueID();
+				sym.setID(id);
+				seq_group.addToIndex(id, sym);
+			}
+				// gff3 display bug. hiralv 08-16-10
 			if (parent_ids.length == 0 || sym.getFeatureType().equals("TF_binding_site")) {
 				// If no parents, then it is top-level
 				results.add(sym);

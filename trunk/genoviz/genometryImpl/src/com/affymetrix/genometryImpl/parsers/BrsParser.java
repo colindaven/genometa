@@ -155,6 +155,11 @@ public final class BrsParser implements AnnotationWriter, IndexWriter  {
 					if (chromseq == null) {
 						chromseq = seq_group.addSeq(chrom_name, tmax);
 					}
+
+					if(name.length() == 0 && geneName.length() == 0){
+						name = seq_group.getID();
+					}
+					
 					UcscGeneSym sym = new UcscGeneSym(annot_type, geneName, name, chromseq, forward,
 							tmin, tmax, cmin, cmax, emins, emaxs);
 
@@ -164,7 +169,6 @@ public final class BrsParser implements AnnotationWriter, IndexWriter  {
 					if (name.length() != 0) {
 						seq_group.addToIndex(name, sym);
 					}
-
 
 					results.add(sym);
 					if (chromseq.getLength() < tmax) { chromseq.setLength(tmax); }

@@ -233,6 +233,9 @@ public final class BedParser implements AnnotationWriter, IndexWriter  {
 		int end = Integer.parseInt(fields[findex++]); // stop field
 		if (field_count >= 4) {
 			annot_name = parseName(fields[findex++]);
+			if(annot_name == null || annot_name.length() == 0){
+				annot_name = seq_group.getUniqueID();
+			}
 		}
 		if (field_count >= 5) {
 			score = parseScore(fields[findex++]);
@@ -314,7 +317,7 @@ public final class BedParser implements AnnotationWriter, IndexWriter  {
 		}
 		if (annot_name != null) {
 			seq_group.addToIndex(annot_name, bedline_sym);
-		}
+		} 
 	}
 
 
