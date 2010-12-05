@@ -14,6 +14,8 @@ import com.affymetrix.genometryImpl.util.SynonymLookup;
  */
 public class AnnotatedSeqGroup {
 
+	private final String UNKNOWN_ID = "UNKNOWN_SYM_";
+	private int unknown_id_no = 1;
 	final private String id;
 	private String organism;
 	private String description;
@@ -306,6 +308,10 @@ public class AnnotatedSeqGroup {
 		return Collections.<SeqSymmetry>unmodifiableSet(sym_list);
 	}
 
+	public String getUniqueID(){
+		return UNKNOWN_ID + unknown_id_no++;
+	}
+	
 	/**
 	 *  Associates a symmetry with a case-insensitive ID.  You can later retrieve the
 	 *  list of all matching symmetries for a given ID by calling findSyms(String).
