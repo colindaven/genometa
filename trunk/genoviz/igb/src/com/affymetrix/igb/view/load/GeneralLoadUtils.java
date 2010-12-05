@@ -862,6 +862,8 @@ public final class GeneralLoadUtils {
 		return versionNames;
 	}
 
+	private static Map<BioSeq, Integer> symmetryCount = new HashMap<BioSeq, Integer>();
+
 	/**
 	 * Querys the number of Symmetries for a given bio seq from the currently selected GenericFeature.
 	 *
@@ -870,19 +872,64 @@ public final class GeneralLoadUtils {
 	 * @param seq BioSeq to query
 	 * @return number of Symmetries
 	 */
-	public static int getNumberOfSymmetriesforSeq(BioSeq seq) {
-//		 GenericFeature genf = GeneralLoadUtils.getSelectedVersionFeatures().get(0);
+	public static int getNumberOfSymmetriesForSeq(BioSeq seq) {
+		return -1;
+//		GenericFeature genf = GeneralLoadUtils.getSelectedVersionFeatures().get(0);
+//
+//		Integer c = symmetryCount.get(seq);
+//
+//
+//		if (c != null)
+//			return c.intValue();
 //
 //		if (genf.symL == null) {
 //			return -1;
 //		}
-//		@SuppressWarnings("unchecked")
-//		List<SeqSymmetry> los = (List<SeqSymmetry>) genf.symL.getRegion(new SimpleSeqSpan(seq.getMin(), seq.getMax() - 1, seq));
-//		List<SeqSymmetry> l = seq.getAnnotations();
-//		if (l != null && l.size() > 0) {
-//			return seq.getAnnotations().get(0).getChildCount();
+//
+//		if (! (genf.symL instanceof QuickLoad)) {
+//			Logger.getAnonymousLogger().log(Level.WARNING, "Cannot determin number of Seymmetries for this Sequence: feature only supported by Quickload files.");
+//			return -1;
 //		}
-//		else
-			return -1;
+//
+//		if (!seq.getID().equals("gi|1103813601118|ref|NC_m00038|"))
+//			return -1;
+//
+//		// check if there is an inner symL
+//		QuickLoad syml = (QuickLoad)genf.symL;
+//
+//		final int STEP_SIZE=1000;
+//
+//		int count = 0;
+//		int pos = seq.getMin();
+//		int npos = pos;
+//		SeqSpan span = null;
+//
+//
+//		while (npos < seq.getMax()) {
+//
+//			// Set the pos and next pos.
+//			pos = npos;
+//			npos += STEP_SIZE;
+//
+//			if (seq.getMax() - npos <= 0) {
+//				npos = seq.getMax();
+//			}
+//
+//			// Create a span for the interval [pos,npos).
+//			span = new SimpleSeqSpan(pos, npos - 1, seq);
+//			final List<? extends SeqSymmetry> list = syml.getRegion(span);
+//
+//			for (SeqSymmetry sym : list) {
+//				int end = sym.getSpan(seq).getEnd();
+//
+//				if (! (end >= npos-1)) {
+//					++count;
+//				}
+//			}
+//		}
+//
+//		symmetryCount.put(seq, count);
+//
+//		return count;
 	}
 }

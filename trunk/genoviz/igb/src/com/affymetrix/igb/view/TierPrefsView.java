@@ -188,7 +188,7 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
     table.setEnabled( true ); // doesn't do anything ?
 
     table.setDefaultRenderer(Color.class, new ColorTableCellRenderer());
-    table.setDefaultEditor(Color.class, new ColorTableCellEditor());//MPTAG der hier überträgt meine änderungen nicht!!
+    table.setDefaultEditor(Color.class, new ColorTableCellEditor());//MPTAG der hier Ã¼bertrÃ¤gt meine Ã„nderungen nicht!!
     table.setDefaultRenderer(Boolean.class, new BooleanTableCellRenderer());
 
     validate();
