@@ -34,7 +34,6 @@ import com.affymetrix.igb.general.ServerList;
 import com.affymetrix.igb.featureloader.QuickLoad;
 import com.affymetrix.genometryImpl.quickload.QuickLoadServerModel;
 import com.affymetrix.genometryImpl.symloader.SymLoaderInst;
-import com.affymetrix.genometryImpl.symloader.SymLoaderInstNC;
 import com.affymetrix.igb.featureloader.Das;
 import com.affymetrix.igb.featureloader.Das2;
 import com.affymetrix.igb.view.SeqMapView;
@@ -644,7 +643,6 @@ public final class GeneralLoadUtils {
 		List<SeqSpan> spans = new ArrayList<SeqSpan>();
 		convertSymToSpanList(optimized_sym, spans);
 		optimized_spans.addAll(spans);
-		Application.getSingleton().addNotLockedUpMsg("Loading feature " + feature.featureName);
 		boolean result = true;
 		switch (feature.gVersion.gServer.serverType) {
 			case DAS2:

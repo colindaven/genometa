@@ -52,6 +52,7 @@ public final class Das {
 	 * @return true if data was loaded
 	 */
 	public static boolean loadFeatures(final List<SeqSpan> spans, final GenericFeature gFeature) {
+		Application.getSingleton().addNotLockedUpMsg("Loading feature " + gFeature.featureName);
 
 		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
