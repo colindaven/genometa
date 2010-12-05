@@ -18,6 +18,7 @@ import com.affymetrix.igb.Application;
 import com.affymetrix.igb.parsers.ChpParser;
 import com.affymetrix.igb.util.ThreadUtils;
 import com.affymetrix.genometryImpl.quickload.QuickLoadServerModel;
+import com.affymetrix.genometryImpl.span.SimpleSeqSpan;
 import com.affymetrix.igb.view.SeqGroupView;
 import com.affymetrix.igb.view.SeqMapView;
 import com.affymetrix.igb.view.TrackView;
@@ -31,6 +32,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
@@ -139,8 +141,7 @@ public final class QuickLoad extends SymLoader {
 
 	public boolean loadFeatures(final SeqSpan overlapSpan, final GenericFeature feature)
 			throws OutOfMemoryError {
-		if(!feature.symL.getChromosomeList().isEmpty() &&
-				!feature.symL.getChromosomeList().contains(overlapSpan.getBioSeq())){
+		if (this.symL != null && !this.symL.getChromosomeList().contains(overlapSpan.getBioSeq())) {
 			Application.getSingleton().removeNotLockedUpMsg("Loading feature " + feature.featureName);
 			return true;
 		}
@@ -201,57 +202,135 @@ public final class QuickLoad extends SymLoader {
 		return true;
 	}
 
+
 	/**
-	 * Below are methods normally used by QuickLoad, DAS, DAS/2, etc.
+	 * For unoptimized file formats load symmetries and add them.
+	 * @param feature
+	 * @return
 	 */
+	public boolean loadAllSymmetriesThread(final GenericFeature feature){
+		final SeqMapView gviewer = Application.getSingleton().getMapView();
 
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-	private List<SeqSymmetry> loadAndAddSymmetries(GenericFeature feature, final SeqSpan span)
+			public Void doInBackground() {
+				try {
+					loadAndAddAllSymmetries(feature);
+					TrackView.updateDependentData();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				return null;
+			}
+
+			@Override
+			public void done() {
+				try {
+					BioSeq aseq = GenometryModel.getGenometryModel().getSelectedSeq();
+					if (aseq != null) {
+						gviewer.setAnnotatedSeq(aseq, true, true);
+					} else if (GenometryModel.getGenometryModel().getSelectedSeq() == null && QuickLoad.this.version.group != null) {
+						// This can happen when loading a brand-new genome
+						GenometryModel.getGenometryModel().setSelectedSeq(QuickLoad.this.version.group.getSeq(0));
+					}
+
+					SeqGroupView.refreshTable();
+				} catch (Exception ex) {
+					Logger.getLogger(QuickLoad.class.getName()).log(Level.SEVERE, null, ex);
+				} finally {
+					Application.getSingleton().removeNotLockedUpMsg("Loading feature " + feature.featureName);
+				}
+			}
+		};
+		ThreadUtils.getPrimaryExecutor(feature).execute(worker);
+
+		return true;
+	}
+
+	/**
+	 * For optimized file format load symmetries and add them.
+	 * @param feature
+	 * @param span
+	 * @throws IOException
+	 * @throws OutOfMemoryError
+	 */
+	private void loadAndAddSymmetries(GenericFeature feature, final SeqSpan span)
 			throws IOException, OutOfMemoryError {
 
 		List<? extends SeqSymmetry> results;
-		List<SeqSymmetry> overallResults = new ArrayList<SeqSymmetry>();
+		boolean setStyle = false;
 
 		// short-circuit if there's a failure... which may not even be signaled in the code
 		if (!this.isInitialized) {
 			this.init();
 		}
-		if (this.symL != null && !this.symL.getChromosomeList().contains(span.getBioSeq())) {
-			// Chromosome is not in file
-			return overallResults;
-		}
 
 		results = this.getRegion(span);
 		if (results != null) {
-			results = ServerUtils.filterForOverlappingSymmetries(span, results);
-			for (Map.Entry<String, List<SeqSymmetry>> entry : SymLoader.splitResultsByTracks(results).entrySet()) {
-				if (entry.getValue().isEmpty()) {
-					continue;
-				}
-				SymLoader.filterAndAddAnnotations(entry.getValue(), span, feature.getURI(), feature);
-				overallResults.addAll(entry.getValue());
-
-				// Some format do not annotate. So it might not have method name. e.g bgn
-				if(entry.getKey() != null)
-					feature.addMethod(entry.getKey());
-			}
+			setStyle = addSymmtries(span, results, feature);
 		}
-		feature.addLoadedSpanRequest(span);	// this span is now considered loaded.
+		feature.addLoadedSpanRequest(span); // this span is now considered loaded.
 
-		if (!overallResults.isEmpty()) {
-			// TODO - not necessarily unique, since the same file can be loaded to multiple tracks for different organisms
-			ITrackStyleExtended style = DefaultStateProvider.getGlobalStateProvider().getAnnotStyle(this.uri.toString(), featureName, feature.featureProps);
-			style.setFeature(feature);
+		if(setStyle){
+			setStyle(feature);
+		}
+	}
 
-			// TODO - probably not necessary
-			style = DefaultStateProvider.getGlobalStateProvider().getAnnotStyle(featureName, featureName, feature.featureProps);
-			style.setFeature(feature);
+	private boolean loadAndAddAllSymmetries(final GenericFeature feature)
+			throws OutOfMemoryError {
+
+		// short-circuit if there's a failure... which may not even be signaled in the code
+		if (!this.isInitialized) {
+			this.init();
 		}
 
-		return overallResults;
+		List<? extends SeqSymmetry> results = this.getGenome();
+		Map<BioSeq, List<SeqSymmetry>> seq_syms = SymLoader.splitResultsBySeqs(results);
+		SeqSpan span = null;
+		BioSeq seq = null;
+
+		for (Entry<BioSeq, List<SeqSymmetry>> seq_sym : seq_syms.entrySet()) {
+			seq = seq_sym.getKey();
+			span = new SimpleSeqSpan(seq.getMin(), seq.getMax() - 1, seq);
+			addSymmtries(span, seq_sym.getValue(), feature);
+			feature.addLoadedSpanRequest(span); // this span is now considered loaded.
+		}
+
+		setStyle(feature);
+
+		return true;
+	}
+
+	
+	private void setStyle(GenericFeature feature) {
+		// TODO - not necessarily unique, since the same file can be loaded to multiple tracks for different organisms
+		ITrackStyleExtended style = DefaultStateProvider.getGlobalStateProvider().getAnnotStyle(this.uri.toString(), featureName, feature.featureProps);
+		style.setFeature(feature);
+
+		// TODO - probably not necessary
+		style = DefaultStateProvider.getGlobalStateProvider().getAnnotStyle(featureName, featureName, feature.featureProps);
+		style.setFeature(feature);
+		
 	}
 
 
+	private static boolean addSymmtries(final SeqSpan span, List<? extends SeqSymmetry> results, GenericFeature feature) {
+		boolean setStyle = false;
+		results = ServerUtils.filterForOverlappingSymmetries(span, results);
+		for (Map.Entry<String, List<SeqSymmetry>> entry : SymLoader.splitResultsByTracks(results).entrySet()) {
+			if (entry.getValue().isEmpty()) {
+				continue;
+			}
+			SymLoader.filterAndAddAnnotations(entry.getValue(), span, feature.getURI(), feature);
+			setStyle = true;
+			// Some format do not annotate. So it might not have method name. e.g bgn
+			if (entry.getKey() != null) {
+				feature.addMethod(entry.getKey());
+			}
+		}
+		return setStyle;
+	}
+	
 	private boolean loadResiduesThread(final GenericFeature feature, final SeqSpan span, final SeqMapView gviewer) {
 		SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
 
