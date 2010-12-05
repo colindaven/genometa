@@ -141,6 +141,7 @@ public final class QuickLoad extends SymLoader {
 			throws OutOfMemoryError {
 		if(!feature.symL.getChromosomeList().isEmpty() &&
 				!feature.symL.getChromosomeList().contains(overlapSpan.getBioSeq())){
+			Application.getSingleton().removeNotLockedUpMsg("Loading feature " + feature.featureName);
 			return true;
 		}
 
