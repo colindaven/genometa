@@ -1824,6 +1824,17 @@ public class NeoSeq extends NeoContainerWidget
 		// calling stretchToFit to force adjustment of vertical scrollbar
 		stretchToFit(false,false);
 	}
+	public void setRevShow(int type, boolean show) {
+		if (showAs[type] == show)  { return; }
+		showAs[type] = show;
+		residue_glyph.setShow(type, show);
+		if(type == 1){
+		num_glyph.setRevNumbering(show);
+//		num_glyph.setShow(type, show);
+		}
+		// calling stretchToFit to force adjustment of vertical scrollbar
+		stretchToFit(false,false);
+	}
 
 	/**
 	 * gets the state of a display option.
