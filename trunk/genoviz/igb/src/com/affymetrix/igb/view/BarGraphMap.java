@@ -15,6 +15,7 @@ package com.affymetrix.igb.view;
 import com.affymetrix.genometryImpl.AnnotatedSeqGroup;
 import com.affymetrix.genometryImpl.BioSeq;
 import com.affymetrix.genometryImpl.GenometryModel;
+import com.affymetrix.genometryImpl.util.SynonymLookup;
 import com.affymetrix.genoviz.awt.AdjustableJSlider;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -90,7 +91,7 @@ public class BarGraphMap extends JPanel {
 			return;
 		}
 
-
+		_initialized = false;
 
 
 		map.clearWidget();
@@ -141,9 +142,11 @@ public class BarGraphMap extends JPanel {
 				map.scroll(NeoMap.Y, -((float) _maxValue * _verticalInitialZoom));
 
 
-				hairline.setSpot(getXZoomPoint(_barOffset));
-
 				map.updateWidget();
+				// scroll by default in at the minimum coordinate of X-Achsis
+				hairline.setSpot(getXZoomPoint(_barOffset));
+				// scroll by default in at the minimum coordinate of Y-Achsis
+				map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
 
 				_initialized = true;
 			}
@@ -278,7 +281,7 @@ public class BarGraphMap extends JPanel {
 
 			//int c  = 0;
 			for (BioSeq bs : _currentSeqGroup.getSeqList()) {
-				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesForSeq(bs));
+				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesforSeq(bs));
 				_currentStatistics.add(tmpSeqRead);
 				//if( ++c == 300) break;
 			}
@@ -294,11 +297,12 @@ public class BarGraphMap extends JPanel {
 		for (SeqReads sr : _currentStatistics) {
 			c++;
 			int reads = sr.getReads().intValue();
-			String id = sr.getSeq().getID();
+            String id = sr.getSeqName();
 
-			String barText = "[" + c + "][" + reads + "] " + id;
+			//String barText = "[" + c + "][" + reads + "] " + id;
+			String barText = "[ " + reads + " ] [ " + id + " ]";
 
-			System.out.println("addBar: -= " + barText + " =-");
+			//System.out.println("addBar: -= " + barText + " =-");
 
 			addBar(reads, barText,sr  );
 			if (reads > _maxValue) {
@@ -340,11 +344,25 @@ public class BarGraphMap extends JPanel {
 
 		private BioSeq _seq = null;
 		private Integer _reads = null;
+        private String _seqName = null;
+		public final static String NO_SEQ_TRANSLATE_STRING = "no lookup table set";
 
-		public SeqReads(BioSeq seq, int reads) {
-			_seq = seq;
-			_reads = new Integer(reads);
-		}
+        public SeqReads(BioSeq seq, int reads) {
+            _seq = seq;
+            _reads = new Integer(reads);
+
+            if( seq != null ){
+				_seqName = seq.getID();
+
+				String seqNameTranslated = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(_seqName);
+
+				if( seqNameTranslated != null && !seqNameTranslated.equals(NO_SEQ_TRANSLATE_STRING)){
+					_seqName = seqNameTranslated;
+				}
+            }else{
+                _seqName = "NC_TESTTESTTEST123456";
+            }
+        }
 
 		/**
 		 * @return the _seq
@@ -357,5 +375,9 @@ public class BarGraphMap extends JPanel {
 		 */ public Integer getReads() {
 			return _reads;
 		}
+
+         public String getSeqName(){
+             return _seqName;
+         }
 	}
 }
