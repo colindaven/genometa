@@ -169,8 +169,8 @@ public final class BAM extends SymLoader {
 								Level.FINE, "Adding chromosome {0} to group {1}", new Object[]{seqID, group.getID()});
 						group.addSeq(seq);
 					}
+					seq.setReadCount(index.getMetaData(ssr.getSequenceIndex()).getAlignedRecordCount());
 					seqs.add(seq);
-//					System.out.println(seqID + ": " + index.getMetaData(ssr.getSequenceIndex()).getAlignedRecordCount());
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}

@@ -25,6 +25,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 public final class SeqGroupView extends JComponent implements ListSelectionListener, GroupSelectionListener, SeqSelectionListener {
 	private static final String CHOOSESEQ = "Select a chromosome sequence";
@@ -109,11 +110,23 @@ public final class SeqGroupView extends JComponent implements ListSelectionListe
 		sorter = new TableRowSorter<SeqGroupTableModel>(mod){
 			@Override
 			public Comparator<?> getComparator(int column){
-				if(column == 0){
-					return String.CASE_INSENSITIVE_ORDER;
+				switch (column) {
+					case 0:
+						return String.CASE_INSENSITIVE_ORDER;
+					case 1:
+						return new SeqLengthComparator();
+					case 2:
+						return new Comparator()
+						{
+							public int compare(Object a, Object b)
+							{
+								return ((Integer)a).compareTo((Integer)b);
+							}
+						};
 				}
-				return new SeqLengthComparator();
+				return null;
 			}
+	
 		};
 
 		selected_seq = null;

@@ -37,6 +37,8 @@ public final class BioSeq implements SearchableCharIterator { //MPTAG
 	// all residues...
 	private String residues;
 
+	private int readCount = -1;
+
 	/** The index of the first residue of the sequence. */
 	private int start;
 	/** The index of the last residue of the sequence. */
@@ -68,6 +70,14 @@ public final class BioSeq implements SearchableCharIterator { //MPTAG
 
 	public String getID() {
 		return id;
+	}
+
+	public int getReadCount() {
+		return this.readCount;
+	}
+
+	public void setReadCount(int i) {
+		this.readCount = i;
 	}
 
 	public AnnotatedSeqGroup getSeqGroup() {
