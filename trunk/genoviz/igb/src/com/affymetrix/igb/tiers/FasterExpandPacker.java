@@ -5,6 +5,7 @@ import com.affymetrix.genoviz.util.NeoConstants;
 import com.affymetrix.genoviz.bioviews.GlyphI;
 import com.affymetrix.genoviz.bioviews.ViewI;
 import com.affymetrix.igb.glyph.AlignedResidueGlyph;
+import com.affymetrix.igb.glyph.GenericAnnotGlyphFactory;
 import com.affymetrix.igb.glyph.DirectionFillRectGlyph;
 import com.affymetrix.igb.glyph.EfficientLineContGlyph;
 import java.awt.Color;
@@ -124,6 +125,17 @@ public final class FasterExpandPacker extends ExpandPacker {
 	@Override
 	public Rectangle pack(GlyphI parent, ViewI view) {
 		Rectangle2D.Double pbox = parent.getCoordBox();
+
+		//BFTAG added
+		if(spacing > GenericAnnotGlyphFactory.DEFAULT_THICK_HEIGHT){
+			spacing = GenericAnnotGlyphFactory.DEFAULT_THICK_HEIGHT / 2;
+			System.out.println("spacing to large, setting to " + spacing);
+		}
+		if(parent_spacer > GenericAnnotGlyphFactory.DEFAULT_THICK_HEIGHT){
+			parent_spacer = GenericAnnotGlyphFactory.DEFAULT_THICK_HEIGHT / 2;
+			System.out.println("parent-spacer to large, setting to " + parent_spacer);
+		}
+
 		// resetting height of parent to just spacers
 		parent.setCoords(pbox.x, 0, pbox.width, 2 * parent_spacer);
 		
@@ -143,6 +155,11 @@ public final class FasterExpandPacker extends ExpandPacker {
 		double ymin = Double.POSITIVE_INFINITY;
 		DoubleArrayList slot_maxes = new DoubleArrayList(1000);
 		double slot_height = getMaxChildHeight(parent) + 2 * spacing;
+		//BFTAG added: Slot-Höhe für Zwischenraum kann verkleinert werden - Berechnung plausibel?
+		if(slot_height < GenericAnnotGlyphFactory.DEFAULT_THICK_HEIGHT + 
+				GenericAnnotGlyphFactory.DEFAULT_THIN_HEIGHT + spacing + 1){
+			slot_height = 2*spacing;
+		}
 		double prev_min_xmax = Double.POSITIVE_INFINITY;
 		int min_xmax_slot_index = 0;	//index of slot with max of prev_min_xmax
 		int prev_slot_index = 0;

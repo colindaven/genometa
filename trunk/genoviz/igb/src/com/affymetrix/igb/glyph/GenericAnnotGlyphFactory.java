@@ -61,10 +61,9 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	private static Class default_echild_class = (new DirectionFillRectGlyph()).getClass();//MPTAG Glyphen die verwendet werden
 //	private static Class default_echild_class = (new ArrowGlyph()).getClass();//MPTAG Glyphen die verwendet werden
 	private static Class default_elabelled_parent_class = (new EfficientLabelledLineGlyph()).getClass();//MPTAG Glyphen die verwendet werden
-	// BFTAG thick und thin_height, scheint Glyphenhöhe zu beeinflussen, aber wie?
-	// Oder Abstand zwischen Glyphen?
-	private static final int DEFAULT_THICK_HEIGHT = 25;
-	private static final int DEFAULT_THIN_HEIGHT = 15;
+	// BFTAG changed
+	public static final int DEFAULT_THICK_HEIGHT = 3;
+	public static final int DEFAULT_THIN_HEIGHT = 2;
 	private SeqMapView gviewer;
 	private Class parent_glyph_class;
 	private Class child_glyph_class;
