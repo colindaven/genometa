@@ -27,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.picard.sam.BuildBamIndex;
+import net.sf.samtools.AbstractBAMFileIndex;
 import net.sf.samtools.Cigar;
 import net.sf.samtools.CigarElement;
 import net.sf.samtools.CigarOperator;
@@ -151,6 +152,9 @@ public final class BAM extends SymLoader {
 				return false;
 			}
 			Thread thread = Thread.currentThread();
+
+			AbstractBAMFileIndex index = (AbstractBAMFileIndex) this.reader.getIndex();
+
 			for (SAMSequenceRecord ssr : header.getSequenceDictionary().getSequences()) {
 				try {
 					if (thread.isInterrupted()) {
@@ -166,6 +170,7 @@ public final class BAM extends SymLoader {
 						group.addSeq(seq);
 					}
 					seqs.add(seq);
+//					System.out.println(seqID + ": " + index.getMetaData(ssr.getSequenceIndex()).getAlignedRecordCount());
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -229,11 +234,11 @@ public final class BAM extends SymLoader {
 					SAMRecord sr = null;
 					while(iter.hasNext() && (!Thread.currentThread().isInterrupted())){
 						sr = iter.next();
-						if((rt.totalMemory() - rt.freeMemory()) >= (rt.maxMemory()*Constants.MAX_MEMORY_USAGE)){
-							endOfLastRead = sr.getUnclippedEnd();
-							throw new OutOfMemoryError();
-						}
-						 else
+//						if((rt.totalMemory() - rt.freeMemory()) >= (rt.maxMemory()*Constants.MAX_MEMORY_USAGE)){
+//							endOfLastRead = sr.getUnclippedEnd();
+////							throw new OutOfMemoryError();
+//						}
+//						 else
 							symList.add(convertSAMRecordToSymWithProps(sr, seq, featureName, featureName));
 					}
 				}
@@ -375,7 +380,7 @@ public final class BAM extends SymLoader {
 		}
 		//Read Group
 		for (SAMReadGroupRecord srgr : hr.getReadGroups()) {
-			for (Entry<String, Object> en : srgr.getAttributes()) {
+			for (Entry<String, String> en : srgr.getAttributes()) {
 				if (en.getValue() instanceof String) {
 					sym.setProperty(en.getKey(), en.getValue());
 				}
@@ -383,7 +388,7 @@ public final class BAM extends SymLoader {
 		}
 		//Program
 		for (SAMProgramRecord spr : hr.getProgramRecords()) {
-			for (Entry<String, Object> en : spr.getAttributes()) {
+			for (Entry<String, String> en : spr.getAttributes()) {
 				if (en.getValue() instanceof String) {
 					sym.setProperty(en.getKey(), en.getValue());
 				}
