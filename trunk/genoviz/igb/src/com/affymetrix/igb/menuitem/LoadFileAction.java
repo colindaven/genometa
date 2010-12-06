@@ -78,6 +78,8 @@ public final class LoadFileAction extends AbstractAction {
 
 	public static final String PREF_HEADER_CORRECTION = "Enable Header-Correction on SAM/BAM-Files";
 	public static final boolean default_pref_header_correction = true;
+	public static final String PREF_BAM_SORTING_DIALOG = "Enable sorting-dialog for unsorted BAM-Files";
+	public static final boolean default_pref_bam_sorting_dialog = true;
 
 	private final TransferHandler fdh = new FileDropHandler(){
 
@@ -248,13 +250,24 @@ public final class LoadFileAction extends AbstractAction {
 
 		if(reader.getFileHeader().getSortOrder() == SAMFileHeader.SortOrder.coordinate) {
 			openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, speciesName);
-		} else {
+		} else if(bamIndexFileExists(bamFile)) {
 			// bamFile is not coordinate sorted, lets do it now (if the user confirms...)
-			Object[] options = {"Sort File", "Open without sorting", "Cancel"};
-			int dialogResult = JOptionPane.showOptionDialog(gviewerFrame, "The BAM-File seems to be not sorted by coordinates!\n"
-					+ "If you know that the File is already sorted by coordinates, you can try to open it without sorting.",
-				"File not sorted", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
+			final boolean show_sorting_dialog = PreferenceUtils.getBooleanParam(LoadFileAction.PREF_BAM_SORTING_DIALOG,
+																	LoadFileAction.default_pref_bam_sorting_dialog);
+
+			int dialogResult;
+			if(show_sorting_dialog) {
+				Object[] options = {"Sort File", "Open without sorting", "Cancel"};
+				dialogResult = JOptionPane.showOptionDialog(gviewerFrame, "The BAM-File seems to be not sorted by coordinates!\n"
+						+ "If you know that the File is already sorted by coordinates, you can try to open it without sorting.",
+					"File not sorted", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+			} else {
+				// without sorting dialog always try to open the file if an index file exists
+				dialogResult = 1;
+			}
+			
 			switch(dialogResult) {
 				case 0:
 					JFileChooserWithOverwriteWarning fc = new JFileChooserWithOverwriteWarning();
@@ -306,7 +319,71 @@ public final class LoadFileAction extends AbstractAction {
 					openURI(bamFile.toURI(), bamFile.getName(), mergeSelected, loadGroup, speciesName);
 					break;
 			}
+		} else {
+			// BAM-File is not sorted (according to the header-SortOrder) and no index file found
+			Object[] options = {"Sort File", "Cancel"};
+			int dialogResult = JOptionPane.showOptionDialog(gviewerFrame, "The BAM-File seems to be not sorted by coordinates!\n"
+					+ "Since there is no Index-File found, you can only sort this File in order to open it.",
+				"File not sorted", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+			if(dialogResult == 0) {			
+				JFileChooserWithOverwriteWarning fc = new JFileChooserWithOverwriteWarning();
+				fc.setSourceFile(bamFile);
+				fc.setSelectedFile(bamFile);
+				int fcResult = fc.showSaveDialog(gviewerFrame);
+				if(fcResult == JFileChooser.APPROVE_OPTION) {
+					final File newBamFile = fc.getSelectedFile();
+					final String notLockedUpMsg = "Sorting " + bamFile.getName() + " to " + newBamFile.getName();
+
+					SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+						@Override
+						public Void doInBackground() {
+							Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
+
+							SAMFileHeader newHeader = correctHeader(reader.getFileHeader());
+
+							newHeader.setSortOrder(SortOrder.coordinate);
+							SAMFileWriter writer = new SAMFileWriterFactory().makeSAMOrBAMWriter(newHeader, false, newBamFile);
+
+							Iterator<SAMRecord> iterator = reader.iterator();
+							int i = 0;
+							while (iterator.hasNext()) {
+								writer.addAlignment(iterator.next());
+								i++;
+								if((i % 500000) == 0) {	// show progress in statusbar
+									Application.getSingleton().setStatus(notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads", false);
+								}
+							}
+
+							// TODO print "writing to disc" to user
+							reader.close();
+							writer.close();
+
+							return null;
+						}
+
+						@Override
+						public void done() {
+							Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
+							openURI(newBamFile.toURI(), newBamFile.getName(), mergeSelected, loadGroup, speciesName);
+						}
+					};
+					ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
+				}
+			}
 		}
+	}
+
+	private static boolean bamIndexFileExists(File file) {
+		if(new File(file.getAbsolutePath() + ".bai").exists()) {
+			return true;
+		}
+		/*
+		if(changeFileExtension(file, ".bai").exists()) {
+			return true;
+		}
+		 */
+		return false;
 	}
 
 	/**
@@ -426,6 +503,7 @@ public final class LoadFileAction extends AbstractAction {
 
 	/**
 	 * Creates a new file and changes the extension to the given Param.
+	 * (This method can only handle file extensions with 3 charakters!)
 	 *
 	 * @param inputFile File to create new one from
 	 * @param newExtension Extension for the new file
