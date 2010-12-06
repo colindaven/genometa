@@ -873,11 +873,10 @@ public final class GeneralLoadUtils {
 	 * @return number of Symmetries
 	 */
 	public static int getNumberOfSymmetriesForSeq(BioSeq seq) {
-		return -1;
+		return seq.getReadCount();
 //		GenericFeature genf = GeneralLoadUtils.getSelectedVersionFeatures().get(0);
 //
 //		Integer c = symmetryCount.get(seq);
-//
 //
 //		if (c != null)
 //			return c.intValue();
@@ -891,8 +890,8 @@ public final class GeneralLoadUtils {
 //			return -1;
 //		}
 //
-//		if (!seq.getID().equals("gi|1103813601118|ref|NC_m00038|"))
-//			return -1;
+////		if (!seq.getID().equals("gi|1103813601118|ref|NC_m00038|"))
+////			return -1;
 //
 //		// check if there is an inner symL
 //		QuickLoad syml = (QuickLoad)genf.symL;

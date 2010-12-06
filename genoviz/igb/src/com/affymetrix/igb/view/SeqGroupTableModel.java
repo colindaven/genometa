@@ -2,13 +2,8 @@ package com.affymetrix.igb.view;
 
 import com.affymetrix.genometryImpl.AnnotatedSeqGroup;
 import com.affymetrix.genometryImpl.BioSeq;
-import com.affymetrix.genometryImpl.SeqSymmetry;
-import com.affymetrix.genometryImpl.general.GenericFeature;
-import com.affymetrix.genometryImpl.span.SimpleSeqSpan;
 import com.affymetrix.igb.IGBConstants;
-import com.affymetrix.igb.featureloader.QuickLoad;
 import com.affymetrix.igb.view.load.GeneralLoadUtils;
-import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 final class SeqGroupTableModel extends AbstractTableModel {
