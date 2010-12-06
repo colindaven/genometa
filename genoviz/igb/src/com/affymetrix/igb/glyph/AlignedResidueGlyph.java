@@ -46,7 +46,7 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	private Color reverseColor;
 
 	//BFTAG added
-	private final double glyphScaleingFactor = 0.15;
+//	private final double glyphScaleingFactor = 0.15;
 
 	private static final ColorHelper helper = new ColorHelper();
 
@@ -235,8 +235,6 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 			int seqEndIndex,
 			int pixelStart) {
 		char[] charArray = residueStr.toCharArray();
-		//BFTAG sorgt dafür, dass die Rechtecke mit den Dreicken nicht größer als View-Höhe*glyphScaleingFactor-Pixel werden
-//		checkPixelBoxHeight((int)(view.getPixelBox().height * glyphScaleingFactor), view);
 		drawResidueRectangles(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelbox.x, pixelbox.y, pixelbox.height);
 		drawResidueStrings(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelStart);
 		//MPTAG Prüft für jeden Buchstaben ob er passt. Reicht da nicht einmaliges Prüfen ?
@@ -263,20 +261,6 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		}
 	}
 	
-	private void checkPixelBoxHeight(int maxHeight, ViewI view){
-		if(coordbox.height > maxHeight){
-			coordbox.height = maxHeight;
-			if(this.getParent() instanceof EfficientSolidGlyph){
-				for(int i = 0; i < this.getParent().getChildCount(); i++){
-					if(this.getParent().getChild(i).getCoordBox().height != maxHeight){
-						this.getParent().getChild(i).getCoordBox().height = maxHeight;
-						System.out.println("MPTAG -- Höhe von "+ this.getParent().getChild(i) + " gesetzt");
-					}
-				}
-			}
-		}
-	}
-
 	private static Color determineResidueColor(char charAt) {
 		switch (charAt) {
 			case 'A':
