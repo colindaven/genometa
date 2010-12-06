@@ -60,7 +60,9 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
       UnibrowHairline.PREF_KEEP_HAIRLINE_IN_VIEW, UnibrowHairline.default_keep_hairline_in_view));
 	misc_box.add(PreferenceUtils.createCheckBox("Enable Header-Correction on SAM/BAM-Files", PreferenceUtils.getTopNode(),
       LoadFileAction.PREF_HEADER_CORRECTION, LoadFileAction.default_pref_header_correction));
-    
+    misc_box.add(PreferenceUtils.createCheckBox("Enable sorting-dialog for unsorted BAM-Files", PreferenceUtils.getTopNode(),
+      LoadFileAction.PREF_BAM_SORTING_DIALOG, LoadFileAction.default_pref_bam_sorting_dialog));
+
 
     misc_box.add(Box.createRigidArea(new Dimension(0,5)));
 
