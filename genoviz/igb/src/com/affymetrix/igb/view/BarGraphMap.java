@@ -281,7 +281,7 @@ public class BarGraphMap extends JPanel {
 
 			//int c  = 0;
 			for (BioSeq bs : _currentSeqGroup.getSeqList()) {
-				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesforSeq(bs));
+				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesForSeq(bs));
 				_currentStatistics.add(tmpSeqRead);
 				//if( ++c == 300) break;
 			}
