@@ -256,6 +256,7 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 					try {
 						if (file != null) {
 							metatieFile.setText(file.getCanonicalPath());
+
 						}
 					} catch (IOException ex) {
 						Logger.getLogger(DataLoadPrefsView.class.getName()).log(Level.SEVERE, null, ex);
@@ -264,10 +265,12 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 
 				if (!metatieFile.getText().isEmpty()) {
 					PreferenceUtils.getLocationsNode().put(PREF_METATIE_FILE_URL, metatieFile.getText());
-				} else {
-					ErrorHandler.errorPanel(
-							"Unable to Load Metatie-Fastlines",
-							"Unable to load metatie fastalines from " + metatieFile.getText() + ".");
+					if(SynonymLookup.getDefaultLookup().loadMetatieFastalines(metatieFile.getText())){
+						JOptionPane.showMessageDialog(null, "Metatie fastalines successfully loaded", "Notification", JOptionPane.INFORMATION_MESSAGE);
+					}
+					 else{
+						ErrorHandler.errorPanel("Unable to load metatie fastalines");
+					 }
 				}
 			}
 		};
