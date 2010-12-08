@@ -131,7 +131,7 @@ public class SAMFileHeaderCorrection {
 		if(!M5.equals(""))
 			record.setAttribute("M5", M5);
 		if(UR != null)
-			record.setAttribute("UR", UR);
+			record.setAttribute("UR", UR.toString());
 		if(!SP.equals(""))
 			record.setSpecies(SP);
 
