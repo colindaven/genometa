@@ -29,7 +29,7 @@ import java.util.prefs.PreferenceChangeListener;
  *
  */
 public final class AlignedResidueGlyph extends AbstractResiduesGlyph
-		 {//MPTAG Hier werden auf die Glyphen ATCG gezeichnet
+	{//MPTAG Hier werden auf die Glyphen ATCG gezeichnet
 	private SearchableCharIterator chariter;
 	private int residue_length = 0;
 	private final BitSet residueMask = new BitSet();
@@ -42,8 +42,13 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	//MPTAG added
 	//Direction is 0=none, 1=forward, 2=reverse
 	private short direction = 0;
-	private Color forwardColor;
-	private Color reverseColor;
+
+	public static final String dirBarFwColor = "DIRECTION_BAR_FORWARD_COLOR";
+	public static final String dirBarRwColor = "DIRECTION_BAR_REVERSE_COLOR";
+	public static final String dirBarLocation = "DIRECTION_BAR_LOCATION";
+	public static final String[] dirBarLocationValues = {"Top", "Bottom"};
+	public static final String dirBarStyle = "DIRECTION_BAR_STYLE";
+	public static final String[] dirBarStyleValues = {"Triangle", "Rectangle"};
 
 	//BFTAG added
 //	private final double glyphScaleingFactor = 0.15;
@@ -65,6 +70,8 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 	public int getParentSeqEnd() {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
+	
 
 	private static final class ColorHelper implements PreferenceChangeListener {
 		private static final Map<String, Color> DEFAULT_COLORS;
@@ -239,8 +246,13 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		drawResidueStrings(g, pixelsPerBase, charArray, residueMask.get(seqBegIndex,seqEndIndex), pixelStart);
 		//MPTAG Prüft für jeden Buchstaben ob er passt. Reicht da nicht einmaliges Prüfen ?
 		if(IGB.dir_swap_state && !packerClip){
-			drawDirectionBar(true, g);
-			drawDirectionTriangle(false, g);
+			String barStyle = PreferenceUtils.getTopNode().get(AlignedResidueGlyph.dirBarStyle, "");
+			String barLocation = PreferenceUtils.getTopNode().get(AlignedResidueGlyph.dirBarLocation, "");
+			if(barStyle.equals(AlignedResidueGlyph.dirBarStyleValues[0])){ //Triangles
+				drawDirectionTriangle(barLocation.equals(AlignedResidueGlyph.dirBarLocationValues[0]), g);
+			}else if(barStyle.equals(AlignedResidueGlyph.dirBarStyleValues[1])){//Rectangle
+				drawDirectionBar(barLocation.equals(AlignedResidueGlyph.dirBarLocationValues[0]), g);
+			}
 		}
 	}
 
@@ -367,14 +379,6 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		this.direction = dir;
 	}
 
-	public void setForwardColor(Color fwdC){
-		this.forwardColor = fwdC;
-	}
-
-	public void setReverseColor(Color rwsC){
-		this.reverseColor = rwsC;
-	}
-
 	private void updateGlyphSize(int arrowWidth, ViewI view){
 		if(this.direction == 1){//Pfeil nach rechts
 			residue_length += arrowWidth;
@@ -388,11 +392,13 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		if(this.direction >0){
 			Color tmpCol = g.getColor();
 			if(this.direction == 1){
-				if(this.forwardColor != null)
-					g.setColor(forwardColor);
+				g.setColor(PreferenceUtils.getColor(PreferenceUtils.getTopNode(), AlignedResidueGlyph.dirBarFwColor, Color.RED));
+//				if(this.forwardColor != null)
+//					g.setColor(forwardColor);
 			}else if(this.direction == 2){
-				if(this.reverseColor != null)
-					g.setColor(reverseColor);
+				g.setColor(PreferenceUtils.getColor(PreferenceUtils.getTopNode(), AlignedResidueGlyph.dirBarRwColor, Color.BLUE));
+//				if(this.reverseColor != null)
+//					g.setColor(reverseColor);
 			}
 			if(topCorner)
 				g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width+1 , (int)(pixelbox.height * .25f) );
@@ -429,8 +435,9 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 					xPts[3] = pixelbox.x;
 					yPts[3] = pixelbox.y + pixelbox.height;
 				}
-				if(this.forwardColor != null)
-					g.setColor(forwardColor);
+				g.setColor(PreferenceUtils.getColor(PreferenceUtils.getTopNode(), AlignedResidueGlyph.dirBarFwColor, Color.RED));
+//				if(this.forwardColor != null)
+//					g.setColor(forwardColor);
 			}else if(this.direction == 2){
 				if(topCorner){
 					xPts[0] = pixelbox.x + pixelbox.width;
@@ -451,8 +458,9 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 					xPts[3] = pixelbox.x + pixelbox.width;
 					yPts[3] = pixelbox.y + pixelbox.height;
 				}
-				if(this.reverseColor != null)
-					g.setColor(reverseColor);
+				g.setColor(PreferenceUtils.getColor(PreferenceUtils.getTopNode(), AlignedResidueGlyph.dirBarRwColor, Color.BLUE));
+//				if(this.reverseColor != null)
+//					g.setColor(reverseColor);
 			}
 			g.fillPolygon(xPts, yPts, 4);
 			g.setColor(tmpCol);

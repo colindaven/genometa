@@ -489,8 +489,6 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 			csg = new AlignedResidueGlyph();
 			//MPTAG added
 			csg.setDirection(getDirectionOfGlyph(sym));
-			csg.setForwardColor(getSymColor(sym, the_style));
-			csg.setReverseColor(getSymColor(sym, the_style));
 			csg.setResidues(residueStr);
 			if (annotseq.getResidues(span.getStart(), span.getEnd()) != null) {
 				if (handleCigar) {//MPTAG Wenn BED Format verwendet wird

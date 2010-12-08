@@ -21,6 +21,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
+import com.affymetrix.igb.glyph.AlignedResidueGlyph;
 import com.affymetrix.igb.menuitem.LoadFileAction;
 import com.affymetrix.igb.tiers.AxisStyle;
 import com.affymetrix.igb.view.OrfAnalyzer;
@@ -127,6 +128,35 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
     JComboBox axis_label_format_CB = PreferenceUtils.createComboBox(PreferenceUtils.getTopNode(), "Axis label format", label_format_options, default_label_format);
     axis_box.add(axis_label_format_CB);
 
+
+	//MAPTAG added
+	 JPanel dir_bar_box = new JPanel();
+    dir_bar_box.setLayout(new GridLayout(4,2));
+    dir_bar_box.setBorder(new javax.swing.border.TitledBorder("Direction Bar"));
+
+    JButton dir_bar_fw_color_button = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), 
+			AlignedResidueGlyph.dirBarFwColor, Color.RED);
+    dir_bar_box.add(new JLabel("Forward Direction: "));
+    dir_bar_box.add(dir_bar_fw_color_button);
+
+    JButton dir_bar_rw_color_button = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), 
+			AlignedResidueGlyph.dirBarRwColor, Color.BLUE);
+    dir_bar_box.add(new JLabel("Reverse Direction: "));
+    dir_bar_box.add(dir_bar_rw_color_button);
+
+    dir_bar_box.add(new JLabel("Bar Location: "));
+    JComboBox dir_bar_location_option = PreferenceUtils.createComboBox(PreferenceUtils.getTopNode(), 
+			AlignedResidueGlyph.dirBarLocation, AlignedResidueGlyph.dirBarLocationValues, AlignedResidueGlyph.dirBarLocationValues[0]);
+    dir_bar_box.add(dir_bar_location_option);
+	dir_bar_box.add(new JLabel("Bar Style: "));
+    JComboBox dir_bar_style_option = PreferenceUtils.createComboBox(PreferenceUtils.getTopNode(),
+			AlignedResidueGlyph.dirBarStyle, AlignedResidueGlyph.dirBarStyleValues, AlignedResidueGlyph.dirBarStyleValues[0]);
+    dir_bar_box.add(dir_bar_style_option);
+
+
+    dir_bar_box.setAlignmentX(0.0f);
+	//MPTAG end
+
     axis_box.setAlignmentX(0.0f);
    
     orf_box.setAlignmentX(0.0f);
@@ -138,6 +168,7 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
    
     main_box.add(orf_box);
 	main_box.add(base_box);
+	main_box.add(dir_bar_box);
     main_box.add(Box.createRigidArea(new Dimension(0,5)));
     main_box.add(misc_box);
 
