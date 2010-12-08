@@ -390,6 +390,7 @@ public final class IGB extends Application
 			public void actionPerformed(ActionEvent ae) {
 				dir_swap_state = !dir_swap_state;
 				fast_dir_swap_menu.setSelected(dir_swap_state);
+				Application.getSingleton().getMapView().repaint();
 			}
 		});//MPTAG end
 

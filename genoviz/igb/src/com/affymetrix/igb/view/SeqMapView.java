@@ -55,6 +55,7 @@ import com.affymetrix.genoviz.util.ErrorHandler;
 import com.affymetrix.igb.action.RefreshDataAction;
 import com.affymetrix.igb.action.ShrinkWrapAction;
 import com.affymetrix.igb.action.ToggleHairlineLabelAction;
+import com.affymetrix.igb.glyph.AlignedResidueGlyph;
 import com.affymetrix.igb.glyph.CytobandGlyph;
 import com.affymetrix.igb.prefs.TooltipEditorView;
 import com.affymetrix.igb.tiers.AxisStyle;
@@ -229,6 +230,11 @@ public class SeqMapView extends JPanel
 					SeqMapView.this.add(BorderLayout.EAST, yzoombox);
 				}
 				SeqMapView.this.invalidate();
+			} else if (pce.getKey().equals(AlignedResidueGlyph.dirBarFwColor) ||
+					pce.getKey().equals(AlignedResidueGlyph.dirBarRwColor) ||
+					pce.getKey().equals(AlignedResidueGlyph.dirBarLocation) ||
+					pce.getKey().equals(AlignedResidueGlyph.dirBarStyle)){
+				repaint();
 			}
 		}
 	};
