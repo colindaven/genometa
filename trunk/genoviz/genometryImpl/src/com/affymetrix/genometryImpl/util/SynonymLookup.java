@@ -398,6 +398,11 @@ public final class SynonymLookup {
 	 * @return true if the file is correctly loaded otherwise false
 	 */
 	public boolean loadMetatieFastalines(String filePath) {
+
+		//Clear up the map, maybe necessary on reoad the metatie fastalines data
+		if(!_lookupFastalinesHashMap.isEmpty())
+			_lookupFastalinesHashMap.clear();
+
 		try {
 			FileReader fileReader = new FileReader(filePath);
 			BufferedReader bufReader = new BufferedReader(fileReader);
@@ -411,6 +416,7 @@ public final class SynonymLookup {
 				//safe the refseq index and the corresponding chromesome name
 				String refSeq = workingString.substring(0, workingString.indexOf("|"));
 				String genomeName = workingString.substring(workingString.indexOf("|") + 1, workingString.length());
+
 				_lookupFastalinesHashMap.put(refSeq, genomeName);
 			}
 		}
@@ -420,6 +426,10 @@ public final class SynonymLookup {
 		}
 		catch (IOException ioe) {
 			System.out.println(ioe.getMessage());
+			return false;
+		}
+		catch(StringIndexOutOfBoundsException sioe){
+			System.out.println(sioe.getMessage());
 			return false;
 		}
 
