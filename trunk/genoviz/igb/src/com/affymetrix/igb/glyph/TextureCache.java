@@ -7,20 +7,17 @@ package com.affymetrix.igb.glyph;
 
 import java.awt.Image;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 /**
  *
- * @author pool336pc02
+ * @author Elmo
  */
 public class TextureCache {
-
-	private TreeMap<Integer, HashMap< Integer, Image>> cache;
-
+	private HashMap<Integer,HashMap<Integer, Image>> cache;
 	private static TextureCache instance;
 
-	private TextureCache(){
-		cache = new TreeMap<Integer, HashMap<Integer, Image>>();
+	private TextureCache() {
+		cache = new HashMap<Integer, HashMap<Integer, Image>>();
 	}
 
 	public static TextureCache getInstance(){
@@ -30,21 +27,23 @@ public class TextureCache {
 	}
 
 	public Image getImage(int width, int height){
+		//Try finding an image in the Cache
 		if(cache.containsKey(height)){
-			if(cache.containsKey(width)){
+			if(cache.get(height).containsKey(width)){
 				return cache.get(height).get(width);
-			}else{
+			} else {
 				Image i = GenericAnnotGlyphFactory.getTexture().getScaledInstance(width, height, Image.SCALE_FAST);
 				cache.get(height).put(width, i);
 				return i;
 			}
 		}else{
+			HashMap<Integer, Image> hm =  new HashMap<Integer, Image>();
 			Image i = GenericAnnotGlyphFactory.getTexture().getScaledInstance(width, height, Image.SCALE_FAST);
-			HashMap<Integer, Image> hm = new HashMap<Integer, Image>();
 			hm.put(width, i);
-			cache.put(height, hm);
+			cache.put(height,hm);
 			return i;
 		}
 	}
+
 
 }
