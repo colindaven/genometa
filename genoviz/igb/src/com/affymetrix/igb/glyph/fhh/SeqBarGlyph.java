@@ -27,11 +27,13 @@ public class SeqBarGlyph extends SolidGlyph{
 
 
 	/**
-	 * Rotation Pitch for the text in radians.
+	 * Rotation Pitch for the firstLineText in radians.
 	 */
 	private double _rotPitch = 0.0f;
 
-	private String text;
+	private String firstLineText = null;
+
+	private String secondLineText =null;
 
 	private int _yOffset = -10;
 
@@ -39,8 +41,7 @@ public class SeqBarGlyph extends SolidGlyph{
 
 	@Override
 	public void draw(ViewI view) {
-		calcPixels(view);
-//pixelbox.x += _pixelOffset;
+		calcPixels(view); 
 
 		Graphics2D g = view.getGraphics();
 		g.setColor(getBackgroundColor());
@@ -78,7 +79,7 @@ public class SeqBarGlyph extends SolidGlyph{
 
 
 
-		if( getText() != null ) {
+		if( getFirstLineText() != null ) {
 
 			Font savefont = g.getFont();
 			Font f2 = this.getFont();
@@ -91,7 +92,7 @@ public class SeqBarGlyph extends SolidGlyph{
 			}
 			FontMetrics fm = g.getFontMetrics();
 
-			int text_width = fm.stringWidth(this.text);
+			int text_width = fm.stringWidth(this.firstLineText);
 			int text_height = fm.getHeight();
 
 
@@ -102,13 +103,29 @@ public class SeqBarGlyph extends SolidGlyph{
 				g.setColor(this.getForegroundColor());
 				//int text_pos_x = (pixelbox.x + (int)(pixelbox.width/2.0)) - ((int)(text_width_rot/2.0) + (int)Math.cos(_rotPitch+Math.PI/2.0)*text_height);
 				//int text_pos_x = (pixelbox.x + (int)(pixelbox.width/2.0));
-				int text_pos_x = (pixelbox.x + ((int)text_width_rot)) - 1;
+				int text_pos_x = (pixelbox.x + ((int)(text_width_rot))) - 1;
+				//int text_pos_x = pixelbox.x;
 				int text_pos_y = (pixelbox.y + pixelbox.height )+_yOffset;
 
 				g.translate(text_pos_x, text_pos_y);
 				g.rotate( getRotPitch() );
 
-				g.drawString(this.getText(), 0, 0 );
+				g.drawString(this.getFirstLineText(), 0, 0);
+
+
+				if( getSecondLineText() != null ){
+					text_width = Math.max(text_width, fm.stringWidth(this.secondLineText));
+					text_height *= 2;
+
+
+					text_width_rot = Math.abs(Math.cos(_rotPitch)*text_width)+Math.abs(Math.cos(_rotPitch+Math.PI/2.0)*text_height);
+					text_height_rot = Math.abs(Math.sin(_rotPitch)*text_width)+Math.abs(Math.sin(_rotPitch+Math.PI/2.0)*text_height);
+					
+					if(text_width_rot <= pixelbox.width ) {
+						g.drawString(this.getSecondLineText(), 0, text_height/2.0f );
+					}
+				}
+
 
 				g.rotate(-getRotPitch());
 				g.translate(-text_pos_x, -text_pos_y);
@@ -242,12 +259,22 @@ public class SeqBarGlyph extends SolidGlyph{
 	}
 
 
-	public void setText(String str) {
-		this.text = str;
+	public void setFirstLineText(String str) {
+		this.firstLineText = str;
 	}
-	public String getText() {
-		return this.text;
+	public String getFirstLineText() {
+		return this.firstLineText;
 	}
+
+	public void setSecondLineText(String str) {
+		this.secondLineText = str;
+	}
+	public String getSecondLineText() {
+		return this.secondLineText;
+	}
+
+
+
 
 	/**
 	 * @return the _pixelOffset

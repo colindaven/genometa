@@ -293,9 +293,9 @@ public class AxisGlyph extends com.affymetrix.genoviz.glyph.AxisGlyph{
 					}
 					return comma_format.format(int_label) + "k";
 				}
-				return comma_format.format(int_label);
+				return comma_format.format(Math.abs(int_label));
 			} else if (COMMA == this.labelFormat) {
-				return comma_format.format(int_label);
+				return comma_format.format(Math.abs(int_label));
 			}
 			else if (this.labelFormat == FULL)  {
 				String str = Integer.toString(Math.abs(int_label));

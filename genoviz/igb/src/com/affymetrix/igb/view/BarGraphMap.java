@@ -57,7 +57,7 @@ public class BarGraphMap extends JPanel {
 	private int _barWidth = 10;
 	private int _barMargin = 1;
 	private float _verticalInitialZoom = 1.1f;// percantage (a value greater then 1.0 zooms out!)
-	private int _achsisOffset = 40;
+	private int _achsisOffset = 50;
 	private int _barOffset = _achsisOffset + 1;
 	private boolean _initialized = false;
 	private AnnotatedSeqGroup _currentSeqGroup = null;
@@ -128,7 +128,9 @@ public class BarGraphMap extends JPanel {
 						map.getScene().getCoordBox().height);
 				axis.setTickPlacement(AxisGlyph.LEFT);
 				axis.setCoords(_achsisOffset, 0, 0, -((float) _maxValue * _verticalInitialZoom));
+				axis.setLabelFormat(AxisGlyph.COMMA);
 				map.addAxis(axis);
+
 
 				// dreates hairline, to mark selection
 				hairline = new com.affymetrix.igb.glyph.fhh.UnibrowHairline(map);
@@ -243,21 +245,22 @@ public class BarGraphMap extends JPanel {
 				  Application.getSingleton().changeMainView(Application.MAIN_VIEW_SEQMAP);
 				}
 			}
+		}else{
+			// set spot only if there is no selection!
+			if (hairline != null) {
+				hairline.setSpot((int) zoom_point.x );
+			}
 		}
-		if (hairline != null) {
-			hairline.setSpot((int) zoom_point.x );
-		}
-
 		//map.setZoomBehavior(NeoMap.X, NeoMap.CONSTRAIN_COORD, (int)zoom_point.x);
 
 		map.updateWidget();
 	}
 
-	private void addBar(int reads, String name, SeqReads readsAnalysis) {
+	private void addBar(int reads, String line1, String line2, SeqReads readsAnalysis) {
 		SeqBarGlyph g = new SeqBarGlyph();
 		g.setColor(_barBGColor);
-		g.setText(name);
-		
+		g.setFirstLineText(line1);
+		g.setSecondLineText(line2);
 		g.setRotPitch(Math.toRadians(-90.0));
 		g.setPixelOffset( /*_bars.size()*5 +*/_barOffset);
 		g.setCoords(_bars.size() * (_barWidth + _barMargin), 0, 10, -reads);
@@ -297,14 +300,16 @@ public class BarGraphMap extends JPanel {
 		for (SeqReads sr : _currentStatistics) {
 			c++;
 			int reads = sr.getReads().intValue();
-            String id = sr.getSeqName();
+            String id = sr.getSeqID();
+            String name = sr.getSeqName();
 
 			//String barText = "[" + c + "][" + reads + "] " + id;
-			String barText = "[ " + reads + " ] [ " + id + " ]";
+			String barText1 = "[ " + name + " ]";
+			String barText2 = "[ " + reads + " ] [ " + id + " ]";
 
 			//System.out.println("addBar: -= " + barText + " =-");
 
-			addBar(reads, barText,sr  );
+			addBar(reads, barText1, barText2, sr  );
 			if (reads > _maxValue) {
 				_maxValue = reads;
 			}
@@ -319,7 +324,7 @@ public class BarGraphMap extends JPanel {
 		Random rand = new Random();
 		for (int i = 0; i < _seqCount; i++) {
 			int reads = _maxValue - (divid * i + rand.nextInt(divid));
-			addBar(reads, "[" + (i + 1) + "] NC " + reads, TEST_SEQ);
+			addBar(reads, "[" + (i + 1) + "] NC " + reads, "Line2-Text" , TEST_SEQ);
 		}
 	}
 
@@ -345,20 +350,15 @@ public class BarGraphMap extends JPanel {
 		private BioSeq _seq = null;
 		private Integer _reads = null;
         private String _seqName = null;
-		public final static String NO_SEQ_TRANSLATE_STRING = "no lookup table set";
+        private String _seqID = null;
 
         public SeqReads(BioSeq seq, int reads) {
             _seq = seq;
             _reads = new Integer(reads);
 
             if( seq != null ){
-				_seqName = seq.getID();
-
-				String seqNameTranslated = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(_seqName);
-
-				if( seqNameTranslated != null && !seqNameTranslated.equals(NO_SEQ_TRANSLATE_STRING)){
-					_seqName = seqNameTranslated;
-				}
+				_seqID = seq.getID();
+				_seqName = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(_seqID);
             }else{
                 _seqName = "NC_TESTTESTTEST123456";
             }
@@ -378,6 +378,10 @@ public class BarGraphMap extends JPanel {
 
          public String getSeqName(){
              return _seqName;
+         }
+
+         public String getSeqID(){
+             return _seqID;
          }
 	}
 }
