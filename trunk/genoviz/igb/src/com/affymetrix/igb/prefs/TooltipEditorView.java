@@ -49,29 +49,30 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
     private javax.swing.JSlider max_length_sl;
     private javax.swing.JButton remove_button;
     private javax.swing.JPanel settings_panel;
+    private javax.swing.JCheckBox show_all_tags_cb;
     private javax.swing.JButton up_button;
 
 	private boolean _isBAM;
 
 	public static final int DEFAULT_MAX_TOOLTIP_LENGTH = 25;
 	public static final boolean DEFAULT_ENABLE_TOOLTIPS = true;
+	public static final boolean DEFAULT_SHOW_ALL_TAGS = false;
 	public static final int MAX_COUNT_OF_TOOLTIP_TAGS = 30;
 
 
 	private String gff_tooltip_items[] = {
 											"chromosome",
-											"genom_name",
+											"genome_name",
 											"db_xref",
 											"end",
 											"exon_number",
 											"feature_type",
 											"frame",
-											"gbkey",
-											"ID",
-											"insertion_seq",
+											"id",
 											"length",
 											"locus_tag",
 											"method",
+											"note",
 											"product",
 											"protein_id",
 											"source",
@@ -81,7 +82,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	private String bam_tooltip_items[] = {
 											"baseQuality",
 											"chromosome",
-											"genom_name",
+											"genome_name",
 											"cigar",
 											"CL",
 											"end",
@@ -191,6 +192,12 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 				enableTooltips();
 			}
 		});
+		show_all_tags_cb.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				showAllTags();
+			}
+		});
 		updateGlobalTooltipSettings();
 		updateList();
 		validate();
@@ -220,6 +227,9 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 
 		boolean enable_tooltip = PreferenceUtils.getTooltipEditorBAMPrefsNode().getBoolean("enable_tooltips", DEFAULT_ENABLE_TOOLTIPS);
 		enable_tooltips_cb.setSelected(enable_tooltip);
+
+		boolean show_all_tags = PreferenceUtils.getTooltipEditorBAMPrefsNode().getBoolean("show_all_tags", DEFAULT_SHOW_ALL_TAGS);
+		show_all_tags_cb.setSelected(show_all_tags);
 	}
 
 	private void updateList() {
@@ -328,6 +338,10 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		PreferenceUtils.getTooltipEditorBAMPrefsNode().putBoolean("enable_tooltips", enable_tooltips_cb.isSelected());
 	}
 
+	public void showAllTags() {
+		PreferenceUtils.getTooltipEditorBAMPrefsNode().putBoolean("show_all_tags", show_all_tags_cb.isSelected());
+	}
+
 	public void removeAction() {
 		int index = list.getSelectedIndex();
 		if (index == -1) {
@@ -349,12 +363,12 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	public void fillCombobox() {
 		if(_isBAM) {
 			for(int i = 0; i < bam_tooltip_items.length; i++) {
-				element_cb.addItem(bam_tooltip_items[i]);
+				element_cb.addItem(bam_tooltip_items[i].toLowerCase());
 			}
 		}
 		else {
 			for(int i = 0; i < gff_tooltip_items.length; i++) {
-				element_cb.addItem(gff_tooltip_items[i]);
+				element_cb.addItem(gff_tooltip_items[i].toLowerCase());
 			}
 		}
 		element_cb.addItem("[----------]");
@@ -402,23 +416,27 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 		model.clear();
 		if(_isBAM) {
 			for(int i = 0; i < bam_tooltip_items.length; i++) {
-				model.addElement(bam_tooltip_items[i]);
+				model.addElement(bam_tooltip_items[i].toLowerCase());
 			}
 		}
 		else {
 			for(int i = 0; i < gff_tooltip_items.length; i++) {
-				model.addElement(gff_tooltip_items[i]);
+				model.addElement(gff_tooltip_items[i].toLowerCase());
 			}
 		}
 		writeAllElements();
 
-		max_length_sl.setValue(DEFAULT_MAX_TOOLTIP_LENGTH);
-		max_length_ff.setText((new Integer(DEFAULT_MAX_TOOLTIP_LENGTH)).toString());
-		PreferenceUtils.getTooltipEditorBAMPrefsNode().putInt("tooltip_length", DEFAULT_MAX_TOOLTIP_LENGTH);
-
-		enable_tooltips_cb.setSelected(DEFAULT_ENABLE_TOOLTIPS);
-		PreferenceUtils.getTooltipEditorBAMPrefsNode().putBoolean("enable_tooltips", DEFAULT_ENABLE_TOOLTIPS);
+//		max_length_sl.setValue(DEFAULT_MAX_TOOLTIP_LENGTH);
+//		max_length_ff.setText((new Integer(DEFAULT_MAX_TOOLTIP_LENGTH)).toString());
+//		PreferenceUtils.getTooltipEditorBAMPrefsNode().putInt("tooltip_length", DEFAULT_MAX_TOOLTIP_LENGTH);
+//
+//		enable_tooltips_cb.setSelected(DEFAULT_ENABLE_TOOLTIPS);
+//		PreferenceUtils.getTooltipEditorBAMPrefsNode().putBoolean("enable_tooltips", DEFAULT_ENABLE_TOOLTIPS);
+//
+//		show_all_tags_cb.setSelected(DEFAULT_SHOW_ALL_TAGS);
+//		PreferenceUtils.getTooltipEditorBAMPrefsNode().putBoolean("show_all_tags", DEFAULT_SHOW_ALL_TAGS);
 	}
+	
 	
 	
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
@@ -430,6 +448,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
         max_length_sl = new javax.swing.JSlider();
         max_length_ff = new javax.swing.JFormattedTextField();
         enable_tooltips_cb = new javax.swing.JCheckBox();
+        show_all_tags_cb = new javax.swing.JCheckBox();
         editor_panel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         list = new javax.swing.JList();
@@ -456,6 +475,8 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
         enable_tooltips_cb.setToolTipText("Enable tooltips");
         enable_tooltips_cb.setMargin(new java.awt.Insets(2, 6, 2, 2));
 
+        show_all_tags_cb.setText("Show all tags");
+
         javax.swing.GroupLayout settings_panelLayout = new javax.swing.GroupLayout(settings_panel);
         settings_panel.setLayout(settings_panelLayout);
         settings_panelLayout.setHorizontalGroup(
@@ -468,8 +489,10 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(enable_tooltips_cb))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(max_length_ff, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(max_length_ff, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                    .addComponent(show_all_tags_cb))
                 .addContainerGap())
         );
         settings_panelLayout.setVerticalGroup(
@@ -481,7 +504,9 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                     .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_desc_l))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(enable_tooltips_cb)
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(enable_tooltips_cb)
+                    .addComponent(show_all_tags_cb))
                 .addContainerGap())
         );
 
@@ -587,5 +612,4 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                 .addComponent(main_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>
-
 }

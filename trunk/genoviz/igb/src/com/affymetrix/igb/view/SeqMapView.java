@@ -1752,23 +1752,28 @@ public class SeqMapView extends JPanel
 		if (!sym.isEmpty()) {
 			String[][] properties = PropertyView.getPropertiesRow(sym.get(0), this);
 			String tooltip = "";
-			boolean isGFF = false;
-			for(int i = 0; i < properties.length; i++) {
-				if(properties[i][0].equals("source") && properties[i][1].equals("RefSeq")) {
-					if(isGFF) {
-						break;
-					}
-					isGFF = true;
-				}
-				else if(properties[i][0].equals("method") && properties[i][1].equals("RefSeq")) {
-					if(isGFF) {
-						break;
-					}
-					isGFF = true;
-				}
+			if(PreferenceUtils.getTooltipEditorBAMPrefsNode().getBoolean("show_all_tags", TooltipEditorView.DEFAULT_SHOW_ALL_TAGS)) {
+				tooltip = convertPropsToString(properties);
 			}
-			tooltip = convertPropsToEditorTooltip(properties, isGFF);
-			// String tooltip = convertPropsToString(properties);
+			else {
+				boolean isGFF = false;
+				for(int i = 0; i < properties.length; i++) {
+					if(properties[i][0].equals("source") && properties[i][1].equals("RefSeq")) {
+						if(isGFF) {
+							break;
+						}
+						isGFF = true;
+					}
+					else if(properties[i][0].equals("method") && properties[i][1].equals("RefSeq")) {
+						if(isGFF) {
+							break;
+						}
+						isGFF = true;
+					}
+				}
+				tooltip = convertPropsToEditorTooltip(properties, isGFF);
+			}
+			
 			((AffyLabelledTierMap) seqmap).setToolTip(tooltip);
 		} else if(glyphs.get(0) instanceof TierLabelGlyph){
 			Map<String, Object> properties = TierLabelManager.getTierProperties(((TierLabelGlyph) glyphs.get(0)).getReferenceTier());
@@ -1844,8 +1849,8 @@ public class SeqMapView extends JPanel
 
 		// convert String array to Map
 		for(int i = 0; i < properties.length; i++) {
-			property_map.put(properties[i][0], properties[i][1]);
-			if(properties[i][0].equals("chromosome")) {
+			property_map.put(properties[i][0].toLowerCase(), properties[i][1]);
+			if(properties[i][0].toLowerCase().equals("chromosome")) {
 				String lookup = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(properties[i][1]);
 				property_map.put("genom_name", lookup);
 			}
@@ -1928,21 +1933,35 @@ public class SeqMapView extends JPanel
 	 */
 	private static String convertPropsToString(String[][] properties){
 		StringBuilder props = new StringBuilder();
-		String value = null;
+		String tag = "";
+		String value = "";
 		
+		int max_length = PreferenceUtils.getTooltipEditorBAMPrefsNode().getInt("tooltip_length",
+				TooltipEditorView.DEFAULT_MAX_TOOLTIP_LENGTH);
+
 		props.append("<html>");
-		for(int i=0; i<properties.length; i++){
+		for(int i = 0; i < properties.length; i++) {
+			tag = properties[i][0];
+			value = properties[i][1];
+			if(value.length() > max_length) {
+				value = value.substring(0, max_length) + " ...";
+			}
 			props.append("<b>");
 			props.append(properties[i][0]);
-			props.append(" : </b>");
-			if((value = properties[i][1]) != null){
-				int vallen = value.length();
-				props.append(value.substring(0, Math.min(25, vallen)));
-				if(vallen > 30) {
-					props.append(" ...");
-				}
-			}
+			props.append(": </b>");
+			props.append(value);
 			props.append("<br>");
+			if(tag.toLowerCase().equals("chromosome")) {
+				String lookup = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(properties[i][1]);
+				if(lookup.length() > max_length) {
+					lookup = lookup.substring(0, max_length) + " ...";
+				}
+				props.append("<b>");
+				props.append("genome_name");
+				props.append(": </b>");
+				props.append(lookup);
+				props.append("<br>");
+			}
 		}
 		props.append("</html>");
 

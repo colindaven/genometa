@@ -84,8 +84,11 @@
                           </Group>
                           <Component id="enable_tooltips_cb" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="max_length_ff" pref="220" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="max_length_ff" pref="216" max="32767" attributes="0"/>
+                          <Component id="show_all_tags_cb" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -100,7 +103,10 @@
                           <Component id="max_length_desc_l" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="enable_tooltips_cb" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="enable_tooltips_cb" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="show_all_tags_cb" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -132,6 +138,11 @@
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[2, 6, 2, 2]"/>
                 </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="show_all_tags_cb">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Show all tags"/>
               </Properties>
             </Component>
           </SubComponents>
