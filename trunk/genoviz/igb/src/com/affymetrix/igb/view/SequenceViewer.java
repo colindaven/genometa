@@ -198,11 +198,11 @@ public class SequenceViewer extends Applet
 			}
 		}
 		if (seqSpans[0].getStart() < seqSpans[0].getEnd()) {
-			seqview.addOutlineAnnotation(cdsMin - seqSpans[0].getStart(), cdsMin - seqSpans[0].getStart() + 2, Color.blue);
-			seqview.addOutlineAnnotation(cdsMax - seqSpans[0].getStart() - 3, cdsMax - seqSpans[0].getStart() - 1, Color.GREEN);
+			seqview.addOutlineAnnotation(cdsMin - seqSpans[0].getStart(), cdsMin - seqSpans[0].getStart() + 2, Color.green);
+			seqview.addOutlineAnnotation(cdsMax - seqSpans[0].getStart() - 3, cdsMax - seqSpans[0].getStart() - 1, Color.red);
 		} else {
-			seqview.addOutlineAnnotation(Math.abs(cdsMax - seqSpans[0].getStart()), Math.abs(cdsMax - seqSpans[0].getStart()) + 2, Color.blue);
-			seqview.addOutlineAnnotation(Math.abs(cdsMin - seqSpans[0].getStart()) - 3, Math.abs(cdsMin - seqSpans[0].getStart()) - 1, Color.GREEN);
+			seqview.addOutlineAnnotation(Math.abs(cdsMax - seqSpans[0].getStart()), Math.abs(cdsMax - seqSpans[0].getStart()) + 2, Color.green);
+			seqview.addOutlineAnnotation(Math.abs(cdsMin - seqSpans[0].getStart()) - 3, Math.abs(cdsMin - seqSpans[0].getStart()) - 1, Color.red);
 		}
 		//		String str = (((SymWithProps) residues_sym).getProperty("id")).toString()+" "+(((SymWithProps) residues_sym).getProperty("chromosome")).toString();
 		mapframe = new Frame(id + " " + chromosome + " " + type);
