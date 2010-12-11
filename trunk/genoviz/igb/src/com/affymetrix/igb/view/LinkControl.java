@@ -10,9 +10,10 @@ import com.affymetrix.genometryImpl.SymWithProps;
 import com.affymetrix.genometryImpl.util.GeneralUtils;
 import com.affymetrix.genometryImpl.util.MenuUtil;
 import com.affymetrix.igb.prefs.WebLink;
+import com.affymetrix.igb.tiers.TierGlyph;
 
 final class LinkControl implements ContextualPopupListener {
-	public void popupNotify(JPopupMenu popup, List selected_syms, SeqSymmetry primary_sym) {
+	public void popupNotify(JPopupMenu popup, List selected_syms, SeqSymmetry primary_sym, TierGlyph tglpyh) {
 		if (primary_sym == null || selected_syms.size() != 1) {
 			return;
 		}
