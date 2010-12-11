@@ -41,6 +41,7 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
         max_length_sl = new javax.swing.JSlider();
         max_length_ff = new javax.swing.JFormattedTextField();
         enable_tooltips_cb = new javax.swing.JCheckBox();
+        show_all_tags_cb = new javax.swing.JCheckBox();
         editor_panel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         list = new javax.swing.JList();
@@ -67,6 +68,8 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
         enable_tooltips_cb.setToolTipText("Enable tooltips");
         enable_tooltips_cb.setMargin(new java.awt.Insets(2, 6, 2, 2));
 
+        show_all_tags_cb.setText("Show all tags");
+
         javax.swing.GroupLayout settings_panelLayout = new javax.swing.GroupLayout(settings_panel);
         settings_panel.setLayout(settings_panelLayout);
         settings_panelLayout.setHorizontalGroup(
@@ -79,8 +82,10 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(enable_tooltips_cb))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(max_length_ff, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(max_length_ff, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                    .addComponent(show_all_tags_cb))
                 .addContainerGap())
         );
         settings_panelLayout.setVerticalGroup(
@@ -92,7 +97,9 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
                     .addComponent(max_length_sl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(max_length_desc_l))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(enable_tooltips_cb)
+                .addGroup(settings_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(enable_tooltips_cb)
+                    .addComponent(show_all_tags_cb))
                 .addContainerGap())
         );
 
@@ -216,6 +223,7 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
     private javax.swing.JSlider max_length_sl;
     private javax.swing.JButton remove_button;
     private javax.swing.JPanel settings_panel;
+    private javax.swing.JCheckBox show_all_tags_cb;
     private javax.swing.JButton up_button;
     // End of variables declaration//GEN-END:variables
 
