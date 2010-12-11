@@ -355,6 +355,8 @@ public class SeqMapView extends JPanel
 		LinkControl link_control = new LinkControl();
 		this.addPopupListener(link_control);
 
+		this.addPopupListener(tier_manager.getContextualPopupListener());
+		
 		TrackView.getAnnotationGlyphFactory().setStylesheet(XmlStylesheetParser.getUserStylesheet());
 
 		PreferenceUtils.getTopNode().addPreferenceChangeListener(pref_change_listener);
@@ -1533,7 +1535,7 @@ public class SeqMapView extends JPanel
 		sym_popup.setVisible(false); // in case already showing
 		sym_popup.removeAll();
 
-		preparePopup(sym_popup);
+		preparePopup(sym_popup, nevt);
 
 		if (sym_popup.getComponentCount() > 0) {
 
@@ -1578,7 +1580,7 @@ public class SeqMapView extends JPanel
 	 *  items added to it by this method.  Display of the popup menu will be
 	 *  handled by showPopup(), which calls this method.
 	 */
-	private void preparePopup(JPopupMenu popup) {
+	private void preparePopup(JPopupMenu popup, NeoMouseEvent nevt) {
 		List<GlyphI> selected_glyphs = seqmap.getSelected();
 
 		setPopupMenuTitle(sym_info, selected_glyphs);
@@ -1593,8 +1595,10 @@ public class SeqMapView extends JPanel
 			popup.add(selectParentMI);
 		}
 
+		TierGlyph tglyph = tier_manager.getTierGlyph(nevt);
+		
 		for (ContextualPopupListener listener : popup_listeners) {
-			listener.popupNotify(popup, selected_syms, sym_used_for_title);
+			listener.popupNotify(popup, selected_syms, sym_used_for_title, tglyph);
 		}
 	}
 

@@ -15,7 +15,10 @@ import com.affymetrix.genoviz.bioviews.ViewI;
 import com.affymetrix.genoviz.event.NeoMouseEvent;
 import com.affymetrix.genoviz.util.NeoConstants;
 import com.affymetrix.genoviz.widget.NeoAbstractWidget;
+import com.affymetrix.igb.action.RefreshAFeature;
 import com.affymetrix.igb.glyph.GraphGlyph;
+import com.affymetrix.igb.view.ContextualPopupListener;
+import java.awt.geom.Rectangle2D;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -125,6 +128,21 @@ public final class TierLabelManager {
 			dragger.setConstraint(NeoConstants.HORIZONTAL, true);
 		}
 	}; // end of mouse listener class
+
+	private final ContextualPopupListener cpopupListener = new ContextualPopupListener(){
+
+		public void popupNotify(JPopupMenu popup, List<SeqSymmetry> selected_items, SeqSymmetry primary_sym, TierGlyph tglpyh) {
+			if(tglpyh != null){
+				GenericFeature feature = tglpyh.getAnnotStyle().getFeature();
+				if(feature == null){
+					return;
+				}
+				
+				popup.add(new JMenuItem(new RefreshAFeature(feature)));
+			}
+		}
+
+	};
 
 	public TierLabelManager(AffyLabelledTierMap map) {
 		tiermap = map;
@@ -400,7 +418,7 @@ public final class TierLabelManager {
 			}
 			label_glyphs.get(i).setPosition(i);
 		}
-		//FÃ¼r alle Ã¼ber dem CoordIdx die Packerdirection auf Up setzen, fÃ¼r alle darunter auf down
+		//Für alle über dem CoordIdx die Packerdirection auf Up setzen, für alle darunter auf down
 		for (int i= 0; i < label_glyphs.size(); i++) {
 			if(i < coordIdx){
 				FasterExpandPacker ep = ((TierGlyph) label_glyphs.get(i).getInfo()).getExpandPacker();
@@ -496,6 +514,28 @@ public final class TierLabelManager {
 			label_name.setEnabled(false); // makes the text look different (usually lighter)
 			popup.add(label_name);
 		}
+	}
+
+	public ContextualPopupListener getContextualPopupListener(){
+		return cpopupListener;
+	}
+	
+	public TierGlyph getTierGlyph(NeoMouseEvent nevt){
+		Rectangle2D.Double coordrect = new Rectangle2D.Double(nevt.getCoordX(),nevt.getCoordY(),1,1);
+		TierGlyph tglyph = null;
+		TierGlyph temp = null;
+
+		for(TierLabelGlyph tlg : tiermap.getTierLabels()){
+			if(tlg.getInfo() instanceof TierGlyph){
+				temp = (TierGlyph)tlg.getInfo();
+				if(temp.intersects(coordrect, null)){
+					tglyph = temp;
+					break;
+				}
+			}
+		}
+
+		return tglyph;
 	}
 
 	/** An interface that lets listeners modify the popup menu before it is shown. */
