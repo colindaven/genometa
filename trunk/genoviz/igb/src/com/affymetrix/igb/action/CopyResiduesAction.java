@@ -17,6 +17,7 @@ import static com.affymetrix.igb.IGBConstants.BUNDLE;
  * @version $Id: CopyResiduesAction.java 6324 2010-07-01 20:11:30Z hiralv $
  */
 public class CopyResiduesAction extends AbstractAction {
+
 	private static final long serialVersionUID = 1l;
 
 	public CopyResiduesAction() {
@@ -27,8 +28,9 @@ public class CopyResiduesAction extends AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		SeqSymmetry residues_sym = IGB.getSingleton().getMapView().copySelectedResidues(true);
-		SequenceViewer neoSeqDemo = new SequenceViewer();
-		neoSeqDemo.tempChange(residues_sym);
+		if (residues_sym != null) {
+			SequenceViewer neoSeqDemo = new SequenceViewer();
+			neoSeqDemo.tempChange(residues_sym);
+		}
 	}
-
 }

@@ -66,7 +66,7 @@ public class WrapNumbers extends WrapGlyph {
 
 		visible_box = ((View)view).calcCoordBox();
 
-		Rectangle pixelBox = new Rectangle(0, 0);
+				Rectangle pixelBox = new Rectangle(0, 0);
 		pixelBox = ((View)view).transformToPixels(visible_box, pixelBox);
 
 		// Figure out where to start counting,
@@ -82,6 +82,8 @@ public class WrapNumbers extends WrapGlyph {
 		int last_residue_line =
 			useConstrain(residues_per_line, visible_box.y, visible_box.height);
 
+		last_residue_line += firstOrd;
+		
 		if (last_residue_line > seqEnd) {
 			last_residue_line = seqEnd;
 		}

@@ -17,6 +17,7 @@ import com.affymetrix.genometryImpl.SeqSymmetry;
 import com.affymetrix.genometryImpl.SymWithProps;
 import com.affymetrix.genometryImpl.util.ErrorHandler;
 import java.applet.Applet;
+import java.awt.HeadlessException;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
@@ -83,6 +84,33 @@ public class SequenceViewer extends Applet
 	private SeqSpan[] seqSpans = null;
 	NeoPanel widg_pan = new NeoPanel();
 
+	public Applet customFormatting(SeqSymmetry residues_sym, String seq) throws HeadlessException, NumberFormatException {
+		Color[] okayColors = {Color.black, Color.black};
+		seqview.setStripeColors(okayColors);
+		seqview.setFont(new Font("Arial", Font.BOLD, 14));
+		seqview.setNumberFontColor(Color.black);
+		seqview.setSpacing(20);
+		if (residues_sym.getID() != null) {
+			addCdsStartEnd(residues_sym);
+		} else {
+			mapframe = new Frame("Genomic Sequence");
+			seqview.setFirstOrdinal(residues_sym.getSpan(0).getStart());
+		}
+		mapframe.setLayout(new BorderLayout());
+		setupMenus(mapframe);
+		widg_pan.setLayout(new BorderLayout());
+		widg_pan.add("Center", seqview);
+		mapframe.setLayout(new BorderLayout());
+		mapframe.add("Center", widg_pan);
+		Dimension prefsize = seqview.getPreferredSize(50, 15);
+		mapframe.setMinimumSize(prefsize);
+		Dimension screen_size = Toolkit.getDefaultToolkit().getScreenSize();
+		mapframe.setLocation((screen_size.width - pixel_width) / 2, (screen_size.height - pixel_height) / 2);
+		mapframe.setVisible(true);
+		final Applet app = this;
+		return app;
+	}
+
 	public void init(final SeqSymmetry residues_sym) {
 
 		String param;
@@ -143,7 +171,44 @@ public class SequenceViewer extends Applet
 
 	}
 
-	private void customFormatting(String[] seqArray, String[] intronArray, SeqSpan[] spans, String seq) {
+	private void addCdsStartEnd(SeqSymmetry residues_sym) throws NumberFormatException, HeadlessException {
+		String id = null, type = null;
+		String chromosome = null;
+		String forward = null;
+		int cdsMax = 0;
+		int cdsMin = 0;
+		//		((SymWithProps) residues_sym).getProperty(seq)
+		Map<String, Object> sym = ((SymWithProps) residues_sym).getProperties();
+		Iterator iterator = sym.keySet().iterator();
+		while (iterator.hasNext()) {
+			String key = iterator.next().toString();
+			String value = sym.get(key).toString();
+			if (key.equals("id")) {
+				id = value;
+			} else if (key.equals("forward")) {
+				forward = value;
+			} else if (key.equals("type")) {
+				type = value;
+			} else if (key.equals("seq id")) {
+				chromosome = value;
+			} else if (key.equals("cds max")) {
+				cdsMax = Integer.parseInt(value);
+			} else if (key.equals("cds min")) {
+				cdsMin = Integer.parseInt(value);
+			}
+		}
+		if (seqSpans[0].getStart() < seqSpans[0].getEnd()) {
+			seqview.addOutlineAnnotation(cdsMin - seqSpans[0].getStart(), cdsMin - seqSpans[0].getStart() + 2, Color.blue);
+			seqview.addOutlineAnnotation(cdsMax - seqSpans[0].getStart() - 3, cdsMax - seqSpans[0].getStart() - 1, Color.GREEN);
+		} else {
+			seqview.addOutlineAnnotation(Math.abs(cdsMax - seqSpans[0].getStart()), Math.abs(cdsMax - seqSpans[0].getStart()) + 2, Color.blue);
+			seqview.addOutlineAnnotation(Math.abs(cdsMin - seqSpans[0].getStart()) - 3, Math.abs(cdsMin - seqSpans[0].getStart()) - 1, Color.GREEN);
+		}
+		//		String str = (((SymWithProps) residues_sym).getProperty("id")).toString()+" "+(((SymWithProps) residues_sym).getProperty("chromosome")).toString();
+		mapframe = new Frame(id + " " + chromosome + " " + type);
+	}
+
+	private void convertSpansForSequenceViewer(String[] seqArray, String[] intronArray, SeqSpan[] spans, String seq) {
 		int i = 1;
 		seqArray[0] = seq.substring(0, spans[0].getLength());
 		if (spans.length > 1) {
@@ -202,7 +267,7 @@ public class SequenceViewer extends Applet
 		} else {
 			String[] seqArray = new String[seqSpans.length];
 			String[] intronArray = new String[seqSpans.length - 1];
-			customFormatting(seqArray, intronArray, seqSpans, seq);
+			convertSpansForSequenceViewer(seqArray, intronArray, seqSpans, seq);
 			//Below is done because NeoSeq has first character as white space
 			seqview.setResidues("");
 			int count = 0;
@@ -224,86 +289,8 @@ public class SequenceViewer extends Applet
 
 		}
 
+		final Applet app = customFormatting(residues_sym, seq);
 		seqview.setShow(NeoSeq.COMPLEMENT, showComp);
-
-		// Set the color scheme.
-		Color[] okayColors = {
-			Color.black,
-			Color.black,};
-		seqview.setStripeColors(okayColors);
-		seqview.setFont(new Font("Arial", Font.BOLD, 14));
-
-		seqview.setNumberFontColor(Color.black);
-		seqview.setSpacing(20);
-		String id = null, type = null, chromosome = null;
-		String forward = null;
-		int cdsMax = 0, cdsMin = 0;
-//		((SymWithProps) residues_sym).getProperty(seq)
-		Map<String, Object> sym = ((SymWithProps) residues_sym).getProperties();
-		Iterator iterator = sym.keySet().iterator();
-		while (iterator.hasNext()) {
-			String key = iterator.next().toString();
-			String value = sym.get(key).toString();
-			if (key.equals("id")) {
-				id = value;
-			} else if (key.equals("forward")) {
-				forward = value;
-			} else if (key.equals("type")) {
-				type = value;
-			} else if (key.equals("seq id")) {
-				chromosome = value;
-			} else if (key.equals("cds max")) {
-				cdsMax = Integer.parseInt(value);
-			} else if (key.equals("cds min")) {
-				cdsMin = Integer.parseInt(value);
-			}
-			System.out.println(key + "   " + value);
-
-		}
-		if (seqSpans[0].getStart() < seqSpans[0].getEnd()) {
-			seqview.addOutlineAnnotation(cdsMin - seqSpans[0].getStart(), cdsMin - seqSpans[0].getStart() + 2, Color.blue);
-			seqview.addOutlineAnnotation(cdsMax - seqSpans[0].getStart()-3, cdsMax - seqSpans[0].getStart() -1, Color.GREEN);
-		} else {
-			seqview.addOutlineAnnotation(Math.abs(cdsMax - seqSpans[0].getStart()), Math.abs(cdsMax - seqSpans[0].getStart()) + 2, Color.blue);
-			seqview.addOutlineAnnotation(Math.abs(cdsMin - seqSpans[0].getStart())-3, Math.abs(cdsMin - seqSpans[0].getStart()) -1, Color.GREEN);
-		}
-
-//		String str = (((SymWithProps) residues_sym).getProperty("id")).toString()+" "+(((SymWithProps) residues_sym).getProperty("chromosome")).toString();
-		mapframe = new Frame(id + " " + chromosome + " " + type);
-		mapframe.setLayout(new BorderLayout());
-		setupMenus(mapframe);
-
-		/**
-		 *  All NeoWidgets in this release are lightweight components.
-		 *  Placing a lightweight component inside a standard Panel often
-		 *  causes flicker in the repainting of the lightweight components.
-		 *  Therefore the GenoViz includes the NeoPanel, a special subclass
-		 *  of Panel, that is designed to support better repainting of
-		 *  NeoWidgets contained withing it.  Note however that if you are
-		 *  using the widgets within a lightweight component framework
-		 *  (such as Swing), you should _not_ wrap them with a NeoPanel
-		 *  (since the NeoPanel is a heavyweight component).
-		 */
-		widg_pan.setLayout(new BorderLayout());
-		widg_pan.add("Center", seqview);
-
-
-		mapframe.setLayout(new BorderLayout());
-		mapframe.add("Center", widg_pan);
-
-		// get the size NeoSeq prefers to be in order to display
-		//    15 lines at 50 bases per line
-		//    Dimension prefsize = seqview.getPreferredSize(50, 15);
-		//    seqview.resize(prefsize.width, prefsize.height);
-		//    mapframe.pack();  pack and menus don't mix well on some platforms...
-		Dimension prefsize = seqview.getPreferredSize(50, 15);
-		mapframe.setMinimumSize(prefsize);
-//		mapframe.setSize(pixel_width+230, pixel_height);
-		Dimension screen_size = Toolkit.getDefaultToolkit().getScreenSize();
-		mapframe.setLocation((screen_size.width - pixel_width) / 2,
-				(screen_size.height - pixel_height) / 2);
-		mapframe.setVisible(true);
-		final Applet app = this;
 		mapframe.addWindowListener(new WindowAdapter() {
 
 			@Override
