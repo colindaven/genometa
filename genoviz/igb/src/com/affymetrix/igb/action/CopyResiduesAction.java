@@ -2,6 +2,7 @@ package com.affymetrix.igb.action;
 
 import com.affymetrix.igb.view.SequenceViewer;
 import com.affymetrix.genometryImpl.SeqSpan;
+import com.affymetrix.genometryImpl.SeqSymmetry;
 import com.affymetrix.igb.IGB;
 import com.affymetrix.genometryImpl.util.MenuUtil;
 import java.awt.event.ActionEvent;
@@ -25,9 +26,9 @@ public class CopyResiduesAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		SeqSpan[] seqSpans = IGB.getSingleton().getMapView().copySelectedResidues(true);
+		SeqSymmetry residues_sym = IGB.getSingleton().getMapView().copySelectedResidues(true);
 		SequenceViewer neoSeqDemo = new SequenceViewer();
-		neoSeqDemo.tempChange(seqSpans);
+		neoSeqDemo.tempChange(residues_sym);
 	}
 
 }

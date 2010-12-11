@@ -1001,7 +1001,7 @@ public class SeqMapView extends JPanel
 	 * If a region of sequence is selected, should copy genomic residues
 	 * If an annotation is selected, should the residues of the leaf nodes of the annotation, spliced together
 	 */
-	public final SeqSpan[] copySelectedResidues(Boolean allResidues) {
+	public final SeqSymmetry copySelectedResidues(Boolean allResidues) {
 		boolean success = false;
 		SeqSymmetry residues_sym = null;
 		SeqSpan[] seqSpans=null;
@@ -1016,19 +1016,19 @@ public class SeqMapView extends JPanel
 			if (syms.size() == 1) {
 				residues_sym = syms.get(0);
 				from = " from selected item";
-				int numberOfChild = residues_sym.getChildCount();
-				if(numberOfChild > 0){
-				int i=0;
-				seqSpans = new SeqSpan[numberOfChild];
-				while(i < numberOfChild){
-					seqSpans[i] = residues_sym.getChild(i).getSpan(0);
-					i++;
-				}
-				}
-				else{
-					seqSpans = new SeqSpan[1];
-					seqSpans[0] =  residues_sym.getSpan(0);
-					}
+//				int numberOfChild = residues_sym.getChildCount();
+//				if(numberOfChild > 0){
+//				int i=0;
+//				seqSpans = new SeqSpan[numberOfChild];
+//				while(i < numberOfChild){
+//					seqSpans[i] = residues_sym.getChild(i).getSpan(0);
+//					i++;
+//				}
+//				}
+//				else{
+//					seqSpans = new SeqSpan[1];
+//					seqSpans[0] =  residues_sym.getSpan(0);
+//					}
 
 
 			}
@@ -1080,7 +1080,7 @@ public class SeqMapView extends JPanel
 			//   have to put in at least one character -- just putting in a space for now
 			clipboard.setContents(new StringSelection(" "), null);
 		}
-		return seqSpans;
+		return residues_sym;
 	}
 
 
