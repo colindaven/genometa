@@ -630,7 +630,7 @@ public final class GraphSelectionManager
     return result;
   }
 
-  public void popupNotify(JPopupMenu the_popup, List selected_syms, SeqSymmetry primary_sym, TierGlyph tglpyh) {
+  public void popupNotify(JPopupMenu the_popup, List selected_syms, SeqSymmetry primary_sym) {
     
     if (current_source == null) {
       // if there is no NeoAbstractWidget set for the current_source, then we cannot convert
@@ -693,7 +693,7 @@ public final class GraphSelectionManager
 			primary_sym = graph_syms.get(0);
 		}
 
-      this.popupNotify(popup, graph_syms, primary_sym, null);
+      this.popupNotify(popup, graph_syms, primary_sym);
     }
 }
 

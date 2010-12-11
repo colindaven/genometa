@@ -29,7 +29,9 @@ import com.affymetrix.genometryImpl.event.GroupSelectionListener;
 import com.affymetrix.genometryImpl.event.SeqSelectionEvent;
 import com.affymetrix.genometryImpl.event.SeqSelectionListener;
 import com.affymetrix.genometryImpl.event.SymSelectionEvent;
+import com.affymetrix.genometryImpl.general.GenericFeature;
 import com.affymetrix.genometryImpl.style.ITrackStyleExtended;
+import com.affymetrix.genometryImpl.util.LoadUtils.LoadStrategy;
 import com.affymetrix.genoviz.util.NeoConstants;
 import com.affymetrix.igb.Application;
 import com.affymetrix.igb.IGBConstants;
@@ -52,6 +54,7 @@ import com.affymetrix.igb.util.GraphGlyphUtils;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.genometryImpl.util.SynonymLookup;
 import com.affymetrix.genoviz.util.ErrorHandler;
+import com.affymetrix.igb.action.RefreshAFeature;
 import com.affymetrix.igb.action.RefreshDataAction;
 import com.affymetrix.igb.action.ShrinkWrapAction;
 import com.affymetrix.igb.action.ToggleHairlineLabelAction;
@@ -61,6 +64,7 @@ import com.affymetrix.igb.prefs.TooltipEditorView;
 import com.affymetrix.igb.tiers.AxisStyle;
 import com.affymetrix.igb.tiers.MouseShortCut;
 import com.affymetrix.igb.tiers.TierLabelGlyph;
+import com.affymetrix.igb.view.load.GeneralLoadView;
 import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -355,7 +359,6 @@ public class SeqMapView extends JPanel
 		LinkControl link_control = new LinkControl();
 		this.addPopupListener(link_control);
 
-		this.addPopupListener(tier_manager.getContextualPopupListener());
 		
 		TrackView.getAnnotationGlyphFactory().setStylesheet(XmlStylesheetParser.getUserStylesheet());
 
@@ -1595,10 +1598,26 @@ public class SeqMapView extends JPanel
 			popup.add(selectParentMI);
 		}
 
-		TierGlyph tglyph = tier_manager.getTierGlyph(nevt);
-		
+				
 		for (ContextualPopupListener listener : popup_listeners) {
-			listener.popupNotify(popup, selected_syms, sym_used_for_title, tglyph);
+			listener.popupNotify(popup, selected_syms, sym_used_for_title);
+		}
+
+		TierGlyph tglyph = tier_manager.getTierGlyph(nevt);
+
+		if (tglyph != null) {
+			GenericFeature feature = tglyph.getAnnotStyle().getFeature();
+			if (feature == null) {
+				//Check if clicked on axis.
+				if (tglyph instanceof TransformTierGlyph) {
+					popup.add(new JMenuItem(GeneralLoadView.getLoadView().getLoadResidueAction()));
+				}
+				return;
+			}
+
+			if (feature.loadStrategy != LoadStrategy.NO_LOAD && feature.loadStrategy != LoadStrategy.GENOME) {
+				popup.add(new JMenuItem(new RefreshAFeature(feature)));
+			}
 		}
 	}
 
