@@ -13,6 +13,8 @@
 package com.affymetrix.igb.view;
 
 import com.affymetrix.genometryImpl.SeqSpan;
+import com.affymetrix.genometryImpl.SeqSymmetry;
+import com.affymetrix.genometryImpl.SymWithProps;
 import com.affymetrix.genometryImpl.util.ErrorHandler;
 import java.applet.Applet;
 import java.awt.event.*;
@@ -78,9 +80,10 @@ public class SequenceViewer extends Applet
 	private boolean framesShowing = true;
 	private boolean going = false;
 	private Color nicePaleBlue = new Color(180, 250, 250);
+	private SeqSpan[] seqSpans = null;
 	NeoPanel widg_pan = new NeoPanel();
 
-	public void init(final SeqSpan[] spans1) {
+	public void init(final SeqSymmetry residues_sym) {
 
 		String param;
 
@@ -114,7 +117,7 @@ public class SequenceViewer extends Applet
 					if (framesShowing) {
 						hideFrames();
 					} else {
-						showFrames(spans1);
+						showFrames(residues_sym);
 					}
 					framesShowing = !framesShowing;
 				}
@@ -170,7 +173,7 @@ public class SequenceViewer extends Applet
 		return;
 	}
 
-	protected void getGoing(SeqSpan[] spans1) {
+	protected void getGoing(SeqSymmetry residues_sym) {
 
 		going = true;
 
@@ -179,17 +182,31 @@ public class SequenceViewer extends Applet
 		annotations = new Vector<GlyphI>();
 
 		seq = getClipboard();
-		if (null == spans1) {
+		if (residues_sym != null) {
+			int numberOfChild = residues_sym.getChildCount();
+			if (numberOfChild > 0) {
+				int i = 0;
+				seqSpans = new SeqSpan[numberOfChild];
+				while (i < numberOfChild) {
+					seqSpans[i] = residues_sym.getChild(i).getSpan(0);
+					i++;
+				}
+			} else {
+				seqSpans = new SeqSpan[1];
+				seqSpans[0] = residues_sym.getSpan(0);
+			}
+		}
+		if (null == seqSpans) {
 			seqview.setResidues(seq);
 			seqview.setResidueFontColor(Color.YELLOW);
 		} else {
-			String[] seqArray = new String[spans1.length];
-			String[] intronArray = new String[spans1.length - 1];
-			customFormatting(seqArray, intronArray, spans1, seq);
+			String[] seqArray = new String[seqSpans.length];
+			String[] intronArray = new String[seqSpans.length - 1];
+			customFormatting(seqArray, intronArray, seqSpans, seq);
 			//Below is done because NeoSeq has first character as white space
 			seqview.setResidues("");
 			int count = 0;
-			for (int j = 0, k = 0, l = 0; j < (2 * spans1.length) - 1; j++) {
+			for (int j = 0, k = 0, l = 0; j < (2 * seqSpans.length) - 1; j++) {
 				if ((j % 2) == 0) {
 					seqview.appendResidues(seqArray[k]);
 					seqview.addTextColorAnnotation(count, (count + seqArray[k].length()) - 1, Color.YELLOW);
@@ -218,8 +235,41 @@ public class SequenceViewer extends Applet
 
 		seqview.setNumberFontColor(Color.black);
 		seqview.setSpacing(20);
+		String id = null, type = null, chromosome = null;
+		String forward = null;
+		int cdsMax = 0, cdsMin = 0;
+//		((SymWithProps) residues_sym).getProperty(seq)
+		Map<String, Object> sym = ((SymWithProps) residues_sym).getProperties();
+		Iterator iterator = sym.keySet().iterator();
+		while (iterator.hasNext()) {
+			String key = iterator.next().toString();
+			String value = sym.get(key).toString();
+			if (key.equals("id")) {
+				id = value;
+			} else if (key.equals("forward")) {
+				forward = value;
+			} else if (key.equals("type")) {
+				type = value;
+			} else if (key.equals("seq id")) {
+				chromosome = value;
+			} else if (key.equals("cds max")) {
+				cdsMax = Integer.parseInt(value);
+			} else if (key.equals("cds min")) {
+				cdsMin = Integer.parseInt(value);
+			}
+			System.out.println(key + "   " + value);
 
-		mapframe = new Frame("Sequence Viewer");
+		}
+		if (seqSpans[0].getStart() < seqSpans[0].getEnd()) {
+			seqview.addOutlineAnnotation(cdsMin - seqSpans[0].getStart(), cdsMin - seqSpans[0].getStart() + 2, Color.blue);
+			seqview.addOutlineAnnotation(cdsMax - seqSpans[0].getStart()-3, cdsMax - seqSpans[0].getStart() -1, Color.GREEN);
+		} else {
+			seqview.addOutlineAnnotation(Math.abs(cdsMax - seqSpans[0].getStart()), Math.abs(cdsMax - seqSpans[0].getStart()) + 2, Color.blue);
+			seqview.addOutlineAnnotation(Math.abs(cdsMin - seqSpans[0].getStart())-3, Math.abs(cdsMin - seqSpans[0].getStart()) -1, Color.GREEN);
+		}
+
+//		String str = (((SymWithProps) residues_sym).getProperty("id")).toString()+" "+(((SymWithProps) residues_sym).getProperty("chromosome")).toString();
+		mapframe = new Frame(id + " " + chromosome + " " + type);
 		mapframe.setLayout(new BorderLayout());
 		setupMenus(mapframe);
 
@@ -234,7 +284,6 @@ public class SequenceViewer extends Applet
 		 *  (such as Swing), you should _not_ wrap them with a NeoPanel
 		 *  (since the NeoPanel is a heavyweight component).
 		 */
-		
 		widg_pan.setLayout(new BorderLayout());
 		widg_pan.add("Center", seqview);
 
@@ -273,9 +322,9 @@ public class SequenceViewer extends Applet
 		return ("Demonstration of genoviz Software's Sequence Viewing Widget");
 	}
 
-	private void showFrames(SeqSpan[] spans1) {
+	private void showFrames(SeqSymmetry residues_sym) {
 		if (!going) {
-			getGoing(spans1);
+			getGoing(residues_sym);
 		}
 		mapframe.setVisible(true);
 	}
@@ -289,9 +338,9 @@ public class SequenceViewer extends Applet
 		}
 	}
 
-	public void start(SeqSpan[] spans1) {
+	public void start(SeqSymmetry residues_sym) {
 		if (framesShowing) {
-			showFrames(spans1);
+			showFrames(residues_sym);
 		}
 	}
 
@@ -489,7 +538,7 @@ public class SequenceViewer extends Applet
 			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
 			seqview.setShow(NeoSeq.FRAME_NEG_THREE, mi.getState());
 			seqview.updateWidget();
-		} 
+		}
 
 	}
 
@@ -550,14 +599,14 @@ public class SequenceViewer extends Applet
 	static Boolean isApplication = false;
 	static Hashtable<String, String> parameters;
 
-	public void tempChange(SeqSpan[] spans) {
+	public void tempChange(SeqSymmetry residues_sym) {
 		isApplication = true;
 		SequenceViewer me = new SequenceViewer();
 		parameters = new Hashtable<String, String>();
 		parameters.put("seq_file", "data/test.fst");
-		me.init(spans);
-		me.start(spans);
+
+		me.init(residues_sym);
+		me.start(residues_sym);
+
 	}
-
-
 }
