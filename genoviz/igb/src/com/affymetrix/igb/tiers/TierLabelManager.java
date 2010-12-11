@@ -15,10 +15,13 @@ import com.affymetrix.genoviz.bioviews.ViewI;
 import com.affymetrix.genoviz.event.NeoMouseEvent;
 import com.affymetrix.genoviz.util.NeoConstants;
 import com.affymetrix.genoviz.widget.NeoAbstractWidget;
+import com.affymetrix.igb.IGBConstants;
 import com.affymetrix.igb.action.RefreshAFeature;
 import com.affymetrix.igb.glyph.GraphGlyph;
 import com.affymetrix.igb.view.ContextualPopupListener;
+import com.affymetrix.igb.view.load.GeneralLoadView;
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -135,6 +138,10 @@ public final class TierLabelManager {
 			if(tglpyh != null){
 				GenericFeature feature = tglpyh.getAnnotStyle().getFeature();
 				if(feature == null){
+					//Check if clicked on axis.
+					if(tglpyh instanceof TransformTierGlyph){
+						popup.add(new JMenuItem(GeneralLoadView.getLoadView().getLoadResidueAction()));
+					}
 					return;
 				}
 				
