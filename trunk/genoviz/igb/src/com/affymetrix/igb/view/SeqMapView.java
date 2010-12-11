@@ -155,7 +155,7 @@ public class SeqMapView extends JPanel
 	// A fake menu item, prevents null pointer exceptions in actionPerformed()
 	// for menu items whose real definitions are commented-out in the code
 	private static final JMenuItem empty_menu_item = new JMenuItem("");
-	JMenuItem zoomtoMI = empty_menu_item;
+	//JMenuItem zoomtoMI = empty_menu_item;
 	JMenuItem centerMI = empty_menu_item;
 	JMenuItem selectParentMI = empty_menu_item;
 	JMenuItem slicendiceMI = empty_menu_item;
@@ -404,8 +404,8 @@ public class SeqMapView extends JPanel
 
 		centerMI = setUpMenuItem(sym_popup, "Center at zoom stripe");
 
-		zoomtoMI = setUpMenuItem(sym_popup, "Zoom to selected");
-		zoomtoMI.setIcon(MenuUtil.getIcon("toolbarButtonGraphics/general/Zoom16.gif"));
+//		zoomtoMI = setUpMenuItem(sym_popup, "Zoom to selected");
+//		zoomtoMI.setIcon(MenuUtil.getIcon("toolbarButtonGraphics/general/Zoom16.gif"));
 
 		selectParentMI = setUpMenuItem(sym_popup, "Select parent");
 	}
@@ -1586,9 +1586,9 @@ public class SeqMapView extends JPanel
 		setPopupMenuTitle(sym_info, selected_glyphs);
 
 		popup.add(sym_info);
-		if (!selected_glyphs.isEmpty()) {
-			popup.add(zoomtoMI);
-		}
+//		if (!selected_glyphs.isEmpty()) {
+//			popup.add(zoomtoMI);
+//		}
 		popup.add(centerMI);
 		List<SeqSymmetry> selected_syms = getSelectedSyms();
 		if (!selected_syms.isEmpty()) {
