@@ -653,8 +653,8 @@ public final class GraphSelectionManager
       }
     }
 
-    JMenu combine = new JMenu("Combine Graphs");
     if (selected_graph_glyphs.size() >= 2) {
+	  JMenu combine = new JMenu("Combine Graphs");
       current_graph = selected_graph_glyphs.get(0);
       second_current_graph = selected_graph_glyphs.get(1);
 
@@ -669,11 +669,10 @@ public final class GraphSelectionManager
       combine.add(diff_graphs);
       combine.add(product_graphs);
       combine.add(ratio_graphs);
-    } else {
-      combine.setEnabled(false);
-    }
+	  the_popup.add(combine);
+    } 
 
-    the_popup.add(combine);
+    
   }
 
     public void popupNotify(JPopupMenu popup, TierLabelManager handler) {

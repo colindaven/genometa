@@ -119,10 +119,10 @@ final class SeqMapViewActionListener implements ActionListener {
   }
 
   private void doAction(String command) {
-    if (command.equals(gviewer.zoomtoMI.getText())) {
-      gviewer.zoomToSelections();
-    }
-		else if (command.equals(gviewer.selectParentMI.getText())) {
+//    if (command.equals(gviewer.zoomtoMI.getText())) {
+//      gviewer.zoomToSelections();
+//    }
+	 if (command.equals(gviewer.selectParentMI.getText())) {
       gviewer.selectParents();
    
 		} else if (command.equals(gviewer.centerMI.getText())) {
