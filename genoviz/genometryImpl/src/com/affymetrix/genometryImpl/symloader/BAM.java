@@ -234,11 +234,11 @@ public final class BAM extends SymLoader {
 					SAMRecord sr = null;
 					while(iter.hasNext() && (!Thread.currentThread().isInterrupted())){
 						sr = iter.next();
-//						if((rt.totalMemory() - rt.freeMemory()) >= (rt.maxMemory()*Constants.MAX_MEMORY_USAGE)){
-//							endOfLastRead = sr.getUnclippedEnd();
-////							throw new OutOfMemoryError();
-//						}
-//						 else
+						if((rt.totalMemory() - rt.freeMemory()) >= (rt.maxMemory()*Constants.MAX_MEMORY_USAGE)){
+							endOfLastRead = sr.getUnclippedEnd();
+							throw new OutOfMemoryError();
+						}
+						 else
 							symList.add(convertSAMRecordToSymWithProps(sr, seq, featureName, featureName));
 					}
 				}
