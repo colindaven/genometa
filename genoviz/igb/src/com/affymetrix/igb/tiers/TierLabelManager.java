@@ -131,27 +131,6 @@ public final class TierLabelManager {
 		}
 	}; // end of mouse listener class
 
-	private final ContextualPopupListener cpopupListener = new ContextualPopupListener(){
-
-		public void popupNotify(JPopupMenu popup, List<SeqSymmetry> selected_items, SeqSymmetry primary_sym, TierGlyph tglpyh) {
-			if(tglpyh != null){
-				GenericFeature feature = tglpyh.getAnnotStyle().getFeature();
-				if(feature == null){
-					//Check if clicked on axis.
-					if(tglpyh instanceof TransformTierGlyph){
-						popup.add(new JMenuItem(GeneralLoadView.getLoadView().getLoadResidueAction()));
-					}
-					return;
-				}
-
-				if(feature.loadStrategy != LoadStrategy.NO_LOAD && feature.loadStrategy != LoadStrategy.GENOME){
-					popup.add(new JMenuItem(new RefreshAFeature(feature)));
-				}
-			}
-		}
-
-	};
-
 	public TierLabelManager(AffyLabelledTierMap map) {
 		tiermap = map;
 		popup = new JPopupMenu();
@@ -522,10 +501,6 @@ public final class TierLabelManager {
 			label_name.setEnabled(false); // makes the text look different (usually lighter)
 			popup.add(label_name);
 		}
-	}
-
-	public ContextualPopupListener getContextualPopupListener(){
-		return cpopupListener;
 	}
 	
 	public TierGlyph getTierGlyph(NeoMouseEvent nevt){
