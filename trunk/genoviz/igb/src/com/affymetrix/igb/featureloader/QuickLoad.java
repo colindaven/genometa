@@ -165,20 +165,7 @@ public final class QuickLoad extends SymLoader {
 						return null;
 					}
 
-					// MRW
-					/*
-					 * I may have broken this after GenoViz merging. loadAndAddSymmetries doesn't
-					 * return a list anymore. Please get back to me on this. I manually use
-					 * their version here for now...
-					 */
-
-					/* ours
-					List<SeqSymmetry> tmp_list = loadAndAddSymmetries(feature, overlapSpan);
-					if(tmp_list.size() < overlapSpan.getEnd())
-						gviewer.zoomTo(0, (tmp_list.size() / 2));
-					 */
-					
-					loadAndAddSymmetries(feature, overlapSpan);
+					loadAndAddSymmetries(feature, overlapSpan, gviewer);
 					TrackView.updateDependentData();
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -262,7 +249,7 @@ public final class QuickLoad extends SymLoader {
 	 * @throws IOException
 	 * @throws OutOfMemoryError
 	 */
-	private void loadAndAddSymmetries(GenericFeature feature, final SeqSpan span)
+	private void loadAndAddSymmetries(GenericFeature feature, final SeqSpan span, final SeqMapView gviewer)
 			throws IOException, OutOfMemoryError {
 
 		if (this.symL != null && !this.symL.getChromosomeList().contains(span.getBioSeq())) {
@@ -285,6 +272,12 @@ public final class QuickLoad extends SymLoader {
 
 		if(setStyle){
 			setStyle(feature);
+		}
+
+		/*Zoom in, because of memory overhead not the complet sequence is loaded.
+		  The zoom is not 100% correct, its zoom just nearly into the loaded part*/
+		if (results.size() < span.getEnd()) {
+			gviewer.zoomTo(0, (results.size() / 2));
 		}
 	}
 
