@@ -23,6 +23,7 @@ import com.affymetrix.genometryImpl.util.UniFileChooser;
 import com.affymetrix.genometryImpl.SymWithProps;
 import com.affymetrix.genometryImpl.GraphSym;
 import com.affymetrix.genometryImpl.GenometryModel;
+import com.affymetrix.genometryImpl.general.GenericFeature;
 import com.affymetrix.genometryImpl.style.ITrackStyle;
 import com.affymetrix.genoviz.bioviews.GlyphI;
 import com.affymetrix.igb.menuitem.FileTracker;
@@ -32,6 +33,7 @@ import com.affymetrix.genometryImpl.style.GraphType;
 import com.affymetrix.genometryImpl.util.GeneralUtils;
 import com.affymetrix.genometryImpl.util.ErrorHandler;
 import com.affymetrix.igb.IGB;
+import com.affymetrix.igb.action.FeatureInfoAction;
 import com.affymetrix.igb.glyph.GraphGlyph;
 import com.affymetrix.igb.prefs.PreferencesPanel;
 import com.affymetrix.igb.tiers.AffyTieredMap.ActionToggler;
@@ -733,6 +735,18 @@ public final class SeqMapViewPopup implements TierLabelManager.PopupListener {
     popup.add(summaryMenu);
     popup.add(coverage_action);
 
+	if (num_selections == 1) {
+      // Check whether this selection is a graph or an annotation
+      TierLabelGlyph label = labels.get(0);
+      TierGlyph glyph = (TierGlyph) label.getInfo();
+      ITrackStyle style = glyph.getAnnotStyle();
+	  GenericFeature feature = style.getFeature();
+	  if(feature != null && feature.friendlyURL != null){
+		  popup.add(new JSeparator());
+		  popup.add(new FeatureInfoAction(feature.friendlyURL.toString()));
+	  }
+	}
+	
     if (DEBUG) {
       popup.add(new AbstractAction("DEBUG") {
         public void actionPerformed(ActionEvent e) {
