@@ -1109,7 +1109,7 @@ public abstract class ServerUtils {
 			psl.enableSharedQueryTarget(true);
 			return psl;
 		}
-		if(extension.equals("bgn") || extension.equals("bp1") ||
+		if(extension.equals("bgn") || extension.equals("bp1") || extension.equals("bp2") ||
 				extension.equals("bps") || extension.equals("brs") ||
 				extension.equals("cnt") || extension.equals("cyt")) {
 			return new SymLoaderInst(uri, featureName, group);
