@@ -141,9 +141,6 @@ public final class QuickLoad extends SymLoader {
 
 	public boolean loadFeatures(final SeqSpan overlapSpan, final GenericFeature feature)
 			throws OutOfMemoryError {
-		if (this.symL != null && !this.symL.getChromosomeList().contains(overlapSpan.getBioSeq())) {
-			return true;
-		}
 
 		Application.getSingleton().addNotLockedUpMsg("Loading feature " + feature.featureName + " on sequence " + overlapSpan.getBioSeq().getID());
 		final SeqMapView gviewer = Application.getSingleton().getMapView();
@@ -267,6 +264,10 @@ public final class QuickLoad extends SymLoader {
 	 */
 	private void loadAndAddSymmetries(GenericFeature feature, final SeqSpan span)
 			throws IOException, OutOfMemoryError {
+
+		if (this.symL != null && !this.symL.getChromosomeList().contains(span.getBioSeq())) {
+			return;
+		}
 
 		List<? extends SeqSymmetry> results;
 		boolean setStyle = false;

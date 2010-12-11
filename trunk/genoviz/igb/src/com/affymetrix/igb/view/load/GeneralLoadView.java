@@ -62,6 +62,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
 import javax.swing.JSplitPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.TableColumn;
@@ -92,6 +93,14 @@ public final class GeneralLoadView extends JComponent
 	private volatile boolean lookForPersistentGenome = true;	// Once this is set to false, don't invoke persistent genome code
 
 	private static GeneralLoadView singleton;
+
+	private final AbstractAction loadResidueAction = new AbstractAction(
+			MessageFormat.format(LOAD,IGBConstants.BUNDLE.getString("sequenceInViewCap"))) {
+
+		public void actionPerformed(ActionEvent e) {
+			loadResidue(partial_residuesB, true);
+		}
+	};
 
 	private GeneralLoadView() {
 		this.setLayout(new BorderLayout());
@@ -477,14 +486,23 @@ public final class GeneralLoadView extends JComponent
 			return;
 		}
 
+		loadResidue(src, src == partial_residuesB);
+	}
+
+	public AbstractAction getLoadResidueAction(){
+		loadResidueAction.setEnabled(partial_residuesB.isEnabled());
+		return loadResidueAction;
+	}
+	
+	public void loadResidue(Object executor, boolean partial){
 		final String genomeVersionName = (String) versionCB.getSelectedItem();
 
 		final BioSeq curSeq = gmodel.getSelectedSeq();
 		// Use a SwingWorker to avoid locking up the GUI.
-		Executor vexec = ThreadUtils.getPrimaryExecutor(src);
+		Executor vexec = ThreadUtils.getPrimaryExecutor(executor);
 
-		SwingWorker<Void, Void> worker = getResidueWorker(genomeVersionName, curSeq, gviewer.getVisibleSpan(), src == partial_residuesB, false);
-		
+		SwingWorker<Void, Void> worker = getResidueWorker(genomeVersionName, curSeq, gviewer.getVisibleSpan(), partial, false);
+
 		vexec.execute(worker);
 	}
 
