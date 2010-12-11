@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -51,6 +50,7 @@ import com.affymetrix.igb.general.ServerList;
 import com.affymetrix.igb.util.ThreadUtils;
 import com.affymetrix.igb.view.SeqMapView;
 import com.affymetrix.igb.IGBConstants;
+import com.affymetrix.igb.action.LoadSequence;
 import com.affymetrix.igb.action.RefreshDataAction;
 import com.affymetrix.igb.util.JComboBoxToolTipRenderer;
 import com.affymetrix.igb.util.JComboBoxWithSingleListener;
@@ -62,13 +62,12 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
 import javax.swing.JSplitPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.TableColumn;
 
 public final class GeneralLoadView extends JComponent
-				implements ItemListener, ActionListener, GroupSelectionListener, SeqSelectionListener, GenericServerInitListener {
+				implements ItemListener, GroupSelectionListener, SeqSelectionListener, GenericServerInitListener {
 
 	private static final boolean DEBUG_EVENTS = false;
 	private static final GenometryModel gmodel = GenometryModel.getGenometryModel();
@@ -93,14 +92,6 @@ public final class GeneralLoadView extends JComponent
 	private volatile boolean lookForPersistentGenome = true;	// Once this is set to false, don't invoke persistent genome code
 
 	private static GeneralLoadView singleton;
-
-	private final AbstractAction loadResidueAction = new AbstractAction(
-			MessageFormat.format(LOAD,IGBConstants.BUNDLE.getString("sequenceInViewCap"))) {
-
-		public void actionPerformed(ActionEvent e) {
-			loadResidue(partial_residuesB, true);
-		}
-	};
 
 	private GeneralLoadView() {
 		this.setLayout(new BorderLayout());
@@ -142,18 +133,16 @@ public final class GeneralLoadView extends JComponent
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 3));
 
-		all_residuesB = new JButton(MessageFormat.format(LOAD,IGBConstants.BUNDLE.getString("allSequenceCap")));
+		all_residuesB = new JButton(LoadSequence.getWholeAction());
 		all_residuesB.setToolTipText(MessageFormat.format(LOAD,IGBConstants.BUNDLE.getString("nucleotideSequence")));
 		all_residuesB.setMaximumSize(all_residuesB.getPreferredSize());
 		all_residuesB.setEnabled(false);
-		all_residuesB.addActionListener(this);
 		buttonPanel.add(all_residuesB);
-		partial_residuesB = new JButton(MessageFormat.format(LOAD,IGBConstants.BUNDLE.getString("sequenceInViewCap")));
+		partial_residuesB = new JButton(LoadSequence.getPartialAction());
 		partial_residuesB.setToolTipText(MessageFormat.format(LOAD,IGBConstants.BUNDLE.getString("partialNucleotideSequence")));
 		partial_residuesB.setMaximumSize(partial_residuesB.getPreferredSize());
 		partial_residuesB.setEnabled(false);
 		
-		partial_residuesB.addActionListener(this);
 		buttonPanel.add(partial_residuesB);
 		this.refreshDataAction = RefreshDataAction.getAction();
 		JButton refresh_dataB = new JButton(refreshDataAction);
@@ -480,28 +469,26 @@ public final class GeneralLoadView extends JComponent
 	 * Handles clicking of partial residue, all residue, and refresh data buttons.
 	 * @param evt
 	 */
-	public void actionPerformed(ActionEvent evt) {
-		final Object src = evt.getSource();
+	public void loadResidues(String command) {
+		Object src = null;
+
+		if(command.equals(partial_residuesB.getActionCommand())){
+			src = partial_residuesB;
+		}else if (command.equals(all_residuesB.getActionCommand())){
+			src = all_residuesB;
+		}
+
 		if (src != partial_residuesB && src != all_residuesB) {
 			return;
 		}
 
-		loadResidue(src, src == partial_residuesB);
-	}
-
-	public AbstractAction getLoadResidueAction(){
-		loadResidueAction.setEnabled(partial_residuesB.isEnabled());
-		return loadResidueAction;
-	}
-	
-	public void loadResidue(Object executor, boolean partial){
 		final String genomeVersionName = (String) versionCB.getSelectedItem();
 
 		final BioSeq curSeq = gmodel.getSelectedSeq();
 		// Use a SwingWorker to avoid locking up the GUI.
-		Executor vexec = ThreadUtils.getPrimaryExecutor(executor);
+		Executor vexec = ThreadUtils.getPrimaryExecutor(src);
 
-		SwingWorker<Void, Void> worker = getResidueWorker(genomeVersionName, curSeq, gviewer.getVisibleSpan(), partial, false);
+		SwingWorker<Void, Void> worker = getResidueWorker(genomeVersionName, curSeq, gviewer.getVisibleSpan(), src == partial_residuesB, false);
 
 		vexec.execute(worker);
 	}
