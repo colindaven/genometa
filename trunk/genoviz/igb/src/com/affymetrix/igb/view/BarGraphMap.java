@@ -39,6 +39,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.geom.Point2D;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 public class BarGraphMap extends JPanel {
 
@@ -91,6 +92,7 @@ public class BarGraphMap extends JPanel {
 			return;
 		}
 
+	
 		_initialized = false;
 
 
@@ -101,10 +103,13 @@ public class BarGraphMap extends JPanel {
 		_seqCount = 0;
 		_currentSeqGroup = seqGroup;
 
+		SwingWorker<Void, Void> worker;
+		worker = new SwingWorker<Void, Void>(){
 
-		SwingUtilities.invokeLater(new Runnable() {
-
-			public void run() {
+			@Override
+			protected Void doInBackground(){
+				// add notification Message
+				Application.getSingleton().addNotLockedUpMsg("Initialize BarMap");
 
 				if (_currentSeqGroup == null) {
 					loadTestData();
@@ -151,8 +156,19 @@ public class BarGraphMap extends JPanel {
 				map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
 
 				_initialized = true;
+
+
+				return null;
 			}
-		});
+
+			@Override
+			protected void done(){
+				// remove Message
+				Application.getSingleton().removeNotLockedUpMsg("Initialize BarMap");
+			}
+		};
+		// Execute the SwingWorker; the GUI will not freeze
+		worker.execute();
 	}
 
 	private void initNeoMap() {
@@ -358,7 +374,8 @@ public class BarGraphMap extends JPanel {
 
             if( seq != null ){
 				_seqID = seq.getID();
-				_seqName = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(_seqID);
+
+				_seqName = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(getRefSeqIDFromBioSeqID(_seqID));
             }else{
                 _seqName = "NC_TESTTESTTEST123456";
             }
@@ -383,5 +400,15 @@ public class BarGraphMap extends JPanel {
          public String getSeqID(){
              return _seqID;
          }
+
+
+
+	}
+	
+	public static String getRefSeqIDFromBioSeqID(String id){
+		//Get necessary informations from the current line (RefSeq id and genome name)
+		String workingString = id.substring(id.indexOf("|NC_") + 1);
+		//safe the refseq index and the corresponding chromesome name
+		return workingString.substring(0, workingString.indexOf("|"));
 	}
 }
