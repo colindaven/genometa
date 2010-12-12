@@ -12,6 +12,7 @@
  */
 package com.affymetrix.igb.menuitem;
 
+import com.affymetrix.igb.util.SwingWorkerCancelDialog;
 import com.affymetrix.igb.util.JFileChooserWithOverwriteWarning;
 import net.sf.samtools.SAMFileHeader;
 import java.text.DecimalFormat;
@@ -270,6 +271,7 @@ public final class LoadFileAction extends AbstractAction {
 			
 			switch(dialogResult) {
 				case 0:
+					// sort file
 					JFileChooserWithOverwriteWarning fc = new JFileChooserWithOverwriteWarning();
 					fc.setSourceFile(bamFile);
 					fc.setSelectedFile(bamFile);
@@ -279,9 +281,12 @@ public final class LoadFileAction extends AbstractAction {
 						final String notLockedUpMsg = "Sorting " + bamFile.getName() + " to " + newBamFile.getName();
 
 						SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+							SwingWorkerCancelDialog cancelDialog = new SwingWorkerCancelDialog(gviewerFrame, this);
+							
 							@Override
 							public Void doInBackground() {
 								Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
+								cancelDialog.showCancelDialog("Sorting", notLockedUpMsg, null);
 
 								SAMFileHeader newHeader = correctHeader(reader.getFileHeader());
 								
@@ -302,13 +307,22 @@ public final class LoadFileAction extends AbstractAction {
 								reader.close();
 								writer.close();
 
+								
+								if(isCancelled()) {
+									newBamFile.delete();
+								}
+								
+
 								return null;
 							}
 
 							@Override
 							public void done() {
 								Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
-								openURI(newBamFile.toURI(), newBamFile.getName(), mergeSelected, loadGroup, speciesName);
+								if(!isCancelled()){
+									cancelDialog.destroyCancelDialog();
+									openURI(newBamFile.toURI(), newBamFile.getName(), mergeSelected, loadGroup, speciesName);
+								}
 							}
 						};
 						ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
@@ -326,7 +340,8 @@ public final class LoadFileAction extends AbstractAction {
 					+ "Since there is no Index-File found, you can only sort this File in order to open it.",
 				"File not sorted", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-			if(dialogResult == 0) {			
+			if(dialogResult == 0) {
+				// sort file
 				JFileChooserWithOverwriteWarning fc = new JFileChooserWithOverwriteWarning();
 				fc.setSourceFile(bamFile);
 				fc.setSelectedFile(bamFile);
@@ -336,9 +351,12 @@ public final class LoadFileAction extends AbstractAction {
 					final String notLockedUpMsg = "Sorting " + bamFile.getName() + " to " + newBamFile.getName();
 
 					SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+						SwingWorkerCancelDialog cancelDialog = new SwingWorkerCancelDialog(gviewerFrame, this);
+
 						@Override
 						public Void doInBackground() {
 							Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
+							cancelDialog.showCancelDialog("Sorting", notLockedUpMsg, null);
 
 							SAMFileHeader newHeader = correctHeader(reader.getFileHeader());
 
@@ -358,14 +376,20 @@ public final class LoadFileAction extends AbstractAction {
 							// TODO print "writing to disc" to user
 							reader.close();
 							writer.close();
-
+							
+							if(isCancelled()) {
+								newBamFile.delete();
+							}
 							return null;
 						}
 
 						@Override
 						public void done() {
 							Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
-							openURI(newBamFile.toURI(), newBamFile.getName(), mergeSelected, loadGroup, speciesName);
+							if(!isCancelled()){
+								cancelDialog.destroyCancelDialog();
+								openURI(newBamFile.toURI(), newBamFile.getName(), mergeSelected, loadGroup, speciesName);
+							}
 						}
 					};
 					ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
@@ -437,11 +461,15 @@ public final class LoadFileAction extends AbstractAction {
 			final File inputFile = samFile;		// threading needs final variable
 			final File outputFile = bamFile;	// threading needs final variable
 			final String notLockedUpMsg = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
-
+			
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				SwingWorkerCancelDialog cancelDialog = new SwingWorkerCancelDialog(gviewerFrame, this);
+
 				@Override
 				public Void doInBackground() {
 					Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
+					cancelDialog.showCancelDialog("Transforming", notLockedUpMsg, null);
+					
 					// While parsing: emit warnings but keep going if possible.
 					SAMFileReader.setDefaultValidationStringency(SAMFileReader.ValidationStringency.LENIENT);
 					SAMFileReader reader = new SAMFileReader(inputFile);
@@ -459,6 +487,9 @@ public final class LoadFileAction extends AbstractAction {
 					Iterator<SAMRecord> iterator = reader.iterator();
 					int i = 0;
 					while (iterator.hasNext()) {
+						if(isCancelled()) {
+							break;
+						}
 						writer.addAlignment(iterator.next());
 						i++;
 						if((i % 500000) == 0) {	// show progress in statusbar
@@ -470,13 +501,21 @@ public final class LoadFileAction extends AbstractAction {
 					reader.close();
 					writer.close();
 
+					if(isCancelled()) {
+						outputFile.delete();
+					}
+
 					return null;
 				}
 
 				@Override
 				public void done() {
+					//System.out.println("DONE");
 					Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
-					openURI(outputFile.toURI(), outputFile.getName(), mergeSelected, loadGroup, speciesName);
+					if(!isCancelled()){
+						cancelDialog.destroyCancelDialog();
+						openURI(outputFile.toURI(), outputFile.getName(), mergeSelected, loadGroup, speciesName);
+					}
 				}
 			};
 			ThreadUtils.getPrimaryExecutor(new Object()).execute(worker);
@@ -494,11 +533,15 @@ public final class LoadFileAction extends AbstractAction {
 	private static SAMFileHeader correctHeader(final SAMFileHeader header) {
 		final boolean header_correction = PreferenceUtils.getBooleanParam(LoadFileAction.PREF_HEADER_CORRECTION,
 																	LoadFileAction.default_pref_header_correction);
+		// ignore headerCorrection for now.. need to get fixed
+		/*
 		if(header_correction == true) {
 			return SAMFileHeaderCorrection.getCorrectedHeader(header);
 		}else {
 			return header;
 		}
+		 */
+		return header;
 	}
 
 	/**
