@@ -8,7 +8,7 @@ public final class AxisStyle {
 	public static final String PREF_AXIS_BACKGROUND = "Axis background";
 	public static final String PREF_AXIS_NAME = "Axis name";
 	public static final Color default_axis_color = Color.BLACK;
-	public static final Color default_axis_background = Color.WHITE;
+	public static final Color default_axis_background = new Color(250, 250, 245);
 
 	/** An un-collapsible, but hideable, instance. */
 	public static final TrackStyle axis_annot_style = new TrackStyle() {
