@@ -53,8 +53,10 @@ public class TrackStyle implements ITrackStyleExtended {
 	private static final boolean default_collapsed = false;
 	private static final boolean default_expandable = true;
 	private static final int default_max_depth = 10;
-	private static final Color default_color = Color.CYAN;
-	private static final Color default_background = Color.BLACK;
+//	private static final Color default_color = Color.CYAN;
+//	private static final Color default_background = Color.BLACK;
+	private static final Color default_color = new Color(73, 87, 116);
+	private static final Color default_background = new Color(245, 245, 230);
 	private static final Color default_forward_color = Color.RED;//MPTAG added for saving forward Color
 	private static final Color default_reverse_color = Color.BLUE;//MPTAG added for saving reverse Color
 	private static final String default_label_field = "";

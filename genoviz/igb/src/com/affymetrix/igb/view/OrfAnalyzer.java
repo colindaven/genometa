@@ -41,8 +41,8 @@ public final class OrfAnalyzer extends JComponent
 
 	public static final String PREF_STOP_CODON_COLOR = "stop codon";
 	public static final String PREF_DYNAMIC_ORF_COLOR = "dynamic orf";
-	public static final Color default_stop_codon_color = new Color(200, 150, 150);
-	public static final Color default_dynamic_orf_color = new Color(100, 200, 100);
+	public static final Color default_stop_codon_color = new Color(255, 191, 128);
+	public static final Color default_dynamic_orf_color = new Color(255, 128, 191);
 	// GAH 8-23-2004
 	// As IGB is currently configured, smv should be set to the internal SeqMapView of the AltSpliceView...
 	private final SeqMapView smv;
