@@ -278,11 +278,14 @@ public final class LoadFileAction extends AbstractAction {
 					int fcResult = fc.showSaveDialog(gviewerFrame);
 					if(fcResult == JFileChooser.APPROVE_OPTION) {
 						final File newBamFile = fc.getSelectedFile();
-						final String notLockedUpMsg = "Sorting " + bamFile.getName() + " to " + newBamFile.getName();
+
+						final File inputFile = bamFile;		// threading needs final variable
+						final File outputFile = newBamFile;	// threading needs final variable
 
 						SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 							SwingWorkerCancelDialog cancelDialog = new SwingWorkerCancelDialog(gviewerFrame, this);
-							
+							String notLockedUpMsg = "Sorting " + inputFile.getName() + " to " + outputFile.getName();
+
 							@Override
 							public Void doInBackground() {
 								Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
@@ -299,7 +302,9 @@ public final class LoadFileAction extends AbstractAction {
 									writer.addAlignment(iterator.next());
 									i++;
 									if((i % 500000) == 0) {	// show progress in statusbar
-										Application.getSingleton().setStatus(notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads", false);
+										Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
+										notLockedUpMsg = notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads";
+										Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 									}
 								}
 
@@ -348,10 +353,14 @@ public final class LoadFileAction extends AbstractAction {
 				int fcResult = fc.showSaveDialog(gviewerFrame);
 				if(fcResult == JFileChooser.APPROVE_OPTION) {
 					final File newBamFile = fc.getSelectedFile();
-					final String notLockedUpMsg = "Sorting " + bamFile.getName() + " to " + newBamFile.getName();
+
+					final File inputFile = bamFile;		// threading needs final variable
+					final File outputFile = newBamFile;	// threading needs final variable
+
 
 					SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 						SwingWorkerCancelDialog cancelDialog = new SwingWorkerCancelDialog(gviewerFrame, this);
+						String notLockedUpMsg = "Sorting " + inputFile.getName() + " to " + outputFile.getName();
 
 						@Override
 						public Void doInBackground() {
@@ -369,7 +378,9 @@ public final class LoadFileAction extends AbstractAction {
 								writer.addAlignment(iterator.next());
 								i++;
 								if((i % 500000) == 0) {	// show progress in statusbar
-									Application.getSingleton().setStatus(notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads", false);
+									Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
+									notLockedUpMsg = notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads";
+									Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 								}
 							}
 
@@ -460,10 +471,11 @@ public final class LoadFileAction extends AbstractAction {
 		}else {
 			final File inputFile = samFile;		// threading needs final variable
 			final File outputFile = bamFile;	// threading needs final variable
-			final String notLockedUpMsg = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
+			
 			
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 				SwingWorkerCancelDialog cancelDialog = new SwingWorkerCancelDialog(gviewerFrame, this);
+				String notLockedUpMsg = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
 
 				@Override
 				public Void doInBackground() {
@@ -493,7 +505,9 @@ public final class LoadFileAction extends AbstractAction {
 						writer.addAlignment(iterator.next());
 						i++;
 						if((i % 500000) == 0) {	// show progress in statusbar
-							Application.getSingleton().setStatus(notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads", false);
+							Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
+							notLockedUpMsg = notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads";
+							Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 						}
 					}
 
@@ -510,7 +524,6 @@ public final class LoadFileAction extends AbstractAction {
 
 				@Override
 				public void done() {
-					//System.out.println("DONE");
 					Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
 					if(!isCancelled()){
 						cancelDialog.destroyCancelDialog();
