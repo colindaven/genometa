@@ -10,10 +10,10 @@ import java.awt.Graphics;
  */
 public class ColoredResiduesGlyph extends SequenceGlyph {
 
-    public static final Color default_A_color = Color.GREEN;
-    public static final Color default_T_color = Color.PINK;
-    public static final Color default_G_color = Color.YELLOW;
-    public static final Color default_C_color = Color.CYAN;
+    public static final Color default_A_color = new Color(255, 128, 128);
+    public static final Color default_T_color = new Color(128, 255, 128);
+    public static final Color default_G_color = new Color(128, 128, 255);
+    public static final Color default_C_color = new Color(255, 255, 128);
 
     /**
      * Draws colored rectangles and corresponding character based upon nucleotide.
