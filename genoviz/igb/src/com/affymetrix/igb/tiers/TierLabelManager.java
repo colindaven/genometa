@@ -405,7 +405,7 @@ public final class TierLabelManager {
 			}
 			label_glyphs.get(i).setPosition(i);
 		}
-		//Für alle über dem CoordIdx die Packerdirection auf Up setzen, für alle darunter auf down
+		//Fuer alle ueber dem CoordIdx die Packerdirection auf Up setzen, fuer alle darunter auf down
 		for (int i= 0; i < label_glyphs.size(); i++) {
 			if(i < coordIdx){
 				FasterExpandPacker ep = ((TierGlyph) label_glyphs.get(i).getInfo()).getExpandPacker();
