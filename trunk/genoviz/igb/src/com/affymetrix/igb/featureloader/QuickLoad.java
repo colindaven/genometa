@@ -185,6 +185,8 @@ public final class QuickLoad extends SymLoader {
 					}
 
 					SeqGroupView.refreshTable();
+					//BFTAG added : fix view-height after re-adjusting max expand
+					Application.getSingleton().getMapView().setAnnotatedSeq(Application.getSingleton().getMapView().getAnnotatedSeq(), true, true, true);
 				} catch (Exception ex) {
 					Logger.getLogger(QuickLoad.class.getName()).log(Level.SEVERE, null, ex);
 				} finally {

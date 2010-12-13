@@ -72,7 +72,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	//MPTAG added
 	private static Image texture;
 	public static final double GLYPH_HEIGHT = 2.;
-	
+
 	public GenericAnnotGlyphFactory() {
 		//MPTAG added
 		try{
@@ -312,7 +312,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 				if (cspan.getLength() == 0) {
 					cglyph = new DeletionGlyph();
 				} else {
-					cglyph = (GlyphI) child_glyph_class.newInstance(); 
+					cglyph = (GlyphI) child_glyph_class.newInstance();
 					//Hier wird die Kindglyphe erzeugt wenn sie sichtbar ist
 					//Diese ist aber noch nicht die Glyphe mit ATGC Drauf
 				}
@@ -349,7 +349,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	private static Color getSymColor(SeqSymmetry insym, ITrackStyleExtended style) {//MPTAG heir ggf farbe für Richtung setzten
 		boolean use_score_colors = style.getColorByScore();
 		boolean use_item_rgb = "on".equalsIgnoreCase((String) style.getTransientPropertyMap().get(TrackLineParser.ITEM_RGB));
-		
+
 		if (!(use_score_colors || use_item_rgb)) {
 			//return style.getColor();
 			if(getDirectionOfGlyph(insym)>0){
@@ -477,7 +477,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 		if (residues == null) {
 			return startPos;
 		}
-		
+
 		AlignedResidueGlyph csg = null;
 		if (residues != null) {
 			String residueStr = residues.toString();
