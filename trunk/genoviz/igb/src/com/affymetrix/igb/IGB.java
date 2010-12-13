@@ -19,13 +19,10 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.*;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -102,7 +99,8 @@ public final class IGB extends Application
 	private JTabbedPane left_tab_pane;
 	private JSplitPane splitpane;
 	private JSplitPane left_splitpane;
-	private JList metagenomics_list;
+//	private JList metagenomics_list; //BFTAG changed
+	private SeqInfoView seqInfo;
 	private DefaultListModel metagenomics_list_model;
 	public BookMarkAction bmark_action; // needs to be public for the BookmarkManagerView plugin
 	private JCheckBoxMenuItem toggle_edge_matching_item;
@@ -466,18 +464,23 @@ public final class IGB extends Application
 		// generate tabbed pane for plugins
 		left_tab_pane = new JTabbedPane();
 
+		//BFTAG changed
 		// generate a default list model representing a metagenomics overview list
-		metagenomics_list_model = new DefaultListModel();
-		metagenomics_list_model.addElement("Overview");
-		metagenomics_list_model.addElement("- Species 1");
-		metagenomics_list_model.addElement("- Species 2");
-		metagenomics_list_model.addElement("- Species 3");
+//		metagenomics_list_model = new DefaultListModel();
+//		metagenomics_list_model.addElement("Overview");
+//		metagenomics_list_model.addElement("- Species 1");
+//		metagenomics_list_model.addElement("- Species 2");
+//		metagenomics_list_model.addElement("- Species 3");
 
 		// generate a list to display list mode
-		metagenomics_list = new JList(metagenomics_list_model);
+//		metagenomics_list = new JList(metagenomics_list_model);
 
 		// add metagenomics plugin proxy to tabbed pane
-		left_tab_pane.addTab("Metagenomics", metagenomics_list);
+//		left_tab_pane.addTab("Metagenomics", metagenomics_list);
+		seqInfo = new SeqInfoView();
+		seqInfo.refreshTable();
+		left_tab_pane.addTab("Metagenomics", seqInfo);
+		//BFTAG end
 
 		// add a splitter for the left hand side, choose an appropriate width
 		left_splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);

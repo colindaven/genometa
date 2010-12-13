@@ -20,6 +20,7 @@ import com.affymetrix.igb.util.ThreadUtils;
 import com.affymetrix.genometryImpl.quickload.QuickLoadServerModel;
 import com.affymetrix.genometryImpl.span.SimpleSeqSpan;
 import com.affymetrix.igb.view.SeqGroupView;
+import com.affymetrix.igb.view.SeqInfoView;
 import com.affymetrix.igb.view.SeqMapView;
 import com.affymetrix.igb.view.TrackView;
 import java.io.BufferedInputStream;
@@ -185,6 +186,8 @@ public final class QuickLoad extends SymLoader {
 					}
 
 					SeqGroupView.refreshTable();
+					//BFTAG added
+					SeqInfoView.refreshTable();
 					//BFTAG added : fix view-height after re-adjusting max expand
 					Application.getSingleton().getMapView().setAnnotatedSeq(Application.getSingleton().getMapView().getAnnotatedSeq(), true, true, true);
 				} catch (Exception ex) {
@@ -232,6 +235,10 @@ public final class QuickLoad extends SymLoader {
 					}
 
 					SeqGroupView.refreshTable();
+					//BFTAG added
+					SeqInfoView.refreshTable();
+					//BFTAG added : fix view-height after re-adjusting max expand
+					Application.getSingleton().getMapView().setAnnotatedSeq(Application.getSingleton().getMapView().getAnnotatedSeq(), true, true, true);
 				} catch (Exception ex) {
 					Logger.getLogger(QuickLoad.class.getName()).log(Level.SEVERE, null, ex);
 				} finally {

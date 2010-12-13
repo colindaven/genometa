@@ -12,6 +12,7 @@
  */
 package com.affymetrix.igb.menuitem;
 
+import com.affymetrix.igb.view.SeqInfoView;
 import com.affymetrix.igb.util.SwingWorkerCancelDialog;
 import com.affymetrix.igb.util.JFileChooserWithOverwriteWarning;
 import net.sf.samtools.SAMFileHeader;
@@ -57,7 +58,6 @@ import com.affymetrix.igb.general.ServerList;
 import com.affymetrix.igb.featureloader.QuickLoad;
 import com.affymetrix.igb.util.MergeOptionChooser;
 import com.affymetrix.igb.util.ScriptFileLoader;
-import com.affymetrix.igb.util.SAMFileHeaderCorrection;
 import com.affymetrix.igb.view.load.GeneralLoadUtils;
 import static com.affymetrix.igb.IGBConstants.BUNDLE;
 
@@ -707,6 +707,8 @@ public final class LoadFileAction extends AbstractAction {
 			@Override
 			public void done() {
 				SeqGroupView.refreshTable();
+				//BFTAG added
+				SeqInfoView.refreshTable();
 				if (loadGroup.getSeqCount() > 0 && GenometryModel.getGenometryModel().getSelectedSeq() == null) {
 					// select a chromosomes
 					GenometryModel.getGenometryModel().setSelectedSeq(loadGroup.getSeq(0));
