@@ -32,6 +32,7 @@ import com.affymetrix.genometryImpl.style.ITrackStyleExtended;
 import com.affymetrix.genometryImpl.style.GraphType;
 import com.affymetrix.genometryImpl.util.GeneralUtils;
 import com.affymetrix.genometryImpl.util.ErrorHandler;
+import com.affymetrix.igb.Application;
 import com.affymetrix.igb.IGB;
 import com.affymetrix.igb.action.FeatureInfoAction;
 import com.affymetrix.igb.glyph.GraphGlyph;
@@ -305,6 +306,8 @@ public final class SeqMapViewPopup implements TierLabelManager.PopupListener {
 			tier.setMaxExpandDepth(max);
 		}
 		refreshMap(false,true);
+		//BFTAG added : fix view-height after re-adjusting max expand
+		Application.getSingleton().getMapView().setAnnotatedSeq(Application.getSingleton().getMapView().getAnnotatedSeq(), true, true, true);
 	}
 
   private void setTwoTiers(List<TierLabelGlyph> tier_label_glyphs, boolean b) {

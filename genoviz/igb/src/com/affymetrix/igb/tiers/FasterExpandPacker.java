@@ -138,7 +138,7 @@ public final class FasterExpandPacker extends ExpandPacker {
 
 		// resetting height of parent to just spacers
 		parent.setCoords(pbox.x, 0, pbox.width, 2 * parent_spacer);
-		
+
 		int child_count = parent.getChildCount();
 		if (child_count == 0) {
 			return null;
@@ -156,7 +156,7 @@ public final class FasterExpandPacker extends ExpandPacker {
 		DoubleArrayList slot_maxes = new DoubleArrayList(1000);
 		double slot_height = getMaxChildHeight(parent) + 2 * spacing;
 		//BFTAG added: Slot-Höhe für Zwischenraum kann verkleinert werden - Berechnung plausibel?
-		if(slot_height < GenericAnnotGlyphFactory.DEFAULT_THICK_HEIGHT + 
+		if(slot_height < GenericAnnotGlyphFactory.DEFAULT_THICK_HEIGHT +
 				GenericAnnotGlyphFactory.DEFAULT_THIN_HEIGHT + spacing + 1){
 			slot_height = 2*spacing;
 		}

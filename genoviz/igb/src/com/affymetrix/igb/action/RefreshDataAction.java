@@ -35,5 +35,11 @@ public class RefreshDataAction extends AbstractAction {
 
 	public void actionPerformed(ActionEvent ae) {
 		GeneralLoadView.getLoadView().loadVisibleData();
+
+		// BFTAG fast..
+//		shrinkWrap(); // s. SeqMapView.java > shrinkWrap
+//		Application.getSingleton().getMapView().getSeqMap().stretchToFit(false, false);
+//		Application.getSingleton().getMapView().getSeqMap().stretchToFit(false, false);
+//		Application.getSingleton().getMapView().getSeqMap().updateWidget();
 	}
 }
