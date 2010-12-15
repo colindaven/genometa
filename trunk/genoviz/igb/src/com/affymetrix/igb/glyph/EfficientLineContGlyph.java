@@ -88,7 +88,7 @@ public final class EfficientLineContGlyph extends EfficientSolidGlyph  {
     // draw the box
 
 	//MPTAG hier ggf statt dem Rechteck ein Bild zeichnen
-	/*g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width, pixelbox.height);*/
+	g.fillRect(pixelbox.x, pixelbox.y, pixelbox.width, pixelbox.height);
 	if(!isStackedGlyph)
 		g.drawImage(TextureCache.getInstance().getImage(pixelbox.width, pixelbox.height),
 				pixelbox.x, pixelbox.y, null);
