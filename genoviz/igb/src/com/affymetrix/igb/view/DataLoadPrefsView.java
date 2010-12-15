@@ -12,6 +12,7 @@
  */
 package com.affymetrix.igb.view;
 
+import java.awt.Event;
 import com.affymetrix.igb.action.AutoLoadAction;
 import com.affymetrix.genometryImpl.general.GenericServer;
 import com.affymetrix.genometryImpl.util.LoadUtils.ServerType;
@@ -43,6 +44,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -189,15 +192,38 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 		final JPanel synonymsPanel = new JPanel();
 		final GroupLayout layout = new GroupLayout(synonymsPanel);
 		final JLabel synonymsLabel= new JLabel("Synonyms File");
+		final JLabel infoLabel = new JLabel("Hit enter to save changes");
 		final JTextField synonymFile = new JTextField(PreferenceUtils.getLocationsNode().get(PREF_SYN_FILE_URL, ""));
 		final JButton openFile = new JButton("\u2026");
+		infoLabel.setVisible(false);
+
+		/*Create new DocumentListener to catch text change events*/
+		final DocumentListener docListener = new DocumentListener() {
+
+			public void insertUpdate(DocumentEvent de) {
+				infoLabel.setVisible(true);
+			}
+
+			public void removeUpdate(DocumentEvent de) {
+				infoLabel.setVisible(true);
+			}
+
+			public void changedUpdate(DocumentEvent de) {
+				infoLabel.setVisible(true);
+			}
+		};
+
 		final ActionListener listener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == openFile) {
 					File file = fileChooser(FILES_AND_DIRECTORIES, parent);
 					try {
 						if (file != null) {
+							/*temporary remove docListener, not that nice but java provides no other way
+							 to disable events*/
+							synonymFile.getDocument().removeDocumentListener(docListener);
 							synonymFile.setText(file.getCanonicalPath());
+							synonymFile.getDocument().addDocumentListener(docListener);
 						}
 					} catch (IOException ex) {
 						Logger.getLogger(DataLoadPrefsView.class.getName()).log(Level.SEVERE, null, ex);
@@ -205,6 +231,7 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 				}
 
 				if (synonymFile.getText().isEmpty() || loadSynonymFile(synonymFile)) {
+					infoLabel.setVisible(false);
 					PreferenceUtils.getLocationsNode().put(PREF_SYN_FILE_URL, synonymFile.getText());
 				} else {
 					ErrorHandler.errorPanel(
@@ -213,10 +240,10 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 				}
 			}
 		};
-
 		openFile.setToolTipText("Open Local Directory");
 		openFile.addActionListener(listener);
 		synonymFile.addActionListener(listener);
+		synonymFile.getDocument().addDocumentListener(docListener);
 		
 
 		synonymsPanel.setLayout(layout);
@@ -224,15 +251,23 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 
-		layout.setHorizontalGroup(layout.createSequentialGroup()
-				.addComponent(synonymsLabel)
-				.addComponent(synonymFile)
-				.addComponent(openFile));
 
-		layout.setVerticalGroup(layout.createParallelGroup(BASELINE)
+
+		layout.setHorizontalGroup(layout.createParallelGroup(LEADING)
+			.addGroup(layout.createSequentialGroup()
 				.addComponent(synonymsLabel)
 				.addComponent(synonymFile)
-				.addComponent(openFile));
+				.addComponent(openFile))
+			.addGroup(layout.createSequentialGroup()
+				.addComponent(infoLabel)));
+
+		layout.setVerticalGroup(layout.createSequentialGroup()
+			.addGroup(layout.createParallelGroup(BASELINE)
+				.addComponent(synonymsLabel)
+				.addComponent(synonymFile)
+				.addComponent(openFile))
+			.addGroup(layout.createParallelGroup(BASELINE)
+				.addComponent(infoLabel)));
 
 
 
@@ -242,38 +277,68 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 		return synonymsPanel;
 	}
 
+	/*
+	 * Initializes the metatie fastlines load panel
+	 * @param parent the panels parant
+	 * @return the complete panel
+	 */
 	private static JPanel initMetatieFastalinesPanel(final JPanel parent) {
-		final JPanel metaiePanel = new JPanel();
-		final GroupLayout metatieLayout = new GroupLayout(metaiePanel);
+		final JPanel metatiePanel = new JPanel();
+		final GroupLayout metatieLayout = new GroupLayout(metatiePanel);
 		final JLabel metatieLabel = new JLabel("Metatie-Fastalines File");
+		final JLabel infoLabel = new JLabel("Hit enter to save changes");
+		infoLabel.setVisible(false);
 		final JTextField metatieFile = new JTextField(PreferenceUtils.getLocationsNode().get(PREF_METATIE_FILE_URL, ""));
 		final JButton openFile = new JButton("\u2026");
-		final ActionListener listener = new ActionListener() {
 
+		/*Create new DocumentListener to catch text change events*/
+		final DocumentListener docListener = new DocumentListener() {
+
+			public void insertUpdate(DocumentEvent de) {
+				infoLabel.setVisible(true);
+			}
+
+			public void removeUpdate(DocumentEvent de) {
+				infoLabel.setVisible(true);
+			}
+
+			public void changedUpdate(DocumentEvent de) {
+				infoLabel.setVisible(true);
+			}
+		};
+
+		final ActionListener listener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == openFile) {
 					File file = fileChooser(FILES_AND_DIRECTORIES, parent);
 					try {
 						if (file != null) {
+							/*temporary remove docListener, not that nice but java provides no other way
+							 to disable events*/
+							metatieFile.getDocument().removeDocumentListener(docListener);
 							metatieFile.setText(file.getCanonicalPath());
+							metatieFile.getDocument().addDocumentListener(docListener);
 
 						}
-					} catch (IOException ex) {
+					}
+					catch (IOException ex) {
 						Logger.getLogger(DataLoadPrefsView.class.getName()).log(Level.SEVERE, null, ex);
 					}
 				}
-
 				if (!metatieFile.getText().isEmpty()) {
-					PreferenceUtils.getLocationsNode().put(PREF_METATIE_FILE_URL, metatieFile.getText());
 					if(SynonymLookup.getDefaultLookup().loadMetatieFastalines(metatieFile.getText())){
 						JOptionPane.showMessageDialog(null, "Metatie fastalines successfully loaded", "Notification", JOptionPane.INFORMATION_MESSAGE);
 					}
-					 else{
+					else{
 						ErrorHandler.errorPanel("Unable to load metatie fastalines");
-					 }
+					}
 				}
+				infoLabel.setVisible(false);
+				PreferenceUtils.getLocationsNode().put(PREF_METATIE_FILE_URL, metatieFile.getText());
+
 			}
 		};
+
 
 		//If there is a file available load it
 		if(!metatieFile.getText().isEmpty()){
@@ -286,18 +351,33 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 		openFile.setToolTipText("Open Local Directory");
 		openFile.addActionListener(listener);
 		metatieFile.addActionListener(listener);
+		metatieFile.getDocument().addDocumentListener(docListener);
+		
 
 
-		metaiePanel.setLayout(metatieLayout);
-		metaiePanel.setBorder(new TitledBorder("Metatie-Fastalines"));
+		metatiePanel.setLayout(metatieLayout);
+		metatiePanel.setBorder(new TitledBorder("Metatie-Fastalines"));
 		metatieLayout.setAutoCreateGaps(true);
 		metatieLayout.setAutoCreateContainerGaps(true);
 
-		metatieLayout.setHorizontalGroup(metatieLayout.createSequentialGroup().addComponent(metatieLabel).addComponent(metatieFile).addComponent(openFile));
+			
+		metatieLayout.setHorizontalGroup(metatieLayout.createParallelGroup(LEADING)
+				.addGroup(metatieLayout.createSequentialGroup()
+					.addComponent(metatieLabel)
+					.addComponent(metatieFile)
+					.addComponent(openFile))
+				.addGroup(metatieLayout.createSequentialGroup()
+					.addComponent(infoLabel)));
 
-		metatieLayout.setVerticalGroup(metatieLayout.createParallelGroup(BASELINE).addComponent(metatieLabel).addComponent(metatieFile).addComponent(openFile));
+		metatieLayout.setVerticalGroup(metatieLayout.createSequentialGroup()
+				.addGroup(metatieLayout.createParallelGroup(BASELINE)
+					.addComponent(metatieLabel)
+					.addComponent(metatieFile)
+					.addComponent(openFile))
+				.addGroup(metatieLayout.createParallelGroup(BASELINE)
+					.addComponent(infoLabel)));
 
-		return metaiePanel;
+		return metatiePanel;
 	}
 
 	private static JPanel initCachePanel() {
@@ -534,7 +614,6 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 
 		FileInputStream fis = null;
 		try {
-			synonymFile.setText(file.getCanonicalPath());
 			fis = new FileInputStream(file);
 			SynonymLookup.getDefaultLookup().loadSynonyms(fis);
 		} catch (IOException ex) {
