@@ -5,28 +5,87 @@
 
 package com.affymetrix.igb.util;
 
-import java.awt.BorderLayout;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.BufferedReader;
+import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.Vector;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.event.MouseInputListener;
 
 /**
  *
  * @author pool336pc02
  */
-public class CommandLineWindow extends JFrame implements KeyListener{
+public class CommandLineWindow extends JFrame implements MouseInputListener{
+
+	private JButton exec;
+	private JTextField indexLoc;
+	private JTextField readsFileLoc;
+	private JTextField outputFileLocation;
+
+	public CommandLineWindow() {
+		this.setTitle("Bowtie Aligner ausführen");
+		this.setLayout(new GridLayout(0,2));
+		this.add(new JLabel("IndexOrdner: "));
+		this.indexLoc = new JTextField();
+		this.add(indexLoc);
+		this.add(new JLabel("RFeads File Location: "));
+		this.readsFileLoc = new JTextField();
+		this.add(readsFileLoc);
+		this.add(new JLabel("OutputFile"));
+		this.outputFileLocation = new JTextField();
+		this.add(outputFileLocation);
+
+		exec = new JButton("Execute");
+		exec.addMouseListener(this);
+		this.add(exec);
+		this.pack();
+		this.setVisible(true);
+	}
+
+
+
+
+
+	public void mouseClicked(MouseEvent me) {
+		if(me.getSource() == exec){
+			System.out.println("Klicky Klicky");
+			BowtieAlignerWrapper aligner = new BowtieAlignerWrapper();
+			aligner.indexLocation = indexLoc.getText();
+			aligner.readInputFile = readsFileLoc.getText();
+			aligner.outputFilePath = outputFileLocation.getText();
+			try{
+				aligner.runAligner();
+			}catch(IOException ioe){
+				ioe.printStackTrace();
+			}
+		}
+	}
+
+	public void mousePressed(MouseEvent me) {
+	}
+
+	public void mouseReleased(MouseEvent me) {
+	}
+
+	public void mouseEntered(MouseEvent me) {
+	}
+
+	public void mouseExited(MouseEvent me) {
+	}
+
+	public void mouseDragged(MouseEvent me) {
+	}
+
+	public void mouseMoved(MouseEvent me) {
+	}
+
+
 
 	
-	private Process process;
+/*	private Process process;
 	private OutputStream stdin;
 	private InputStream stdout;
 	private InputStream stderr;
@@ -113,6 +172,6 @@ public class CommandLineWindow extends JFrame implements KeyListener{
 	}
 
 	public void keyReleased(KeyEvent ke) {
-	}
+	}*/
 
 }
