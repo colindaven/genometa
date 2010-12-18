@@ -342,12 +342,12 @@ will not work well with these styles.
 
   <METHOD_REGEX_ASSOCIATION regex="(?i)knowngene$"
      style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
-       <PROPERTY key="color" value="6495ED" > cornflowerblue </PROPERTY>
+       <PROPERTY key="color" value="FFFFFF" > cornflowerblue </PROPERTY><!--MPTAG changed from  value="6495ED"-->
   </METHOD_REGEX_ASSOCIATION>
 
   <METHOD_REGEX_ASSOCIATION regex="(?i)ensgene$"
      style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory">
-       <PROPERTY key="color" value="7FFFD4" > aquamarine </PROPERTY>
+       <PROPERTY key="color" value="7FFFD4" > aquamarine </PROPERTY> <!--MPTAG changed from  value="7FFFD4"-->
   </METHOD_REGEX_ASSOCIATION>
 
   <METHOD_REGEX_ASSOCIATION regex="(?i)mgcgene(s?)$"
@@ -400,7 +400,7 @@ will not work well with these styles.
   <METHOD_REGEX_ASSOCIATION regex="(?i)repeat(s?)$"
      style="com.affymetrix.igb.glyph.GenericAnnotGlyphFactory" >
     <PROPERTY key="glyph_depth" value="1" />
-    <PROPERTY key="color" value="A0A000" />
+    <PROPERTY key="color" value="A0A000" /><!--MPTAG changed from  value="A0A000"-->
   </METHOD_REGEX_ASSOCIATION>
 
   <METHOD_REGEX_ASSOCIATION regex="(?i)firstef$"

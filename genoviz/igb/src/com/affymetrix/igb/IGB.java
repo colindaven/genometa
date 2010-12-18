@@ -399,6 +399,7 @@ public final class IGB extends Application
 
 		MenuUtil.addToMenu(tools_menu, new JMenuItem(WebLinksManagerView.getShowFrameAction()));
 		MenuUtil.addToMenu(tools_menu, new JMenuItem(new ExportOverviewDiagramToCsvAction()));
+		MenuUtil.addToMenu(tools_menu, new JMenuItem(new BowtieAlignerExecutionAction()));
 
 		MenuUtil.addToMenu(help_menu, new JMenuItem(new AboutIGBAction()));
 		MenuUtil.addToMenu(help_menu, new JMenuItem(new ForumHelpAction()));
@@ -584,15 +585,7 @@ public final class IGB extends Application
 		MenuUtil.addToMenu(file_menu, new JMenuItem(new PreferencesAction()));
 		file_menu.addSeparator();
 		MenuUtil.addToMenu(file_menu, new JMenuItem(new ExitAction()));
-		//MPTAG added
-		file_menu.addSeparator();
-		MenuUtil.addToMenu(file_menu, new JMenuItem(new AbstractAction("Command Line") {
-
-			public void actionPerformed(ActionEvent ae) {
-				new CommandLineWindow();
-			}
-		}));
-		//MPTAF end
+		
 	}
 
 	private void editMenu() {
