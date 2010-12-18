@@ -193,10 +193,10 @@ public final class AlignedResidueGlyph extends AbstractResiduesGlyph
 		}
 		
 		double pixel_width_per_base = (view.getTransform()).getScaleX();
-		if (residueMask.isEmpty() && pixel_width_per_base < 1) {
+		if (residueMask.isEmpty() && pixel_width_per_base < 5) {//MPTAG changed from 1
 			return;	// If we're drawing all the residues, return if there's less than one pixel per base
 		}
-		if (pixel_width_per_base < 0.2) {
+		if (pixel_width_per_base < 3.) {//MPTAG changed from 0.2
 			return;	// If we're masking the residues, draw up to 5 residues at one pixel.
 		}
 		

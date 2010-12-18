@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.affymetrix.igb.util;
+package com.affymetrix.igb.util.aligner;
 
 import java.io.File;
 import java.io.IOException;
