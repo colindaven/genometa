@@ -54,7 +54,7 @@ public final class SynonymLookup {
 
 	private final Set<String> preferredNames = new HashSet<String>();
 
-	private Map<String, String> _lookupFastalinesHashMap = new HashMap<String, String>();
+	private Map<String, String[]> _lookupFastalinesHashMap = new HashMap<String, String[]>();
 
 	/**
 	 * Returns the default instance of SynonymLookup.  This is used to share
@@ -398,8 +398,8 @@ public final class SynonymLookup {
 	 * @return true if the file is correctly loaded otherwise false
 	 */
 	public boolean loadMetatieFastalines(String filePath) {
-
-		//Clear up the map, maybe necessary on reoad the metatie fastalines data
+		FastaLineParser fastaParser = new FastaLineParser();
+		//Clear up the map, maybe necessary on reload the metatie fastalines data
 		if(!_lookupFastalinesHashMap.isEmpty())
 			_lookupFastalinesHashMap.clear();
 
@@ -408,16 +408,17 @@ public final class SynonymLookup {
 			BufferedReader bufReader = new BufferedReader(fileReader);
 			String currentLine;
 
-			while ((currentLine = bufReader.readLine()) != null) {
+			while ((currentLine = bufReader.readLine()) != null) {		
+				
+				fastaParser.parseFastaHeader(currentLine);
 
-				//Get necessary informations from the current line (RefSeq id and genome name)
-				String workingString = currentLine.substring(currentLine.indexOf("|NC_") + 1);
+				//Array for saving all fasta line informations
+				String[] fastaParts = new String[3];
+				fastaParts[0] = fastaParser.getGenus();
+				fastaParts[1] = fastaParser.getSpecies();
+				fastaParts[2] = fastaParser.getStrain();
 
-				//safe the refseq index and the corresponding chromesome name
-				String refSeq = workingString.substring(0, workingString.indexOf("|"));
-				String genomeName = workingString.substring(workingString.indexOf("|") + 1, workingString.length());
-
-				_lookupFastalinesHashMap.put(refSeq, genomeName);
+				_lookupFastalinesHashMap.put(fastaParser.getRefSeq(), fastaParts);
 			}
 		}
 		catch (FileNotFoundException ffe) {
@@ -441,16 +442,75 @@ public final class SynonymLookup {
 	 * @param refSeq the RefSeq id to look for
 	 * @return the corresponding genome name
 	 */
-	public String getGenomeNameFromRefSeq(String refSeq){
+	public String getGenomeFromRefSeq(String refSeq){
 
 		if(_lookupFastalinesHashMap.isEmpty())
 			return "no lookup table set";
 
-		String genomeName;
-		
-		if((genomeName = _lookupFastalinesHashMap.get(refSeq)) == null)
-			return "unknown genome";
+		String name = _lookupFastalinesHashMap.get(refSeq)[0];
+
+		if(name.isEmpty())
+			return "no name found";
 		else
-			return genomeName;
+			return name;
+	}
+
+
+	/**
+	 * Get the genome species to a given RefSeq id
+	 * @param refSeq the RefSeq id to look for
+	 * @return the corresponding genome species
+	 */
+	public String getGenomeSpeciesFromRefSeq(String refSeq) {
+
+		if (_lookupFastalinesHashMap.isEmpty()) {
+			return "no lookup table set";
+		}
+
+		String species = _lookupFastalinesHashMap.get(refSeq)[1];
+
+		if (species.isEmpty()) {
+			return "no species found";
+		} else {
+			return species;//return genomeName;
+		}
+	}
+
+
+	/**
+	 * Get the genome strain given RefSeq id
+	 * @param refSeq the RefSeq id to look for
+	 * @return the corresponding strain
+	 */
+	public String getGenomeStrainFromRefSeq(String refSeq) {
+
+		if (_lookupFastalinesHashMap.isEmpty()) {
+			return "no lookup table set";
+		}
+
+		String strain = _lookupFastalinesHashMap.get(refSeq)[2];
+
+		if (strain.isEmpty()) {
+			return "no strain found";
+		} else {
+			return strain;
+		}
+	}
+
+	/**
+	 * Method to return all fasta line entries (genome = 0, species = 1 and strain = 2)
+	 * @param refSeq the RefSeq id to look for
+	 * @return string array of lengt 3 with all information, or null if nothing was found
+	 */
+	public String[] getFastaLine(String refSeq){
+
+		if (_lookupFastalinesHashMap.isEmpty()) {
+			return null;
+		}
+		String[] fastaLine = _lookupFastalinesHashMap.get(refSeq);
+		if(fastaLine.length != 3)
+			return null;
+		else
+			return fastaLine;
 	}
 }
