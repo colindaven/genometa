@@ -247,7 +247,7 @@ public class TrackStyle implements ITrackStyleExtended {
 			col = props.getColor("foreground");
 		}
 		if (col != null) {
-			color = col;
+			color = default_color;
 		}
 		Color bgcol = props.getColor("background");
 		if (bgcol != null) {
