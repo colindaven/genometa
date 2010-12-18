@@ -1851,8 +1851,13 @@ public class SeqMapView extends JPanel
 		for(int i = 0; i < properties.length; i++) {
 			property_map.put(properties[i][0].toLowerCase(), properties[i][1]);
 			if(properties[i][0].toLowerCase().equals("chromosome")) {
-				String lookup = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(properties[i][1]);
-				property_map.put("genom_name", lookup);
+				String refSeq = properties[i][1];
+				String genomeName = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(refSeq);
+				String genomeSpecies = SynonymLookup.getDefaultLookup().getGenomeSpeciesFromRefSeq(refSeq);
+				String genomeStrain = SynonymLookup.getDefaultLookup().getGenomeStrainFromRefSeq(refSeq);
+				property_map.put("genome_name", genomeName);
+				property_map.put("genome_species", genomeSpecies);
+				property_map.put("genome_strain", genomeStrain);
 			}
 		}
 
@@ -1952,15 +1957,26 @@ public class SeqMapView extends JPanel
 			props.append(value);
 			props.append("<br>");
 			if(tag.toLowerCase().equals("chromosome")) {
-				String lookup = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(properties[i][1]);
-				if(lookup.length() > max_length) {
-					lookup = lookup.substring(0, max_length) + " ...";
+				String refSeq = properties[i][1];
+				String genomeName = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(refSeq);
+				String genomeSpecies = SynonymLookup.getDefaultLookup().getGenomeSpeciesFromRefSeq(refSeq);
+				String genomeStrain = SynonymLookup.getDefaultLookup().getGenomeStrainFromRefSeq(refSeq);
+				if(genomeName.length() > max_length) {
+					genomeName = genomeName.substring(0, max_length) + " ...";
 				}
-				props.append("<b>");
-				props.append("genome_name");
-				props.append(": </b>");
-				props.append(lookup);
-				props.append("<br>");
+				if(genomeSpecies.length() > max_length) {
+					genomeSpecies = genomeSpecies.substring(0, max_length) + " ...";
+				}
+				if(genomeStrain.length() > max_length) {
+					genomeStrain = genomeStrain.substring(0, max_length) + " ...";
+				}
+				genomeName = "<b>genome_name: </b>" + genomeName + "<br>";
+				genomeSpecies = "<b>genome_species: </b>" + genomeSpecies + "<br>";
+				genomeStrain = "<b>genome_strain: </b>" + genomeStrain + "<br>";
+				props.append(genomeName);
+				props.append(genomeSpecies);
+				props.append(genomeStrain);
+
 			}
 		}
 		props.append("</html>");

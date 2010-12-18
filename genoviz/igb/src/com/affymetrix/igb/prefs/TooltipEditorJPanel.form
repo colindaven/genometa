@@ -142,7 +142,7 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="show_all_tags_cb">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Show all tags"/>
+                <Property name="text" type="java.lang.String" value="Show all available tags"/>
               </Properties>
             </Component>
           </SubComponents>

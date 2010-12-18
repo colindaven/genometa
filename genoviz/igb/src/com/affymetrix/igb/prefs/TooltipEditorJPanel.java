@@ -68,7 +68,7 @@ public class TooltipEditorJPanel extends javax.swing.JPanel {
         enable_tooltips_cb.setToolTipText("Enable tooltips");
         enable_tooltips_cb.setMargin(new java.awt.Insets(2, 6, 2, 2));
 
-        show_all_tags_cb.setText("Show all tags");
+        show_all_tags_cb.setText("Show all available tags");
 
         javax.swing.GroupLayout settings_panelLayout = new javax.swing.GroupLayout(settings_panel);
         settings_panel.setLayout(settings_panelLayout);

@@ -63,6 +63,8 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 	private String gff_tooltip_items[] = {
 											"chromosome",
 											"genome_name",
+											"genome_species",
+											"genome_strain",
 											"db_xref",
 											"end",
 											"exon_number",
@@ -83,6 +85,8 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 											"baseQuality",
 											"chromosome",
 											"genome_name",
+											"genome_species",
+											"genome_strain",
 											"cigar",
 											"CL",
 											"end",
@@ -437,8 +441,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
 //		PreferenceUtils.getTooltipEditorBAMPrefsNode().putBoolean("show_all_tags", DEFAULT_SHOW_ALL_TAGS);
 	}
 	
-	
-	
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
@@ -475,7 +478,7 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
         enable_tooltips_cb.setToolTipText("Enable tooltips");
         enable_tooltips_cb.setMargin(new java.awt.Insets(2, 6, 2, 2));
 
-        show_all_tags_cb.setText("Show all tags");
+        show_all_tags_cb.setText("Show all available tags");
 
         javax.swing.GroupLayout settings_panelLayout = new javax.swing.GroupLayout(settings_panel);
         settings_panel.setLayout(settings_panelLayout);
@@ -612,4 +615,5 @@ public final class TooltipEditorView extends IPrefEditorComponent implements Pre
                 .addComponent(main_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>
+
 }
