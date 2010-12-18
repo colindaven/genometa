@@ -55,6 +55,7 @@ public final class SynonymLookup {
 	private final Set<String> preferredNames = new HashSet<String>();
 
 	private Map<String, String[]> _lookupFastalinesHashMap = new HashMap<String, String[]>();
+	private Map<String, String> _lookupLineageHashMap = new HashMap<String, String>();
 
 	/**
 	 * Returns the default instance of SynonymLookup.  This is used to share
@@ -447,14 +448,91 @@ public final class SynonymLookup {
 		if(_lookupFastalinesHashMap.isEmpty())
 			return "no lookup table set";
 
-		String name = _lookupFastalinesHashMap.get(refSeq)[0];
+		String name;
 
-		if(name.isEmpty())
+		try {
+				name = _lookupFastalinesHashMap.get(refSeq)[0];
+				return name;
+		}
+			catch ( NullPointerException npe )
+		{
 			return "no name found";
-		else
-			return name;
+		}
 	}
 
+	/**
+	 * Function to load genera -> lineage mapping file
+	 *
+	 * @param filePath the mapping files' file path
+	 * @return true if file loading succeeded, false if loading failed
+	 */
+	public boolean loadLineageMappings(String filePath) {
+
+		if( !_lookupLineageHashMap.isEmpty() )
+		{
+			_lookupLineageHashMap.clear();
+		}
+
+		try {
+			FileReader fileReader = new FileReader(filePath);
+			BufferedReader bufReader = new BufferedReader(fileReader);
+			String currentLine;
+
+			while ( ( currentLine = bufReader.readLine() ) != null ) {
+
+				String[] tokens = currentLine.split( "," );
+				
+				//System.out.println( "Lineage Mappings DEBUG:" );
+
+				String genera = "unknown";
+				String lineage = "unknown";
+
+				if ( tokens[1].length() > 0 && tokens[6].length() > 0 ) {
+					genera  = tokens[1].substring( 1, tokens[1].length() - 1 );
+					lineage = tokens[6].substring( 1, tokens[6].length() - 1 );
+					// System.out.println( "Mapping " + genera + " to " + lineage );
+				}
+
+				//System.out.println( "Mapping " + genera + " to " + lineage );
+
+				if ( !( genera.equals("unknown") || genera.equals("unidentified") ) ) {
+					_lookupLineageHashMap.put(genera, lineage);
+				}
+			}
+		}
+		catch (FileNotFoundException ffe) {
+			System.out.println(ffe.getMessage());
+			return false;
+		}
+		catch (IOException ioe) {
+			System.out.println(ioe.getMessage());
+			return false;
+		}
+		catch(StringIndexOutOfBoundsException sioe){
+			System.out.println(sioe.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get the lineage name to a given genera
+	 * @param genera the genus to look for
+	 * @return the corresponding lineage name
+	 */
+	public String getLineageNameFromGenera(String genera){
+
+		if(_lookupLineageHashMap.isEmpty())
+			return "no lookup table set";
+
+		String lineage;
+
+		if((lineage = _lookupLineageHashMap.get(genera)) == null)
+			return "unknown lineage";
+		else
+			return lineage;
+	}
 
 	/**
 	 * Get the genome species to a given RefSeq id
@@ -467,12 +545,13 @@ public final class SynonymLookup {
 			return "no lookup table set";
 		}
 
-		String species = _lookupFastalinesHashMap.get(refSeq)[1];
-
-		if (species.isEmpty()) {
+		try {
+			String species = _lookupFastalinesHashMap.get(refSeq)[1];
+			return species;
+		}
+			catch ( NullPointerException npe )
+		{
 			return "no species found";
-		} else {
-			return species;//return genomeName;
 		}
 	}
 
@@ -488,12 +567,13 @@ public final class SynonymLookup {
 			return "no lookup table set";
 		}
 
-		String strain = _lookupFastalinesHashMap.get(refSeq)[2];
-
-		if (strain.isEmpty()) {
-			return "no strain found";
-		} else {
+		try {
+			String strain = _lookupFastalinesHashMap.get(refSeq)[2];
 			return strain;
+		}
+			catch ( NullPointerException npe )
+		{
+			return "no strain found";
 		}
 	}
 

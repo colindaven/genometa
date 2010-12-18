@@ -124,12 +124,13 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 					case 1:
 						return new SeqLengthComparator();
 					case 2:
-						return new Comparator() {
-
-							public int compare(Object a, Object b) {
-								return ((Integer) a).compareTo((Integer) b);
-							}
-						};
+						return String.CASE_INSENSITIVE_ORDER;
+					case 3:
+						return String.CASE_INSENSITIVE_ORDER;
+					case 4:
+						return String.CASE_INSENSITIVE_ORDER;
+					case 5:
+						return String.CASE_INSENSITIVE_ORDER;
 				}
 				return null;
 			}

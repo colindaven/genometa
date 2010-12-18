@@ -72,7 +72,8 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 	private static final long serialVersionUID = 2l;
 
 	private static final String PREF_SYN_FILE_URL = "Synonyms File URL";
-	private static final String PREF_METATIE_FILE_URL = "Metatue File URL";
+	private static final String PREF_METATIE_FILE_URL = "Metatie File URL";
+	private static final String PREF_LINEAGE_MAPPING_FILE_URL = "Lineage Mapping File URL";
 
 	private static final String[] OPTIONS = new String[]{"Add Server", "Cancel"};
 
@@ -81,6 +82,7 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 		final JPanel sourcePanel = initSourcePanel();
 		final JPanel synonymsPanel = initSynonymsPanel(this);
 		final JPanel metatieFastaLinesPanel = initMetatieFastalinesPanel(this);
+		final JPanel lineageMappingPanel = initLineageMappingsPanel(this);
 		final JPanel cachePanel = initCachePanel();
 	
 		this.setName("Data Sources");
@@ -94,12 +96,14 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 				.addComponent(sourcePanel)
 				.addComponent(synonymsPanel)
 				.addComponent(metatieFastaLinesPanel)
+				.addComponent(lineageMappingPanel)
 				.addComponent(cachePanel));
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(sourcePanel)
 				.addComponent(synonymsPanel)
 				.addComponent(metatieFastaLinesPanel)
+				.addComponent(lineageMappingPanel)
 				.addComponent(cachePanel));
 	}
 
@@ -378,6 +382,105 @@ public final class DataLoadPrefsView extends IPrefEditorComponent {
 					.addComponent(infoLabel)));
 
 		return metatiePanel;
+	}
+
+	private static JPanel initLineageMappingsPanel(final JPanel parent) {
+		final JPanel lineageMappingsPanel = new JPanel();
+		final GroupLayout lineageMappingsLayout = new GroupLayout(lineageMappingsPanel);
+		final JLabel lineageMappingsLabel = new JLabel("Lineage Mappings File");
+		final JLabel infoLabel = new JLabel("Hit enter to save changes");
+		infoLabel.setVisible(false);
+		final JTextField lineageMappingsFile = new JTextField(PreferenceUtils.getLocationsNode().get(PREF_LINEAGE_MAPPING_FILE_URL, ""));
+		final JButton openFile = new JButton("\u2026");
+
+		/*Create new DocumentListener to catch text change events*/
+		final DocumentListener docListener = new DocumentListener() {
+
+			public void insertUpdate(DocumentEvent de) {
+				infoLabel.setVisible(true);
+			}
+
+			public void removeUpdate(DocumentEvent de) {
+				infoLabel.setVisible(true);
+			}
+
+			public void changedUpdate(DocumentEvent de) {
+				infoLabel.setVisible(true);
+			}
+		};
+
+		final ActionListener listener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == openFile) {
+					File file = fileChooser(FILES_AND_DIRECTORIES, parent);
+					try {
+						if (file != null) {
+							/*temporary remove docListener, not that nice but java provides no other way
+							 to disable events*/
+							lineageMappingsFile.getDocument().removeDocumentListener(docListener);
+							lineageMappingsFile.setText(file.getCanonicalPath());
+							lineageMappingsFile.getDocument().addDocumentListener(docListener);
+
+						}
+					}
+					catch (IOException ex) {
+						Logger.getLogger(DataLoadPrefsView.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				}
+				if (!lineageMappingsFile.getText().isEmpty()) {
+					System.out.println("Reading Mappings from file: " + lineageMappingsFile.getText());
+					if(SynonymLookup.getDefaultLookup().loadLineageMappings(lineageMappingsFile.getText())){
+						JOptionPane.showMessageDialog(null, "Lineage Mappings successfully loaded", "Notification", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else{
+						ErrorHandler.errorPanel("Unable to load lineage mappings");
+					}
+				}
+				infoLabel.setVisible(false);
+				PreferenceUtils.getLocationsNode().put(PREF_LINEAGE_MAPPING_FILE_URL, lineageMappingsFile.getText());
+
+			}
+		};
+
+
+		//If there is a file available load it
+		if(!lineageMappingsFile.getText().isEmpty()){
+			if (!SynonymLookup.getDefaultLookup().loadLineageMappings(lineageMappingsFile.getText())) {
+				ErrorHandler.errorPanel("Unable to load lineage mappings");
+			}
+		}
+
+
+		openFile.setToolTipText("Open Local Directory");
+		openFile.addActionListener(listener);
+		lineageMappingsFile.addActionListener(listener);
+		lineageMappingsFile.getDocument().addDocumentListener(docListener);
+
+
+
+		lineageMappingsPanel.setLayout(lineageMappingsLayout);
+		lineageMappingsPanel.setBorder(new TitledBorder("Lineage Mappings"));
+		lineageMappingsLayout.setAutoCreateGaps(true);
+		lineageMappingsLayout.setAutoCreateContainerGaps(true);
+
+
+		lineageMappingsLayout.setHorizontalGroup(lineageMappingsLayout.createParallelGroup(LEADING)
+				.addGroup(lineageMappingsLayout.createSequentialGroup()
+					.addComponent(lineageMappingsLabel)
+					.addComponent(lineageMappingsFile)
+					.addComponent(openFile))
+				.addGroup(lineageMappingsLayout.createSequentialGroup()
+					.addComponent(infoLabel)));
+
+		lineageMappingsLayout.setVerticalGroup(lineageMappingsLayout.createSequentialGroup()
+				.addGroup(lineageMappingsLayout.createParallelGroup(BASELINE)
+					.addComponent(lineageMappingsLabel)
+					.addComponent(lineageMappingsFile)
+					.addComponent(openFile))
+				.addGroup(lineageMappingsLayout.createParallelGroup(BASELINE)
+					.addComponent(infoLabel)));
+
+		return lineageMappingsPanel;
 	}
 
 	private static JPanel initCachePanel() {
