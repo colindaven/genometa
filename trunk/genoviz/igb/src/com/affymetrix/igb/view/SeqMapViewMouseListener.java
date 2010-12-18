@@ -17,6 +17,7 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
+import javax.swing.ToolTipManager;
 
 /**
  *  A MouseListener for the SeqMapView.
@@ -59,6 +60,9 @@ final class SeqMapViewMouseListener implements MouseListener, MouseMotionListene
 	private transient MouseEvent rubber_band_start = null;
 	private int num_last_selections = 0;
 	private int no_of_prop_being_displayed = 0;
+	private final int reshowdelay = ToolTipManager.sharedInstance().getReshowDelay();
+	private final int initialdelay = ToolTipManager.sharedInstance().getInitialDelay();
+	private final int dismissdelay = ToolTipManager.sharedInstance().getDismissDelay();
 
 	SeqMapViewMouseListener(SeqMapView smv) {
 		this.smv = smv;
@@ -66,9 +70,15 @@ final class SeqMapViewMouseListener implements MouseListener, MouseMotionListene
 	}
 
 	public void mouseEntered(MouseEvent evt) {
+		ToolTipManager.sharedInstance().setDismissDelay(1000000);
+		ToolTipManager.sharedInstance().setReshowDelay(0);
+		ToolTipManager.sharedInstance().setInitialDelay(0);
 	}
 
 	public void mouseExited(MouseEvent evt) {
+		ToolTipManager.sharedInstance().setDismissDelay(dismissdelay);
+		ToolTipManager.sharedInstance().setReshowDelay(reshowdelay);
+		ToolTipManager.sharedInstance().setInitialDelay(initialdelay);
 	}
 
 	public void mouseClicked(MouseEvent evt) {
