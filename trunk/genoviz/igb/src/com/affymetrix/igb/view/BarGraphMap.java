@@ -375,7 +375,7 @@ public class BarGraphMap extends JPanel {
             if( seq != null ){
 				_seqID = seq.getID();
 
-				_seqName = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(getRefSeqIDFromBioSeqID(_seqID));
+				_seqName = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(getRefSeqIDFromBioSeqID(_seqID));
             }else{
                 _seqName = "NC_TESTTESTTEST123456";
             }

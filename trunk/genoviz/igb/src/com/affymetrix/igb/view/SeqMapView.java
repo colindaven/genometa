@@ -1851,7 +1851,7 @@ public class SeqMapView extends JPanel
 		for(int i = 0; i < properties.length; i++) {
 			property_map.put(properties[i][0].toLowerCase(), properties[i][1]);
 			if(properties[i][0].toLowerCase().equals("chromosome")) {
-				String lookup = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(properties[i][1]);
+				String lookup = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(properties[i][1]);
 				property_map.put("genom_name", lookup);
 			}
 		}
@@ -1952,7 +1952,7 @@ public class SeqMapView extends JPanel
 			props.append(value);
 			props.append("<br>");
 			if(tag.toLowerCase().equals("chromosome")) {
-				String lookup = SynonymLookup.getDefaultLookup().getGenomeNameFromRefSeq(properties[i][1]);
+				String lookup = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(properties[i][1]);
 				if(lookup.length() > max_length) {
 					lookup = lookup.substring(0, max_length) + " ...";
 				}
