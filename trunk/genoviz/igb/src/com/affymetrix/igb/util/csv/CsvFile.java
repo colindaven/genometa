@@ -22,13 +22,10 @@ public class CsvFile {
 
 	private FileOutputStream ofs;
 	private BufferedOutputStream os;
-	private CsvModel model;
 	private final String LINEEND = "\r\n";
 	private final String RECORD_DELIMITER = ",";
 
-	public CsvFile(String file, CsvModel model) {
-		this.model = model;
-
+	public CsvFile(String file) {
 		try {
 			ofs = new FileOutputStream(file);
 		} catch (FileNotFoundException ex) {
@@ -36,17 +33,15 @@ public class CsvFile {
 		}
 
 		os = new BufferedOutputStream(ofs);
-
-		this.writeHeader();
 	}
 
 	public void writeLine(Object[] cols) {
 		StringBuilder sb = new StringBuilder();
 
-		for (int i = 0; i < this.model.getColumnCount(); ++i) {
+		for (int i = 0; i < cols.length; ++i) {
 			sb.append(cols[i].toString());
 
-			if (i < this.model.getColumnCount() - 1) {
+			if (i < cols.length - 1) {
 				sb.append(';');
 			}
 		}
@@ -61,20 +56,6 @@ public class CsvFile {
 		} catch (IOException ex) {
 			Logger.getLogger(CsvFile.class.getName()).log(Level.SEVERE, "Error while closing the csv file.", ex);
 		}
-	}
-
-	private void writeHeader() {
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < this.model.getColumnCount(); ++i) {
-			sb.append(this.model.getColumnHeader(i));
-
-			if (i < this.model.getColumnCount() - 1) {
-				sb.append(';');
-			}
-		}
-
-		writeLine(sb.toString());
 	}
 
 	private void writeLine(String s) {

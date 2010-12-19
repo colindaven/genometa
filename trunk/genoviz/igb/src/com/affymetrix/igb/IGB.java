@@ -397,8 +397,29 @@ public final class IGB extends Application
 		editMenu();
 		viewMenu();
 
+				//at firtst only for tests
+
+		neoMapPane = new JTabbedPane();
+		neoMapPane.insertTab("Sequence Viewer", null, map_view, "Sequence Viewer", 0);
+
+		barGraph = new BarGraphMap();
+		neoMapPane.insertTab("Overview", null, barGraph, "Overview", 1);
+		neoMapPane.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if( neoMapPane.getSelectedComponent() == barGraph ){
+					if( GenometryModel.getGenometryModel().getSelectedSeqGroup() != null  ){
+						barGraph.init( GenometryModel.getGenometryModel().getSelectedSeqGroup() );
+					}else
+					{
+						barGraph.init( null );
+					}
+
+				}
+			}
+		});
+
 		MenuUtil.addToMenu(tools_menu, new JMenuItem(WebLinksManagerView.getShowFrameAction()));
-		MenuUtil.addToMenu(tools_menu, new JMenuItem(new ExportOverviewDiagramToCsvAction()));
+		MenuUtil.addToMenu(tools_menu, new JMenuItem(new ExportOverviewDiagramToCsvAction(frm, barGraph)));
 		MenuUtil.addToMenu(tools_menu, new JMenuItem(new BowtieAlignerExecutionAction()));
 
 		MenuUtil.addToMenu(help_menu, new JMenuItem(new AboutIGBAction()));
@@ -428,29 +449,6 @@ public final class IGB extends Application
 		splitpane.setOneTouchExpandable(true);
 		splitpane.setDividerSize(8);
 		splitpane.setDividerLocation(frm.getHeight() - (table_height + fudge));
-
-
-		neoMapPane = new JTabbedPane();
-		neoMapPane.insertTab("Sequence Viewer", null, map_view, "Sequence Viewer", 0);
-
-		//at firtst only for tests
-
-
-		barGraph = new BarGraphMap();
-		neoMapPane.insertTab("Overview", null, barGraph, "Overview", 1);
-		neoMapPane.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if( neoMapPane.getSelectedComponent() == barGraph ){
-					if( GenometryModel.getGenometryModel().getSelectedSeqGroup() != null  ){
-						barGraph.init( GenometryModel.getGenometryModel().getSelectedSeqGroup() );
-					}else
-					{
-						barGraph.init( null );
-					}
-					
-				}
-			}
-		});
 
 		splitpane.setTopComponent(neoMapPane);
 
