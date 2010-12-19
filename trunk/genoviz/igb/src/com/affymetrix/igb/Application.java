@@ -134,4 +134,8 @@ public abstract class Application {
 		return (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
 				frame, message, "Confirm", JOptionPane.YES_NO_OPTION));
 	}
+
+	public StatusBar getStatusBar(){
+		return status_bar;
+	}
 }

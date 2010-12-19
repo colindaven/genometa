@@ -5,6 +5,7 @@
 
 package com.affymetrix.igb.util.aligner;
 
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JButton;
@@ -43,6 +44,10 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	protected JButton samChooserOpener;
 	protected JFileChooser samOutputFileChooser;
 	protected String[] outputFileExtensions;//need not to be .sam for all Aligners
+
+	protected GridBagConstraints gbc;
+	protected JButton okayButton;
+	protected JButton cancelButton;
 
 	/**
 	 * Set the allowed Fileextensions for Indexes, Readfiles and Output files

@@ -1,13 +1,18 @@
 package com.affymetrix.igb.view;
 
+import com.affymetrix.igb.util.aligner.BowtieAlignerExecutor;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.*;
 import java.text.DecimalFormat;
+import javax.imageio.ImageIO;
 import javax.swing.GroupLayout.Alignment;
 
 public final class StatusBar extends JPanel {
@@ -21,6 +26,9 @@ public final class StatusBar extends JPanel {
 	/** Delay in milliseconds between updates of the status (such as memory usage).  */
 	private static final int timer_delay_ms = 500;
 
+	//MPTAG added
+	private JLabel aligner_status;
+
 	private final Action performGcAction = new AbstractAction("Release Unused Memory") {
 		private static final long serialVersionUID = 1l;
 
@@ -32,6 +40,12 @@ public final class StatusBar extends JPanel {
 	public StatusBar() {
 		String tt_status = "Shows Selected Item, or other Message";
 		String tt_status_memory = "Memory Used / Available";
+		aligner_status = new JLabel("      ");
+		try{
+			aligner_status = new JLabel( BowtieAlignerExecutor.getNoActivityImageIcon() );
+		}catch (IOException ioe){
+			System.out.println("Bild nicht gefunden!!");
+		}
 
 		status_ta = new JLabel("");
 		progressBar = new JProgressBar();
@@ -62,13 +76,15 @@ public final class StatusBar extends JPanel {
 				.addComponent(status_ta)
 				.addGap(1, 1, Short.MAX_VALUE)
 				.addComponent(progressBar)
-				.addComponent(memory_ta, 1, 200, 200));
+				.addComponent(memory_ta, 1, 200, 200)
+				.addComponent(aligner_status));//MPTAG added
 
 		layout.setVerticalGroup(layout.createParallelGroup(Alignment.CENTER)
 				.addComponent(status_ta)
 				.addGap(1, 1, Short.MAX_VALUE)
 				.addComponent(progressBar)
-				.addComponent(memory_ta));
+				.addComponent(memory_ta)
+				.addComponent(aligner_status));//MPTAG added
 
 		progressBar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JMenuItem gc_MI = new JMenuItem(performGcAction);
@@ -137,5 +153,9 @@ public final class StatusBar extends JPanel {
 		memory_ta.setText(text);
 	}
 
+	//MPTAG added
+	public JLabel getAlignerStatusLabel(){
+		return aligner_status;
+	}
 
 }
