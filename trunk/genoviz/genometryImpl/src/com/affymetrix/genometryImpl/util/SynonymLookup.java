@@ -439,28 +439,6 @@ public final class SynonymLookup {
 	}
 
 	/**
-	 * Get the genome name to a given RefSeq id
-	 * @param refSeq the RefSeq id to look for
-	 * @return the corresponding genome name
-	 */
-	public String getGenomeFromRefSeq(String refSeq){
-
-		if(_lookupFastalinesHashMap.isEmpty())
-			return "no lookup table set";
-
-		String name;
-
-		try {
-				name = _lookupFastalinesHashMap.get(refSeq)[0];
-				return name;
-		}
-			catch ( NullPointerException npe )
-		{
-			return "no name found";
-		}
-	}
-
-	/**
 	 * Function to load genera -> lineage mapping file
 	 *
 	 * @param filePath the mapping files' file path
@@ -535,6 +513,31 @@ public final class SynonymLookup {
 	}
 
 	/**
+	 * Get the genome name to a given RefSeq id
+	 * @param refSeq the RefSeq id to look for
+	 * @return the corresponding genome name
+	 */
+	public String getGenomeFromRefSeq(String refSeq) {
+
+		if (_lookupFastalinesHashMap.isEmpty()) {
+			return "no lookup table set";
+		}
+
+		String name = "";
+
+		try {
+			name = _lookupFastalinesHashMap.get(refSeq)[0];
+			if(!name.isEmpty())
+				return name;
+		}
+		catch (NullPointerException npe) {
+			return "wrong refseq format";
+		}
+
+		return "no genome found";
+	}
+
+	/**
 	 * Get the genome species to a given RefSeq id
 	 * @param refSeq the RefSeq id to look for
 	 * @return the corresponding genome species
@@ -544,15 +547,18 @@ public final class SynonymLookup {
 		if (_lookupFastalinesHashMap.isEmpty()) {
 			return "no lookup table set";
 		}
-
+		String species = "";
 		try {
-			String species = _lookupFastalinesHashMap.get(refSeq)[1];
-			return species;
+			species = _lookupFastalinesHashMap.get(refSeq)[1];
+			if(!species.isEmpty())
+				return species;
 		}
-			catch ( NullPointerException npe )
-		{
-			return "no species found";
+		catch ( NullPointerException npe ){
+			return "wrong refseq format";
 		}
+
+		return "no species found";
+
 	}
 
 
@@ -566,31 +572,17 @@ public final class SynonymLookup {
 		if (_lookupFastalinesHashMap.isEmpty()) {
 			return "no lookup table set";
 		}
+		String strain = "";
 
 		try {
-			String strain = _lookupFastalinesHashMap.get(refSeq)[2];
-			return strain;
+			strain = _lookupFastalinesHashMap.get(refSeq)[2];
+			if(!strain.isEmpty())
+				return strain;
 		}
-			catch ( NullPointerException npe )
-		{
-			return "no strain found";
+		catch ( NullPointerException npe ){
+			return "wrong refseq format";
 		}
-	}
 
-	/**
-	 * Method to return all fasta line entries (genome = 0, species = 1 and strain = 2)
-	 * @param refSeq the RefSeq id to look for
-	 * @return string array of lengt 3 with all information, or null if nothing was found
-	 */
-	public String[] getFastaLine(String refSeq){
-
-		if (_lookupFastalinesHashMap.isEmpty()) {
-			return null;
-		}
-		String[] fastaLine = _lookupFastalinesHashMap.get(refSeq);
-		if(fastaLine.length != 3)
-			return null;
-		else
-			return fastaLine;
+		return "no strain found";
 	}
 }
