@@ -60,7 +60,6 @@ import com.affymetrix.igb.tiers.IGBStateProvider;
 import com.affymetrix.igb.util.IGBAuthenticator;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.igb.action.*;
-import com.affymetrix.igb.util.CommandLineWindow;
 import com.affymetrix.igb.util.ScriptFileLoader;
 import com.affymetrix.igb.util.ThreadUtils;
 import com.affymetrix.igb.view.external.ExternalViewer;

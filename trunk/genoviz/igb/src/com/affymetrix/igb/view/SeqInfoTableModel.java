@@ -35,7 +35,17 @@ public class SeqInfoTableModel extends AbstractTableModel {
 		if (group != null) {
 			BioSeq seq = group.getSeq(row);
 			if (col == 0) {
-				return seq.getID();
+				// evil hack to debug name field
+				try {
+					String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
+					String refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+					String name = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq( refSeq );
+				return name;
+				}
+				catch ( Exception e )
+				{
+					return "";
+				}
 			} else if (col == 1) {
 				return GeneralLoadUtils.getNumberOfSymmetriesForSeq(seq);
 			} else if (col == 2) {
@@ -121,4 +131,11 @@ public class SeqInfoTableModel extends AbstractTableModel {
 				return super.getColumnClass(c);
 		}
 	}
+
+//	private String getRefSeqIDFromBioSeqID(String id){
+//		//Get necessary informations from the current line (RefSeq id and genome name)
+//		String workingString = id.substring(id.indexOf("|NC_") + 1);
+//		//safe the refseq index and the corresponding chromesome name
+//		return workingString.substring(0, workingString.indexOf("|"));
+//	}
 }

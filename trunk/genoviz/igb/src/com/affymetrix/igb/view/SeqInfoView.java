@@ -122,9 +122,13 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 					case 0:
 						return String.CASE_INSENSITIVE_ORDER;
 					case 1:
-						return new SeqLengthComparator();
-					case 2:
-						return String.CASE_INSENSITIVE_ORDER;
+						return new Comparator()
+						{
+							public int compare(Object a, Object b)
+							{
+								return ((Integer)a).compareTo((Integer)b);
+							}
+						};
 					case 3:
 						return String.CASE_INSENSITIVE_ORDER;
 					case 4:
@@ -167,7 +171,7 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 
 	public void seqSelectionChanged(SeqSelectionEvent evt) {
 		if (SeqInfoView.DEBUG_EVENTS) {
-			System.out.println("SeqGroupView received seqSelectionChanged() event: seq is " + evt.getSelectedSeq());
+			System.out.println("SeqInfoView received seqSelectionChanged() event: seq is " + evt.getSelectedSeq());
 		}
 		synchronized (seqtable) {  // or should synchronize on lsm?
 			lsm.removeListSelectionListener(this);
@@ -210,7 +214,7 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 		Object src = evt.getSource();
 		if ((src == lsm) && (!evt.getValueIsAdjusting())) { // ignore extra messages
 			if (SeqInfoView.DEBUG_EVENTS) {
-				System.out.println("SeqGroupView received valueChanged() ListSelectionEvent");
+				System.out.println("SeqInfoView received valueChanged() ListSelectionEvent");
 			}
 			int srow = seqtable.getSelectedRow();
 			if (srow >= 0) {
@@ -231,20 +235,5 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(220, 50);
-	}
-
-	private final class SeqLengthComparator implements Comparator<String> {
-
-		public int compare(String o1, String o2) {
-			if (o1 == null || o2 == null) {
-				return SeqSymIdComparator.compareNullIDs(o2, o1);	// null is last
-			}
-			if (o1.length() == 0 || o2.length() == 0) {
-				return o2.compareTo(o1);	// empty string is last
-			}
-
-			// use valueOf to get a Long object versus a long primitive.
-			return Long.valueOf(o1).compareTo(Long.parseLong(o2));
-		}
 	}
 }
