@@ -27,6 +27,7 @@ import com.affymetrix.genoviz.widget.NeoMap;
 import com.affymetrix.igb.glyph.fhh.*;
 import com.affymetrix.genoviz.util.NeoConstants;
 import com.affymetrix.igb.Application;
+import com.affymetrix.igb.util.csv.CsvFile;
 import com.affymetrix.igb.view.load.GeneralLoadUtils;
 import java.awt.Adjustable;
 import java.awt.BorderLayout;
@@ -37,6 +38,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.geom.Point2D;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -92,7 +95,7 @@ public class BarGraphMap extends JPanel {
 			return;
 		}
 
-	
+
 		_initialized = false;
 
 
@@ -257,8 +260,8 @@ public class BarGraphMap extends JPanel {
 			BioSeq seq = _bars.get(selected.get(0)).getSeq();
 			if( seq != null){
 				if (seq != gmodel.getSelectedSeq()) {
-				  gmodel.setSelectedSeq(seq);
-				  Application.getSingleton().changeMainView(Application.MAIN_VIEW_SEQMAP);
+					gmodel.setSelectedSeq(seq);
+					Application.getSingleton().changeMainView(Application.MAIN_VIEW_SEQMAP);
 				}
 			}
 		}else{
@@ -316,8 +319,8 @@ public class BarGraphMap extends JPanel {
 		for (SeqReads sr : _currentStatistics) {
 			c++;
 			int reads = sr.getReads().intValue();
-            String id = sr.getSeqID();
-            String name = sr.getSeqName();
+			String id = sr.getSeqID();
+			String name = sr.getSeqName();
 
 			//String barText = "[" + c + "][" + reads + "] " + id;
 			String barText1 = "[ " + name + " ]";
@@ -365,21 +368,21 @@ public class BarGraphMap extends JPanel {
 
 		private BioSeq _seq = null;
 		private Integer _reads = null;
-        private String _seqName = null;
-        private String _seqID = null;
+		private String _seqName = null;
+		private String _seqID = null;
 
-        public SeqReads(BioSeq seq, int reads) {
-            _seq = seq;
-            _reads = new Integer(reads);
+		public SeqReads(BioSeq seq, int reads) {
+			_seq = seq;
+			_reads = new Integer(reads);
 
             if( seq != null ){
 				_seqID = seq.getID();
 
 				_seqName = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(getRefSeqIDFromBioSeqID(_seqID));
             }else{
-                _seqName = "NC_TESTTESTTEST123456";
-            }
-        }
+				_seqName = "NC_TESTTESTTEST123456";
+			}
+		}
 
 		/**
 		 * @return the _seq
@@ -394,18 +397,49 @@ public class BarGraphMap extends JPanel {
 		}
 
          public String getSeqName(){
-             return _seqName;
-         }
+			return _seqName;
+		}
 
          public String getSeqID(){
-             return _seqID;
-         }
-
-
-
+			return _seqID;
+		}
 	}
-	
-	public static String getRefSeqIDFromBioSeqID(String id){
+
+	public void writeCsvFile(String file) {
+		if (_currentStatistics == null) {
+			JOptionPane.showMessageDialog(Application.getSingleton().getFrame(),
+					"No data loaded in the overview diagram.\nLoad Data, open the overview diagram and retry.",
+					"Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		// add Message
+		Application.getSingleton().addNotLockedUpMsg("Writing diagram data to '" + file + "'");
+
+		Object[] line = {"SeqId", "SeqReads"};
+
+		// generate the csv writer
+		CsvFile writer = new CsvFile(file);
+
+		// write the header
+		writer.writeLine(line);
+
+		// write the other lines
+		for (SeqReads r : _currentStatistics) {
+			line[0] = r.getSeqID();
+			line[1] = r.getReads();
+			writer.writeLine(line);
+		}
+
+		/* do the work */
+
+		// remove Message
+		Application.getSingleton().removeNotLockedUpMsg("Writing diagram data to '" + file + "'");
+
+		Application.getSingleton().setStatus("Wrote CSV file '" + file + "'");
+	}
+
+	public static String getRefSeqIDFromBioSeqID(String id) {
 		//Get necessary informations from the current line (RefSeq id and genome name)
 		String workingString = id.substring(id.indexOf("|NC_") + 1);
 		//safe the refseq index and the corresponding chromesome name
