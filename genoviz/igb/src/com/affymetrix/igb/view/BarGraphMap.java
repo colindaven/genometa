@@ -53,6 +53,7 @@ public class BarGraphMap extends JPanel {
 	// Glyph Lists
 	Vector<SeqBarGlyph> selected = new Vector<SeqBarGlyph>();
 	Hashtable<SeqBarGlyph, SeqReads> _bars = new Hashtable<SeqBarGlyph, SeqReads>();
+	Hashtable<BioSeq, SeqBarGlyph> _bioSeqToBars = new Hashtable<BioSeq, SeqBarGlyph>();
 	// Hairline
 	private com.affymetrix.igb.glyph.fhh.UnibrowHairline hairline = null;
 	//
@@ -67,6 +68,7 @@ public class BarGraphMap extends JPanel {
 	private AnnotatedSeqGroup _currentSeqGroup = null;
 	private ArrayList<SeqReads>  _currentStatistics = null;
 	private HashMap<AnnotatedSeqGroup, ArrayList<SeqReads>> _groups = null;
+	private HashMap<AnnotatedSeqGroup, Integer> _groupsHash = null;
 	private final static GenometryModel gmodel = GenometryModel.getGenometryModel();
 	private final Color _barBGColor = new Color(0x66, 0x99, 0xff);
 	private final Color _barSelectedBGColor = new Color(0x66, 0x00, 0xff);
@@ -78,7 +80,7 @@ public class BarGraphMap extends JPanel {
 
 	public BarGraphMap() {
 		_groups = new HashMap<AnnotatedSeqGroup, ArrayList<SeqReads>>();
-
+		_groupsHash = new HashMap<AnnotatedSeqGroup, Integer>();
 		// init NeoMap
 		initNeoMap();
 
@@ -91,87 +93,123 @@ public class BarGraphMap extends JPanel {
 	 * the BarGraph
 	 */
 	public void init(AnnotatedSeqGroup seqGroup) {
-		if (_currentSeqGroup == seqGroup && seqGroup != null) {
-			return;
+
+		boolean hasChanged = false;
+		if( _currentSeqGroup != null  ){
+			// check for the hasCode of the BioSeq Lists
+			// if the hashCodes has changed, then the AnnotedSeqGroup
+			// should be reloaded!
+			hasChanged =  _currentSeqGroup.getSeqList().hashCode() != _groupsHash.get(_currentSeqGroup).intValue();
 		}
 
+		if(	_currentSeqGroup != seqGroup  || hasChanged ){
+			_initialized = false;
 
-		_initialized = false;
+			map.clearWidget();
+			_bars.clear();
+			_bioSeqToBars.clear();
+			selected.clear();
+			_maxValue = 10;
+			_seqCount = 0;
+			_currentSeqGroup = seqGroup;
+
+			SwingWorker<Void, Void> worker;
+			worker = new SwingWorker<Void, Void>(){
+
+				@Override
+				protected Void doInBackground(){
+					// add notification Message
+					Application.getSingleton().addNotLockedUpMsg("Initialize BarMap");
+
+					if (_currentSeqGroup == null) {
+						loadTestData();
+					} else {
+						loadData();
+					}
 
 
-		map.clearWidget();
-		_bars.clear();
-		selected.clear();
-		_maxValue = 10;
-		_seqCount = 0;
-		_currentSeqGroup = seqGroup;
 
-		SwingWorker<Void, Void> worker;
-		worker = new SwingWorker<Void, Void>(){
 
-			@Override
-			protected Void doInBackground(){
-				// add notification Message
-				Application.getSingleton().addNotLockedUpMsg("Initialize BarMap");
+					// X (Vertical) Range
+					map.setMapOffset(0, _barOffset + _seqCount * (_barWidth + _barMargin));
 
-				if (_currentSeqGroup == null) {
-					loadTestData();
-				} else {
-					loadData();
+					// Y (Horizontal) Range
+					map.setMapRange(-(int) ((float) _maxValue * _verticalInitialZoom), 0);
+
+
+
+					AxisGlyph axis = new AxisGlyph(NeoConstants.VERTICAL);
+					axis.setCoords(_achsisOffset - 10, map.getScene().getCoordBox().y, 20,
+							map.getScene().getCoordBox().height);
+					axis.setTickPlacement(AxisGlyph.LEFT);
+					axis.setCoords(_achsisOffset, 0, 0, -((float) _maxValue * _verticalInitialZoom));
+					axis.setLabelFormat(AxisGlyph.COMMA);
+					map.addAxis(axis);
+
+
+					// dreates hairline, to mark selection
+					hairline = new com.affymetrix.igb.glyph.fhh.UnibrowHairline(map);
+					// scroll by default in at the minimum coordinate of Y-Achsis
+					map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
+					hairline.setKeepHairlineInView(false);
+					hairline.setPixelOffset(_barOffset);
+
+					map.stretchToFit();
+
+					map.scroll(NeoMap.Y, -((float) _maxValue * _verticalInitialZoom));
+
+
+					map.updateWidget();
+					// scroll by default in at the minimum coordinate of X-Achsis
+					hairline.setSpot(getXZoomPoint(_barOffset));
+					// scroll by default in at the minimum coordinate of Y-Achsis
+					map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
+
+					map.scroll(NeoMap.Y, -((float) _maxValue * _verticalInitialZoom));
+
+					_initialized = true;
+
+					//BioSeq selectedSeq = gmodel.getSelectedSeq();
+					SeqBarGlyph g = _bioSeqToBars.get(gmodel.getSelectedSeq());
+					if( g != null )
+					{
+						selectBar(g);
+					}
+
+					return null;
 				}
 
+				@Override
+				protected void done(){
+					// remove Message
+					Application.getSingleton().removeNotLockedUpMsg("Initialize BarMap");
+				}
+			};
+			// Execute the SwingWorker; the GUI will not freeze
+			worker.execute();
+		}
 
-
-
-				// X (Vertical) Range
-				map.setMapOffset(0, _barOffset + _seqCount * (_barWidth + _barMargin));
-
-				// Y (Horizontal) Range
-				map.setMapRange(-(int) ((float) _maxValue * _verticalInitialZoom), 0);
-
-
-
-				AxisGlyph axis = new AxisGlyph(NeoConstants.VERTICAL);
-				axis.setCoords(_achsisOffset - 10, map.getScene().getCoordBox().y, 20,
-						map.getScene().getCoordBox().height);
-				axis.setTickPlacement(AxisGlyph.LEFT);
-				axis.setCoords(_achsisOffset, 0, 0, -((float) _maxValue * _verticalInitialZoom));
-				axis.setLabelFormat(AxisGlyph.COMMA);
-				map.addAxis(axis);
-
-
-				// dreates hairline, to mark selection
-				hairline = new com.affymetrix.igb.glyph.fhh.UnibrowHairline(map);
-				// scroll by default in at the minimum coordinate of Y-Achsis
-				map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
-				hairline.setKeepHairlineInView(false);
-				hairline.setPixelOffset(_barOffset);
-
-				map.stretchToFit();
-
-				map.scroll(NeoMap.Y, -((float) _maxValue * _verticalInitialZoom));
-
-
-				map.updateWidget();
-				// scroll by default in at the minimum coordinate of X-Achsis
-				hairline.setSpot(getXZoomPoint(_barOffset));
-				// scroll by default in at the minimum coordinate of Y-Achsis
-				map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
-
-				_initialized = true;
-
-
-				return null;
+		// if the group is allready loaded try to select the
+		// bar which represents the selected sequence in the SeqMap
+		if ( seqGroup != null) {
+			//BioSeq selectedSeq = gmodel.getSelectedSeq();
+			SeqBarGlyph g = _bioSeqToBars.get(gmodel.getSelectedSeq());
+			if( g != null )
+			{
+				selectBar(g);
 			}
+		}
+	}
 
-			@Override
-			protected void done(){
-				// remove Message
-				Application.getSingleton().removeNotLockedUpMsg("Initialize BarMap");
-			}
-		};
-		// Execute the SwingWorker; the GUI will not freeze
-		worker.execute();
+	private void selectBar(SeqBarGlyph g) {
+		// DESELECT THE OLD GLYPHS
+		Iterator<SeqBarGlyph> it = selected.iterator();
+		while (it.hasNext()) {
+			it.next().setBackgroundColor(_barBGColor);
+		}
+		selected.clear();
+		selected.add(g);
+		g.setBackgroundColor(_barSelectedBGColor);
 	}
 
 	private void initNeoMap() {
@@ -234,29 +272,22 @@ public class BarGraphMap extends JPanel {
 		Point2D.Double zoom_point = new Point2D.Double(nevt.getCoordX(), nevt.getCoordY());
 		List<GlyphI> hits = nevt.getItems();
 
-		// DESELECT THE OLD GLYPHS
-		Iterator<SeqBarGlyph> it = selected.iterator();
-		while (it.hasNext()) {
-			it.next().setBackgroundColor(_barBGColor);
-		}
-		selected.clear();
-
-		Iterator<GlyphI> it2 = hits.iterator();
+		boolean barSelected = false;
 		// SELECT THE NEW GLYPHS
-
+		Iterator<GlyphI> it2 = hits.iterator();
 		while (it2.hasNext()) {
 			GlyphI g = it2.next();
 			System.out.println(g.getCoordBox().getY());
 			if (g instanceof SeqBarGlyph) {
-				selected.add((SeqBarGlyph) g);
-				((SeqBarGlyph) g).setBackgroundColor(_barSelectedBGColor);
+				selectBar(((SeqBarGlyph) g));
+				barSelected = true;
 				break;// no multiselection
 			}
 		}
 
 		// select the sequence in the seq group and jump to the
 		// seq map view
-		if( selected.size() > 0 ){
+		if( barSelected ){
 			BioSeq seq = _bars.get(selected.get(0)).getSeq();
 			if( seq != null){
 				if (seq != gmodel.getSelectedSeq()) {
@@ -285,16 +316,20 @@ public class BarGraphMap extends JPanel {
 		g.setCoords(_bars.size() * (_barWidth + _barMargin), 0, 10, -reads);
 		//g.setCoords(_bars.size()*(_barWidth), 0, 10, -reads);
 		_bars.put(g, readsAnalysis);
+		_bioSeqToBars.put(readsAnalysis.getSeq(), g);
 		map.addItem(g);
 	}
 
 	private void loadData() {
+		// prüfen ob SeqGruppe null ist
 		if (_currentSeqGroup == null) {
 			throw new RuntimeException("Sequence Group is null!");
 		}
 
 
-		if (_groups.containsKey(_currentSeqGroup)) {
+		// falls gruppe bereits im cache, dann lade die benötigten daten
+		if (	_groups.containsKey(_currentSeqGroup) &&
+				_groupsHash.get(_currentSeqGroup).intValue() == _currentSeqGroup.getSeqList().hashCode()) {
 			_currentStatistics = _groups.get(_currentSeqGroup);
 		} else {
 			// create new read statistics list
@@ -310,7 +345,9 @@ public class BarGraphMap extends JPanel {
 
 			Collections.sort(_currentStatistics, new SeqReadsComparator());
 
+
 			_groups.put(_currentSeqGroup, _currentStatistics);
+			_groupsHash.put(_currentSeqGroup, new Integer(_currentSeqGroup.getSeqList().hashCode()));
 		}
 
 		_seqCount = _currentStatistics.size();
