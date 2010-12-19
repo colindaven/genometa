@@ -299,6 +299,9 @@ public final class LoadFileAction extends AbstractAction {
 								Iterator<SAMRecord> iterator = reader.iterator();
 								int i = 0;
 								while (iterator.hasNext()) {
+									if(isCancelled()) {
+										break;
+									}
 									writer.addAlignment(iterator.next());
 									i++;
 									if((i % 500000) == 0) {	// show progress in statusbar
@@ -375,6 +378,9 @@ public final class LoadFileAction extends AbstractAction {
 							Iterator<SAMRecord> iterator = reader.iterator();
 							int i = 0;
 							while (iterator.hasNext()) {
+								if(isCancelled()) {
+									break;
+								}
 								writer.addAlignment(iterator.next());
 								i++;
 								if((i % 500000) == 0) {	// show progress in statusbar
