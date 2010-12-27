@@ -284,12 +284,14 @@ public final class LoadFileAction extends AbstractAction {
 
 						SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 							SwingWorkerCancelDialog cancelDialog = new SwingWorkerCancelDialog(gviewerFrame, this);
-							String notLockedUpMsg = "Sorting " + inputFile.getName() + " to " + outputFile.getName();
+							String statusText = "Sorting " + inputFile.getName() + " to " + outputFile.getName();
+							String notLockedUpMsg = statusText;
 
 							@Override
 							public Void doInBackground() {
 								Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 								cancelDialog.showCancelDialog("Sorting", notLockedUpMsg, null);
+
 
 								SAMFileHeader newHeader = correctHeader(reader.getFileHeader());
 								
@@ -306,7 +308,7 @@ public final class LoadFileAction extends AbstractAction {
 									i++;
 									if((i % 500000) == 0) {	// show progress in statusbar
 										Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
-										notLockedUpMsg = notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads";
+										notLockedUpMsg = statusText + ": " + new DecimalFormat( ",###" ).format(i) + " Reads";
 										Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 									}
 								}
@@ -363,7 +365,8 @@ public final class LoadFileAction extends AbstractAction {
 
 					SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 						SwingWorkerCancelDialog cancelDialog = new SwingWorkerCancelDialog(gviewerFrame, this);
-						String notLockedUpMsg = "Sorting " + inputFile.getName() + " to " + outputFile.getName();
+						String statusText = "Sorting " + inputFile.getName() + " to " + outputFile.getName();
+						String notLockedUpMsg = statusText;
 
 						@Override
 						public Void doInBackground() {
@@ -385,7 +388,7 @@ public final class LoadFileAction extends AbstractAction {
 								i++;
 								if((i % 500000) == 0) {	// show progress in statusbar
 									Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
-									notLockedUpMsg = notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads";
+									notLockedUpMsg = statusText + ": " + new DecimalFormat( ",###" ).format(i) + " Reads";
 									Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 								}
 							}
@@ -481,7 +484,8 @@ public final class LoadFileAction extends AbstractAction {
 			
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 				SwingWorkerCancelDialog cancelDialog = new SwingWorkerCancelDialog(gviewerFrame, this);
-				String notLockedUpMsg = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
+				String statusText = "Transforming " + inputFile.getName() + " to " + outputFile.getName();
+				String notLockedUpMsg = statusText;
 
 				@Override
 				public Void doInBackground() {
@@ -512,7 +516,7 @@ public final class LoadFileAction extends AbstractAction {
 						i++;
 						if((i % 500000) == 0) {	// show progress in statusbar
 							Application.getSingleton().removeNotLockedUpMsg(notLockedUpMsg);
-							notLockedUpMsg = notLockedUpMsg + ": " + new DecimalFormat( ",###" ).format(i) + " Reads";
+							notLockedUpMsg = statusText + ": " + new DecimalFormat( ",###" ).format(i) + " Reads";
 							Application.getSingleton().addNotLockedUpMsg(notLockedUpMsg);
 						}
 					}
