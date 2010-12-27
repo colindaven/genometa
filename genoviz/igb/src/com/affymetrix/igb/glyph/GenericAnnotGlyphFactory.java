@@ -412,7 +412,8 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 				if (cspan.getLength() == 0) {
 					cds_glyph = new DeletionGlyph();
 				} else {
-					System.out.println("Added glyph: "+ child_glyph_class.getCanonicalName());
+					// commented out rev 196
+					//System.out.println("Added glyph: "+ child_glyph_class.getCanonicalName());
 					cds_glyph = (GlyphI) child_glyph_class.newInstance();
 				}
 //				cds_glyph.setCoords(cds_span.getMin(), 0, cds_span.getLength(), DEFAULT_THICK_HEIGHT);
