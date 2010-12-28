@@ -12,6 +12,7 @@
  */
 package com.affymetrix.igb.menuitem;
 
+import com.affymetrix.igb.util.SAMFileHeaderCorrection;
 import com.affymetrix.igb.view.SeqInfoView;
 import com.affymetrix.igb.util.SwingWorkerCancelDialog;
 import com.affymetrix.igb.util.JFileChooserWithOverwriteWarning;
@@ -555,16 +556,12 @@ public final class LoadFileAction extends AbstractAction {
 	 */
 	private static SAMFileHeader correctHeader(final SAMFileHeader header) {
 		final boolean header_correction = PreferenceUtils.getBooleanParam(LoadFileAction.PREF_HEADER_CORRECTION,
-																	LoadFileAction.default_pref_header_correction);
-		// ignore headerCorrection for now.. need to get fixed
-		/*
+																	LoadFileAction.default_pref_header_correction);		
 		if(header_correction == true) {
 			return SAMFileHeaderCorrection.getCorrectedHeader(header);
 		}else {
 			return header;
 		}
-		 */
-		return header;
 	}
 
 	/**
