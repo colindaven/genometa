@@ -19,6 +19,10 @@ public class SeqInfoTableModel extends AbstractTableModel {
 
 	private final AnnotatedSeqGroup group;
 
+	public AnnotatedSeqGroup getGroup() {
+		return group;
+	}
+
 	public SeqInfoTableModel(AnnotatedSeqGroup seq_group) {
 		group = seq_group;
 	}
@@ -28,27 +32,15 @@ public class SeqInfoTableModel extends AbstractTableModel {
 	}
 
 	public int getColumnCount() {
-		return 6;
+		return 5;
 	}
 
 	public Object getValueAt(int row, int col) {
 		if (group != null) {
 			BioSeq seq = group.getSeq(row);
 			if (col == 0) {
-				// evil hack to debug name field
-				try {
-					String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
-					String refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
-					String name = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq( refSeq );
-				return name;
-				}
-				catch ( Exception e )
-				{
-					return "";
-				}
-			} else if (col == 1) {
 				return GeneralLoadUtils.getNumberOfSymmetriesForSeq(seq);
-			} else if (col == 2) {
+			} else if (col == 1) {
 				// evil hack to debug name field
 				try {
 					String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
@@ -60,6 +52,19 @@ public class SeqInfoTableModel extends AbstractTableModel {
 				{
 					return "";
 				}
+			} else if (col == 2) {
+                            // evil hack to debug name field
+				try {
+				String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
+				String refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+				String name = SynonymLookup.getDefaultLookup().getGenomeSpeciesFromRefSeq( refSeq );
+				return name;
+				}
+				catch ( Exception e )
+				{
+					return "";
+				}
+				
 			} else if (col == 3) {
 				// evil hack to debug name field
 				try {
@@ -73,19 +78,6 @@ public class SeqInfoTableModel extends AbstractTableModel {
 					return "";
 				}
 			} else if (col == 4) {
-				// evil hack to debug name field
-				try {
-				String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
-				String refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
-				String name = SynonymLookup.getDefaultLookup().getGenomeSpeciesFromRefSeq( refSeq );
-				return name;
-				}
-				catch ( Exception e )
-				{
-					return "";
-				}
-
-			} else if (col == 5) {
 				// evil hack to debug lineage field
 				try {
 				String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
@@ -106,16 +98,14 @@ public class SeqInfoTableModel extends AbstractTableModel {
 	@Override
 	public String getColumnName(int col) {
 		if (col == 0) {
-			return "("+ getRowCount() +") Sequence(s)";
-		} else if (col == 1) {
 			return "Reads";
+		} else if (col == 1) {
+			return "Genus";
 		} else if (col == 2) {
-			return "Name";
+			return "Species";
 		} else if (col == 3) {
 			return "Strain";
 		} else if (col == 4) {
-			return "Species";
-		} else if (col == 5) {
 			return "Lineage";
 		} else {
 			return null;
@@ -125,17 +115,10 @@ public class SeqInfoTableModel extends AbstractTableModel {
 	@Override
 	public Class<?> getColumnClass(int c) {
 		switch (c) {
-			case 1:
+			case 0:
 				return Integer.class;
 			default:
 				return super.getColumnClass(c);
 		}
 	}
-
-//	private String getRefSeqIDFromBioSeqID(String id){
-//		//Get necessary informations from the current line (RefSeq id and genome name)
-//		String workingString = id.substring(id.indexOf("|NC_") + 1);
-//		//safe the refseq index and the corresponding chromesome name
-//		return workingString.substring(0, workingString.indexOf("|"));
-//	}
 }

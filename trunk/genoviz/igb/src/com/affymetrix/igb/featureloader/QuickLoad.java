@@ -185,9 +185,9 @@ public final class QuickLoad extends SymLoader {
 						GenometryModel.getGenometryModel().setSelectedSeq(QuickLoad.this.version.group.getSeq(0));
 					}
 
+					SeqInfoView.refreshTable(); //BFTAG added
 					SeqGroupView.refreshTable();
-					//BFTAG added
-					SeqInfoView.refreshTable();
+					
 					//BFTAG added : fix view-height after re-adjusting max expand
 					Application.getSingleton().getMapView().setAnnotatedSeq(Application.getSingleton().getMapView().getAnnotatedSeq(), true, true, true);
 				} catch (Exception ex) {
@@ -234,9 +234,9 @@ public final class QuickLoad extends SymLoader {
 						GenometryModel.getGenometryModel().setSelectedSeq(QuickLoad.this.version.group.getSeq(0));
 					}
 
+					SeqInfoView.refreshTable(); //BFTAG added
 					SeqGroupView.refreshTable();
-					//BFTAG added
-					SeqInfoView.refreshTable();
+					
 					//BFTAG added : fix view-height after re-adjusting max expand
 					Application.getSingleton().getMapView().setAnnotatedSeq(Application.getSingleton().getMapView().getAnnotatedSeq(), true, true, true);
 				} catch (Exception ex) {

@@ -321,13 +321,13 @@ public class BarGraphMap extends JPanel {
 	}
 
 	private void loadData() {
-		// prüfen ob SeqGruppe null ist
+		// pruefen ob SeqGruppe null ist
 		if (_currentSeqGroup == null) {
 			throw new RuntimeException("Sequence Group is null!");
 		}
 
 
-		// falls gruppe bereits im cache, dann lade die benötigten daten
+		// falls gruppe bereits im cache, dann lade die benoetigten daten
 		if (	_groups.containsKey(_currentSeqGroup) &&
 				_groupsHash.get(_currentSeqGroup).intValue() == _currentSeqGroup.getSeqList().hashCode()) {
 			_currentStatistics = _groups.get(_currentSeqGroup);
