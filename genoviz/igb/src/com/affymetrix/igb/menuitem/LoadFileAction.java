@@ -713,9 +713,9 @@ public final class LoadFileAction extends AbstractAction {
 
 			@Override
 			public void done() {
+				
+				SeqInfoView.refreshTable(); // BFTAG added
 				SeqGroupView.refreshTable();
-				//BFTAG added
-				SeqInfoView.refreshTable();
 				if (loadGroup.getSeqCount() > 0 && GenometryModel.getGenometryModel().getSelectedSeq() == null) {
 					// select a chromosomes
 					GenometryModel.getGenometryModel().setSelectedSeq(loadGroup.getSeq(0));

@@ -463,23 +463,10 @@ public final class IGB extends Application
 		// generate tabbed pane for plugins
 		left_tab_pane = new JTabbedPane();
 
-		//BFTAG changed
-		// generate a default list model representing a metagenomics overview list
-//		metagenomics_list_model = new DefaultListModel();
-//		metagenomics_list_model.addElement("Overview");
-//		metagenomics_list_model.addElement("- Species 1");
-//		metagenomics_list_model.addElement("- Species 2");
-//		metagenomics_list_model.addElement("- Species 3");
-
-		// generate a list to display list mode
-//		metagenomics_list = new JList(metagenomics_list_model);
-
-		// add metagenomics plugin proxy to tabbed pane
-//		left_tab_pane.addTab("Metagenomics", metagenomics_list);
+		//BFTAG added
 		seqInfo = new SeqInfoView();
-		seqInfo.refreshTable();
+//		seqInfo.refreshTable();
 		left_tab_pane.addTab("Metagenomics", seqInfo);
-		//BFTAG end
 
 		// add a splitter for the left hand side, choose an appropriate width
 		left_splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);

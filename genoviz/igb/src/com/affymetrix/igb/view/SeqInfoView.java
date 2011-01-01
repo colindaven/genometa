@@ -7,14 +7,15 @@ package com.affymetrix.igb.view;
 import com.affymetrix.genometryImpl.AnnotatedSeqGroup;
 import com.affymetrix.genometryImpl.BioSeq;
 import com.affymetrix.genometryImpl.GenometryModel;
-import com.affymetrix.genometryImpl.comparator.SeqSymIdComparator;
 import com.affymetrix.genometryImpl.event.GroupSelectionEvent;
 import com.affymetrix.genometryImpl.event.GroupSelectionListener;
 import com.affymetrix.genometryImpl.event.SeqSelectionEvent;
 import com.affymetrix.genometryImpl.event.SeqSelectionListener;
 import com.affymetrix.genometryImpl.util.DisplayUtils;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -22,11 +23,12 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
@@ -36,11 +38,10 @@ import javax.swing.table.TableRowSorter;
  */
 public final class SeqInfoView extends JComponent implements ListSelectionListener, GroupSelectionListener, SeqSelectionListener {
 
-	private static final String CHOOSESEQ = "Select a chromosome sequence";
 	private final static boolean DEBUG_EVENTS = false;
 	private final static GenometryModel gmodel = GenometryModel.getGenometryModel();
-	private static final String NO_GENOME = "No Genome Selected";
 	private static final JTable seqtable = new JTable();
+	private static List <RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
 	private BioSeq selected_seq = null;
 	private AnnotatedSeqGroup previousGroup = null;
 	private int previousSeqCount = 0;
@@ -49,7 +50,6 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 	private String most_recent_seq_id = null;
 
 	public SeqInfoView() {
-		seqtable.setToolTipText(CHOOSESEQ);
 		seqtable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		seqtable.setFillsViewportHeight(true);
 
@@ -65,7 +65,7 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 		this.add(Box.createRigidArea(new Dimension(0, 5)));
 		this.add(scroller);
 
-		this.setBorder(BorderFactory.createTitledBorder("Number of Reads"));
+		this.setBorder(BorderFactory.createTitledBorder("Read Info"));
 		gmodel.addGroupSelectionListener(this);
 		gmodel.addSeqSelectionListener(this);
 		lsm = seqtable.getSelectionModel();
@@ -86,8 +86,8 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 		JTableHeader headers = seqtable.getTableHeader();
 		TableColumnModel model = headers.getColumnModel();
 
-		TableColumn col1 = model.getColumn(0);
-		col1.setHeaderValue("(" + seqtable.getRowCount() + ") Sequence(s)");
+//		TableColumn col1 = model.getColumn(0);
+//		col1.setHeaderValue("(" + seqtable.getRowCount() + ") Sequence(s)");
 	}
 
 	public void groupSelectionChanged(GroupSelectionEvent evt) {
@@ -119,9 +119,9 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 			@Override
 			public Comparator<?> getComparator(int column) {
 				switch (column) {
+//					case 0:
+//						return String.CASE_INSENSITIVE_ORDER;
 					case 0:
-						return String.CASE_INSENSITIVE_ORDER;
-					case 1:
 						return new Comparator()
 						{
 							public int compare(Object a, Object b)
@@ -129,21 +129,25 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 								return ((Integer)a).compareTo((Integer)b);
 							}
 						};
+					case 1:
+						return String.CASE_INSENSITIVE_ORDER;
+					case 2:
+						return String.CASE_INSENSITIVE_ORDER;
 					case 3:
-						return String.CASE_INSENSITIVE_ORDER;
-					case 4:
-						return String.CASE_INSENSITIVE_ORDER;
-					case 5:
 						return String.CASE_INSENSITIVE_ORDER;
 				}
 				return null;
 			}
 		};
 
+		// BFTAG sort by read-counter descending
+		sortKeys.clear();
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
+		sorter.setSortKeys(sortKeys);
+
 		selected_seq = null;
 		seqtable.setModel(mod);
 		seqtable.setRowSorter(sorter);
-
 
 		refreshTable();
 
@@ -218,7 +222,10 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 			}
 			int srow = seqtable.getSelectedRow();
 			if (srow >= 0) {
-				String seq_name = (String) seqtable.getValueAt(srow, 0);
+				SeqInfoTableModel tbm = (SeqInfoTableModel) seqtable.getModel();
+				BioSeq seq = tbm.getGroup().getSeq(srow);
+//				String seq_name = (String) seqtable.getValueAt(srow, 0);
+				String seq_name = seq.getID();
 				selected_seq = gmodel.getSelectedSeqGroup().getSeq(seq_name);
 				if (selected_seq != gmodel.getSelectedSeq()) {
 					gmodel.setSelectedSeq(selected_seq);
