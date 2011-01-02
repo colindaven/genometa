@@ -19,10 +19,6 @@ public class SeqInfoTableModel extends AbstractTableModel {
 
 	private final AnnotatedSeqGroup group;
 
-	public AnnotatedSeqGroup getGroup() {
-		return group;
-	}
-
 	public SeqInfoTableModel(AnnotatedSeqGroup seq_group) {
 		group = seq_group;
 	}
@@ -32,7 +28,7 @@ public class SeqInfoTableModel extends AbstractTableModel {
 	}
 
 	public int getColumnCount() {
-		return 5;
+		return 6;
 	}
 
 	public Object getValueAt(int row, int col) {
@@ -91,6 +87,9 @@ public class SeqInfoTableModel extends AbstractTableModel {
 					return "";
 				}
 			}
+			else if(col == 5){
+				return seq.getID();
+			}
 		}
 		return null;
 	}
@@ -107,7 +106,11 @@ public class SeqInfoTableModel extends AbstractTableModel {
 			return "Strain";
 		} else if (col == 4) {
 			return "Lineage";
-		} else {
+		} else if(col == 5){
+			return "ID";
+		}
+		else
+		{
 			return null;
 		}
 	}
