@@ -28,8 +28,6 @@ import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -55,6 +53,8 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 
 		SeqInfoTableModel mod = new SeqInfoTableModel(null);
 		seqtable.setModel(mod);	// Force immediate visibility of column headers (although there's no data).
+		//BFTAG set column sizes
+		changeColumnWidths();
 
 		JScrollPane scroller = new JScrollPane(seqtable);
 		scroller.setBorder(BorderFactory.createCompoundBorder(
@@ -83,11 +83,34 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 	}
 
 	public static void updateTableHeader() {
-		JTableHeader headers = seqtable.getTableHeader();
-		TableColumnModel model = headers.getColumnModel();
-
+//		JTableHeader headers = seqtable.getTableHeader();
+//		TableColumnModel model = headers.getColumnModel();
+//
 //		TableColumn col1 = model.getColumn(0);
 //		col1.setHeaderValue("(" + seqtable.getRowCount() + ") Sequence(s)");
+
+		changeColumnWidths();
+	}
+
+	private static void changeColumnWidths(){
+		// Reads
+		seqtable.getColumnModel().getColumn(0).setMinWidth(50);
+		seqtable.getColumnModel().getColumn(0).setPreferredWidth(50);
+
+		// "hide" ID
+		seqtable.getColumnModel().getColumn(5).setMinWidth(0);
+		seqtable.getColumnModel().getColumn(5).setMaxWidth(0);
+		seqtable.getColumnModel().getColumn(5).setPreferredWidth(0);
+		seqtable.getColumnModel().getColumn(5).setWidth(0);
+//		try{
+		// BFTAG
+		// geht so nicht, da später auf Inhalt zugegriffen werden muss
+		// über seqtable.getModel().Column funktioniert das nicht, da nach sortiertung
+		// anderer Inhalt bei getValueAt() zurückgegeben wird
+//			seqtable.removeColumn(seqtable.getColumnModel().getColumn(5));
+//		}catch(Exception e){
+//			// do nothing
+//		}
 	}
 
 	public void groupSelectionChanged(GroupSelectionEvent evt) {
@@ -188,7 +211,7 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 				int rowCount = seqtable.getRowCount();
 				for (int i = 0; i < rowCount; i++) {
 					// should be able to use == here instead of equals(), because table's model really returns seq.getID()
-					if (most_recent_seq_id == seqtable.getValueAt(i, 0)) {
+					if (most_recent_seq_id == seqtable.getValueAt(i, 5)) { //BFTAG col 5 enthält die ID
 						if (seqtable.getSelectedRow() != i) {
 							seqtable.setRowSelectionInterval(i, i);
 							scrollTableLater(seqtable, i);
@@ -222,10 +245,7 @@ public final class SeqInfoView extends JComponent implements ListSelectionListen
 			}
 			int srow = seqtable.getSelectedRow();
 			if (srow >= 0) {
-				SeqInfoTableModel tbm = (SeqInfoTableModel) seqtable.getModel();
-				BioSeq seq = tbm.getGroup().getSeq(srow);
-//				String seq_name = (String) seqtable.getValueAt(srow, 0);
-				String seq_name = seq.getID();
+				String seq_name = (String) seqtable.getValueAt(srow, 5); //BFTAG col 5 enthält die ID
 				selected_seq = gmodel.getSelectedSeqGroup().getSeq(seq_name);
 				if (selected_seq != gmodel.getSelectedSeq()) {
 					gmodel.setSelectedSeq(selected_seq);
