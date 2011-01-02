@@ -401,21 +401,8 @@ public final class IGB extends Application
 		neoMapPane = new JTabbedPane();
 		neoMapPane.insertTab("Sequence Viewer", null, map_view, "Sequence Viewer", 0);
 
-		barGraph = new BarGraphMap();
-		neoMapPane.insertTab("Overview", null, barGraph, "Overview", 1);
-		neoMapPane.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if( neoMapPane.getSelectedComponent() == barGraph ){
-					if( GenometryModel.getGenometryModel().getSelectedSeqGroup() != null  ){
-						barGraph.init( GenometryModel.getGenometryModel().getSelectedSeqGroup() );
-					}else
-					{
-						barGraph.init( null );
-					}
-
-				}
-			}
-		});
+		neoMapPane.insertTab("Overview", null, BarGraphMap.getInstance(), "Overview", 1);
+		GenometryModel.getGenometryModel().addSeqSelectionListener(BarGraphMap.getInstance());
 
 		MenuUtil.addToMenu(tools_menu, new JMenuItem(WebLinksManagerView.getShowFrameAction()));
 		MenuUtil.addToMenu(tools_menu, new JMenuItem(new ExportOverviewDiagramToCsvAction(frm, barGraph)));
