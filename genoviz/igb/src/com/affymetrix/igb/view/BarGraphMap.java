@@ -15,6 +15,8 @@ package com.affymetrix.igb.view;
 import com.affymetrix.genometryImpl.AnnotatedSeqGroup;
 import com.affymetrix.genometryImpl.BioSeq;
 import com.affymetrix.genometryImpl.GenometryModel;
+import com.affymetrix.genometryImpl.event.SeqSelectionEvent;
+import com.affymetrix.genometryImpl.event.SeqSelectionListener;
 import com.affymetrix.genometryImpl.util.SynonymLookup;
 import com.affymetrix.genoviz.awt.AdjustableJSlider;
 import java.awt.event.MouseEvent;
@@ -38,13 +40,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.geom.Point2D;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-public class BarGraphMap extends JPanel {
+public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 
 	// Java GUI Components
 	NeoMap map;
@@ -78,7 +79,18 @@ public class BarGraphMap extends JPanel {
 
 	private final SeqReads TEST_SEQ = new SeqReads(null, 0);
 
-	public BarGraphMap() {
+
+	private static BarGraphMap _instance = null;
+
+	public static BarGraphMap getInstance(){
+		if( _instance == null )
+			_instance = new BarGraphMap();
+		return _instance;
+	}
+
+
+
+	private BarGraphMap() {
 		_groups = new HashMap<AnnotatedSeqGroup, ArrayList<SeqReads>>();
 		_groupsHash = new HashMap<AnnotatedSeqGroup, Integer>();
 		// init NeoMap
@@ -93,7 +105,6 @@ public class BarGraphMap extends JPanel {
 	 * the BarGraph
 	 */
 	public void init(AnnotatedSeqGroup seqGroup) {
-
 		boolean hasChanged = false;
 		if( _currentSeqGroup != null  ){
 			// check for the hasCode of the BioSeq Lists
@@ -191,13 +202,14 @@ public class BarGraphMap extends JPanel {
 
 		// if the group is allready loaded try to select the
 		// bar which represents the selected sequence in the SeqMap
-		if ( seqGroup != null) {
-			//BioSeq selectedSeq = gmodel.getSelectedSeq();
-			SeqBarGlyph g = _bioSeqToBars.get(gmodel.getSelectedSeq());
-			if( g != null )
-			{
-				selectBar(g);
-			}
+		BioSeq selectedSeq = gmodel.getSelectedSeq();
+		if ( selectedSeq != null) {
+				SeqBarGlyph g = _bioSeqToBars.get(selectedSeq);
+				if( g != null )
+				{
+					selectBar(g);
+					map.updateWidget();
+				}
 		}
 	}
 
@@ -336,11 +348,18 @@ public class BarGraphMap extends JPanel {
 			//_currentStatistics = new TreeSet<SeqReads>(new SeqReadsComparator());
 			_currentStatistics = new ArrayList<SeqReads>();
 
+			try{
 			//int c  = 0;
 			for (BioSeq bs : _currentSeqGroup.getSeqList()) {
 				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesForSeq(bs));
 				_currentStatistics.add(tmpSeqRead);
 				//if( ++c == 300) break;
+			}
+			}catch( Exception ex){
+				_currentSeqGroup = null;
+				_currentStatistics.clear();
+				_currentStatistics = null;
+				return;
 			}
 
 			Collections.sort(_currentStatistics, new SeqReadsComparator());
@@ -393,6 +412,14 @@ public class BarGraphMap extends JPanel {
 		}
 		map.getView().transformToCoords(pixZoomPoint, zoom_point);
 		return zoom_point.x;
+	}
+
+	public void seqSelectionChanged(SeqSelectionEvent evt) {
+		if( GenometryModel.getGenometryModel().getSelectedSeqGroup() != null  ){
+			this.init( GenometryModel.getGenometryModel().getSelectedSeqGroup() );
+		}else {
+			this.init( null );
+		}
 	}
 
 	public class SeqReadsComparator implements Comparator<SeqReads> {
