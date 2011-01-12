@@ -5,6 +5,7 @@
 
 package com.affymetrix.igb.util.aligner;
 
+import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,6 +25,10 @@ import javax.swing.JLabel;
  */
 public class BowtieAlignerWrapper extends AlignerWrapper {
 
+	public static final String BOWTIE_LOCATION_PREF = "BOWTIE_EXECUTABLE_LOCATION";
+	public static String bowtie_executable_location = PreferenceUtils.getTopNode()
+			.get(BowtieAlignerWrapper.BOWTIE_LOCATION_PREF, "");
+
 
 	@Override
 	public void runAligner(final JComponent componentToUpdate, final Object[] dataForComponentUpdate,
@@ -41,10 +46,11 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 						BufferedReader brCleanUp =
 							new BufferedReader (new InputStreamReader(stdout));
 						while((actLine = brCleanUp.readLine())!= null){
-							System.out.println(actLine);
+							AlignerOutputView.appandOutputText(actLine);
 						}
 						brCleanUp.close();
 					}catch (IOException ioe){
+						System.err.println("IOException thrown while reading external threads stdout");
 						ioe.printStackTrace();
 					}
 				}
@@ -58,10 +64,11 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 						BufferedReader brCleanUp =
 							new BufferedReader (new InputStreamReader(stderr));
 						while((actLine = brCleanUp.readLine())!= null){
-							System.out.println(actLine);
+							AlignerOutputView.appandErrorText(actLine);
 						}
 						brCleanUp.close();
 					}catch (IOException ioe){
+						System.err.println("IOException thrown while reading external threads stderr");
 						ioe.printStackTrace();
 					}
 				}
@@ -82,12 +89,14 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 								}
 								Thread.sleep(updateInterval);
 							} catch (InterruptedException ex) {
+								System.err.println("InterrupedException thrown while updating 'background work' images");
 								ex.printStackTrace();
 							}
 						}
 						label.setIcon(BowtieAlignerExecutor.getNoActivityImageIcon());
 					} catch (IOException ex) {
-						ex.printStackTrace();
+
+						System.err.println("Failed loading status images");
 					}
 				}
 				});
@@ -106,9 +115,9 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 			if(shell[i] != null | shell[i] != "")
 				executionParameters.add(shell[i]);
 		}
-//		String alignerExecutionString = findBowtieExecutionPath()+" -t " + indexLocation
-//				+ " -e 100 --sam -3 4 -p 7 -q " + readInputFile + " " + outputFilePath;
-		String alignerExecutionString = "igb\\resources\\ConsoleApplication1.exe 1000";
+		String alignerExecutionString = BowtieAlignerWrapper.getBowtieExecutablePath()+" -t " + indexLocation
+				+ " -e 100 --sam -3 4 -p 7 -q " + readInputFile + " " + outputFilePath;
+//		String alignerExecutionString = "igb\\resources\\ConsoleApplication1.exe 1000";
 		executionParameters.add(alignerExecutionString);
 
 		String[] returnArray = new String[executionParameters.size()];
@@ -117,11 +126,17 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 	}
 
 	/**
-	 * Try to find the location of Bowtie
-	 * @return the Path to bowtie;
+	 * Method to set the Path to the Executable of the bowtie aligner. Will automaticlally set this path
+	 *  to the Preference BOWTIE_EXECUTABLE_LOCATION
+	 * @param path The Path to the Bowtie aligner
 	 */
-	private String findBowtieExecutionPath(){
-		return "/home/pool336pc02/Downloads/bowtie-0.12.7/bowtie";
+	public static void setBowtieExecutablePath(String path){
+		bowtie_executable_location = path;
+		PreferenceUtils.getTopNode().put(BowtieAlignerWrapper.BOWTIE_LOCATION_PREF, path);
+	}
+
+	public static String getBowtieExecutablePath(){
+		return bowtie_executable_location;
 	}
 
 }

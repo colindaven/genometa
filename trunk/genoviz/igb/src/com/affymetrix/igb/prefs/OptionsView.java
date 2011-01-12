@@ -21,12 +21,15 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
+import com.affymetrix.igb.IGB;
 import com.affymetrix.igb.glyph.AlignedResidueGlyph;
 import com.affymetrix.igb.menuitem.LoadFileAction;
 import com.affymetrix.igb.tiers.AxisStyle;
+import com.affymetrix.igb.util.aligner.BowtieAlignerWrapper;
 import com.affymetrix.igb.view.OrfAnalyzer;
 import com.affymetrix.igb.view.SeqMapView;
 import com.affymetrix.igb.view.UnibrowHairline;
+import java.io.File;
 
 /**
  *  A panel that shows the preferences for particular special URLs and file locations.
@@ -130,7 +133,7 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 
 
 	//MAPTAG added
-	 JPanel dir_bar_box = new JPanel();
+	JPanel dir_bar_box = new JPanel();
     dir_bar_box.setLayout(new GridLayout(4,2));
     dir_bar_box.setBorder(new javax.swing.border.TitledBorder("Direction Bar"));
 
@@ -155,6 +158,50 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 
 
     dir_bar_box.setAlignmentX(0.0f);
+	//TODO ggf filechooser einbauen?
+	JPanel aligner_opt_box = new JPanel();
+	GridBagConstraints gbc = new GridBagConstraints();
+    aligner_opt_box.setLayout(new GridBagLayout());
+    aligner_opt_box.setBorder(new javax.swing.border.TitledBorder("Aligner options"));
+
+    final JTextField aligner_opt_bowtie_location = new JTextField();
+	JButton aligner_opt_bowtie_location_set = new JButton("Set");
+	aligner_opt_bowtie_location_set.setToolTipText("Set the path to the bowtie aligner.");
+	aligner_opt_bowtie_location_set.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(new File(aligner_opt_bowtie_location.getText()).exists()){
+					BowtieAlignerWrapper.setBowtieExecutablePath(aligner_opt_bowtie_location.getText());
+				}else{
+					JOptionPane.showMessageDialog(PreferencesPanel.getSingleton().getFrame(), "The file you choosed does not exist",
+							"File not found", JOptionPane.ERROR_MESSAGE);
+				}
+			} });
+	gbc.fill = GridBagConstraints.BOTH;
+	gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = .2;
+    aligner_opt_box.add(new JLabel("bowtie location: "), gbc);
+	gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = .6;
+    aligner_opt_box.add(aligner_opt_bowtie_location, gbc);
+	gbc.gridx = 2; gbc.gridy = 0; gbc.weightx = .2;
+    aligner_opt_box.add(aligner_opt_bowtie_location_set, gbc);
+
+
+    final JTextField aligner_opt_bwa_location = new JTextField();
+	JButton aligner_opt_bwa_location_set = new JButton("Set");
+	aligner_opt_bwa_location_set.setToolTipText("Set the path to the bwa aligner");
+	aligner_opt_bwa_location_set.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BowtieAlignerWrapper.setBowtieExecutablePath(
+						aligner_opt_bwa_location.getText()
+						.replaceAll("\\", System.getProperty("file.separator")));
+			} });
+	gbc.fill = GridBagConstraints.BOTH;
+	gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = .2;
+    aligner_opt_box.add(new JLabel("bwa location: "), gbc);
+	gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = .6;
+    aligner_opt_box.add(aligner_opt_bwa_location, gbc);
+	gbc.gridx = 2; gbc.gridy = 1; gbc.weightx = .2;
+    aligner_opt_box.add(aligner_opt_bwa_location_set, gbc);
+    aligner_opt_box.setAlignmentX(0.0f);
 	//MPTAG end
 
     axis_box.setAlignmentX(0.0f);
@@ -169,6 +216,7 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
     main_box.add(orf_box);
 	main_box.add(base_box);
 	main_box.add(dir_bar_box);
+	main_box.add(aligner_opt_box);
     main_box.add(Box.createRigidArea(new Dimension(0,5)));
     main_box.add(misc_box);
 

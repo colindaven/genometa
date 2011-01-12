@@ -6,8 +6,12 @@
 package com.affymetrix.igb.util.aligner;
 
 import java.awt.GridBagConstraints;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -134,5 +138,37 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 			supportedIndexes += "*."+outputFileExtensions[outputFileExtensions.length-1];
 			return supportedIndexes;
 		}
+	}
+
+
+	/**
+	 * Loads the image used on the lower right of the statusbar to indicate that an aligner
+	 * is working or not. This ImageIcon is used to indicate no aligner is working in an subthread
+	 * @return the ImageIcon indicating that no Aligner is running in background
+	 * @throws IOException if the image ./igb/resources/clock_0.png cant be found
+	 */
+	public static ImageIcon getNoActivityImageIcon() throws IOException{
+		Image i = ImageIO.read(new File("./igb/resources/clock_0.png"));
+		return new ImageIcon(i.getScaledInstance(
+					15, 15, Image.SCALE_SMOOTH));
+	}
+
+	/**
+	 * Loads the ImageIcons used on the lower richt of the statusbar to indicate an aligner is working in background.
+	 * @return for images used as animation for a working clock
+	 * @throws IOException when one of the following images couldnt be loaded:
+	 *		./igb/resources/clock_1.png, ./igb/resources/clock_2.png, ./igb/resources/clock_3.png,./igb/resources/clock_4.png
+	 */
+	public static ImageIcon[] getProgressImageIcons() throws IOException{
+		ImageIcon[] progressImages = new ImageIcon[4];
+		progressImages[0] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_1.png"))
+				.getScaledInstance(15, 15, Image.SCALE_FAST));
+		progressImages[1] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_2.png"))
+				.getScaledInstance(15, 15, Image.SCALE_FAST));
+		progressImages[2] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_3.png"))
+				.getScaledInstance(15, 15, Image.SCALE_FAST));
+		progressImages[3] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_4.png"))
+				.getScaledInstance(15, 15, Image.SCALE_FAST));
+		return progressImages;
 	}
 }
