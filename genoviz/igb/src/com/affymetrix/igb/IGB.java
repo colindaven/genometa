@@ -62,6 +62,7 @@ import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.igb.action.*;
 import com.affymetrix.igb.util.ScriptFileLoader;
 import com.affymetrix.igb.util.ThreadUtils;
+import com.affymetrix.igb.util.aligner.AlignerOutputView;
 import com.affymetrix.igb.view.external.ExternalViewer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -406,7 +407,6 @@ public final class IGB extends Application
 
 		MenuUtil.addToMenu(tools_menu, new JMenuItem(WebLinksManagerView.getShowFrameAction()));
 		MenuUtil.addToMenu(tools_menu, new JMenuItem(new ExportOverviewDiagramToCsvAction(frm, barGraph)));
-		MenuUtil.addToMenu(tools_menu, new JMenuItem(new BowtieAlignerExecutionAction()));
 
 		MenuUtil.addToMenu(help_menu, new JMenuItem(new AboutIGBAction()));
 		MenuUtil.addToMenu(help_menu, new JMenuItem(new ForumHelpAction()));
@@ -512,6 +512,7 @@ public final class IGB extends Application
 		plugins_info.add(new PluginInfo(SimpleGraphTab.class.getName(), BUNDLE.getString("graphAdjusterTab"), true));
 		plugins_info.add(new PluginInfo(RestrictionControlView.class.getName(), BUNDLE.getString("restrictionSitesTab"), true));
 		plugins_info.add(new PluginInfo(ExternalViewer.class.getName(), BUNDLE.getString("externalViewTab"), true));
+		plugins_info.add(new PluginInfo(AlignerOutputView.class.getName(), AlignerOutputView.name, true));
 
 
 		plugins_info.addAll(XmlPrefsParser.getPlugins());

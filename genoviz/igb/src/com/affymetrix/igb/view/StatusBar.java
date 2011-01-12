@@ -44,7 +44,7 @@ public final class StatusBar extends JPanel {
 		try{
 			aligner_status = new JLabel( BowtieAlignerExecutor.getNoActivityImageIcon() );
 		}catch (IOException ioe){
-			System.out.println("Bild nicht gefunden!!");
+			System.out.println("Failed loading background activity images");
 		}
 
 		status_ta = new JLabel("");

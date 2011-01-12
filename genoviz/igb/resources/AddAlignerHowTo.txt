@@ -1,0 +1,11 @@
+This file contains all informations how to add a new Aligner to genometa:
+
+- you have to add a new Filepath option to the OptionsView.java file.
+- you have to create subclasses of com.affimetrix.igb.util.aligner.AligernExecutor.java
+and com.affimetrix.igb.util.aligner.AligernWrapper.java to set up the input parameters
+for the Aligner you are about to use including the Fileextensions for inputfiles
+and others.
+- you have to add the Aligner as an option to com.affimetrix.igb.util.aligner.AlignerOutputView.java
+to call youre AlignerWrapper. You should not forget to bind the output and error streams to
+the AlignerOutputView.appandOutputText(String s) and AlignerOutputView.appandErrorText(String s)
+methods
