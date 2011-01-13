@@ -46,9 +46,9 @@ public abstract class AlignerWrapper {
 			shell[0] = "/bin/bash";
 			shell[1] = "-c";
 		}else if(os.contains("mac")){
-			shell[0] = ""; //TODO welche shell bei MacOS ??
+			throw new UnsupportedOperationException("External alignment is not supported for your operating system");
 		}else{
-			shell[0] = "";
+			throw new UnsupportedOperationException("External alignment is not supported for your operating system");
 		}
 		return shell;
 	}
@@ -64,10 +64,14 @@ public abstract class AlignerWrapper {
 			final int updateInterval) throws IOException;
 
 	/**
-	 * Erzeugt alle
-	 * @return
+	 * Creates all parametes needed to call the aligner. First determines which shell to use,
+	 * sencond adds the execution path of the aligner, third adds all parameters for the aligner.
+	 * If the aligner has to be executed more then once with different parameters this can be controlled
+	 * by the parameter paramIdx
+	 * @param paramIdx the parameter array to be generated if there are more than one threads to generate
+	 * @return a String Array containing all parameters to execute the aligner
 	 */
-	public abstract String[] generateExecutionParameters();
+	public abstract String[] generateExecutionParameters(int paramIdx);
 
 	/**
 	 * Returns true if the Thread is still running. Knows that by asking for the Theads exit Value
@@ -83,4 +87,27 @@ public abstract class AlignerWrapper {
 		}
 	}
 
+	protected String getIndexLocation(){
+		return indexLocation;
+	}
+
+	protected void setIndexLocation(String idxLoc){
+		indexLocation = idxLoc;
+	}
+
+	protected String getReadInputFile(){
+		return readInputFile;
+	}
+
+	protected void setReadInputFile(String readInput){
+		readInputFile = readInput;
+	}
+
+	protected String getOutputFilePath(){
+		return outputFilePath;
+	}
+
+	protected void setOutputFilePath(String outFilePath){
+		outputFilePath = outFilePath;
+	}
 }

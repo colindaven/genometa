@@ -9,13 +9,9 @@ import com.affymetrix.igb.Application;
 import com.affymetrix.igb.util.ThreadUtils;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
@@ -47,17 +43,21 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			//Start File Chooser to select Reads File
 			retVal = readsInputFileChooser.showOpenDialog(this);
 			if(retVal == JFileChooser.APPROVE_OPTION){
-				readsTF.setText(indexFileChooser.getSelectedFile().getAbsolutePath());
+				readsTF.setText(readsInputFileChooser.getSelectedFile().getAbsolutePath());
 			}
 		}else if("samChooser".equals(e.getActionCommand())){
 			//Start File Chooser to select Output location
 			retVal = samOutputFileChooser.showSaveDialog(this);
 			if(retVal == JFileChooser.APPROVE_OPTION){
-				samTF.setText(indexFileChooser.getSelectedFile().getAbsolutePath());
+				samTF.setText(samOutputFileChooser.getSelectedFile().getAbsolutePath());
 			}
 		}else if("okayAction".equals(e.getActionCommand())){
+				final BowtieAlignerWrapper bowtie = new BowtieAlignerWrapper();
+				bowtie.setIndexLocation(indexTF.getText());
+				bowtie.setReadInputFile(readsTF.getText());
+				bowtie.setOutputFilePath(samTF.getText());
 			SwingWorker<Integer, Integer> worker = new SwingWorker<Integer, Integer>() {
-				BowtieAlignerWrapper bowtie = new BowtieAlignerWrapper();
+//				BowtieAlignerWrapper bowtie = new BowtieAlignerWrapper();
 				@Override
 				public Integer doInBackground() {
 					try {

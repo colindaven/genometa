@@ -29,7 +29,7 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 
 	protected JLabel indexLabel = new JLabel("Index location:");
 	//Textfield to print the actual selected path
-	protected JTextField indexTF = new JTextField(30);
+	protected final JTextField indexTF = new JTextField(30);
 	//Button to call the filechooser
 	protected JButton indexChooserOpener;
 	//Filechooser to locate the index file
@@ -38,13 +38,13 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	protected String[] indexFileExtensions;
 
 	protected JLabel readsLabel = new JLabel("Read input file location:");
-	protected JTextField readsTF = new JTextField(30);
+	protected final JTextField readsTF = new JTextField(30);
 	protected JButton readsChooserOpener;
 	protected JFileChooser readsInputFileChooser;
 	protected String[] readsFileExtensions;
 
 	protected JLabel samLabel = new JLabel("Alignment output location:");
-	protected JTextField samTF = new JTextField(30);
+	protected final JTextField samTF = new JTextField(30);
 	protected JButton samChooserOpener;
 	protected JFileChooser samOutputFileChooser;
 	protected String[] outputFileExtensions;//need not to be .sam for all Aligners
@@ -65,6 +65,7 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 		@Override
 		public boolean accept(File f) {
 			if(f != null){
+				if(f.isDirectory()) return true;
 				String fileExt = f.getName().substring(f.getName().lastIndexOf(".")+1);
 				for (int i = 0; i < indexFileExtensions.length; i++) {
 					String string = indexFileExtensions[i];
@@ -92,6 +93,7 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 		@Override
 		public boolean accept(File f) {
 			if(f != null){
+				if(f.isDirectory()) return true;
 				String fileExt = f.getName().substring(f.getName().lastIndexOf(".")+1);
 				for (int i = 0; i < readsFileExtensions.length; i++) {
 					String string = readsFileExtensions[i];
@@ -119,6 +121,7 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 		@Override
 		public boolean accept(File f) {
 			if(f != null){
+				if(f.isDirectory()) return true;
 				String fileExt = f.getName().substring(f.getName().lastIndexOf(".")+1);
 				for (int i = 0; i < outputFileExtensions.length; i++) {
 					String string = outputFileExtensions[i];
@@ -147,7 +150,7 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	 * @return the ImageIcon indicating that no Aligner is running in background
 	 * @throws IOException if the image ./igb/resources/clock_0.png cant be found
 	 */
-	public static ImageIcon getNoActivityImageIcon() throws IOException{
+	public final static ImageIcon getNoActivityImageIcon() throws IOException{
 		Image i = ImageIO.read(new File("./igb/resources/clock_0.png"));
 		return new ImageIcon(i.getScaledInstance(
 					15, 15, Image.SCALE_SMOOTH));
@@ -159,7 +162,7 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	 * @throws IOException when one of the following images couldnt be loaded:
 	 *		./igb/resources/clock_1.png, ./igb/resources/clock_2.png, ./igb/resources/clock_3.png,./igb/resources/clock_4.png
 	 */
-	public static ImageIcon[] getProgressImageIcons() throws IOException{
+	public final static ImageIcon[] getProgressImageIcons() throws IOException{
 		ImageIcon[] progressImages = new ImageIcon[4];
 		progressImages[0] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_1.png"))
 				.getScaledInstance(15, 15, Image.SCALE_FAST));
