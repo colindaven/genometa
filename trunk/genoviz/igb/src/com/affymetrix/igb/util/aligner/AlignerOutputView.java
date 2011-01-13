@@ -98,8 +98,7 @@ public class AlignerOutputView extends JComponent implements ActionListener{
 		StyleConstants.setForeground(set, Color.BLACK);
 		try {
 			doc.insertString(doc.getLength(), s+"\n", set);
-			//		outputText.setCaretPosition(outputText.getDocument().getLength());
-			//		outputText.setCaretPosition(outputText.getDocument().getLength());
+			outputText.setCaretPosition(outputText.getDocument().getLength());
 		} catch (BadLocationException ex) {
 			Logger.getLogger(AlignerOutputView.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -111,8 +110,7 @@ public class AlignerOutputView extends JComponent implements ActionListener{
 		StyleConstants.setForeground(set, Color.red);
 		try {
 			doc.insertString(doc.getLength(), s+"\n", set);
-			//		outputText.setCaretPosition(outputText.getDocument().getLength());
-			//		outputText.setCaretPosition(outputText.getDocument().getLength());
+			outputText.setCaretPosition(outputText.getDocument().getLength());
 		} catch (BadLocationException ex) {
 			Logger.getLogger(AlignerOutputView.class.getName()).log(Level.SEVERE, null, ex);
 		}

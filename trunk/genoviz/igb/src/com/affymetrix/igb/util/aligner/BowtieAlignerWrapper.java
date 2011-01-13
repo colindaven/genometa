@@ -6,22 +6,17 @@
 package com.affymetrix.igb.util.aligner;
 
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
-import java.awt.Image;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 /**
  *
- * @author pool336pc02
+ * @author Malte Paetow (malte.paetow@gmx.de)
  */
 public class BowtieAlignerWrapper extends AlignerWrapper {
 
@@ -33,8 +28,8 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 	@Override
 	public void runAligner(final JComponent componentToUpdate, final Object[] dataForComponentUpdate,
 			final int updateInterval) throws IOException {
-		try{//TODO ggf das ganze in einen eigenen Thread auslagern, damit man weiterarbeiten kann
-				executionProcess = Runtime.getRuntime().exec(generateExecutionParameters());
+		try{
+				executionProcess = Runtime.getRuntime().exec(generateExecutionParameters(0));
 				stdin = executionProcess.getOutputStream();
 				stdout = executionProcess.getInputStream();
 				stderr = executionProcess.getErrorStream();
@@ -108,16 +103,35 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 	}
 
 	@Override
-	public String[] generateExecutionParameters() {
+	public String[] generateExecutionParameters(int paramIdx) {
 		String[] shell = this.determineExecutionProcess();
 		Vector<String> executionParameters = new Vector<String>();
 		for (int i = 0; i < shell.length; i++) {
-			if(shell[i] != null | shell[i] != "")
+			if(shell[i] != null || shell[i] != "")
 				executionParameters.add(shell[i]);
 		}
-		String alignerExecutionString = BowtieAlignerWrapper.getBowtieExecutablePath()+" -t " + indexLocation
-				+ " -e 100 --sam -3 4 -p 7 -q " + readInputFile + " " + outputFilePath;
-//		String alignerExecutionString = "igb\\resources\\ConsoleApplication1.exe 1000";
+		//determine if input file is fasta or fastq
+		String[] readType = {"-f"/*fasta*/, "-q"/*fastq*/};
+		int readTypeIdx = -1;
+		String readsPathFileType = readInputFile.substring(readInputFile.lastIndexOf("."), readInputFile.length());
+		String[] readFilePossibleExt = {"fq", "fastq"/*Fastq*/,"fa", "fna", "fas","fasta"/*Fasta*/};
+		if(readsPathFileType.equalsIgnoreCase(readFilePossibleExt[0]) ||
+				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[1])){
+			//Its Fastq format
+			readTypeIdx = 1;
+		}else if(readsPathFileType.equalsIgnoreCase(readFilePossibleExt[2]) ||
+				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[3]) ||
+				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[4]) ||
+				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[5])){
+			//its Fasta format
+			readTypeIdx = 0;
+		}
+		String alignerExecutionString = "";
+		if(paramIdx == 0){
+			alignerExecutionString = BowtieAlignerWrapper.getBowtieExecutablePath()+" -t " + indexLocation
+					+ " -e 100 --sam -3 4 -p "+ (Runtime.getRuntime().availableProcessors()-1) +" "
+					+ readType[readTypeIdx] + " " + readInputFile + " " + outputFilePath;
+		}
 		executionParameters.add(alignerExecutionString);
 
 		String[] returnArray = new String[executionParameters.size()];
@@ -132,11 +146,20 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 	 */
 	public static void setBowtieExecutablePath(String path){
 		bowtie_executable_location = path;
-		PreferenceUtils.getTopNode().put(BowtieAlignerWrapper.BOWTIE_LOCATION_PREF, path);
+		PreferenceUtils.getTopNode().put(BowtieAlignerWrapper.BOWTIE_LOCATION_PREF, bowtie_executable_location);
 	}
 
 	public static String getBowtieExecutablePath(){
 		return bowtie_executable_location;
+	}
+
+	/**
+	 * Sets the index. Corrects the path to the first dot. index.1.ebwt => index
+	 * @param idxLoc the Path to the index
+	 */
+	protected void setIndexLocation(String idxLoc){
+		String s = idxLoc.substring(0, idxLoc.lastIndexOf("."));
+		indexLocation = s.substring(0, s.lastIndexOf("."));
 	}
 
 }

@@ -21,11 +21,11 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
-import com.affymetrix.igb.IGB;
 import com.affymetrix.igb.glyph.AlignedResidueGlyph;
 import com.affymetrix.igb.menuitem.LoadFileAction;
 import com.affymetrix.igb.tiers.AxisStyle;
 import com.affymetrix.igb.util.aligner.BowtieAlignerWrapper;
+import com.affymetrix.igb.util.aligner.BwaAlignerWrapper;
 import com.affymetrix.igb.view.OrfAnalyzer;
 import com.affymetrix.igb.view.SeqMapView;
 import com.affymetrix.igb.view.UnibrowHairline;
@@ -165,6 +165,9 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
     aligner_opt_box.setBorder(new javax.swing.border.TitledBorder("Aligner options"));
 
     final JTextField aligner_opt_bowtie_location = new JTextField();
+	//Try to set actual path to textfield
+	aligner_opt_bowtie_location.setText(PreferenceUtils.getTopNode()
+			.get(BowtieAlignerWrapper.BOWTIE_LOCATION_PREF, ""));
 	JButton aligner_opt_bowtie_location_set = new JButton("Set");
 	aligner_opt_bowtie_location_set.setToolTipText("Set the path to the bowtie aligner.");
 	aligner_opt_bowtie_location_set.addActionListener(new ActionListener() {
@@ -186,6 +189,9 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 
 
     final JTextField aligner_opt_bwa_location = new JTextField();
+	//Try to set actual path to textfield
+	aligner_opt_bwa_location.setText(PreferenceUtils.getTopNode()
+			.get(BwaAlignerWrapper.BWA_LOCATION_PREF, ""));
 	JButton aligner_opt_bwa_location_set = new JButton("Set");
 	aligner_opt_bwa_location_set.setToolTipText("Set the path to the bwa aligner");
 	aligner_opt_bwa_location_set.addActionListener(new ActionListener() {
