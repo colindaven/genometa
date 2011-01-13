@@ -98,7 +98,7 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 				updateComponent.start();
 				executionProcess.waitFor();//Waits for the task to complete
 			}catch(Exception ioe){
-				System.out.println(ioe);
+				ioe.printStackTrace();
 			}
 	}
 
@@ -113,7 +113,7 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 		//determine if input file is fasta or fastq
 		String[] readType = {"-f"/*fasta*/, "-q"/*fastq*/};
 		int readTypeIdx = -1;
-		String readsPathFileType = readInputFile.substring(readInputFile.lastIndexOf("."), readInputFile.length());
+		String readsPathFileType = readInputFile.substring(readInputFile.lastIndexOf(".")+1, readInputFile.length());
 		String[] readFilePossibleExt = {"fq", "fastq"/*Fastq*/,"fa", "fna", "fas","fasta"/*Fasta*/};
 		if(readsPathFileType.equalsIgnoreCase(readFilePossibleExt[0]) ||
 				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[1])){

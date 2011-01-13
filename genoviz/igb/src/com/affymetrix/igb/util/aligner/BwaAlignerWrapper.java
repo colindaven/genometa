@@ -138,10 +138,10 @@ public class BwaAlignerWrapper extends AlignerWrapper {
 				}
 				});
 				readStderr.start();
-				updateComponent.start();//Should be enough, since this is exactly the same behaviour like in the first execution
+//				updateComponent.start();//Should be enough, since this is exactly the same behaviour like in the first execution
 				executionProcess.waitFor();//Waits for the task to complete the second step of bwa (generating sam)
 			}catch(Exception ioe){
-				System.out.println(ioe);
+				ioe.printStackTrace();
 			}
 	}
 
