@@ -196,9 +196,12 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 	aligner_opt_bwa_location_set.setToolTipText("Set the path to the bwa aligner");
 	aligner_opt_bwa_location_set.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BowtieAlignerWrapper.setBowtieExecutablePath(
-						aligner_opt_bwa_location.getText()
-						.replaceAll("\\", System.getProperty("file.separator")));
+				if(new File(aligner_opt_bowtie_location.getText()).exists()){
+					BwaAlignerWrapper.setBwaExecutablePath(aligner_opt_bwa_location.getText());
+				}else{
+					JOptionPane.showMessageDialog(PreferencesPanel.getSingleton().getFrame(), "The file you choosed does not exist",
+							"File not found", JOptionPane.ERROR_MESSAGE);
+				}
 			} });
 	gbc.fill = GridBagConstraints.BOTH;
 	gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = .2;

@@ -86,8 +86,7 @@ public class AlignerOutputView extends JComponent implements ActionListener{
 			if(alignerSelection.getSelectedIndex() == 0){//bowtie
 				new BowtieAlignerExecutor();
 			}else if(alignerSelection.getSelectedIndex() == 1){//bwa
-				//new BwaAlignerExecutor()
-				throw new UnsupportedOperationException("bwa Aligner not yet implemented");
+				new BwaAlignerExecutor();
 			}
 		}
 	}
