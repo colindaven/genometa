@@ -366,11 +366,21 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 			try{
 			//int c  = 0;
 			for (BioSeq bs : _currentSeqGroup.getSeqList()) {
-				SeqReads tmpSeqRead = new SeqReads(bs, GeneralLoadUtils.getNumberOfSymmetriesForSeq(bs));
+				int readsNum = GeneralLoadUtils.getNumberOfSymmetriesForSeq(bs);
+				if( readsNum < 0)
+					continue;
+				SeqReads tmpSeqRead = new SeqReads(bs, readsNum);
 				_currentStatistics.add(tmpSeqRead);
 				//if( ++c == 300) break;
 			}
 			}catch( Exception ex){
+				_currentSeqGroup = null;
+				_currentStatistics.clear();
+				_currentStatistics = null;
+				return;
+			}
+
+			if( _currentStatistics.size() < 1){
 				_currentSeqGroup = null;
 				_currentStatistics.clear();
 				_currentStatistics = null;
