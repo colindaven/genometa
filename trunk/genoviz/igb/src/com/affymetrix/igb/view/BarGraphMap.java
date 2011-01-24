@@ -35,6 +35,7 @@ import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.FontMetrics;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -63,7 +64,7 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 	private int _barWidth = 10;
 	private int _barMargin = 1;
 	private float _verticalInitialZoom = 1.1f;// percantage (a value greater then 1.0 zooms out!)
-	private int _achsisOffset = 50;
+	private int _achsisOffset = 80;
 	private int _barOffset = _achsisOffset + 1;
 	private boolean _initialized = false;
 	private AnnotatedSeqGroup _currentSeqGroup = null;
@@ -138,7 +139,15 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 						loadData();
 					}
 
-
+					// check bar with most read-size (is the first cause sorted)
+					if( _currentStatistics.get(0).getReads().intValue() < 1000 )
+						setAchsisOffset(25);
+					else if( _currentStatistics.get(0).getReads().intValue() < 1000000 )
+						setAchsisOffset(50);
+					else if( _currentStatistics.get(0).getReads().intValue() < 1000000000 )
+						setAchsisOffset(80);
+					else
+						setAchsisOffset(110);
 
 
 					// X (Vertical) Range
@@ -318,6 +327,12 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 		map.updateWidget();
 	}
 
+	private void setAchsisOffset(int offset)
+	{
+		_achsisOffset = offset;
+		_barOffset = _achsisOffset + 1;
+	}
+
 	private void addBar(int reads, String line1, String line2, SeqReads readsAnalysis) {
 		SeqBarGlyph g = new SeqBarGlyph();
 		g.setColor(_barBGColor);
@@ -375,12 +390,12 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 		for (SeqReads sr : _currentStatistics) {
 			c++;
 			int reads = sr.getReads().intValue();
-			String id = sr.getSeqID();
-			String name = sr.getSeqName();
 
-			//String barText = "[" + c + "][" + reads + "] " + id;
-			String barText1 = "[ " + name + " ]";
-			String barText2 = "[ " + reads + " ] [ " + id + " ]";
+			String barText1 = "[ " + sr.getSeqGenus() + " . " +
+					sr.getSeqSpecies() + " . " +
+					sr.getSeqStrain() + " . " +
+					reads + " ]";
+			String barText2 =  "[ " + sr.getSeqID() + " ]";
 
 			//System.out.println("addBar: -= " + barText + " =-");
 
@@ -432,7 +447,9 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 
 		private BioSeq _seq = null;
 		private Integer _reads = null;
-		private String _seqName = null;
+		private String _seqGenus = null;
+		private String _seqSpecies = null;
+		private String _seqStrain = null;
 		private String _seqID = null;
 
 		public SeqReads(BioSeq seq, int reads) {
@@ -442,9 +459,11 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
             if( seq != null ){
 				_seqID = seq.getID();
 
-				_seqName = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(getRefSeqIDFromBioSeqID(_seqID));
+				_seqGenus = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq(getRefSeqIDFromBioSeqID(_seqID));
+				_seqSpecies = SynonymLookup.getDefaultLookup().getGenomeSpeciesFromRefSeq(getRefSeqIDFromBioSeqID(_seqID));
+				_seqStrain = SynonymLookup.getDefaultLookup().getGenomeStrainFromRefSeq(getRefSeqIDFromBioSeqID(_seqID));
             }else{
-				_seqName = "NC_TESTTESTTEST123456";
+				_seqGenus = "NC_TESTTESTTEST123456";
 			}
 		}
 
@@ -460,8 +479,16 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 			return _reads;
 		}
 
-         public String getSeqName(){
-			return _seqName;
+         public String getSeqGenus(){
+			return _seqGenus;
+		}
+
+		 public String getSeqSpecies(){
+			return _seqSpecies;
+		}
+
+		 public String getSeqStrain(){
+			return _seqStrain;
 		}
 
          public String getSeqID(){
