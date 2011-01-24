@@ -400,6 +400,7 @@ public final class SynonymLookup {
 	 */
 	public boolean loadMetatieFastalines(String filePath) {
 		FastaLineParser fastaParser = new FastaLineParser();
+		boolean checkSyntax = true;
 		//Clear up the map, maybe necessary on reload the metatie fastalines data
 		if(!_lookupFastalinesHashMap.isEmpty())
 			_lookupFastalinesHashMap.clear();
@@ -407,10 +408,22 @@ public final class SynonymLookup {
 		try {
 			FileReader fileReader = new FileReader(filePath);
 			BufferedReader bufReader = new BufferedReader(fileReader);
-			String currentLine;
 
-			while ((currentLine = bufReader.readLine()) != null) {		
-				
+			/*The following code block checks the first line of the stream for wrong
+			 syntax. It's necessary to mark the first position in the stram to reset
+			 after readLine() to this position and to start parsing the file
+			 from the beginning.*/
+			bufReader.mark(1);
+			String currentLine = bufReader.readLine();
+			
+			if(!currentLine.contains("|NC_")){
+				return false;
+			}
+			bufReader.reset();
+
+			while ((currentLine = bufReader.readLine()) != null) {
+
+				System.out.println(currentLine);
 				fastaParser.parseFastaHeader(currentLine);
 
 				//Array for saving all fasta line informations
@@ -434,6 +447,8 @@ public final class SynonymLookup {
 			System.out.println(sioe.getMessage());
 			return false;
 		}
+		if(_lookupFastalinesHashMap.isEmpty())
+			return false;
 
 		return true;
 	}
@@ -523,6 +538,9 @@ public final class SynonymLookup {
 			return "no lookup table set";
 		}
 
+		if(!refSeq.isEmpty())
+			removeRefseqVersion(refSeq);
+
 		String name = "";
 
 		try {
@@ -547,6 +565,11 @@ public final class SynonymLookup {
 		if (_lookupFastalinesHashMap.isEmpty()) {
 			return "no lookup table set";
 		}
+
+		if (!refSeq.isEmpty()) {
+			removeRefseqVersion(refSeq);
+		}
+
 		String species = "";
 		try {
 			species = _lookupFastalinesHashMap.get(refSeq)[1];
@@ -572,6 +595,11 @@ public final class SynonymLookup {
 		if (_lookupFastalinesHashMap.isEmpty()) {
 			return "no lookup table set";
 		}
+
+		if (!refSeq.isEmpty()) {
+			removeRefseqVersion(refSeq);
+		}
+
 		String strain = "";
 
 		try {
@@ -584,5 +612,45 @@ public final class SynonymLookup {
 		}
 
 		return "no strain found";
+	}
+
+	public String removeRefseqVersion(String refSeq){
+		if(!refSeq.contains("."))
+			return refSeq;
+
+		return refSeq.substring(refSeq.indexOf(".")-1);
+	}
+
+	/**
+	 * Retruns thr complete RefSeq String with genome, species abd strain.
+	 * @param refSeq the refseq id to search for
+	 * @return the complete string
+	 */
+	public String getCompleteRefSeqString(String refSeq) {
+
+		if (_lookupFastalinesHashMap.isEmpty()) {
+			return "no lookup table set";
+		}
+
+		String completeString = "";
+
+		if(!getGenomeFromRefSeq(refSeq).isEmpty())
+			completeString = getGenomeFromRefSeq(refSeq);
+		else
+			completeString = "no genome found";
+
+		if(!getGenomeSpeciesFromRefSeq(refSeq).isEmpty())
+			completeString += " "+getGenomeSpeciesFromRefSeq(refSeq);
+		else
+			completeString += " no species found";
+
+		if(!getGenomeStrainFromRefSeq(refSeq).isEmpty())
+			completeString += " "+getGenomeStrainFromRefSeq(refSeq);
+		else
+			completeString += " no strain found";
+
+		return completeString;
+
+
 	}
 }
