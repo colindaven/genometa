@@ -377,10 +377,10 @@ public final class IGB extends Application
 		//MPTAG added
 		mbar.add(new JLabel("                   "));
 		int iconWidth = 70; int iconHeight = 30;
-		ImageIcon io = new ImageIcon("./igb/resources/direction_not_selected.gif");
+		ImageIcon io = new ImageIcon("./resources/direction_not_selected.gif");
 		io.setImage(io.getImage().getScaledInstance(iconWidth,iconHeight , Image.SCALE_SMOOTH));
 		fast_dir_swap_menu = new JToggleButton(io, dir_swap_state);
-		io = new ImageIcon("./igb/resources/direction_selected.gif");
+		io = new ImageIcon("./resources/direction_selected.gif");
 		io.setImage(io.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH));
 		fast_dir_swap_menu.setSelectedIcon(io);
 		mbar.add(fast_dir_swap_menu);
