@@ -27,7 +27,6 @@ import com.affymetrix.genometryImpl.util.LocalUrlCacher;
 import com.affymetrix.genometryImpl.util.ServerUtils;
 import com.affymetrix.genometryImpl.general.GenericServer;
 import com.affymetrix.genometryImpl.util.LoadUtils.ServerStatus;
-import com.affymetrix.genometryImpl.util.SpeciesLookup;
 import java.io.*;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -353,15 +352,6 @@ public final class QuickLoadServerModel {
 				}
 				AnnotatedSeqGroup group = null;
 				String[] fields = tab_regex.split(line);
-
-				if (fields.length >= 3) {
-					String species = SpeciesLookup.getCommonSpeciesName(fields[2]);
-					if(species == null){
-						Logger.getLogger(QuickLoadServerModel.class.getName()).log(
-								Level.WARNING,"Skipping unknown species {0}.",new Object[]{fields[2]});
-						continue;
-					}
-				}
 				
 				String genome_name = "";
 				if (fields.length >= 1) {
