@@ -3,6 +3,7 @@ Anolis carolinensis	Anole Lizard	A_carolinensis	anoCar	Anolis_carolinensis
 Anopheles gambiae	Mosquito	A_gambiae	anoGam
 Apis mellifera	European honey bee	A. mellifera	A_mellifera	apiMel
 Aplysia californica	California sea hare	A_californica	aplCal
+Arabidopsis lyrata	Lyrate rockcress	A. lyrata	A_lyrata
 Arabidopsis thaliana	Thale cress	A_thaliana
 Arbacia punctulata	Purple-spined sea urchin	A_punctulata
 Bos taurus	Cow	B_taurus	bosTau	Bos_taurus
@@ -78,7 +79,7 @@ Otolemur garnettii	Nothern greater galago	O_garnettii		Otolemur_garnettii
 Ostreococcus lucimarinus	O. lucimarinus	O_lucimarinus	
 Pan troglodytes	Chimp	P_troglodytes	panTro	Pan_troglodytes
 Petromyzon marinus	Lamprey	P_marinus	petMar
-Physcomitrella patens	Bryophyta	P_patens
+Physcomitrella patens	Moss	P_patens
 Pinus taeda	Loblolly Pine	P. taeda	P_taeda
 Plasmodium falciparum	P. falciparum	P_falciparum	Pfalciparum_3D7_plasmoDB-5.4	Pfalciparum_3D7_plasmoDB-5.5
 Pongo pygmaeus abelii	Orangutan	P_abelii	ponAbe	Pongo_pygmaeus
@@ -90,7 +91,9 @@ Pteropus vampyrus	Large flying fox	P_vampyrus	pteVam	Pteropus_vampyrus
 Rattus norvegicus	Rat	R_norvegicus	rn	Rattus_norvegicus
 Ricinis communis	Castor oil plant	R_comunis
 Saccharomyces cerevisiae	Yeast	S_cerevisiae	sacCer	Saccharomyces_cerevisiae
-Schizosaccharomyces pombe	Fission yeast	S_pombe	
+Schizosaccharomyces pombe	Fission yeast	S_pombe
+Selaginella moellendorffii	Spikemoss	S. moellendorffii	S_moellendorffii
+Setaria italica	Foxtail millet	S. italica	S_italica
 Sigmodon hispidus	Cotton rat	S_hispidus
 Sodalis glossinidius	S. glossinidius	S_glossinidius
 Solanum lycopersicum	Tomato	S_lycopersicum
@@ -109,6 +112,7 @@ Tupaia belangeri	Northern tree shrew	T_belangeri		Tupaia_belangeri
 Tursiops truncatus	Bottlenose dolphin	T_truncatus	turTru	Tursiops_truncatus
 Vicugna pacos	Alpaca	V_pacos	vicPac	Vicugna_pacos
 Vitis vinifera	Common grape vine	V_vinifera
+Volvox carteri	Volvox	V. carteri	V_carteri
 Xenopus laevis	African clawed frog	X_laevis
 Xenopus tropicalis	Pipid frog	X_tropicalis	xenTro	Xenopus_tropicalis
 Yersinia pestis	Bubonic plague pathogen	Y_pestis

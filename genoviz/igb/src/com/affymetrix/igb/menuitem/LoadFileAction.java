@@ -72,8 +72,8 @@ public final class LoadFileAction extends AbstractAction {
 	private final JFrame gviewerFrame;
 	private final FileTracker load_dir_tracker;
 	public static int unknown_group_count = 1;
-	public static final String UNKNOWN_SPECIES_PREFIX = BUNDLE.getString("unknownGenome");
-	public static final String UNKNOWN_VERSION_PREFIX = BUNDLE.getString("unknownVersion");
+	public static final String UNKNOWN_SPECIES_PREFIX = BUNDLE.getString("unknownSpecies");
+	public static final String UNKNOWN_GENOME_PREFIX = BUNDLE.getString("unknownGenome");
 	private static final String SELECT_SPECIES = BUNDLE.getString("speciesCap");
 	private static final String MERGE_MESSAGE = 
 			"Must select a genome before loading a graph.  "
@@ -773,7 +773,7 @@ public final class LoadFileAction extends AbstractAction {
 		AnnotatedSeqGroup loadGroup = gmodel.getSelectedSeqGroup();
 		boolean mergeSelected = loadGroup == null ? false :true;
 		if (loadGroup == null) {
-			loadGroup = gmodel.addSeqGroup(UNKNOWN_VERSION_PREFIX + " " + unknown_group_count);
+			loadGroup = gmodel.addSeqGroup(UNKNOWN_GENOME_PREFIX + " " + unknown_group_count);
 		}
 
 		String speciesName = GeneralLoadView.getLoadView().getSelectedSpecies();
