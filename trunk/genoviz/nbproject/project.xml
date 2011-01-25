@@ -234,7 +234,7 @@
                 <package-root>genoviz_sdk/test</package-root>
                 <package-root>igb/test</package-root>
                 <package-root>protannot/src</package-root>
-                <classpath mode="compile">ext/javax.servlet.jar:ext/org.mortbay.jetty.jar:genometryImpl/src:ext/image4j.jar:ext/affx_fusion.jar:ext/freehep-2.1.1.jar:ext/commons-codec-1.4.jar:ext/catalina.jar:ext/cos.jar:ext/dom4j-1.6.1.jar:ext/hibernate3.jar:genoviz_sdk/src:ext/commons-compress-1.0.jar:ext/sam.jar:ext/picard.jar:ext/colt.jar:ext/junit.jar:ext/jide-common.jar:ext/jide-components.jar</classpath>
+                <classpath mode="compile">ext/javax.servlet.jar:ext/org.mortbay.jetty.jar:genometryImpl/src:ext/image4j.jar:ext/affx_fusion.jar:ext/freehep-2.1.1.jar:ext/commons-codec-1.4.jar:ext/catalina.jar:ext/cos.jar:ext/dom4j-1.6.1.jar:ext/hibernate3.jar:genoviz_sdk/src:ext/commons-compress-1.0.jar:ext/sam.jar:ext/picard.jar:ext/colt.jar:ext/junit.jar:ext/jide-common.jar:ext/jide-components.jar:ext/jide-grids.jar</classpath>
                 <built-to>das2_server/build</built-to>
                 <built-to>genometryImpl/build</built-to>
                 <built-to>genoviz_sdk/build</built-to>
