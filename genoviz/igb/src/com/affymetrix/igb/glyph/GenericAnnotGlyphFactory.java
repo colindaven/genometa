@@ -76,7 +76,7 @@ public final class GenericAnnotGlyphFactory implements MapViewGlyphFactoryI {
 	public GenericAnnotGlyphFactory() {
 		//MPTAG added
 		try{
-			File f = new File("./igb/resources/Schattierung.png");
+			File f = new File("./resources/Schattierung.png");
 			if(!f.exists())
 				throw new RuntimeException("Failed loading Image"+ f.getAbsolutePath());
 			texture = ImageIO.read(f);
