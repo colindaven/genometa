@@ -104,7 +104,7 @@ public final class MergeOptionChooser extends JFileChooser implements ActionList
 	private void populateVersionCB(){
 		String speciesName = (String) speciesCB.getSelectedItem();
 		versionCB.removeAllItems();
-		versionCB.addItem(LoadFileAction.UNKNOWN_VERSION_PREFIX + " " + LoadFileAction.unknown_group_count);
+		versionCB.addItem(LoadFileAction.UNKNOWN_GENOME_PREFIX + " " + LoadFileAction.unknown_group_count);
 		for(String version : GeneralLoadUtils.getGenericVersions(speciesName)){
 			versionCB.addItem(version);
 		}
