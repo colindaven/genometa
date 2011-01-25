@@ -94,6 +94,8 @@
 		<my.signjar jar="${lib.dir}/sam.jar" signedjar="${webstart.dir}/sam.jar" />
 		<my.signjar jar="${lib.dir}/picard.jar" signedjar="${webstart.dir}/picard.jar" />
 		<my.signjar jar="${lib.dir}/colt.jar" signedjar="${webstart.dir}/colt.jar" />
+		<my.signjar jar="${lib.dir}/jide-common.jar" signedjar="${webstart.dir}/jide-common.jar" />
+		<my.signjar jar="${lib.dir}/jide-components.jar" signedjar="${webstart.dir}/jide-components.jar" />
 
 		<!-- <jar jarfile="${webstart.dir}/igb.jar" index="true" indexMetaInf="true"> -->
 		<jar destfile="${webstart.dir}/igb.jar">
@@ -257,6 +259,8 @@
 				<include name="sam.jar" />
 				<include name="picard.jar" />
 				<include name="colt.jar" />
+				<include name="jide-common.jar" />
+				<include name="jide-components.jar" />
 			</zipgroupfileset>
 		</jar>
 		<jar jarfile="protannot_exe.jar" update="false">
