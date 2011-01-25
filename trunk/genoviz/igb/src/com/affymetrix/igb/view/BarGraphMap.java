@@ -517,7 +517,7 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 		// add Message
 		Application.getSingleton().addNotLockedUpMsg("Writing diagram data to '" + file + "'");
 
-		Object[] line = {"SeqId", "SeqReads"};
+		Object[] line = {"genus", "species", "strain", "refseq id", "read count"};
 
 		// generate the csv writer
 		CsvFile writer = new CsvFile(file);
@@ -527,8 +527,11 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 
 		// write the other lines
 		for (SeqReads r : _currentStatistics) {
-			line[0] = r.getSeqID();
-			line[1] = r.getReads();
+			line[0] = r.getSeqGenus();
+			line[1] = r.getSeqSpecies();
+			line[2] = r.getSeqStrain();
+			line[3] = r.getSeqID();
+			line[4] = r.getReads();
 			writer.writeLine(line);
 		}
 

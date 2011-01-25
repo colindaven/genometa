@@ -409,7 +409,7 @@ public final class IGB extends Application
 		GenometryModel.getGenometryModel().addSeqSelectionListener(BarGraphMap.getInstance());
 
 		MenuUtil.addToMenu(tools_menu, new JMenuItem(WebLinksManagerView.getShowFrameAction()));
-		MenuUtil.addToMenu(tools_menu, new JMenuItem(new ExportOverviewDiagramToCsvAction(frm, barGraph)));
+		MenuUtil.addToMenu(tools_menu, new JMenuItem(new ExportOverviewDiagramToCsvAction(frm, BarGraphMap.getInstance())));
 
 		MenuUtil.addToMenu(help_menu, new JMenuItem(new AboutIGBAction()));
 		MenuUtil.addToMenu(help_menu, new JMenuItem(new ForumHelpAction()));
