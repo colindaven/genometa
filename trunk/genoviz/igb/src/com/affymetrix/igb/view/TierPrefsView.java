@@ -29,9 +29,10 @@ import com.affymetrix.igb.tiers.TierGlyph;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.genometryImpl.style.ITrackStyle;
 import com.affymetrix.genoviz.swing.BooleanTableCellRenderer;
-import com.affymetrix.genoviz.swing.ColorTableCellEditor;
 import com.affymetrix.genoviz.swing.ColorTableCellRenderer;
 
+import com.jidesoft.combobox.ColorComboBox;
+import com.jidesoft.grid.ColorCellEditor;
 
 /**
  *  A panel for choosing tier properties for the {@link SeqMapView}.
@@ -187,8 +188,20 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
     table.setRowSelectionAllowed(true);
     table.setEnabled( true ); // doesn't do anything ?
 
+	ColorCellEditor cellEditor = new ColorCellEditor() {
+
+		  @Override
+		  protected ColorComboBox createColorComboBox() {
+			  final ColorComboBox combobox = new ColorComboBox();
+			  combobox.setColorValueVisible(false);
+			  combobox.setCrossBackGroundStyle(false);
+			  combobox.setButtonVisible(false);
+			  combobox.setStretchToFit(true);
+			  return combobox;
+		  }
+	  };
     table.setDefaultRenderer(Color.class, new ColorTableCellRenderer());
-    table.setDefaultEditor(Color.class, new ColorTableCellEditor());//MPTAG der hier überträgt meine Änderungen nicht!!
+    table.setDefaultEditor(Color.class, cellEditor);
     table.setDefaultRenderer(Boolean.class, new BooleanTableCellRenderer());
 
     validate();
