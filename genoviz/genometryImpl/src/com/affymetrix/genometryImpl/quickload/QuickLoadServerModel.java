@@ -29,7 +29,6 @@ import com.affymetrix.genometryImpl.general.GenericServer;
 import com.affymetrix.genometryImpl.util.LoadUtils.ServerStatus;
 import java.io.*;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -385,12 +384,7 @@ public final class QuickLoadServerModel {
 	}
 
 	public String getOrganismDir(String version){
-		try {
-			return URLEncoder.encode(genome_dir.get(version), "UTF-8");
-		} catch (UnsupportedEncodingException ex) {
-			Logger.getLogger(QuickLoadServerModel.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return "";
+		return genome_dir.get(version);
 	}
 
 	/**

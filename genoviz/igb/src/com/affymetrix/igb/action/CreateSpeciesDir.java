@@ -52,7 +52,7 @@ public class CreateSpeciesDir extends AbstractAction {
 	
 	public void actionPerformed(ActionEvent e) {
 		String speciesName = GeneralLoadView.getLoadView().getSelectedSpecies();
-	
+
 		if(SELECT_SPECIES.equals(speciesName)){
 			ErrorHandler.errorPanel("Please select a species first");
 			return;
@@ -84,10 +84,12 @@ public class CreateSpeciesDir extends AbstractAction {
 	}
 	
 	private static void createDirForSpecies(String path, String speciesName){
-		File speciesDir = GeneralUtils.makeDir(path+speciesName);
 
 		List<String> gVersions = GeneralLoadUtils.getGenericVersions(speciesName);
 
+		speciesName = speciesName.trim().replaceAll("\\s+", "_");
+		File speciesDir = GeneralUtils.makeDir(path+speciesName);
+		
 		//Write Contents.txt
 		//FormatWriter(ContentWriter.class,speciesDir.getAbsolutePath(),gVersions.toArray());
 		
@@ -99,10 +101,13 @@ public class CreateSpeciesDir extends AbstractAction {
 
 	private static void getAllVisbileFeatures(String path, String version){
 
+		AnnotatedSeqGroup group = GenometryModel.getGenometryModel().getSeqGroup(version);
+
+		version = version.trim().replaceAll("\\s+", "_");
+
 		//Create version directory
 		GeneralUtils.makeDir(path + "/" +version);
 
-		AnnotatedSeqGroup group = GenometryModel.getGenometryModel().getSeqGroup(version);
 		List<GenericFeature> features = GeneralLoadUtils.getFeatures(group);
 		List<String[][]> annots = new ArrayList<String[][]>();
 		Set<BioSeq> chromInfo = new HashSet<BioSeq>();
