@@ -96,6 +96,7 @@
 		<my.signjar jar="${lib.dir}/colt.jar" signedjar="${webstart.dir}/colt.jar" />
 		<my.signjar jar="${lib.dir}/jide-common.jar" signedjar="${webstart.dir}/jide-common.jar" />
 		<my.signjar jar="${lib.dir}/jide-components.jar" signedjar="${webstart.dir}/jide-components.jar" />
+		<my.signjar jar="${lib.dir}/jide-grids.jar" signedjar="${webstart.dir}/jide-grids.jar" />
 
 		<!-- <jar jarfile="${webstart.dir}/igb.jar" index="true" indexMetaInf="true"> -->
 		<jar destfile="${webstart.dir}/igb.jar">
@@ -261,6 +262,7 @@
 				<include name="colt.jar" />
 				<include name="jide-common.jar" />
 				<include name="jide-components.jar" />
+				<include name="jide-grids.jar" />
 			</zipgroupfileset>
 		</jar>
 		<jar jarfile="protannot_exe.jar" update="false">
