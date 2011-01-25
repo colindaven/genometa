@@ -21,6 +21,9 @@
 		<jar href="freehep-2.1.1.jar" download="lazy" part="freehep" />
 		<jar href="sam.jar"      download="lazy" part="sam"/>
 		<jar href="picard.jar"      download="lazy" part="picard"/>
+		<jar href="jide-common.jar"      download="lazy" part="jide"/>
+		<jar href="jide-components.jar"      download="lazy" part="jide"/>
+
 
 		<property name="apple.laf.useScreenMenuBar" value="true" />
 
@@ -29,6 +32,7 @@
 		<package part="freehep" name="org.freehep.*"     recursive="true" />
 		<package part="freehep" name="org.openide.*"     recursive="true" />
 		<package part="sam"     name="net.sf.samtools.*" recursive="true" />
+		<package part="jide"    name="com.jidesoft.*" recursive="true" />
 	</resources>
 	<component-desc />
 </jnlp>
