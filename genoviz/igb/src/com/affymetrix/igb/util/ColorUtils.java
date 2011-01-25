@@ -49,6 +49,8 @@ public class ColorUtils {
 				Color c = combobox.getSelectedColor();
 				if (c != null) {
 					PreferenceUtils.putColor(node, pref_name, c);
+				}else{
+					combobox.setSelectedColor(PreferenceUtils.getColor(node, pref_name, default_val));
 				}
 			}
 		});

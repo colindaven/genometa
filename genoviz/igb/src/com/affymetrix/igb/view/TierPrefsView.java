@@ -423,7 +423,9 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
       TrackStyle style = tier_styles.get(row);
       switch (col) {
         case COL_COLOR:
-          style.setColor((Color) value);
+		  if(value != null){
+			style.setColor((Color) value);
+		  }
           break;
         case COL_SEPARATE:
           style.setSeparate(((Boolean) value).booleanValue());
@@ -441,7 +443,9 @@ public final class TierPrefsView extends IPrefEditorComponent implements ListSel
           }
           break;
         case COL_BACKGROUND:
-          style.setBackground((Color) value);
+		  if(value != null){
+			style.setBackground((Color) value);
+		  }
           break;
         case COL_GLYPH_DEPTH:
           if (Boolean.TRUE.equals(value)) {
