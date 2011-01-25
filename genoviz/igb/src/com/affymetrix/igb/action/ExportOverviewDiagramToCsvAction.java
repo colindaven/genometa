@@ -21,8 +21,8 @@ public class ExportOverviewDiagramToCsvAction extends AbstractAction {
 
 	public ExportOverviewDiagramToCsvAction(Component par, BarGraphMap bgm) {
 		super(MessageFormat.format(
-				"Export Diagram to CSV",
-				"Export Diagram to CSV",
+				"Export Data as CSV",
+				"Export Data as CSV",
 				MenuUtil.getIcon("toolbarButtonGraphics/development/Host16.gif")));
 		this.putValue(MNEMONIC_KEY, KeyEvent.VK_E);
 		this.parent = par;
