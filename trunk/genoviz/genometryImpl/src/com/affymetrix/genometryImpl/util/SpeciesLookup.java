@@ -2,6 +2,8 @@ package com.affymetrix.genometryImpl.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -133,5 +135,28 @@ public final class SpeciesLookup {
 
 	public static boolean isSynonym(String synonym1, String synonym2){
 		return speciesLookup.isSynonym(synonym1, synonym2);
+	}
+
+	public static String getStandardName(String species){
+		Set<String> syms = speciesLookup.getSynonyms(species);
+		Set<Pattern> patterns = new HashSet<Pattern>();
+		patterns.add(STANDARD_REGEX);
+		patterns.add(UCSC_REGEX);
+
+		if(!syms.isEmpty()){
+			Matcher matcher;
+			for (Pattern pattern : patterns) {
+				for (String sym : syms) {
+					matcher = pattern.matcher(sym);
+					if (matcher.matches()) {
+						return matcher.group(0);
+					}
+				}
+			}
+		}
+
+		species = species.trim().replaceAll("\\s+", "_");
+		
+		return species;
 	}
 }

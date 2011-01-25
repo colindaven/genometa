@@ -1,5 +1,6 @@
 package com.affymetrix.igb.action;
 
+import com.affymetrix.genometryImpl.util.SpeciesLookup;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import com.affymetrix.genometryImpl.GenometryModel;
@@ -87,7 +88,7 @@ public class CreateSpeciesDir extends AbstractAction {
 
 		List<String> gVersions = GeneralLoadUtils.getGenericVersions(speciesName);
 
-		speciesName = speciesName.trim().replaceAll("\\s+", "_");
+		speciesName = SpeciesLookup.getStandardName(speciesName);
 		File speciesDir = GeneralUtils.makeDir(path+speciesName);
 		
 		//Write Contents.txt
