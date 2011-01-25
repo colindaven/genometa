@@ -1,0 +1,40 @@
+English:
+This is a simple tutorial to introduce the first steps of the program genometa.
+<br />
+
+Loading a file:
+After loading genometa, the "Metatie-Fastalines"-file and the "Lineage Mappings"-file should be set in the preferences. This can be done on the "Data Sources"-tab in the preferences dialog (image preferences_window.jpg). After setting the preferences, the file "GlacierIceMetagenome_SRX000607_filt-bwa.sam" can be opened with the "Open file..."-dialog in the "File"-menu. The file "GlacierIceMetagenome_SRX000607_filt-bwa.sam" can be found in the XXX-folder. While clicking on "Open"-button genometa will transform the SAM-file to a BAM-file and open this. After clicking on the "Refresh Data"-button the data will be visualized. This should look like image genometa_nach_laden.jpg.
+<br />
+
+Tooltips:
+A tooltip with some informations will be displayed if the mouse is moved over a read, like image genometa_tooltip.jpg shows.
+<br />
+
+Metagenomic:
+On the left side of genometa there is a "Metagenomics"-tab that is showing various data about the reads matching referenz sequenzes. (image genometa_metagenomics.jpg)
+<br />
+The data of the "Metagenomics"-tab are also visualized as a bar-chart in the "Overview"-tab. (image genometa_overviewtab.jpg)
+<br />
+
+
+
+Deutsch: 
+Dies ist ein Einstiegs-Tutorial zum Programm Genometa. Es soll bei den ersten Schritten in der Benutzung von Genometa behilflich sein.
+<br />
+
+Laden einer Datei:
+Nach dem Start von Genometa, sollten zuerst die "Metatie-Fastalines"-Datei und die "Lineage Mappings"-Datei im Programm ausgewählt werden. Dies geschieht im "Preferences"-Fenster in dem Tab "Data Sources" wie in Bild preferences_window.jpg zusehen ist.
+Nachdem diese Einstellungen getätigt sind, kann die Datei "GlacierIceMetagenome_SRX000607_filt-bwa.sam" geöffnet werden (diese ist in Ordner X). Hierzu muss im Menu "File" der Unterpunkt "Open file..." ausgewählt werden und die entsprechende Datei im neuen Fenster angewählt werden. Wenn der Vorgang nun bestätigt wird, wandelt Genometa die SAM-Datei in eine BAM-Datei um und lädt die darin enthaltenen Daten.
+Nachdem die Datei erfolgreich geladen wurde, ermöglicht ein Klick auf den "Refresh Data"-Button das Visualisieren der Daten. Genometa sollte anschließend wie auf dem Bild genometa_nach_laden.jpg aussehen. 
+<br />
+
+Tooltips:
+Wenn die Maus über einem Read platziert wird, erscheint automatisch ein Tooltip mit den wichtigsten Infos, wie Bild genometa_tooltip.jpg zeigt.
+<br />
+
+Metagenomic:
+Die Übersicht "Metagenomics" in der linken Hälfte von Genometa, zeigt Informationen über die derzeit geladenen Daten. Dieses sind insbesondere: der Genus, Species, Strain und Lineage, sowie die Anzahl der Reads die auf die jeweilige Referenz Sequenz passen. (siehe Bild genometa_metagenomics.jpg)
+<br />
+Die Daten aus der "Metagenomics"-Übersicht werden auch noch mittels eines Bar-Chart visualisiert. Dieser ist zu finden unter dem "Overview"-Tab. (siehe Bild genometa_overwievtab.jpg)
+<br />
+
