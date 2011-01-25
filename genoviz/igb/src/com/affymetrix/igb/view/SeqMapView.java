@@ -1769,18 +1769,31 @@ public class SeqMapView extends JPanel
 			}
 			else {
 				boolean isGFF = false;
+				String gffTypes[] = {	"cds",
+										"gene",
+										"source",
+										"misc_feature",
+										"start_codon",
+										"stop_codon",
+										"exon",
+										"misc_binding",
+										"repeat_region",
+										"sig_peptide",
+										"rbs",
+										"intron",
+										"variation",
+										"mobile_element"};
 				for(int i = 0; i < properties.length; i++) {
-					if(properties[i][0].equals("source") && properties[i][1].equals("RefSeq")) {
+					if(properties[i][0].toLowerCase().equals("type")) {
+						for(int j = 0; j < gffTypes.length; j++) {
+							if(properties[i][1].toLowerCase().equals(gffTypes[j])) {
+								isGFF = true;
+								break;
+							}
+						}
 						if(isGFF) {
 							break;
 						}
-						isGFF = true;
-					}
-					else if(properties[i][0].equals("method") && properties[i][1].equals("RefSeq")) {
-						if(isGFF) {
-							break;
-						}
-						isGFF = true;
 					}
 				}
 				tooltip = convertPropsToEditorTooltip(properties, isGFF);
