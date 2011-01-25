@@ -40,7 +40,14 @@ public class SeqInfoTableModel extends AbstractTableModel {
 				// evil hack to debug name field
 				try {
 					String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
-					String refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+					String refSeq = "";
+					if(workingString.indexOf("|" ) != -1){
+						refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+					}else
+					{
+						refSeq = workingString;
+					}
+					
 					String name = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq( refSeq );
 				return name;
 				}
@@ -52,7 +59,13 @@ public class SeqInfoTableModel extends AbstractTableModel {
                             // evil hack to debug name field
 				try {
 				String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
-				String refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+				String refSeq = "";
+				if(workingString.indexOf("|") != -1){
+					refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+				}else{
+					refSeq = workingString;
+				}
+				
 				String name = SynonymLookup.getDefaultLookup().getGenomeSpeciesFromRefSeq( refSeq );
 				return name;
 				}
@@ -65,7 +78,13 @@ public class SeqInfoTableModel extends AbstractTableModel {
 				// evil hack to debug name field
 				try {
 					String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
-					String refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+					String refSeq = "";
+					if(workingString.indexOf("|") != -1){
+						refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+					}else{
+						refSeq = workingString;
+					}
+					
 					String name = SynonymLookup.getDefaultLookup().getGenomeStrainFromRefSeq( refSeq );
 					return name;
 				}
@@ -77,7 +96,13 @@ public class SeqInfoTableModel extends AbstractTableModel {
 				// evil hack to debug lineage field
 				try {
 				String workingString = seq.getID().substring( seq.getID().indexOf( "|NC_" ) + 1 );
-				String refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+				String refSeq = "";
+				if(workingString.indexOf("|") != -1){
+					refSeq = workingString.substring( 0, workingString.indexOf( "|" ) );
+				}else{
+					refSeq = workingString;
+				}
+				
 				String name = SynonymLookup.getDefaultLookup().getGenomeFromRefSeq( refSeq );
 				String lineage = SynonymLookup.getDefaultLookup().getLineageNameFromGenera( name );
 				return lineage;
