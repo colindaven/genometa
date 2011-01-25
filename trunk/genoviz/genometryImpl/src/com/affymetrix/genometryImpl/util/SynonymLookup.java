@@ -619,7 +619,7 @@ public final class SynonymLookup {
 			return refSeq;
 		}
 
-		return refSeq.substring(0, refSeq.indexOf(".")-1);
+		return refSeq.substring(0, refSeq.indexOf("."));
 	}
 
 	/**
