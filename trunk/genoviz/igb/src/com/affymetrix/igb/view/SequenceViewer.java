@@ -16,6 +16,7 @@ import com.affymetrix.genometryImpl.SeqSpan;
 import com.affymetrix.genometryImpl.SeqSymmetry;
 import com.affymetrix.genometryImpl.SymWithProps;
 import com.affymetrix.genometryImpl.util.ErrorHandler;
+import com.affymetrix.genometryImpl.util.MenuUtil;
 import java.applet.Applet;
 import java.awt.HeadlessException;
 import java.awt.event.*;
@@ -30,6 +31,10 @@ import com.affymetrix.genoviz.parser.FastaSequenceParser;
 import com.affymetrix.genoviz.widget.NeoSeq;
 import com.affymetrix.genoviz.widget.NeoSeqCustomizer;
 import com.affymetrix.genoviz.widget.neoseq.AnnotationGlyph;
+import com.affymetrix.igb.action.CopyFromSeqViewerAction;
+import com.affymetrix.igb.action.ExitAction;
+import com.affymetrix.igb.action.ExitSeqViewerAction;
+import com.affymetrix.igb.action.ExportFastaSequenceAction;
 import java.applet.AppletContext;
 import java.awt.BorderLayout;
 import java.awt.CheckboxMenuItem;
@@ -51,16 +56,18 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 public class SequenceViewer extends Applet
-		implements WindowListener, ActionListener, ItemListener {
+		implements WindowListener{
 
 	private NeoSeq seqview;
 	private NeoSeq seqview1;
-	private Frame mapframe;
+	private JFrame mapframe;
 	private Frame propframe;
 	private Sequence seqmodel;
 	private Vector<GlyphI> annotations;
@@ -82,7 +89,6 @@ public class SequenceViewer extends Applet
 	private boolean going = false;
 	private Color nicePaleBlue = new Color(180, 250, 250);
 	private SeqSpan[] seqSpans = null;
-	NeoPanel widg_pan = new NeoPanel();
 
 	public Applet customFormatting(SeqSymmetry residues_sym, String seq) throws HeadlessException, NumberFormatException {
 		Color[] okayColors = {Color.black, Color.black};
@@ -93,15 +99,13 @@ public class SequenceViewer extends Applet
 		if (residues_sym.getID() != null) {
 			addCdsStartEnd(residues_sym);
 		} else {
-			mapframe = new Frame("Genomic Sequence");
+			mapframe = new JFrame("Genomic Sequence");
 			seqview.setFirstOrdinal(residues_sym.getSpan(0).getStart());
 		}
 		mapframe.setLayout(new BorderLayout());
-		setupMenus(mapframe);
-		widg_pan.setLayout(new BorderLayout());
-		widg_pan.add("Center", seqview);
+		mapframe = setupMenus(mapframe);
 		mapframe.setLayout(new BorderLayout());
-		mapframe.add("Center", widg_pan);
+		mapframe.add("Center", seqview);
 		Dimension prefsize = seqview.getPreferredSize(50, 15);
 		mapframe.setMinimumSize(prefsize);
 		Dimension screen_size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -205,7 +209,7 @@ public class SequenceViewer extends Applet
 			seqview.addOutlineAnnotation(Math.abs(cdsMin - seqSpans[0].getStart()) - 3, Math.abs(cdsMin - seqSpans[0].getStart()) - 1, Color.red);
 		}
 		//		String str = (((SymWithProps) residues_sym).getProperty("id")).toString()+" "+(((SymWithProps) residues_sym).getProperty("chromosome")).toString();
-		mapframe = new Frame(id + " " + chromosome + " " + type);
+		mapframe = new JFrame(id + " " + chromosome + " " + type);
 	}
 
 	private void convertSpansForSequenceViewer(String[] seqArray, String[] intronArray, SeqSpan[] spans, String seq) {
@@ -373,6 +377,16 @@ public class SequenceViewer extends Applet
 			try {
 				FileWriter fw = new FileWriter(fileName);
 				String r = seqview.getResidues();
+//				String header =
+//				">" +
+//				chrom_name +
+//				" range:" +
+//				NumberFormat.getIntegerInstance().format(start) +
+//				"-" +
+//				NumberFormat.getIntegerInstance().format(end) +
+//				" interbase genome:" +
+//				genome_name +
+//				"\n";
 				fw.write(">" + fileName);
 				fw.write('\n');
 				int i;
@@ -392,75 +406,72 @@ public class SequenceViewer extends Applet
 		}
 	}
 
-	/* Edit Menu */
-	Menu editMenu = new Menu("Edit");
-	MenuItem copyMenuItem = new MenuItem("Copy selected sequence to clipboard",
-			new MenuShortcut(KeyEvent.VK_C));
-
-	/* File Menu */
-	Menu fileMenu = new Menu("File");
-	MenuItem saveAsMenuItem = new MenuItem("save As",
-			new MenuShortcut(KeyEvent.VK_A));
-	MenuItem exitMenuItem = new MenuItem("eXit",
-			new MenuShortcut(KeyEvent.VK_X));
-	Menu showMenu = new Menu("Show");
-	CheckboxMenuItem compCBMenuItem = new CheckboxMenuItem("Reverse Complement");
-	CheckboxMenuItem transOneCBMenuItem = new CheckboxMenuItem(" +1 Translation");
-	CheckboxMenuItem transTwoCBMenuItem = new CheckboxMenuItem(" +2 Translation");
-	CheckboxMenuItem transThreeCBMenuItem = new CheckboxMenuItem(" +3 Translation");
-	CheckboxMenuItem transNegOneCBMenuItem = new CheckboxMenuItem(" -1 Translation");
-	CheckboxMenuItem transNegTwoCBMenuItem = new CheckboxMenuItem(" -2 Translation");
-	CheckboxMenuItem transNegThreeCBMenuItem = new CheckboxMenuItem(" -3 Translation");
-
-	public void setupMenus(Frame dock) {
+	public JFrame setupMenus(JFrame dock) {
 
 		/* Edit Menu */
+		
 
-		editMenu.add(copyMenuItem);
-
-
-		copyMenuItem.addActionListener(this);
-
-		// file menu
-		fileMenu.add(saveAsMenuItem);
-		fileMenu.add(exitMenuItem);
-		saveAsMenuItem.addActionListener(this);
-		exitMenuItem.addActionListener(this);
-		showMenu.add(compCBMenuItem);
-		showMenu.add(transOneCBMenuItem);
-		showMenu.add(transTwoCBMenuItem);
-		showMenu.add(transThreeCBMenuItem);
-		showMenu.add(transNegOneCBMenuItem);
-		showMenu.add(transNegTwoCBMenuItem);
-		showMenu.add(transNegThreeCBMenuItem);
-
-		compCBMenuItem.addItemListener(this);
-		transOneCBMenuItem.addItemListener(this);
-		transTwoCBMenuItem.addItemListener(this);
-		transThreeCBMenuItem.addItemListener(this);
-		transNegOneCBMenuItem.addItemListener(this);
-		transNegTwoCBMenuItem.addItemListener(this);
-		transNegThreeCBMenuItem.addItemListener(this);
+//		JMenuItem copyMenuItem = new JMenuItem("Copy selected sequence to clipboard");
+//		//copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+//
+//		/* File Menu */
+//		JMenu fileMenu = new JMenu("File");
+//		JMenuItem saveAsMenuItem = new JMenuItem("save As", KeyEvent.VK_A);
+//		JMenuItem exitMenuItem = new JMenuItem("eXit", KeyEvent.VK_X);
+//		JMenu showMenu = new JMenu("Show");
+//		CheckboxMenuItem compCBMenuItem = new CheckboxMenuItem("Reverse Complement");
+//		CheckboxMenuItem transOneCBMenuItem = new CheckboxMenuItem(" +1 Translation");
+//		CheckboxMenuItem transTwoCBMenuItem = new CheckboxMenuItem(" +2 Translation");
+//		CheckboxMenuItem transThreeCBMenuItem = new CheckboxMenuItem(" +3 Translation");
+//		CheckboxMenuItem transNegOneCBMenuItem = new CheckboxMenuItem(" -1 Translation");
+//		CheckboxMenuItem transNegTwoCBMenuItem = new CheckboxMenuItem(" -2 Translation");
+//		CheckboxMenuItem transNegThreeCBMenuItem = new CheckboxMenuItem(" -3 Translation");
+		JMenu fileMenu = new JMenu("File");
+		JMenu editMenu = new JMenu("Edit");
+		MenuUtil.addToMenu(fileMenu, new JMenuItem(new ExitSeqViewerAction(this.mapframe)));
+		MenuUtil.addToMenu(editMenu, new JMenuItem(new CopyFromSeqViewerAction(this)));
+		MenuUtil.addToMenu(fileMenu, new JMenuItem(new ExportFastaSequenceAction(this)));
+//		copyMenuItem.addActionListener(this);
+//
+//		// file menu
+//		fileMenu.add(saveAsMenuItem);
+//		fileMenu.add(exitMenuItem);
+//		saveAsMenuItem.addActionListener(this);
+//		exitMenuItem.addActionListener(this);
+////		showMenu.add(compCBMenuItem);
+////		showMenu.add(transOneCBMenuItem);
+////		showMenu.add(transTwoCBMenuItem);
+////		showMenu.add(transThreeCBMenuItem);
+////		showMenu.add(transNegOneCBMenuItem);
+////		showMenu.add(transNegTwoCBMenuItem);
+////		showMenu.add(transNegThreeCBMenuItem);
+//
+//		compCBMenuItem.addItemListener(this);
+//		transOneCBMenuItem.addItemListener(this);
+//		transTwoCBMenuItem.addItemListener(this);
+//		transThreeCBMenuItem.addItemListener(this);
+//		transNegOneCBMenuItem.addItemListener(this);
+//		transNegTwoCBMenuItem.addItemListener(this);
+//		transNegThreeCBMenuItem.addItemListener(this);
 
 		// add the menus to the menubar
-		MenuBar bar = dock.getMenuBar();
-		if (null == bar) {
-			bar = new MenuBar();
-			dock.setMenuBar(bar);
-		}
+		JMenuBar bar = new JMenuBar();
+//		if (null == bar) {
+//			bar = new MenuBar();
+//			dock.setMenuBar(bar);
+//		}
 
 		bar.add(fileMenu);
 		bar.add(editMenu);
-		bar.add(showMenu);
+//		bar.add(showMenu);
+		dock.setJMenuBar(bar);
+		return dock;
 	}
 
 	/* EVENT HANDLING */
 	/** ActionListener Implementation */
-	public void actionPerformed(ActionEvent e) {
-		Object theItem = e.getSource();
-
-		if (theItem == copyMenuItem) {
-			String selectedSeq = seqview.getSelectedResidues();
+	public void copyAction(){
+		String selectedSeq = seqview.getSelectedResidues();
 			if (selectedSeq != null) {
 				Clipboard clipboard = this.getToolkit().getSystemClipboard();
 				StringBuffer hackbuf = new StringBuffer(selectedSeq);
@@ -472,15 +483,32 @@ public class SequenceViewer extends Applet
 						"Don't have all the needed residues, can't copy to clipboard.\n"
 						+ "Please load sequence residues for this region.");
 			}
-
-		} else if (theItem == saveAsMenuItem) {
-			exportSequenceFasta();
-		} else if (theItem == exitMenuItem) {
-			mapframe.dispose();
-			this.destroy();
-		}
-
 	}
+//	public void actionPerformed(ActionEvent e) {
+//		Object theItem = e.getSource();
+//
+//		if (theItem == copyMenuItem) {
+//			String selectedSeq = seqview.getSelectedResidues();
+//			if (selectedSeq != null) {
+//				Clipboard clipboard = this.getToolkit().getSystemClipboard();
+//				StringBuffer hackbuf = new StringBuffer(selectedSeq);
+//				String hackstr = new String(hackbuf);
+//				StringSelection data = new StringSelection(hackstr);
+//				clipboard.setContents(data, null);
+//			} else {
+//				ErrorHandler.errorPanel("Missing Sequence Residues",
+//						"Don't have all the needed residues, can't copy to clipboard.\n"
+//						+ "Please load sequence residues for this region.");
+//			}
+//
+//		} else if (theItem == saveAsMenuItem) {
+//			exportSequenceFasta();
+//		} else if (theItem == exitMenuItem) {
+//			mapframe.dispose();
+//			this.destroy();
+//		}
+//
+//	}
 
 	private void setMenuItemState(Menu theMenu, CheckboxMenuItem theItem) {
 		for (int i = theMenu.getItemCount() - 1; 0 <= i; i--) {
@@ -492,42 +520,42 @@ public class SequenceViewer extends Applet
 	}
 
 	/** ItemListener Implementation */
-	public void itemStateChanged(ItemEvent e) {
-		Object theItem = e.getSource();
-
-		if (theItem == compCBMenuItem) {
-			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
-			boolean showRevComp = mi.getState();
-			seqview.setRevShow(NeoSeq.COMPLEMENT, showRevComp);
-			seqview.setRevShow(NeoSeq.NUCLEOTIDES, !showRevComp);
-			seqview.updateWidget();
-		} else if (theItem == transOneCBMenuItem) {
-			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
-			seqview.setShow(NeoSeq.FRAME_ONE, mi.getState());
-			seqview.updateWidget();
-		} else if (theItem == transTwoCBMenuItem) {
-			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
-			seqview.setShow(NeoSeq.FRAME_TWO, mi.getState());
-			seqview.updateWidget();
-		} else if (theItem == transThreeCBMenuItem) {
-			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
-			seqview.setShow(NeoSeq.FRAME_THREE, mi.getState());
-			seqview.updateWidget();
-		} else if (theItem == transNegOneCBMenuItem) {
-			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
-			seqview.setShow(NeoSeq.FRAME_NEG_ONE, mi.getState());
-			seqview.updateWidget();
-		} else if (theItem == transNegTwoCBMenuItem) {
-			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
-			seqview.setShow(NeoSeq.FRAME_NEG_TWO, mi.getState());
-			seqview.updateWidget();
-		} else if (theItem == transNegThreeCBMenuItem) {
-			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
-			seqview.setShow(NeoSeq.FRAME_NEG_THREE, mi.getState());
-			seqview.updateWidget();
-		}
-
-	}
+//	public void itemStateChanged(ItemEvent e) {
+//		Object theItem = e.getSource();
+//
+//		if (theItem == compCBMenuItem) {
+//			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
+//			boolean showRevComp = mi.getState();
+//			seqview.setRevShow(NeoSeq.COMPLEMENT, showRevComp);
+//			seqview.setRevShow(NeoSeq.NUCLEOTIDES, !showRevComp);
+//			seqview.updateWidget();
+//		} else if (theItem == transOneCBMenuItem) {
+//			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
+//			seqview.setShow(NeoSeq.FRAME_ONE, mi.getState());
+//			seqview.updateWidget();
+//		} else if (theItem == transTwoCBMenuItem) {
+//			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
+//			seqview.setShow(NeoSeq.FRAME_TWO, mi.getState());
+//			seqview.updateWidget();
+//		} else if (theItem == transThreeCBMenuItem) {
+//			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
+//			seqview.setShow(NeoSeq.FRAME_THREE, mi.getState());
+//			seqview.updateWidget();
+//		} else if (theItem == transNegOneCBMenuItem) {
+//			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
+//			seqview.setShow(NeoSeq.FRAME_NEG_ONE, mi.getState());
+//			seqview.updateWidget();
+//		} else if (theItem == transNegTwoCBMenuItem) {
+//			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
+//			seqview.setShow(NeoSeq.FRAME_NEG_TWO, mi.getState());
+//			seqview.updateWidget();
+//		} else if (theItem == transNegThreeCBMenuItem) {
+//			CheckboxMenuItem mi = (CheckboxMenuItem) theItem;
+//			seqview.setShow(NeoSeq.FRAME_NEG_THREE, mi.getState());
+//			seqview.updateWidget();
+//		}
+//
+//	}
 
 	/** WindowListener Implementation */
 	public void windowActivated(WindowEvent e) {
@@ -591,7 +619,7 @@ public class SequenceViewer extends Applet
 		SequenceViewer me = new SequenceViewer();
 		parameters = new Hashtable<String, String>();
 		parameters.put("seq_file", "data/test.fst");
-
+		System.setProperty("apple.laf.useScreenMenuBar", "false");
 		me.init(residues_sym);
 		me.start(residues_sym);
 

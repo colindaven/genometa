@@ -54,6 +54,8 @@ import com.affymetrix.igb.util.GraphGlyphUtils;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.genometryImpl.util.SynonymLookup;
 import com.affymetrix.genoviz.util.ErrorHandler;
+import com.affymetrix.igb.IGB;
+import com.affymetrix.igb.action.CopyResiduesAction;
 import com.affymetrix.igb.action.LoadSequence;
 import com.affymetrix.igb.action.RefreshAFeature;
 import com.affymetrix.igb.action.RefreshDataAction;
@@ -164,6 +166,7 @@ public class SeqMapView extends JPanel
 	JMenuItem centerMI = empty_menu_item;
 	JMenuItem selectParentMI = empty_menu_item;
 	JMenuItem slicendiceMI = empty_menu_item;
+	JMenuItem viewinSequenceViewer = empty_menu_item;
 	// for right-click on background
 	private final SeqMapViewActionListener action_listener;
 	private final SeqMapViewMouseListener mouse_listener;
@@ -412,6 +415,7 @@ public class SeqMapView extends JPanel
 //		zoomtoMI.setIcon(MenuUtil.getIcon("toolbarButtonGraphics/general/Zoom16.gif"));
 
 		selectParentMI = setUpMenuItem(sym_popup, "Select parent");
+		viewinSequenceViewer = setUpMenuItem(sym_popup, "View Sequence in Sequence Viewer");
 	}
 
 	public final TransformTierGlyph getAxisTier() {
@@ -1079,6 +1083,7 @@ public class SeqMapView extends JPanel
 			// for some reason, can't null out clipboard with [null] or [new StringSelection("")],
 			//   have to put in at least one character -- just putting in a space for now
 			clipboard.setContents(new StringSelection(" "), null);
+			return null;
 		}
 		return residues_sym;
 	}
@@ -1422,6 +1427,13 @@ public class SeqMapView extends JPanel
 		seqmap.updateWidget();
 		postSelections();
 	}
+	void openSequenceViewer(){
+		SeqSymmetry residues_sym = IGB.getSingleton().getMapView().copySelectedResidues(true);
+		if (residues_sym != null) {
+			SequenceViewer neoSeqDemo = new SequenceViewer();
+			neoSeqDemo.tempChange(residues_sym);
+		}
+	}
 
 	/** Find the top-most parent glyphs of the given glyphs.
 	 *  @param childGlyphs a list of GlyphI objects, typically the selected glyphs
@@ -1597,8 +1609,8 @@ public class SeqMapView extends JPanel
 		List<SeqSymmetry> selected_syms = getSelectedSyms();
 		if (!selected_syms.isEmpty()) {
 			popup.add(selectParentMI);
+			popup.add(viewinSequenceViewer);
 		}
-
 				
 		for (ContextualPopupListener listener : popup_listeners) {
 			listener.popupNotify(popup, selected_syms, sym_used_for_title);
