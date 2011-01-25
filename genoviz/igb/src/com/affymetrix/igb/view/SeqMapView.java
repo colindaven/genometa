@@ -1791,9 +1791,7 @@ public class SeqMapView extends JPanel
 								break;
 							}
 						}
-						if(isGFF) {
-							break;
-						}
+						break;
 					}
 				}
 				tooltip = convertPropsToEditorTooltip(properties, isGFF);
