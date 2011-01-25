@@ -539,7 +539,7 @@ public final class SynonymLookup {
 		}
 
 		if(!refSeq.isEmpty())
-			removeRefseqVersion(refSeq);
+			refSeq = removeRefseqVersion(refSeq);
 
 		String name = "";
 
@@ -567,7 +567,7 @@ public final class SynonymLookup {
 		}
 
 		if (!refSeq.isEmpty()) {
-			removeRefseqVersion(refSeq);
+			refSeq = removeRefseqVersion(refSeq);
 		}
 
 		String species = "";
@@ -597,7 +597,7 @@ public final class SynonymLookup {
 		}
 
 		if (!refSeq.isEmpty()) {
-			removeRefseqVersion(refSeq);
+			refSeq = removeRefseqVersion(refSeq);
 		}
 
 		String strain = "";
@@ -615,10 +615,11 @@ public final class SynonymLookup {
 	}
 
 	public String removeRefseqVersion(String refSeq){
-		if(!refSeq.contains("."))
+		if(!refSeq.contains(".")){
 			return refSeq;
+		}
 
-		return refSeq.substring(refSeq.indexOf(".")-1);
+		return refSeq.substring(0, refSeq.indexOf(".")-1);
 	}
 
 	/**
