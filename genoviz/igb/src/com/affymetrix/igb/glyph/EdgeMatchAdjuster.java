@@ -77,17 +77,27 @@ public final class EdgeMatchAdjuster extends JPanel implements ChangeListener  {
     this.add("Center", tslider);
 
     JPanel edge_match_box = new JPanel();
-    edge_match_box.setLayout(new GridLayout(2,2));
+    edge_match_box.setLayout(new GridLayout(2,0));
     edge_match_box.setBorder(new javax.swing.border.TitledBorder("Edge match colors"));
 
-    JButton edge_match_colorB = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), SeqMapView.PREF_EDGE_MATCH_COLOR, SeqMapView.default_edge_match_color);
-    edge_match_box.add(new JLabel("Standard: "));
-    edge_match_box.add(edge_match_colorB);
-    JButton fuzzy_edge_match_colorB = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), SeqMapView.PREF_EDGE_MATCH_FUZZY_COLOR, SeqMapView.default_edge_match_fuzzy_color);
-    edge_match_box.add(new JLabel("Fuzzy matching: "));
-    edge_match_box.add(fuzzy_edge_match_colorB);    
+	edge_match_box.add(addColorChooser("Standard", SeqMapView.PREF_EDGE_MATCH_COLOR, SeqMapView.default_edge_match_color));
+	edge_match_box.add(addColorChooser("Fuzzy matching", SeqMapView.PREF_EDGE_MATCH_FUZZY_COLOR, SeqMapView.default_edge_match_fuzzy_color));
     this.add("South", edge_match_box);
   }
+
+  private static JPanel addColorChooser(String label_str, String pref_name, Color default_color) {
+		JComponent component = ColorUtils.createColorComboBox(PreferenceUtils.getTopNode(), pref_name, default_color);
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(1, 2));
+		JPanel inner_panel = new JPanel();
+
+		inner_panel.add(component);
+		panel.add(new JLabel(label_str + ": "));
+		panel.add(inner_panel);
+
+		return panel;
+	}
 
   public void stateChanged(ChangeEvent evt) {
     Object src = evt.getSource();

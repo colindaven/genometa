@@ -79,73 +79,49 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 	
 
     JPanel orf_box = new JPanel();
-    orf_box.setLayout(new GridLayout(2,2));
+    orf_box.setLayout(new GridLayout(2,0));
     orf_box.setBorder(new javax.swing.border.TitledBorder("ORF Analyzer"));
 
-    JButton stop_codon_color = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), OrfAnalyzer.PREF_STOP_CODON_COLOR, OrfAnalyzer.default_stop_codon_color);
-    orf_box.add(new JLabel("Stop Codon: "));
-    orf_box.add(stop_codon_color);
-    JButton dynamic_orf_color = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), OrfAnalyzer.PREF_DYNAMIC_ORF_COLOR, OrfAnalyzer.default_dynamic_orf_color);
-    orf_box.add(new JLabel("Dynamic ORF: "));
-    orf_box.add(dynamic_orf_color);
+	orf_box.add(addColorChooser("Stop Codon",OrfAnalyzer.PREF_STOP_CODON_COLOR, OrfAnalyzer.default_stop_codon_color));
+	orf_box.add(addColorChooser("Dynamic ORF",OrfAnalyzer.PREF_DYNAMIC_ORF_COLOR, OrfAnalyzer.default_dynamic_orf_color));
 	
 	JPanel base_box = new JPanel();
-    base_box.setLayout(new GridLayout(5,2));
+    base_box.setLayout(new GridLayout(5,0));
     base_box.setBorder(new javax.swing.border.TitledBorder("Change Residue Colors"));
 
-    JButton A_color = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), CharSeqGlyph.PREF_A_COLOR, CharSeqGlyph.default_A_color);
-	base_box.add(new JLabel("A: "));
-	base_box.add(A_color);
-	JButton T_color = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), CharSeqGlyph.PREF_T_COLOR, CharSeqGlyph.default_T_color);
-	base_box.add(new JLabel("T: "));
-	base_box.add(T_color);
-	JButton G_color = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), CharSeqGlyph.PREF_G_COLOR, CharSeqGlyph.default_G_color);
-	base_box.add(new JLabel("G: "));
-	base_box.add(G_color);
-	JButton C_color = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), CharSeqGlyph.PREF_C_COLOR, CharSeqGlyph.default_C_color);
-    base_box.add(new JLabel("C: "));
-    base_box.add(C_color);
-	JButton OTHER_color = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), CharSeqGlyph.PREF_OTHER_COLOR, CharSeqGlyph.default_other_color);
-    base_box.add(new JLabel("Other: "));
-    base_box.add(OTHER_color);
-    
+	base_box.add(addColorChooser("A", CharSeqGlyph.PREF_A_COLOR, CharSeqGlyph.default_A_color));
+	base_box.add(addColorChooser("T", CharSeqGlyph.PREF_T_COLOR, CharSeqGlyph.default_T_color));
+	base_box.add(addColorChooser("G", CharSeqGlyph.PREF_G_COLOR, CharSeqGlyph.default_G_color));
+	base_box.add(addColorChooser("C", CharSeqGlyph.PREF_C_COLOR, CharSeqGlyph.default_C_color));
+	base_box.add(addColorChooser("Other", CharSeqGlyph.PREF_OTHER_COLOR, CharSeqGlyph.default_other_color));
 
 
-    JPanel axis_box = new JPanel();
-    axis_box.setLayout(new GridLayout(3,2));
-    axis_box.setBorder(new javax.swing.border.TitledBorder("Axis"));
-
-    JButton axis_color_button2 = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), AxisStyle.PREF_AXIS_COLOR, Color.BLACK);
-    axis_box.add(new JLabel("Foreground: "));
-    axis_box.add(axis_color_button2);
-
-    JButton axis_back_color = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), AxisStyle.PREF_AXIS_BACKGROUND, Color.WHITE);
-    axis_box.add(new JLabel("Background: "));
-    axis_box.add(axis_back_color);
-
-    axis_box.add(new JLabel("Number format: "));
-    String default_label_format = SeqMapView.VALUE_AXIS_LABEL_FORMAT_COMMA;
+	String default_label_format = SeqMapView.VALUE_AXIS_LABEL_FORMAT_COMMA;
     String[] label_format_options = new String[] {SeqMapView.VALUE_AXIS_LABEL_FORMAT_FULL,
                                                   SeqMapView.VALUE_AXIS_LABEL_FORMAT_COMMA,
                                                   SeqMapView.VALUE_AXIS_LABEL_FORMAT_ABBREV};
     JComboBox axis_label_format_CB = PreferenceUtils.createComboBox(PreferenceUtils.getTopNode(), "Axis label format", label_format_options, default_label_format);
-    axis_box.add(axis_label_format_CB);
 
+    JPanel axis_box = new JPanel();
+    axis_box.setLayout(new GridLayout(3,0));
+    axis_box.setBorder(new javax.swing.border.TitledBorder("Axis"));
 
-	//MAPTAG added
+	axis_box.add(addColorChooser("Foreground", AxisStyle.PREF_AXIS_COLOR, Color.BLACK));
+	axis_box.add(addColorChooser("Background", AxisStyle.PREF_AXIS_BACKGROUND, Color.WHITE));
+	axis_box.add(addToPanel("Number format", axis_label_format_CB));
+
+	//MPTAG added
 	JPanel dir_bar_box = new JPanel();
     dir_bar_box.setLayout(new GridLayout(4,2));
     dir_bar_box.setBorder(new javax.swing.border.TitledBorder("Direction Bar"));
 
-    JButton dir_bar_fw_color_button = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), 
-			AlignedResidueGlyph.dirBarFwColor, Color.RED);
-    dir_bar_box.add(new JLabel("Forward Direction: "));
-    dir_bar_box.add(dir_bar_fw_color_button);
+    //JButton dir_bar_fw_color_button = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), AlignedResidueGlyph.dirBarFwColor, Color.RED);
+    //dir_bar_box.add(new JLabel("Forward Direction: "));
+    dir_bar_box.add(addColorChooser("Foreground Direction:", AlignedResidueGlyph.dirBarFwColor, Color.RED));
 
-    JButton dir_bar_rw_color_button = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), 
-			AlignedResidueGlyph.dirBarRwColor, Color.BLUE);
-    dir_bar_box.add(new JLabel("Reverse Direction: "));
-    dir_bar_box.add(dir_bar_rw_color_button);
+    //JButton dir_bar_rw_color_button = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), AlignedResidueGlyph.dirBarRwColor, Color.BLUE);
+    //dir_bar_box.add(new JLabel("Reverse Direction: "));
+    dir_bar_box.add(addColorChooser("Reverse Direction:", AlignedResidueGlyph.dirBarRwColor, Color.BLUE));
 
     dir_bar_box.add(new JLabel("Bar Location: "));
     JComboBox dir_bar_location_option = PreferenceUtils.createComboBox(PreferenceUtils.getTopNode(), 
@@ -252,6 +228,23 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 		 }
     }
   }
+
+  private static JPanel addColorChooser(String label_str, String pref_name, Color default_color) {
+		JComponent component = ColorUtils.createColorComboBox(PreferenceUtils.getTopNode(), pref_name, default_color);
+		return addToPanel(label_str, component);
+	}
+
+  private static JPanel addToPanel(String label_str, JComponent component) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(1, 2));
+		JPanel inner_panel = new JPanel();
+
+		inner_panel.add(component);
+		panel.add(new JLabel(label_str + ": "));
+		panel.add(inner_panel);
+
+		return panel;
+	}
 
   public void refresh() {
   }
