@@ -170,40 +170,34 @@ public final class GraphVisibleBoundsSetter extends JPanel
 		max_valT.setMaximumSize(new Dimension(tf_max_xpix, tf_max_ypix));
 		min_perT.setMaximumSize(new Dimension(tf_max_xpix, tf_max_ypix));
 		max_perT.setMaximumSize(new Dimension(tf_max_xpix, tf_max_ypix));
-		valP.setLayout(new BoxLayout(valP, BoxLayout.X_AXIS));
-		perP.setLayout(new BoxLayout(perP, BoxLayout.X_AXIS));
+		valP.setLayout(new BoxLayout(valP, BoxLayout.Y_AXIS));
+		perP.setLayout(new BoxLayout(perP, BoxLayout.Y_AXIS));
 		//valP.setBorder(new TitledBorder("By Value"));
 		//perP.setBorder(new TitledBorder("By Percentile"));
 
-		JPanel labP2 = new JPanel();
-		JPanel textP2 = new JPanel();
+		JPanel textP2 = new JPanel(new BorderLayout());
 		JPanel slideP2 = new JPanel();
-		labP2.setLayout(new BoxLayout(labP2, BoxLayout.Y_AXIS));
-		textP2.setLayout(new BoxLayout(textP2, BoxLayout.Y_AXIS));
-		slideP2.setLayout(new BoxLayout(slideP2, BoxLayout.Y_AXIS));
-		labP2.add(new JLabel("Min: "));
-		labP2.add(new JLabel("Max: "));
-		textP2.add(min_valT);
-		textP2.add(max_valT);
+		slideP2.setLayout(new BoxLayout(slideP2, BoxLayout.X_AXIS));
+		textP2.add(min_valT,BorderLayout.LINE_START);
+		textP2.add(max_valT,BorderLayout.LINE_END);
+		slideP2.add(new JLabel("Min"));
 		slideP2.add(val_slider);
-		valP.add(labP2);
-		valP.add(textP2);
+		slideP2.add(new JLabel("Max"));
+		
 		valP.add(slideP2);
+		valP.add(textP2);
 
-		JPanel labP = new JPanel();
-		JPanel textP = new JPanel();
+		JPanel textP = new JPanel(new BorderLayout());
 		JPanel slideP = new JPanel();
-		labP.setLayout(new BoxLayout(labP, BoxLayout.Y_AXIS));
-		textP.setLayout(new BoxLayout(textP, BoxLayout.Y_AXIS));
-		slideP.setLayout(new BoxLayout(slideP, BoxLayout.Y_AXIS));
-		labP.add(new JLabel("Min: "));
-		labP.add(new JLabel("Max: "));
-		textP.add(min_perT);
-		textP.add(max_perT);
+		slideP.setLayout(new BoxLayout(slideP, BoxLayout.X_AXIS));
+		textP.add(min_perT,BorderLayout.LINE_START);
+		textP.add(max_perT,BorderLayout.LINE_END);
+		slideP.add(new JLabel("Min"));
 		slideP.add(percent_slider);
-		perP.add(labP);
-		perP.add(textP);
+		slideP.add(new JLabel("Max"));
+		
 		perP.add(slideP);
+		perP.add(textP);
 
 		Box by_val_box = Box.createHorizontalBox();
 		ButtonGroup by_val_group = new ButtonGroup();
