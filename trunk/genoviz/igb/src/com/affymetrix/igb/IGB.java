@@ -132,6 +132,9 @@ public final class IGB extends Application
 			// Turn on anti-aliased fonts. (Ignored prior to JDK1.5)
 			System.setProperty("swing.aatext", "true");
 
+			// Verify jidesoft license.
+			com.jidesoft.utils.Lm.verifyLicense("Medizinische Hochschule Hannover", "genometa", "DwZ:ssxOmM42DbDIAgou:71sAxl6pIK2");
+
 			// Letting the look-and-feel determine the window decorations would
 			// allow exporting the whole frame, including decorations, to an eps file.
 			// But it also may take away some things, like resizing buttons, that the
