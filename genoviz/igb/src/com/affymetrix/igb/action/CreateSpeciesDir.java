@@ -52,7 +52,7 @@ public class CreateSpeciesDir extends AbstractAction {
 	
 	public void actionPerformed(ActionEvent e) {
 		String speciesName = GeneralLoadView.getLoadView().getSelectedSpecies();
-
+	
 		if(SELECT_SPECIES.equals(speciesName)){
 			ErrorHandler.errorPanel("Please select a species first");
 			return;
@@ -89,7 +89,7 @@ public class CreateSpeciesDir extends AbstractAction {
 		List<String> gVersions = GeneralLoadUtils.getGenericVersions(speciesName);
 
 		//Write Contents.txt
-		FormatWriter(ContentWriter.class,speciesDir.getAbsolutePath(),gVersions.toArray());
+		//FormatWriter(ContentWriter.class,speciesDir.getAbsolutePath(),gVersions.toArray());
 		
 		for(String gVersion : gVersions){
 			getAllVisbileFeatures(speciesDir.getAbsolutePath(), gVersion);
@@ -134,7 +134,7 @@ public class CreateSpeciesDir extends AbstractAction {
 		}
 
 		//Write modChromInfo.txt file
-		FormatWriter(ModChromWriter.class, path, chromInfo.toArray());
+		FormatWriter(ModChromWriter.class, path + "/" + version, chromInfo.toArray());
 
 		
 		//Writer annots.xml

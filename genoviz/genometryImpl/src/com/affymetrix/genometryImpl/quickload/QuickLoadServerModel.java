@@ -27,8 +27,10 @@ import com.affymetrix.genometryImpl.util.LocalUrlCacher;
 import com.affymetrix.genometryImpl.util.ServerUtils;
 import com.affymetrix.genometryImpl.general.GenericServer;
 import com.affymetrix.genometryImpl.util.LoadUtils.ServerStatus;
+import com.affymetrix.genometryImpl.util.SpeciesLookup;
 import java.io.*;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -94,9 +96,9 @@ public final class QuickLoadServerModel {
 
 		QuickLoadServerModel ql_server = url2quickload.get(ql_http_root);
 		if (ql_server == null) {
+			LocalUrlCacher.loadSynonyms(LOOKUP, ql_http_root + "synonyms.txt");
 			ql_server = new QuickLoadServerModel(ql_http_root, primary_root, primaryServer);
 			url2quickload.put(ql_http_root, ql_server);
-			LocalUrlCacher.loadSynonyms(LOOKUP, ql_http_root + "synonyms.txt");
 		}
 		
 		return ql_server;
@@ -353,11 +355,10 @@ public final class QuickLoadServerModel {
 				String[] fields = tab_regex.split(line);
 
 				if (fields.length >= 3) {
-					Set<String> synonyms = SynonymLookup.getDefaultLookup().getSynonyms(fields[2]);
-					if(synonyms == null || synonyms.isEmpty()){
+					String species = SpeciesLookup.getCommonSpeciesName(fields[2]);
+					if(species == null){
 						Logger.getLogger(QuickLoadServerModel.class.getName()).log(
-								Level.WARNING,"Couldn't find synomym for {0}. "
-								+ "So skipping it.",new Object[]{fields[2]});
+								Level.WARNING,"Skipping unknown species {0}.",new Object[]{fields[2]});
 						continue;
 					}
 				}
@@ -394,7 +395,12 @@ public final class QuickLoadServerModel {
 	}
 
 	public String getOrganismDir(String version){
-		return genome_dir.get(version);
+		try {
+			return URLEncoder.encode(genome_dir.get(version), "UTF-8");
+		} catch (UnsupportedEncodingException ex) {
+			Logger.getLogger(QuickLoadServerModel.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return "";
 	}
 
 	/**
@@ -408,7 +414,7 @@ public final class QuickLoadServerModel {
 	 */
 	public String getPath(String genome_name, String file) {
 		StringBuilder builder = new StringBuilder();
-		String organism = getOrganismDir(genome_name);
+		String organism = genome_dir.get(genome_name);
 
 		if (organism != null && !organism.isEmpty()) {
 			builder.append(organism);
