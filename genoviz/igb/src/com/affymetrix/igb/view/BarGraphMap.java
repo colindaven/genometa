@@ -107,7 +107,7 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 	 */
 	public void init(AnnotatedSeqGroup seqGroup) {
 		boolean hasChanged = false;
-		if( _currentSeqGroup != null  ){
+		if( _currentSeqGroup != null && _currentSeqGroup.getSeqList() != null && _groupsHash != null ){
 			// check for the hasCode of the BioSeq Lists
 			// if the hashCodes has changed, then the AnnotedSeqGroup
 			// should be reloaded!
@@ -246,24 +246,29 @@ public class BarGraphMap extends JPanel implements  SeqSelectionListener{
 		map.setZoomer(NeoMap.Y, yzoomer);
 
 		// listen if the component will resized
-		map.addComponentListener(new ComponentAdapter() {
+		map.getNeoCanvas().addComponentListener(new ComponentAdapter() {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
+				//SwingUtilities.invokeLater(new Runnable() {
 
-					public void run() {
+					//public void run() {
 						if (!_initialized) {
 							return;
 						}
-						map.scroll(NeoMap.Y, -((float) _maxValue * _verticalInitialZoom));
+						map.zoomToPrev(NeoMap.Y);
+						map.scrollToPrev(NeoMap.Y);
+						map.zoomToPrev(NeoMap.X);
+						map.scrollToPrev(NeoMap.X);
+						//map.scroll(NeoMap.Y, -((float) _maxValue * _verticalInitialZoom));
 						map.updateWidget();
 						// scroll by default in at the minimum coordinate of X-Achsis
 						hairline.setSpot(getXZoomPoint(_barOffset));
 						// scroll by default in at the minimum coordinate of Y-Achsis
 						map.setZoomBehavior(NeoMap.Y, NeoMap.CONSTRAIN_COORD, 0);
-					}
-				});
+						//System.out.println("BarGraphMap::componentResized");
+					//}
+				//});
 			}
 		});
 
