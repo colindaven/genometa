@@ -90,7 +90,6 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 						}
 						label.setIcon(BowtieAlignerExecutor.getNoActivityImageIcon());
 					} catch (IOException ex) {
-
 						System.err.println("Failed loading status images");
 					}
 				}
@@ -112,8 +111,13 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 		}
 		//determine if input file is fasta or fastq
 		String[] readType = {"-f"/*fasta*/, "-q"/*fastq*/};
-		int readTypeIdx = -1;
-		String readsPathFileType = readInputFile.substring(readInputFile.lastIndexOf(".")+1, readInputFile.length());
+		int readTypeIdx = 0;
+		String readsPathFileType = "";
+		try{
+			readsPathFileType = readInputFile.substring(readInputFile.lastIndexOf(".")+1, readInputFile.length());
+		}catch(StringIndexOutOfBoundsException sioe){
+			System.err.println("no reads file");
+		}
 		String[] readFilePossibleExt = {"fq", "fastq"/*Fastq*/,"fa", "fna", "fas","fasta"/*Fasta*/};
 		if(readsPathFileType.equalsIgnoreCase(readFilePossibleExt[0]) ||
 				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[1])){
@@ -129,7 +133,7 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 		String alignerExecutionString = "";
 		if(paramIdx == 0){
 			alignerExecutionString = BowtieAlignerWrapper.getBowtieExecutablePath()+" -t " + indexLocation
-					+ " -e 100 --sam -3 4 -p "+ (Runtime.getRuntime().availableProcessors()-1) +" "
+					+ " -e 100 --sam -3 4 -p "+ (Runtime.getRuntime().availableProcessors()-1) +" " //TODO anzahl Prozessoren = 1?
 					+ readType[readTypeIdx] + " " + readInputFile + " " + outputFilePath;
 		}
 		executionParameters.add(alignerExecutionString);
@@ -158,8 +162,12 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 	 * @param idxLoc the Path to the index
 	 */
 	protected void setIndexLocation(String idxLoc){
-		String s = idxLoc.substring(0, idxLoc.lastIndexOf("."));
-		indexLocation = s.substring(0, s.lastIndexOf("."));
+		try{
+			String s = idxLoc.substring(0, idxLoc.lastIndexOf("."));
+			indexLocation = s.substring(0, s.lastIndexOf("."));
+		}catch(StringIndexOutOfBoundsException sioe){
+			System.err.println("no Index location specified");
+		}
 	}
 
 }

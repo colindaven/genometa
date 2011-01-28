@@ -13,7 +13,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
 /**
@@ -45,19 +47,34 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			if(retVal == JFileChooser.APPROVE_OPTION){
 				readsTF.setText(readsInputFileChooser.getSelectedFile().getAbsolutePath());
 			}
+		}else if("reads2Chooser".equals(e.getActionCommand())){
+			//Start File Chooser to select Reads File
+			retVal = reads2InputFileChooser.showOpenDialog(this);
+			if(retVal == JFileChooser.APPROVE_OPTION){
+				reads2TF.setText(reads2InputFileChooser.getSelectedFile().getAbsolutePath());
+			}
 		}else if("samChooser".equals(e.getActionCommand())){
 			//Start File Chooser to select Output location
 			retVal = samOutputFileChooser.showSaveDialog(this);
 			if(retVal == JFileChooser.APPROVE_OPTION){
 				samTF.setText(samOutputFileChooser.getSelectedFile().getAbsolutePath());
 			}
+		}else if("useReads2".equals(e.getActionCommand())){
+			//set fields for second reads visible
+			if(useReads2.isSelected()){
+				useUserDefCmd.setSelected(true);
+				useUserDefCmdFields(useUserDefCmd.isSelected());
+			}
+			useReads2Fields(useReads2.isSelected());
+		}else if("useUserDefCmd".equals(e.getActionCommand())){
+			//set fields for user definded command string visible
+			useUserDefCmdFields(useUserDefCmd.isSelected());
 		}else if("okayAction".equals(e.getActionCommand())){
 				final BowtieAlignerWrapper bowtie = new BowtieAlignerWrapper();
 				bowtie.setIndexLocation(indexTF.getText());
 				bowtie.setReadInputFile(readsTF.getText());
 				bowtie.setOutputFilePath(samTF.getText());
 			SwingWorker<Integer, Integer> worker = new SwingWorker<Integer, Integer>() {
-//				BowtieAlignerWrapper bowtie = new BowtieAlignerWrapper();
 				@Override
 				public Integer doInBackground() {
 					try {
@@ -85,6 +102,11 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		readsChooserOpener = new JButton("Select reads");
 		readsChooserOpener.addActionListener(this);
 		readsChooserOpener.setActionCommand("readsChooser");
+
+		reads2ChooserOpener = new JButton("Select reads");
+		reads2ChooserOpener.addActionListener(this);
+		reads2ChooserOpener.setActionCommand("reads2Chooser");
+		
 		samChooserOpener = new JButton("Select output");
 		samChooserOpener.addActionListener(this);
 		samChooserOpener.setActionCommand("samChooser");
@@ -102,6 +124,13 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		readsInputFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 		readsInputFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
+		//Init reads2 invisible
+		reads2InputFileChooser = new JFileChooser();
+		reads2InputFileChooser.setDialogTitle("Select a File containing Reads");
+		reads2InputFileChooser.setFileFilter(new ReadFileFilter());//see Super Class
+		reads2InputFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+		reads2InputFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
 		samOutputFileChooser = new JFileChooser();
 		samOutputFileChooser.setDialogTitle("Select outputfile");
 		samOutputFileChooser.setFileFilter(new OutputFileFilter());//see Super Class
@@ -115,6 +144,17 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		cancelButton.setActionCommand("cancelAction");
+
+		useUserDefCmd = new JCheckBox("Use userdefined command string");
+		useUserDefCmd.setSelected(false);
+		useUserDefCmd.addActionListener(this);
+		useUserDefCmd.setActionCommand("useUserDefCmd");
+
+		useReads2 = new JCheckBox("Use paired-end alignment");
+		useReads2.setSelected(false);
+		useReads2.addActionListener(this);
+		useReads2.setActionCommand("useReads2");
+
 	}
 
 	@Override
@@ -175,7 +215,61 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		gbc.gridx = 2; gbc.gridy = 1;
 		gbc.gridwidth = 1; gbc.gridheight = 1;
 		this.add(cancelButton,gbc);
+		//Checkbox for userdefined command lines
+		gbc.gridx = 2; gbc.gridy = 2;
+		gbc.gridwidth = 1; gbc.gridheight = 1;
+		this.add(useUserDefCmd, gbc);
+		//Checkbox for 2 Reads (PairedEnd)
+		gbc.gridx = 2; gbc.gridy = 3;
+		gbc.gridwidth = 1; gbc.gridheight = 1;
+		this.add(useReads2, gbc);
 
 		this.setResizable(false);
+	}
+
+	/**
+	 * Specifies if the Fields for the second reads file are shown or not
+	 * @param b true if used, false if not used
+	 */
+	private void useReads2Fields(boolean b){
+		if(b == true){//show the fields for the second reads file
+			gbc.gridx = 0; gbc.gridy = 6;
+			gbc.gridwidth = 1; gbc.gridheight = 1;
+			this.add(reads2Label, gbc);
+			reads2TF.setEditable(false);//TF is only to display selected Path
+			gbc.gridx = 0; gbc.gridy = 7;
+			gbc.gridwidth = 1; gbc.gridheight = 1;
+			this.add(reads2TF, gbc);
+			gbc.gridx = 1; gbc.gridy = 7;
+			gbc.gridwidth = 1; gbc.gridheight = 1;
+			this.add(reads2ChooserOpener, gbc);
+		}else{
+			this.remove(reads2Label);
+			this.remove(reads2TF);
+			this.remove(reads2ChooserOpener);
+		}
+		this.pack();
+		this.repaint();
+	}
+
+	/**
+	 * Specifies if the fields for user defindes command strings are enabled or diabled
+	 * @param b true if enabled, false if disabled
+	 */
+	private void useUserDefCmdFields(boolean b){
+		if(b == true){
+			gbc.gridx = 0; gbc.gridy = 8;
+			gbc.gridwidth = 1; gbc.gridheight = 1;
+			this.add(userDefCommandLabel, gbc);
+			reads2TF.setEditable(false);
+			gbc.gridx = 0; gbc.gridy = 9;
+			gbc.gridwidth = 1; gbc.gridheight = 1;
+			this.add(userDefCmdTF, gbc);
+		}else{
+			this.remove(userDefCommandLabel);
+			this.remove(userDefCmdTF);
+		}
+		this.pack();
+		this.repaint();
 	}
 }
