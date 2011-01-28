@@ -13,9 +13,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
@@ -25,7 +27,6 @@ import javax.swing.filechooser.FileFilter;
  */
 public abstract class AlignerExecutor extends JDialog implements ActionListener{
 
-	//TODO ggf noch nen hilfebutton?? mit ref auf die Aligner manual Page
 
 	protected JLabel indexLabel = new JLabel("Index location:");
 	//Textfield to print the actual selected path
@@ -43,11 +44,24 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	protected JFileChooser readsInputFileChooser;
 	protected String[] readsFileExtensions;
 
+	//Fields for Paired-End alignment
+	protected JCheckBox useReads2;
+	protected JLabel reads2Label = new JLabel("Read2 input file location:");
+	protected final JTextField reads2TF = new JTextField(30);
+	protected JButton reads2ChooserOpener;
+	protected JFileChooser reads2InputFileChooser;
+	protected String[] reads2FileExtensions;
+
 	protected JLabel samLabel = new JLabel("Alignment output location:");
 	protected final JTextField samTF = new JTextField(30);
 	protected JButton samChooserOpener;
 	protected JFileChooser samOutputFileChooser;
 	protected String[] outputFileExtensions;//need not to be .sam for all Aligners
+
+	//User defindes command string
+	protected JCheckBox useUserDefCmd;
+	protected JLabel userDefCommandLabel = new JLabel("User defined command string");
+	protected final JTextArea userDefCmdTF = new JTextArea(3,30);
 
 	protected GridBagConstraints gbc;
 	protected JButton okayButton;

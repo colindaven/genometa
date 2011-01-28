@@ -35,7 +35,7 @@ import javax.swing.text.StyledDocument;
 public class AlignerOutputView extends JComponent implements ActionListener{
 
 	public static final String name = "Aligner Output";
-	private final String[] availableAligner = {"bowtie", "bwa"};
+	private final String[] availableAligner = {"bowtie", /*"bwa"*/};
 
 	//Panel to hold the control buttons for the Aligners
 	private JPanel controlPanel;
