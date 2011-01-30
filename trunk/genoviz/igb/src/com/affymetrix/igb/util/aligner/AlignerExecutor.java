@@ -17,6 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
@@ -62,6 +63,9 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	protected JCheckBox useUserDefCmd;
 	protected JLabel userDefCommandLabel = new JLabel("User defined command string");
 	protected final JTextArea userDefCmdTF = new JTextArea(3,30);
+	protected JScrollPane userDefCmdScrollPanel = new JScrollPane(userDefCmdTF);
+
+	protected String userDefCmdString;
 
 	protected GridBagConstraints gbc;
 	protected JButton okayButton;
@@ -71,6 +75,12 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	 * Set the allowed Fileextensions for Indexes, Readfiles and Output files
 	 */
 	protected abstract void setFileExtensions();
+
+	/**
+	 * Creates and returns the actual command String that will be executed
+	 * @return the String to be executed
+	 */
+	protected abstract String getUserDefindedCommandString();
 
 	/**
 	 * File Filter for all Index Extensions allowed for that specific Aligner
@@ -187,5 +197,14 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 		progressImages[3] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_4.png"))
 				.getScaledInstance(15, 15, Image.SCALE_FAST));
 		return progressImages;
+	}
+
+	
+	public String getUserDefCmdString() {
+		return userDefCmdString;
+	}
+
+	public void setUserDefCmdString(String userDefCmdString) {
+		this.userDefCmdString = userDefCmdString;
 	}
 }

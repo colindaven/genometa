@@ -24,7 +24,6 @@ import javax.swing.SwingWorker;
  */
 public final class BowtieAlignerExecutor extends AlignerExecutor{
 
-
 	public BowtieAlignerExecutor() {
 		setFileExtensions();
 		initButtonsAndChoosers();
@@ -41,24 +40,28 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			if(retVal == JFileChooser.APPROVE_OPTION){
 				indexTF.setText(indexFileChooser.getSelectedFile().getAbsolutePath());
 			}
+			this.updateUserDefTF();
 		}else if("readsChooser".equals(e.getActionCommand())){
 			//Start File Chooser to select Reads File
 			retVal = readsInputFileChooser.showOpenDialog(this);
 			if(retVal == JFileChooser.APPROVE_OPTION){
 				readsTF.setText(readsInputFileChooser.getSelectedFile().getAbsolutePath());
 			}
+			this.updateUserDefTF();
 		}else if("reads2Chooser".equals(e.getActionCommand())){
 			//Start File Chooser to select Reads File
 			retVal = reads2InputFileChooser.showOpenDialog(this);
 			if(retVal == JFileChooser.APPROVE_OPTION){
 				reads2TF.setText(reads2InputFileChooser.getSelectedFile().getAbsolutePath());
 			}
+			this.updateUserDefTF();
 		}else if("samChooser".equals(e.getActionCommand())){
 			//Start File Chooser to select Output location
 			retVal = samOutputFileChooser.showSaveDialog(this);
 			if(retVal == JFileChooser.APPROVE_OPTION){
 				samTF.setText(samOutputFileChooser.getSelectedFile().getAbsolutePath());
 			}
+			this.updateUserDefTF();
 		}else if("useReads2".equals(e.getActionCommand())){
 			//set fields for second reads visible
 			if(useReads2.isSelected()){
@@ -70,6 +73,7 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			//set fields for user definded command string visible
 			useUserDefCmdFields(useUserDefCmd.isSelected());
 		}else if("okayAction".equals(e.getActionCommand())){
+				//TODO set userdefined command if selected
 				final BowtieAlignerWrapper bowtie = new BowtieAlignerWrapper();
 				bowtie.setIndexLocation(indexTF.getText());
 				bowtie.setReadInputFile(readsTF.getText());
@@ -162,7 +166,7 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		//Bowtie generates multiple Index Files called xx.1.ebwt, ...
 		String[] idx = {"ebwt"};
 		indexFileExtensions = idx;
-		String[] reads = {"fq", "fastq"/*Fastq*/,"fa", "fna", "fas","fasta"/*Fastq*/};//TODO welche extensions gibt es noch für Fasta, fastq ? GGf. über das Optionsmenü verfügbar machen??
+		String[] reads = {"fq", "fastq"/*Fastq*/,"fa", "fna", "fas","fasta"/*Fastq*/};
 		readsFileExtensions = reads;
 		String[] out = {"sam"};
 		outputFileExtensions = out;
@@ -264,12 +268,48 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			reads2TF.setEditable(false);
 			gbc.gridx = 0; gbc.gridy = 9;
 			gbc.gridwidth = 1; gbc.gridheight = 1;
-			this.add(userDefCmdTF, gbc);
+			this.add(userDefCmdScrollPanel, gbc);
+			userDefCmdTF.setLineWrap(true);
+			userDefCmdTF.setText(this.getUserDefindedCommandString());
 		}else{
 			this.remove(userDefCommandLabel);
-			this.remove(userDefCmdTF);
+			this.remove(userDefCmdScrollPanel);
 		}
 		this.pack();
 		this.repaint();
+	}
+
+	@Override
+	protected String getUserDefindedCommandString() {
+		String ret = BowtieAlignerWrapper.bowtie_executable_location;
+		//Get the parameters actually set in the context
+		String index = " -t "+( indexFileChooser.getSelectedFile() == null ? "" :
+					indexFileChooser.getSelectedFile().getAbsolutePath() );
+		ret += index;
+		ret += BowtieAlignerWrapper.defaultAlignerParameters;
+		String readsType = "";
+		if( readsInputFileChooser.getSelectedFile() != null){
+			String readsFileExtension = "";
+			if(readsInputFileChooser.getSelectedFile().getName().contains(".")){
+				readsFileExtension = readsInputFileChooser.getSelectedFile().getName().substring(
+						readsInputFileChooser.getSelectedFile().getName().lastIndexOf("."));
+				readsType = (readsFileExtension.contains("q") ? " -q " : " -f ") ;
+			}
+		}
+		ret += readsType;
+		String reads = (readsInputFileChooser.getSelectedFile() == null ? "":
+					readsInputFileChooser.getSelectedFile().getAbsolutePath());
+		ret += reads;
+		String reads2 = (reads2InputFileChooser.getSelectedFile() == null ? "":
+					reads2InputFileChooser.getSelectedFile().getAbsolutePath());
+		ret += reads2;
+		String output = (samOutputFileChooser.getSelectedFile() == null ? "" :
+					samOutputFileChooser.getSelectedFile().getAbsolutePath());
+		ret += output;
+		return ret;
+	}
+
+	private void updateUserDefTF(){
+		userDefCmdTF.setText(this.getUserDefindedCommandString());
 	}
 }
