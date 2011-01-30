@@ -178,4 +178,9 @@ public class BwaAlignerExecutor extends AlignerExecutor{
 		this.setResizable(false);
 	}
 
+	@Override
+	protected String getUserDefindedCommandString() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
 }

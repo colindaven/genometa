@@ -23,6 +23,8 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 	public static final String BOWTIE_LOCATION_PREF = "BOWTIE_EXECUTABLE_LOCATION";
 	public static String bowtie_executable_location = PreferenceUtils.getTopNode()
 			.get(BowtieAlignerWrapper.BOWTIE_LOCATION_PREF, "");
+	public static final String defaultAlignerParameters = " -e 100 --sam -3 4 -p "+
+			(Runtime.getRuntime().availableProcessors()-1) +" "; //TODO anzahl Prozessoren = 1?
 
 
 	@Override
@@ -133,7 +135,7 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 		String alignerExecutionString = "";
 		if(paramIdx == 0){
 			alignerExecutionString = BowtieAlignerWrapper.getBowtieExecutablePath()+" -t " + indexLocation
-					+ " -e 100 --sam -3 4 -p "+ (Runtime.getRuntime().availableProcessors()-1) +" " //TODO anzahl Prozessoren = 1?
+					+ BowtieAlignerWrapper.defaultAlignerParameters
 					+ readType[readTypeIdx] + " " + readInputFile + " " + outputFilePath;
 		}
 		executionParameters.add(alignerExecutionString);
