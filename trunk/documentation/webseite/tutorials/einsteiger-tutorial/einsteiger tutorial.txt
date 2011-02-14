@@ -9,9 +9,12 @@ After loading genometa, the "Metatie-Fastalines"-file and the "Lineage Mappings"
 Tooltips:
 A tooltip with some informations will be displayed if the mouse is moved over a read, like image genometa_tooltip.jpg shows.
 <br />
+Genometa enables additionally to adjust which informations will be shown in the tooltips. This can be done in the "Preferences" (see image tooltip-editor.jpg). There are two tooltip editors availbable. One for tooltips shown on BAM-files and the other on GFF-files. The tooltip editors just differ in the availible informations which can be selected. It is there possible to add, remove and change the sort order of the informations. Also it is here possible to disable the tooltips in general.
+<br />
 
 Metagenomic:
 On the left side of genometa there is a "Metagenomics"-tab that is showing various data about the reads matching referenz sequenzes. (image genometa_metagenomics.jpg)
+This data can also be exported as CSV-file. This can be done under "Tools" -> "Export Data as CSV". The resulting CSV-file then can be imported in other tools to visualize the data.
 <br />
 The data of the "Metagenomics"-tab are also visualized as a bar-chart in the "Overview"-tab. (image genometa_overviewtab.jpg)
 <br />
