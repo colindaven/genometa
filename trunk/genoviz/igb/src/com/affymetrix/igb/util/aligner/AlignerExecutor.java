@@ -175,7 +175,7 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	 * @throws IOException if the image ./igb/resources/clock_0.png cant be found
 	 */
 	public final static ImageIcon getNoActivityImageIcon() throws IOException{
-		Image i = ImageIO.read(new File("./igb/resources/clock_0.png"));
+		Image i = ImageIO.read(new File("./resources/clock_0.png"));
 		return new ImageIcon(i.getScaledInstance(
 					15, 15, Image.SCALE_SMOOTH));
 	}
@@ -188,13 +188,13 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	 */
 	public final static ImageIcon[] getProgressImageIcons() throws IOException{
 		ImageIcon[] progressImages = new ImageIcon[4];
-		progressImages[0] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_1.png"))
+		progressImages[0] = new ImageIcon(ImageIO.read(new File("./resources/clock_1.png"))
 				.getScaledInstance(15, 15, Image.SCALE_FAST));
-		progressImages[1] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_2.png"))
+		progressImages[1] = new ImageIcon(ImageIO.read(new File("./resources/clock_2.png"))
 				.getScaledInstance(15, 15, Image.SCALE_FAST));
-		progressImages[2] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_3.png"))
+		progressImages[2] = new ImageIcon(ImageIO.read(new File("./resources/clock_3.png"))
 				.getScaledInstance(15, 15, Image.SCALE_FAST));
-		progressImages[3] = new ImageIcon(ImageIO.read(new File("./igb/resources/clock_4.png"))
+		progressImages[3] = new ImageIcon(ImageIO.read(new File("./resources/clock_4.png"))
 				.getScaledInstance(15, 15, Image.SCALE_FAST));
 		return progressImages;
 	}
