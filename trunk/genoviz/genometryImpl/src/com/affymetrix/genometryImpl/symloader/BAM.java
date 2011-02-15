@@ -246,6 +246,7 @@ public final class BAM extends SymLoader {
 		}
 		catch(OutOfMemoryError ofme){
 			ErrorHandler.errorPanel("Unable to load whole sequence. \nLoaded residues from " +min +  " to " +endOfLastRead);
+			seq.setBounds(min, (int)endOfLastRead);
 			System.gc();
 		}
 

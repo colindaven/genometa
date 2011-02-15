@@ -90,6 +90,14 @@ public class SimpleSeqSpan implements SeqSpan, Cloneable {
 
 	public boolean isIntegral() { return true; }
 
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public void setEnd(int end) {
+		this.end = end;
+	}
+
 
 }
 

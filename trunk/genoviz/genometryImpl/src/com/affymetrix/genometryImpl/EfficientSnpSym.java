@@ -88,5 +88,8 @@ public final class EfficientSnpSym implements SeqSymmetry, SeqSpan {
 	public double getLengthDouble() { return (double)getLength(); }
 	public boolean isIntegral() { return true; }
 
+	public void setStart(int start) {}
+	public void setEnd(int end) {}
+
 
 }

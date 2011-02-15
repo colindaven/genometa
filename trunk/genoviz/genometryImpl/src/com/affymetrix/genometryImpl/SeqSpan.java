@@ -21,6 +21,8 @@ import com.affymetrix.genometryImpl.BioSeq;
 public interface SeqSpan {
 	public int getStart();
 	public int getEnd();
+	public void setStart(int start);
+	public void setEnd(int end);
 	public int getMin();
 	public int getMax();
 	public int getLength();

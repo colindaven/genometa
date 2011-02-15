@@ -326,6 +326,11 @@ public final class UcscBedSym implements SeqSpan, SupportsCdsSpan, TypedSym, Sym
 	}
 
 
+	public void setStart(int start) {	}
+
+	public void setEnd(int end) {	}
+
+
 }
 
 
