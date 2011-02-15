@@ -160,6 +160,10 @@ public final class EfficientProbesetSymA implements SeqSpan, SymWithProps, IntId
 		return (child_mins[child_mins.length-1] + getProbeLength());
 	}
 
+	public void setStart(int start) {}
+
+	public void setEnd(int end) {}
+
 	public int getLength() { return (getMax() - getMin()); }
 	public boolean isForward() { return forward; }
 	public BioSeq getBioSeq() { return info.getBioSeq(); }

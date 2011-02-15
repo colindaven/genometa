@@ -222,4 +222,9 @@ public final class GenbankSym implements SeqSpan, SupportsCdsSpan, SymWithProps 
 		props.put(name, val);
 		return true;
 	}
+
+	public void setStart(int start) {	}
+
+	public void setEnd(int end) {	}
+
 }

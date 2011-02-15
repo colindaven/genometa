@@ -209,6 +209,9 @@ public final class UcscGeneSym implements SeqSpan, SupportsCdsSpan, SymWithProps
 		return true;
 	}
 
+	public void setStart(int start) {}
+	public void setEnd(int end) {}
+
 }
 
 
