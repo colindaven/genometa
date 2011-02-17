@@ -1,0 +1,4 @@
+BAM files often consists of a lot of reads as matter of this loading a complete BAM file usually needs a lot of memory. 
+To avoid speed problems Genometa implements a mechanism to check how many memory is available and how many memory maximally should be used. 
+The default is 30 % of to the totaly available memory. To change this value please use the slider in Preferences->Other Options. 
+Generally it is highly recommenced only to load a small sections of the BAM file to be completely save.
