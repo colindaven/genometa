@@ -18,6 +18,4 @@ public interface Constants {
 	//Cached Server filenames
 	public static final String serverMapping = "serverMapping.txt";
 	public static final String xml_ext = ".xml";
-
-	public static final double MAX_MEMORY_USAGE = 0.3;
 }

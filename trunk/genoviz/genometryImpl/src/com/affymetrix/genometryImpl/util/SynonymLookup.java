@@ -422,8 +422,6 @@ public final class SynonymLookup {
 			bufReader.reset();
 
 			while ((currentLine = bufReader.readLine()) != null) {
-
-				System.out.println(currentLine);
 				fastaParser.parseFastaHeader(currentLine);
 
 				//Array for saving all fasta line informations
