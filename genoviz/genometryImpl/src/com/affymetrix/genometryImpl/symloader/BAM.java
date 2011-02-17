@@ -14,6 +14,7 @@ import com.affymetrix.genometryImpl.util.ErrorHandler;
 import com.affymetrix.genometryImpl.util.GeneralUtils;
 import com.affymetrix.genometryImpl.util.LoadUtils.LoadStrategy;
 import com.affymetrix.genometryImpl.util.LocalUrlCacher;
+import com.affymetrix.genometryImpl.util.PreferenceUtils;
 
 import java.io.*;
 import java.io.File;
@@ -62,7 +63,7 @@ public final class BAM extends SymLoader {
     private SAMFileHeader header;
 	private final Set<BioSeq> seqs = new HashSet<BioSeq>();
 	private File indexFile = null;
-
+	private final int TO_BYTE = 1024 * 1024;
 	private static List<LoadStrategy> strategyList = new ArrayList<LoadStrategy>();
 
 	public static final String CIGARPROP = "cigar";
@@ -223,6 +224,13 @@ public final class BAM extends SymLoader {
 	 */
 	public List<SeqSymmetry> parse(BioSeq seq, int min, int max, boolean containerSym, boolean contained) {
 		Runtime rt = Runtime.getRuntime();
+
+		//Get max memory usage from preferences (if available) and convert mb to byte (* 1024 * 1024)
+		long maxMemory = 300 * TO_BYTE;
+		if(!PreferenceUtils.getLocationsNode().get(PreferenceUtils.PREF_MAX_MEMORY_USAGE, "").isEmpty())
+			maxMemory = Long.parseLong(PreferenceUtils.getLocationsNode().get(PreferenceUtils.PREF_MAX_MEMORY_USAGE, "")) * TO_BYTE;
+
+
 		double endOfLastRead = 0;
 		init();
 		List<SeqSymmetry> symList = new ArrayList<SeqSymmetry>(1000);
@@ -234,7 +242,8 @@ public final class BAM extends SymLoader {
 					SAMRecord sr = null;
 					while(iter.hasNext() && (!Thread.currentThread().isInterrupted())){
 						sr = iter.next();
-						if((rt.totalMemory() - rt.freeMemory()) >= (rt.maxMemory()*Constants.MAX_MEMORY_USAGE)){
+						
+							if((rt.totalMemory() - rt.freeMemory()) >= maxMemory){
 							endOfLastRead = sr.getUnclippedEnd();
 							throw new OutOfMemoryError();
 						}

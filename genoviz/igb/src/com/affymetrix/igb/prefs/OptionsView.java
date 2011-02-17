@@ -29,7 +29,10 @@ import com.affymetrix.igb.util.aligner.BwaAlignerWrapper;
 import com.affymetrix.igb.view.OrfAnalyzer;
 import com.affymetrix.igb.view.SeqMapView;
 import com.affymetrix.igb.view.UnibrowHairline;
+import com.jidesoft.swing.JideLabel;
 import java.io.File;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *  A panel that shows the preferences for particular special URLs and file locations.
@@ -189,11 +192,60 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
     aligner_opt_box.setAlignmentX(0.0f);
 	//MPTAG end
 
-    axis_box.setAlignmentX(0.0f);
-   
+
+	/*Memory usage panel*/
+	JPanel memory_opt_box = new JPanel();
+	memory_opt_box.setLayout((new GridLayout(1, 2)));
+	memory_opt_box.setBorder(new javax.swing.border.TitledBorder("Memory usage"));
+
+	final JLabel memoryLabel = new JLabel();
+	final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024 / 1024);
+	
+	final JSlider memorySlider = new JSlider(0, maxMemory);
+	memorySlider.setMinorTickSpacing(10);
+	memorySlider.setMajorTickSpacing(100);
+    memorySlider.setPaintTicks(true);
+	memorySlider.setSnapToTicks(true);
+	memorySlider.setPaintTrack(true);
+	memorySlider.setPaintLabels(true);
+
+	/*Check for saved value in preferences if available use it and set the label*/
+	if(!PreferenceUtils.getLocationsNode().get(PreferenceUtils.PREF_MAX_MEMORY_USAGE, "").isEmpty())
+		memorySlider.setValue(Integer.parseInt(PreferenceUtils.getLocationsNode().get(PreferenceUtils.PREF_MAX_MEMORY_USAGE, "")));
+	else
+		memorySlider.setValue(300);
+
+	memoryLabel.setText("Memory usage: "+memorySlider.getValue()+" MB of "+maxMemory+" MB");
+
+	/*add cahnge listener to slider*/
+	memorySlider.addChangeListener(new ChangeListener() {
+		private boolean errorShown = false;
+
+			public void stateChanged(ChangeEvent e) {
+				// show notification when memory reaches the recommended value
+				if(memorySlider.getValue()>=(maxMemory * 0.6) && errorShown==false){
+					JOptionPane.showMessageDialog(null, "It is strongly recommended not to use more than 60% of total memory", "Warning", JOptionPane.WARNING_MESSAGE);
+					errorShown = true;
+				}
+				else if(memorySlider.getValue()<=(maxMemory * 0.6) && errorShown==true)
+					errorShown = false;
+
+				// update label and save value to preferences
+				memoryLabel.setText("Memory usage: "+String.valueOf(memorySlider.getValue())+" MB of "+maxMemory+" MB");
+				PreferenceUtils.getLocationsNode().put(PreferenceUtils.PREF_MAX_MEMORY_USAGE, String.valueOf(memorySlider.getValue()));
+			}
+		});
+
+	// add components to label
+	memory_opt_box.add(memoryLabel);
+	memory_opt_box.add(memorySlider);
+
+
+    axis_box.setAlignmentX(0.0f);   
     orf_box.setAlignmentX(0.0f);
     misc_box.setAlignmentX(0.0f);
 	base_box.setAlignmentX(0.0f);
+	memory_opt_box.setAlignmentX(0.0f);
 
    
     main_box.add(axis_box);
@@ -202,6 +254,7 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 	main_box.add(base_box);
 	main_box.add(dir_bar_box);
 	main_box.add(aligner_opt_box);
+	main_box.add(memory_opt_box);
     main_box.add(Box.createRigidArea(new Dimension(0,5)));
     main_box.add(misc_box);
 

@@ -66,6 +66,7 @@ public abstract class PreferenceUtils {
 	static final SortedSet<String> keystroke_node_names = Collections.<String>synchronizedSortedSet(new TreeSet<String>());
 	static final DefaultListModel tooltips_editor_items = new DefaultListModel();
 	static String app_dir = null;
+	public static final String PREF_MAX_MEMORY_USAGE = "Maximum memory usage";
 
 	/**
 	 * Returns the top preferences node for the "com/affymetrix/igb" package.
