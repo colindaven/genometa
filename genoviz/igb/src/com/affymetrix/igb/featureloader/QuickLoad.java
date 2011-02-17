@@ -286,7 +286,7 @@ public final class QuickLoad extends SymLoader {
 		/*Zoom in, because of memory overhead not the complet sequence is loaded.
 		  The zoom is not 100% correct, its zoom just nearly into the loaded part*/
 		if (results.size() < span.getEnd()) {
-			gviewer.zoomTo(0, results.size());
+			gviewer.zoomTo(0, results.size()*2);
 			span.setEnd(results.size());
 		}
 	}
