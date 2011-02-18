@@ -24,14 +24,16 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 	public static String bowtie_executable_location = PreferenceUtils.getTopNode()
 			.get(BowtieAlignerWrapper.BOWTIE_LOCATION_PREF, "");
 	public static final String defaultAlignerParameters = " -e 100 --sam -3 4 -p "+
-			(Runtime.getRuntime().availableProcessors()-1) +" "; //TODO anzahl Prozessoren = 1?
+			//Make shure that there is also one processor if there is only one installed
+			(Runtime.getRuntime().availableProcessors()-1 > 0 ? 
+				Runtime.getRuntime().availableProcessors()-1 : 1) +" ";
 
 
 	@Override
 	public void runAligner(final JComponent componentToUpdate, final Object[] dataForComponentUpdate,
-			final int updateInterval) throws IOException {
+			final int updateInterval, String executionString) throws IOException {
 		try{
-				executionProcess = Runtime.getRuntime().exec(generateExecutionParameters(0));
+				executionProcess = Runtime.getRuntime().exec(generateExecutionParameters(0, executionString));
 				stdin = executionProcess.getOutputStream();
 				stdout = executionProcess.getInputStream();
 				stderr = executionProcess.getErrorStream();
@@ -104,41 +106,42 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 	}
 
 	@Override
-	public String[] generateExecutionParameters(int paramIdx) {
+	public String[] generateExecutionParameters(int paramIdx, String execCmd) {
 		String[] shell = this.determineExecutionProcess();
 		Vector<String> executionParameters = new Vector<String>();
 		for (int i = 0; i < shell.length; i++) {
 			if(shell[i] != null || shell[i] != "")
 				executionParameters.add(shell[i]);
 		}
-		//determine if input file is fasta or fastq
-		String[] readType = {"-f"/*fasta*/, "-q"/*fastq*/};
-		int readTypeIdx = 0;
-		String readsPathFileType = "";
-		try{
-			readsPathFileType = readInputFile.substring(readInputFile.lastIndexOf(".")+1, readInputFile.length());
-		}catch(StringIndexOutOfBoundsException sioe){
-			System.err.println("no reads file");
-		}
-		String[] readFilePossibleExt = {"fq", "fastq"/*Fastq*/,"fa", "fna", "fas","fasta"/*Fasta*/};
-		if(readsPathFileType.equalsIgnoreCase(readFilePossibleExt[0]) ||
-				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[1])){
-			//Its Fastq format
-			readTypeIdx = 1;
-		}else if(readsPathFileType.equalsIgnoreCase(readFilePossibleExt[2]) ||
-				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[3]) ||
-				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[4]) ||
-				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[5])){
-			//its Fasta format
-			readTypeIdx = 0;
-		}
-		String alignerExecutionString = "";
-		if(paramIdx == 0){
-			alignerExecutionString = BowtieAlignerWrapper.getBowtieExecutablePath()+" -t " + indexLocation
-					+ BowtieAlignerWrapper.defaultAlignerParameters
-					+ readType[readTypeIdx] + " " + readInputFile + " " + outputFilePath;
-		}
-		executionParameters.add(alignerExecutionString);
+//		//determine if input file is fasta or fastq
+//		String[] readType = {"-f"/*fasta*/, "-q"/*fastq*/};
+//		int readTypeIdx = 0;
+//		String readsPathFileType = "";
+//		try{
+//			readsPathFileType = readInputFile.substring(readInputFile.lastIndexOf(".")+1, readInputFile.length());
+//		}catch(StringIndexOutOfBoundsException sioe){
+//			System.err.println("no reads file");
+//		}
+//		String[] readFilePossibleExt = {"fq", "fastq"/*Fastq*/,"fa", "fna", "fas","fasta"/*Fasta*/};
+//		if(readsPathFileType.equalsIgnoreCase(readFilePossibleExt[0]) ||
+//				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[1])){
+//			//Its Fastq format
+//			readTypeIdx = 1;
+//		}else if(readsPathFileType.equalsIgnoreCase(readFilePossibleExt[2]) ||
+//				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[3]) ||
+//				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[4]) ||
+//				readsPathFileType.equalsIgnoreCase(readFilePossibleExt[5])){
+//			//its Fasta format
+//			readTypeIdx = 0;
+//		}
+//		String alignerExecutionString = "";
+//		if(paramIdx == 0){
+//			alignerExecutionString = BowtieAlignerWrapper.getBowtieExecutablePath()+" -t " + indexLocation
+//					+ BowtieAlignerWrapper.defaultAlignerParameters
+//					+ readType[readTypeIdx] + " " + readInputFile + " " + outputFilePath;
+//		}
+//		executionParameters.add(alignerExecutionString);
+		executionParameters.add(execCmd);
 
 		String[] returnArray = new String[executionParameters.size()];
 		executionParameters.copyInto(returnArray);

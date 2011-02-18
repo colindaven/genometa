@@ -83,7 +83,7 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 				public Integer doInBackground() {
 					try {
 						bowtie.runAligner(Application.getSingleton().getStatusBar().getAlignerStatusLabel(),
-								AlignerExecutor.getProgressImageIcons(), 150);
+								AlignerExecutor.getProgressImageIcons(), 150, userDefCmdTF.getText());
 					} catch (IOException ex) {
 						System.err.println("Failed loading status images");
 					}
