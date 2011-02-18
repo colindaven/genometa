@@ -61,7 +61,7 @@ public abstract class AlignerWrapper {
 	 * @param updateInterval the Time the Update method will sleep between updates
 	 */
 	public abstract void runAligner(final JComponent componentToUpdate, final Object[] dataForComponentUpdate,
-			final int updateInterval) throws IOException;
+			final int updateInterval, String executionString) throws IOException;
 
 	/**
 	 * Creates all parametes needed to call the aligner. First determines which shell to use,
@@ -71,7 +71,7 @@ public abstract class AlignerWrapper {
 	 * @param paramIdx the parameter array to be generated if there are more than one threads to generate
 	 * @return a String Array containing all parameters to execute the aligner
 	 */
-	public abstract String[] generateExecutionParameters(int paramIdx);
+	public abstract String[] generateExecutionParameters(int paramIdx, String executionString);
 
 	/**
 	 * Returns true if the Thread is still running. Knows that by asking for the Theads exit Value
