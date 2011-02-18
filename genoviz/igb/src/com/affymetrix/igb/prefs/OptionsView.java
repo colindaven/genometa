@@ -166,7 +166,7 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 	gbc.gridx = 2; gbc.gridy = 0; gbc.weightx = .2;
     aligner_opt_box.add(aligner_opt_bowtie_location_set, gbc);
 
-
+/* BWA temporarily not supported
     final JTextField aligner_opt_bwa_location = new JTextField();
 	//Try to set actual path to textfield
 	aligner_opt_bwa_location.setText(PreferenceUtils.getTopNode()
@@ -191,7 +191,7 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
     aligner_opt_box.add(aligner_opt_bwa_location_set, gbc);
     aligner_opt_box.setAlignmentX(0.0f);
 	//MPTAG end
-
+*/
 
 	/*Memory usage panel*/
 	JPanel memory_opt_box = new JPanel();

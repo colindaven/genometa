@@ -163,16 +163,19 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 	}
 
 	/**
-	 * Sets the index. Corrects the path to the first dot. index.1.ebwt => index
-	 * @param idxLoc the Path to the index
+	 * Corrects the path to the index. Remoces everything after the prelast dot. index.1.ebwt => index
+	 * @param idxLoc the Path to one of the index files
+	 * @return the corrected Index Path
 	 */
-	protected void setIndexLocation(String idxLoc){
+	protected static String correctIndexString(String idxLoc){
+		String ret = "";
 		try{
 			String s = idxLoc.substring(0, idxLoc.lastIndexOf("."));
-			indexLocation = s.substring(0, s.lastIndexOf("."));
+			ret = s.substring(0, s.lastIndexOf("."));
 		}catch(StringIndexOutOfBoundsException sioe){
 			System.err.println("no Index location specified");
 		}
+		return ret;
 	}
 
 }

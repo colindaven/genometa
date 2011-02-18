@@ -38,7 +38,8 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			//Start File Chooser to select Index File(s)
 			retVal = indexFileChooser.showOpenDialog(this);
 			if(retVal == JFileChooser.APPROVE_OPTION){
-				indexTF.setText(indexFileChooser.getSelectedFile().getAbsolutePath());
+				indexTF.setText(BowtieAlignerWrapper.correctIndexString(
+						indexFileChooser.getSelectedFile().getAbsolutePath()));
 			}
 			this.updateUserDefTF();
 		}else if("readsChooser".equals(e.getActionCommand())){
@@ -284,7 +285,7 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		String ret = BowtieAlignerWrapper.bowtie_executable_location;
 		//Get the parameters actually set in the context
 		String index = " -t "+( indexFileChooser.getSelectedFile() == null ? "" :
-					indexFileChooser.getSelectedFile().getAbsolutePath() );
+					BowtieAlignerWrapper.correctIndexString(indexFileChooser.getSelectedFile().getAbsolutePath() ));
 		ret += index;
 		ret += BowtieAlignerWrapper.defaultAlignerParameters;
 		String readsType = "";
@@ -302,10 +303,10 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		ret += reads;
 		String reads2 = (reads2InputFileChooser.getSelectedFile() == null ? "":
 					reads2InputFileChooser.getSelectedFile().getAbsolutePath());
-		ret += reads2;
+		ret += " "+ reads2;
 		String output = (samOutputFileChooser.getSelectedFile() == null ? "" :
 					samOutputFileChooser.getSelectedFile().getAbsolutePath());
-		ret += output;
+		ret += " "+  output;
 		return ret;
 	}
 
