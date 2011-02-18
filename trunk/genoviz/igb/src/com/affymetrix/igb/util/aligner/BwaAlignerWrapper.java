@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Class is not in use and will not work unless user defined command is implemented
  */
 
 package com.affymetrix.igb.util.aligner;
@@ -16,7 +15,7 @@ import javax.swing.JLabel;
 
 /**
  *
- * @author Elmo
+ * @author Malte Paetow malte.paetow@gmx.de
  */
 public class BwaAlignerWrapper extends AlignerWrapper {
 
@@ -25,11 +24,12 @@ public class BwaAlignerWrapper extends AlignerWrapper {
 			.get(BwaAlignerWrapper.BWA_LOCATION_PREF, "");
 	private String alignmentTempFile = "tmpAln";
 
+
 	@Override
 	public void runAligner(final JComponent componentToUpdate, final Object[] dataForComponentUpdate,
-			final int updateInterval) throws IOException {
+			final int updateInterval, String executionString) throws IOException {
 		try{
-				executionProcess = Runtime.getRuntime().exec(generateExecutionParameters(0));
+				executionProcess = Runtime.getRuntime().exec(generateExecutionParameters(0, ""));
 				stdin = executionProcess.getOutputStream();
 				stdout = executionProcess.getInputStream();
 				stderr = executionProcess.getErrorStream();
@@ -98,7 +98,7 @@ public class BwaAlignerWrapper extends AlignerWrapper {
 				updateComponent.start();
 				executionProcess.waitFor();//Waits for the task to complete the first step of bwa (alignment)
 				
-				executionProcess = Runtime.getRuntime().exec(generateExecutionParameters(1));
+				executionProcess = Runtime.getRuntime().exec(generateExecutionParameters(1, ""));
 				stdin = executionProcess.getOutputStream();
 				stdout = executionProcess.getInputStream();
 				stderr = executionProcess.getErrorStream();
@@ -144,9 +144,8 @@ public class BwaAlignerWrapper extends AlignerWrapper {
 				ioe.printStackTrace();
 			}
 	}
-
 	@Override
-	public String[] generateExecutionParameters(int paramIdx) {
+	public String[] generateExecutionParameters(int paramIdx, String executionString) {
 		String[] shell = this.determineExecutionProcess();
 		Vector<String> executionParameters = new Vector<String>();
 		for (int i = 0; i < shell.length; i++) {

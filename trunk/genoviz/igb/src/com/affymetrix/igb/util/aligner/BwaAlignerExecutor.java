@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Class is not in use and will not work until user defined Command String is implemented
  */
 
 package com.affymetrix.igb.util.aligner;
@@ -18,7 +17,7 @@ import javax.swing.SwingWorker;
 
 /**
  *
- * @author Elmo
+ * @author Malte Paetow malte.paetow@gmx.de
  */
 public class BwaAlignerExecutor extends AlignerExecutor{
 
@@ -60,7 +59,7 @@ public class BwaAlignerExecutor extends AlignerExecutor{
 				public Integer doInBackground() {
 					try {
 						bwa.runAligner(Application.getSingleton().getStatusBar().getAlignerStatusLabel(),
-								AlignerExecutor.getProgressImageIcons(), 150);
+								AlignerExecutor.getProgressImageIcons(), 150, "");
 					} catch (IOException ex) {
 						System.err.println("Failed loading status images");
 					}
