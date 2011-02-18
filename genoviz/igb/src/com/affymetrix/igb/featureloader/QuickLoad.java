@@ -19,6 +19,7 @@ import com.affymetrix.igb.parsers.ChpParser;
 import com.affymetrix.igb.util.ThreadUtils;
 import com.affymetrix.genometryImpl.quickload.QuickLoadServerModel;
 import com.affymetrix.genometryImpl.span.SimpleSeqSpan;
+import com.affymetrix.genometryImpl.util.GenometaGlobals;
 import com.affymetrix.igb.view.SeqGroupView;
 import com.affymetrix.igb.view.SeqInfoView;
 import com.affymetrix.igb.view.SeqMapView;
@@ -283,11 +284,13 @@ public final class QuickLoad extends SymLoader {
 			setStyle(feature);
 		}
 
-		/*Zoom in, because of memory overhead not the complet sequence is loaded.
+		/*Zoom in, because of memory overflow not the complet sequence is loaded.
 		  The zoom is not 100% correct, its zoom just nearly into the loaded part*/
-		if (results.size() < span.getEnd()) {
-			gviewer.zoomTo(0, results.size()*2);
-			span.setEnd(results.size());
+		if (GenometaGlobals.isMemoryOverflow()) {
+			gviewer.zoomTo(GenometaGlobals.getNumOfFirstRead(), GenometaGlobals.getNumOfLastRead());
+			span.setEnd(GenometaGlobals.getNumOfLastRead());
+			span.setStart(GenometaGlobals.getNumOfFirstRead());
+			GenometaGlobals.setMemoryOverflow(false);
 		}
 	}
 

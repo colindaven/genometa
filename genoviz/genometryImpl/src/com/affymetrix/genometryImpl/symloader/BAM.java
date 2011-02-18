@@ -15,6 +15,7 @@ import com.affymetrix.genometryImpl.util.GeneralUtils;
 import com.affymetrix.genometryImpl.util.LoadUtils.LoadStrategy;
 import com.affymetrix.genometryImpl.util.LocalUrlCacher;
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
+import com.affymetrix.genometryImpl.util.GenometaGlobals;
 
 import java.io.*;
 import java.io.File;
@@ -255,7 +256,11 @@ public final class BAM extends SymLoader {
 		}
 		catch(OutOfMemoryError ofme){
 			ErrorHandler.errorPanel("Unable to load whole sequence. \nLoaded residues from " +min +  " to " +endOfLastRead);
-			seq.setBounds(min, (int)endOfLastRead);
+
+			// following is a ahck, but i see no other options at the moment
+			GenometaGlobals.setNumOfFirstRead(min);
+			GenometaGlobals.setNumOfLastRead((int)endOfLastRead);
+			GenometaGlobals.setMemoryOverflow(true);
 			System.gc();
 		}
 
