@@ -188,10 +188,10 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 	gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = .6;
     aligner_opt_box.add(aligner_opt_bwa_location, gbc);
 	gbc.gridx = 2; gbc.gridy = 1; gbc.weightx = .2;
-    aligner_opt_box.add(aligner_opt_bwa_location_set, gbc);
+    aligner_opt_box.add(aligner_opt_bwa_location_set, gbc);*/
     aligner_opt_box.setAlignmentX(0.0f);
 	//MPTAG end
-*/
+
 
 	/*Memory usage panel*/
 	JPanel memory_opt_box = new JPanel();
