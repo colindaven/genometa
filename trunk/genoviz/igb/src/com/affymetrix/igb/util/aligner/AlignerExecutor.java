@@ -70,6 +70,8 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 	protected GridBagConstraints gbc;
 	protected JButton okayButton;
 	protected JButton cancelButton;
+	//store if 2 Reads files are used
+	protected boolean isUsePairedEnd;
 
 	/**
 	 * Set the allowed Fileextensions for Indexes, Readfiles and Output files
@@ -206,5 +208,9 @@ public abstract class AlignerExecutor extends JDialog implements ActionListener{
 
 	public void setUserDefCmdString(String userDefCmdString) {
 		this.userDefCmdString = userDefCmdString;
+	}
+
+	public boolean isUsedPairedEnd(){
+		return isUsePairedEnd;
 	}
 }
