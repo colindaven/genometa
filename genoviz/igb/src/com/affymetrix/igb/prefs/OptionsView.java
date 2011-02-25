@@ -120,7 +120,7 @@ public final class OptionsView extends IPrefEditorComponent implements ActionLis
 
     //JButton dir_bar_fw_color_button = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), AlignedResidueGlyph.dirBarFwColor, Color.RED);
     //dir_bar_box.add(new JLabel("Forward Direction: "));
-    dir_bar_box.add(addColorChooser("Foreground Direction:", AlignedResidueGlyph.dirBarFwColor, Color.RED));
+    dir_bar_box.add(addColorChooser("Forward Direction:", AlignedResidueGlyph.dirBarFwColor, Color.RED));
 
     //JButton dir_bar_rw_color_button = ColorUtils.createColorButton(PreferenceUtils.getTopNode(), AlignedResidueGlyph.dirBarRwColor, Color.BLUE);
     //dir_bar_box.add(new JLabel("Reverse Direction: "));

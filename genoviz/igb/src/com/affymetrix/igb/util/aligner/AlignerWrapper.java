@@ -32,6 +32,7 @@ public abstract class AlignerWrapper {
 	//Zielposition der Ausgabedatei
 	protected String outputFilePath;
 
+
 	/**
 	 * Gibt den String für die Ausführung einer Shell auf dem aktuellen Betriebssystem zurück
 	 */

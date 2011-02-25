@@ -5,6 +5,7 @@
 
 package com.affymetrix.igb.util.aligner;
 
+import com.affymetrix.genometryImpl.util.PreferenceUtils;
 import com.affymetrix.igb.Application;
 import com.affymetrix.igb.util.ThreadUtils;
 import java.awt.GridBagConstraints;
@@ -15,7 +16,6 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
 /**
@@ -23,6 +23,8 @@ import javax.swing.SwingWorker;
  * @author paetow
  */
 public final class BowtieAlignerExecutor extends AlignerExecutor{
+
+	boolean isFastQ=false;
 
 	public BowtieAlignerExecutor() {
 		setFileExtensions();
@@ -41,13 +43,26 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 				indexTF.setText(BowtieAlignerWrapper.correctIndexString(
 						indexFileChooser.getSelectedFile().getAbsolutePath()));
 			}
+			PreferenceUtils.getTopNode().put(BowtieAlignerWrapper.INDEX_LOCATION_PREF,
+					BowtieAlignerWrapper.correctIndexString(
+						indexFileChooser.getSelectedFile().getAbsolutePath()));//Set last index choosed
 			this.updateUserDefTF();
 		}else if("readsChooser".equals(e.getActionCommand())){
 			//Start File Chooser to select Reads File
 			retVal = readsInputFileChooser.showOpenDialog(this);
+			if( readsInputFileChooser.getSelectedFile() != null){
+			String readsFileExtension = "";
+			if(readsInputFileChooser.getSelectedFile().getName().contains(".")){
+				readsFileExtension = readsInputFileChooser.getSelectedFile().getName().substring(
+						readsInputFileChooser.getSelectedFile().getName().lastIndexOf("."));
+				isFastQ = (readsFileExtension.contains("q") ? true : false) ;
+			}
+		}
 			if(retVal == JFileChooser.APPROVE_OPTION){
 				readsTF.setText(readsInputFileChooser.getSelectedFile().getAbsolutePath());
 			}
+			PreferenceUtils.getTopNode().put(BowtieAlignerWrapper.READ_LOCATION_PREF,
+					readsInputFileChooser.getSelectedFile().getAbsolutePath());//Set last read choosed
 			this.updateUserDefTF();
 		}else if("reads2Chooser".equals(e.getActionCommand())){
 			//Start File Chooser to select Reads File
@@ -55,6 +70,8 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			if(retVal == JFileChooser.APPROVE_OPTION){
 				reads2TF.setText(reads2InputFileChooser.getSelectedFile().getAbsolutePath());
 			}
+			PreferenceUtils.getTopNode().put(BowtieAlignerWrapper.READ2_LOCATION_PREF,
+					reads2InputFileChooser.getSelectedFile().getAbsolutePath());//Set last read2 choosed
 			this.updateUserDefTF();
 		}else if("samChooser".equals(e.getActionCommand())){
 			//Start File Chooser to select Output location
@@ -62,6 +79,8 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			if(retVal == JFileChooser.APPROVE_OPTION){
 				samTF.setText(samOutputFileChooser.getSelectedFile().getAbsolutePath());
 			}
+			PreferenceUtils.getTopNode().put(BowtieAlignerWrapper.OUTPUT_LOCATION_PREF,
+					samOutputFileChooser.getSelectedFile().getAbsolutePath());//Set last output choosed
 			this.updateUserDefTF();
 		}else if("useReads2".equals(e.getActionCommand())){
 			//set fields for second reads visible
@@ -167,7 +186,7 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		//Bowtie generates multiple Index Files called xx.1.ebwt, ...
 		String[] idx = {"ebwt"};
 		indexFileExtensions = idx;
-		String[] reads = {"fq", "fastq"/*Fastq*/,"fa", "fna", "fas","fasta"/*Fastq*/};
+		String[] reads = {"fq", "fastq"/*Fastq*/,"fa", "fna", "fas","fasta"/*Fasta*/};
 		readsFileExtensions = reads;
 		String[] out = {"sam"};
 		outputFileExtensions = out;
@@ -187,6 +206,8 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		gbc.gridwidth = 2; gbc.gridheight = 1;
 		this.add(indexLabel, gbc);
 		indexTF.setEditable(false);//TF is only to display selected Path
+		indexTF.setText(PreferenceUtils.getTopNode()
+			.get(BowtieAlignerWrapper.INDEX_LOCATION_PREF, ""));//Try setting last index choosed
 		gbc.gridx = 0; gbc.gridy = 1;
 		gbc.gridwidth = 1; gbc.gridheight = 1;
 		this.add(indexTF, gbc);
@@ -197,20 +218,24 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		gbc.gridwidth = 2; gbc.gridheight = 1;
 		this.add(readsLabel, gbc);
 		readsTF.setEditable(false);//TF is only to display selected Path
+		readsTF.setText(PreferenceUtils.getTopNode()
+			.get(BowtieAlignerWrapper.READ_LOCATION_PREF, ""));//Try setting last Read choosed
 		gbc.gridx = 0; gbc.gridy = 3;
 		gbc.gridwidth = 1; gbc.gridheight = 1;
 		this.add(readsTF, gbc);
 		gbc.gridx = 1; gbc.gridy = 3;
 		gbc.gridwidth = 1; gbc.gridheight = 1;
 		this.add(readsChooserOpener, gbc);
-		gbc.gridx = 0; gbc.gridy = 4;
+		gbc.gridx = 0; gbc.gridy = 6;
 		gbc.gridwidth = 2; gbc.gridheight = 1;
 		this.add(samLabel, gbc);
 		samTF.setEditable(false);//TF is only to display selected Path
-		gbc.gridx = 0; gbc.gridy = 5;
+		samTF.setText(PreferenceUtils.getTopNode()
+			.get(BowtieAlignerWrapper.OUTPUT_LOCATION_PREF, ""));//Try setting last output choosed
+		gbc.gridx = 0; gbc.gridy = 7;
 		gbc.gridwidth = 1; gbc.gridheight = 1;
 		this.add(samTF, gbc);
-		gbc.gridx = 1; gbc.gridy = 5;
+		gbc.gridx = 1; gbc.gridy = 7;
 		gbc.gridwidth = 1; gbc.gridheight = 1;
 		this.add(samChooserOpener, gbc);
 
@@ -230,6 +255,7 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 		this.add(useReads2, gbc);
 
 		this.setResizable(false);
+		this.updateUserDefTF();
 	}
 
 	/**
@@ -238,14 +264,16 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 	 */
 	private void useReads2Fields(boolean b){
 		if(b == true){//show the fields for the second reads file
-			gbc.gridx = 0; gbc.gridy = 6;
+			gbc.gridx = 0; gbc.gridy = 4;
 			gbc.gridwidth = 1; gbc.gridheight = 1;
 			this.add(reads2Label, gbc);
 			reads2TF.setEditable(false);//TF is only to display selected Path
-			gbc.gridx = 0; gbc.gridy = 7;
+			reads2TF.setText(PreferenceUtils.getTopNode()
+				.get(BowtieAlignerWrapper.READ2_LOCATION_PREF, ""));//Try setting last read2 choosed
+			gbc.gridx = 0; gbc.gridy = 5;
 			gbc.gridwidth = 1; gbc.gridheight = 1;
 			this.add(reads2TF, gbc);
-			gbc.gridx = 1; gbc.gridy = 7;
+			gbc.gridx = 1; gbc.gridy = 5;
 			gbc.gridwidth = 1; gbc.gridheight = 1;
 			this.add(reads2ChooserOpener, gbc);
 		}else{
@@ -253,6 +281,7 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			this.remove(reads2TF);
 			this.remove(reads2ChooserOpener);
 		}
+		this.isUsePairedEnd = b;
 		this.pack();
 		this.repaint();
 	}
@@ -268,7 +297,7 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 			this.add(userDefCommandLabel, gbc);
 			reads2TF.setEditable(false);
 			gbc.gridx = 0; gbc.gridy = 9;
-			gbc.gridwidth = 1; gbc.gridheight = 1;
+			gbc.gridwidth = 3; gbc.gridheight = 1;
 			this.add(userDefCmdScrollPanel, gbc);
 			userDefCmdTF.setLineWrap(true);
 			userDefCmdTF.setText(this.getUserDefindedCommandString());
@@ -284,28 +313,20 @@ public final class BowtieAlignerExecutor extends AlignerExecutor{
 	protected String getUserDefindedCommandString() {
 		String ret = BowtieAlignerWrapper.bowtie_executable_location;
 		//Get the parameters actually set in the context
-		String index = " -t "+( indexFileChooser.getSelectedFile() == null ? "" :
-					BowtieAlignerWrapper.correctIndexString(indexFileChooser.getSelectedFile().getAbsolutePath() ));
+		String index = " -t "+indexTF.getText();
 		ret += index;
 		ret += BowtieAlignerWrapper.defaultAlignerParameters;
-		String readsType = "";
-		if( readsInputFileChooser.getSelectedFile() != null){
-			String readsFileExtension = "";
-			if(readsInputFileChooser.getSelectedFile().getName().contains(".")){
-				readsFileExtension = readsInputFileChooser.getSelectedFile().getName().substring(
-						readsInputFileChooser.getSelectedFile().getName().lastIndexOf("."));
-				readsType = (readsFileExtension.contains("q") ? " -q " : " -f ") ;
-			}
-		}
+		String readsType = (isFastQ?" -q ":" -f ");
 		ret += readsType;
-		String reads = (readsInputFileChooser.getSelectedFile() == null ? "":
-					readsInputFileChooser.getSelectedFile().getAbsolutePath());
-		ret += reads;
-		String reads2 = (reads2InputFileChooser.getSelectedFile() == null ? "":
-					reads2InputFileChooser.getSelectedFile().getAbsolutePath());
-		ret += " "+ reads2;
-		String output = (samOutputFileChooser.getSelectedFile() == null ? "" :
-					samOutputFileChooser.getSelectedFile().getAbsolutePath());
+		ret +=(this.isUsedPairedEnd() ? "-1 " :"");
+		String reads = readsTF.getText();
+		ret += reads + " ";
+		ret +=(this.isUsedPairedEnd() ? "-2 " :"");
+		if(this.isUsedPairedEnd()){
+			String reads2 = reads2TF.getText();
+			ret += reads2;
+		}
+		String output = samTF.getText();
 		ret += " "+  output;
 		return ret;
 	}

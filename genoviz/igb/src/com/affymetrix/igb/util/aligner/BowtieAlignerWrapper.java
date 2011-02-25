@@ -6,13 +6,17 @@
 package com.affymetrix.igb.util.aligner;
 
 import com.affymetrix.genometryImpl.util.PreferenceUtils;
+import com.affymetrix.igb.Application;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,9 +25,21 @@ import javax.swing.JLabel;
 public class BowtieAlignerWrapper extends AlignerWrapper {
 
 	public static final String BOWTIE_LOCATION_PREF = "BOWTIE_EXECUTABLE_LOCATION";
+	public static final String INDEX_LOCATION_PREF = "INDEX_LOCATION_PREF";
+	public static final String READ_LOCATION_PREF = "READ_LOCATION_PREF";
+	public static final String READ2_LOCATION_PREF = "READ2_LOCATION_PREF";
+	public static final String OUTPUT_LOCATION_PREF = "OUTPUT_LOCATION_PREF";
 	public static String bowtie_executable_location = PreferenceUtils.getTopNode()
 			.get(BowtieAlignerWrapper.BOWTIE_LOCATION_PREF, "");
-	public static final String defaultAlignerParameters = " -e 100 --sam -3 4 -p "+
+	public static String bowtie_index_location = PreferenceUtils.getTopNode()
+			.get(BowtieAlignerWrapper.INDEX_LOCATION_PREF, "");
+	public static String bowtie_read_location = PreferenceUtils.getTopNode()
+			.get(BowtieAlignerWrapper.READ_LOCATION_PREF, "");
+	public static String bowtie_read2_location = PreferenceUtils.getTopNode()
+			.get(BowtieAlignerWrapper.READ2_LOCATION_PREF, "");
+	public static String bowtie_output_location = PreferenceUtils.getTopNode()
+			.get(BowtieAlignerWrapper.OUTPUT_LOCATION_PREF, "");
+	public static final String defaultAlignerParameters = " --sam -p "+
 			//Make shure that there is also one processor if there is only one installed
 			(Runtime.getRuntime().availableProcessors()-1 > 0 ? 
 				Runtime.getRuntime().availableProcessors()-1 : 1) +" ";
@@ -98,8 +114,26 @@ public class BowtieAlignerWrapper extends AlignerWrapper {
 					}
 				}
 				});
+				//Create a Linebreak after each parameter
 				updateComponent.start();
+				Pattern p = Pattern.compile("-.{1} ");
+				Matcher m = p.matcher(executionString);
+				StringBuffer sb = new StringBuffer();
+				while (m.find()) {
+				 m.appendReplacement(sb, "\n$0");
+				}
+				m.appendTail(sb);
+				JOptionPane.showMessageDialog(Application.getSingleton().getFrame(), "Alignment started with this command:\n\n"
+						+  sb.toString()+ "\n\n"
+						+ "Do not shut down genometa as long as the icon in the lower right corner is moving."
+						, "Alignment started", JOptionPane.INFORMATION_MESSAGE);
 				executionProcess.waitFor();//Waits for the task to complete
+				AlignerOutputView.appandOutputText("##############\n"
+						+ "Job completed\n"
+						+ "Please navigate to "+this.getOutputFilePath()+" to see your file.\n"
+						+ "##############");
+				JOptionPane.showMessageDialog(Application.getSingleton().getFrame(),
+						"Alignment completed. You can now open the file located at \n"+this.getOutputFilePath());
 			}catch(Exception ioe){
 				ioe.printStackTrace();
 			}
