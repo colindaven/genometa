@@ -1,5 +1,5 @@
 #summary genometa wiki main page
 
-= Tutorial and Further Information =
+== Tutorial and Further Information ==
 
 [http://genomics1.mh-hannover.de/genometa/]
