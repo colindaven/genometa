@@ -1,4 +1,4 @@
->gi|00000000|ref|NC_000001.1| Homo sapiens chromosome 1, reference assembly, complete sequence 
+>gi|00000000|ref|NC_000001.1| Homo sapiens chromosome 1, reference assembly, complete sequence
 >gi|00000000|ref|NC_000002.1| Homo sapiens chromosome 2, reference assembly, complete sequence
 >gi|00000000|ref|NC_000003.1| Homo sapiens chromosome 3, reference assembly, complete sequence
 >gi|00000000|ref|NC_000004.1| Homo sapiens chromosome 4, reference assembly, complete sequence
